@@ -17,6 +17,7 @@ dependencies:
   flutter_riverpod: 
   riverpod_annotation:
   rxdart: ^0.27.3
+  dio: ^5.0.0
 
 dev_dependencies:
   flutter_test:

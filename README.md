@@ -1,4 +1,4 @@
-# Simple authentication flow using Flutter & Riverpod
+thub# Simple authentication flow using Flutter & Riverpod
 
 This is the completed example project based on this tutorial:
 
