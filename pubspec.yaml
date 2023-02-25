@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  go_router: ^6.2.0
+  go_router:
   flutter_riverpod: 
   riverpod_annotation:
   rxdart: ^0.27.3
