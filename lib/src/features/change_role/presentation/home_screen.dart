@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class HomeScreen extends ConsumerWidget {
               icon: const Icon(Icons.notifications_none_outlined)),
         ],
       ),
+      drawer: const AppDrawer(),
       body: const VolunteerHomepage(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -187,18 +189,19 @@ class VolunteerHomepage extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 15,),
-          SizedBox(
-            height: 300.0,
-            child: ListView.builder(
-              physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 15,
-              itemBuilder: (BuildContext context, int index) =>
-                const ActivityCard(),
-            )
+          const SizedBox(
+            height: 15,
           ),
+          SizedBox(
+              height: 300.0,
+              child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: 15,
+                itemBuilder: (BuildContext context, int index) =>
+                    const ActivityCard(),
+              )),
         ],
       ),
     );
@@ -216,64 +219,63 @@ class ActivityCard extends StatelessWidget {
       height: 300,
       width: 200,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0)
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 100,
-              width: 200,
-              color: Colors.amber,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Activity Name',
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                    const SizedBox(height: 5,),
-                    Text(
-                      'The helpers',
-                      style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.blue),
-                    ),
-                    const SizedBox(height: 5,),
-                    Text(
-                      'Ward 14, District 10, Ho Chi Minh',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 15,),
-                    Expanded(
-                      child: Text(
-                        'dfasdfas asdfaseasdfaweeeeee eeasvsdfasfasdf',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text('Here put the stack')
-                        ),
-                        Expanded(
-                          child: Text('5/20 slots')
-                        ),
-                      ],
-                    )
-                  ],
-                )
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.amber,
               ),
-            )
-          ],
-        )
-      ),
+              Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Activity Name',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'The helpers',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: Colors.blue),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Ward 14, District 10, Ho Chi Minh',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Expanded(
+                          child: Text(
+                            'dfasdfas asdfaseasdfaweeeeee eeasvsdfasfasdf',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(child: Text('Here put the stack')),
+                            Expanded(child: Text('5/20 slots')),
+                          ],
+                        )
+                      ],
+                    )),
+              )
+            ],
+          )),
     );
   }
 }
