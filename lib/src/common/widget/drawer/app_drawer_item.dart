@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/extension/router.dart';
 
+import '../../../router/router.dart';
+
 class AppDrawerItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final GestureTapCallback? onTap;
-  final String? route;
+  final AppRoute? route;
 
   const AppDrawerItem({
     super.key,
@@ -17,10 +19,14 @@ class AppDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = route == context.currentRoute();
+    bool isSelected = route?.path == context.currentRoute();
 
     return Ink(
-      color: isSelected ? Theme.of(context).colorScheme.primary : null,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(32), bottomRight: Radius.circular(32)),
+        color: isSelected ? Theme.of(context).colorScheme.primary : null,
+      ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
         title: Text(title,
