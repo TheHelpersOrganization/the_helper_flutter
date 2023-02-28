@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   final String role;
@@ -15,19 +15,14 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('Homepage', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         elevation: 0.0,
-        leading: IconButton(
-          onPressed: () => context.go('/'),
-          icon: const Icon(Icons.menu),
-        ),
         actions: <Widget>[
           IconButton(
               onPressed: () {},
               icon: const Icon(Icons.notifications_none_outlined)),
         ],
       ),
-      body: (role == '0')
-          ? const VolunteerView()
-          : (role == '1' ? const ModView() : const AdminView()),
+      drawer: const AppDrawer(),
+      body: const VolunteerHomepage(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.black,
@@ -59,8 +54,8 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
-class VolunteerView extends StatelessWidget {
-  const VolunteerView({
+class VolunteerHomepage extends StatelessWidget {
+  const VolunteerHomepage({
     super.key,
   });
 
@@ -340,6 +335,9 @@ class ModView extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 15,
           ),
           const SizedBox(
             height: 15,
