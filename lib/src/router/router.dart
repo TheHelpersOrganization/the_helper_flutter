@@ -1,12 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
 import './router_notifier.dart';
 import '../features/change_role/presentation/change_role_screen.dart';
 import '../features/change_role/presentation/home_screen.dart';
 
 final routes = [
+  GoRoute(
+    name: AppRoute.splash.name,
+    path: AppRoute.splash.path,
+    builder: (context, state) => const SplashScreen(),
+  ),
   GoRoute(
     name: AppRoute.home.name,
     path: AppRoute.home.path,
@@ -20,6 +28,14 @@ final routes = [
       name: AppRoute.changeRole.name,
       path: AppRoute.changeRole.path,
       builder: (context, state) => const ChangeRoleScreen()),
+  GoRoute(
+      name: AppRoute.accountVerification.name,
+      path: AppRoute.accountVerification.path,
+      builder: (context, state) => const AccountVerificationScreen()),
+  GoRoute(
+      name: AppRoute.accountVerificationCompleted.name,
+      path: AppRoute.accountVerificationCompleted.path,
+      builder: (context, state) => const AccountVerificationCompletedScreen()),
   GoRoute(
       name: AppRoute.profile.name,
       path: AppRoute.profile.path,
@@ -51,9 +67,15 @@ final routes = [
 ];
 
 enum AppRoute {
+  splash(path: '/splash', name: 'splash'), // Internal access only
   home(path: '/', name: 'home'),
-  changeRole(path: '/changeRole', name: 'changeRole'),
+  changeRole(path: '/change-role', name: 'change-role'),
   login(path: '/login', name: 'login'),
+  accountVerification(
+      path: '/account-verification', name: 'account-verification'),
+  accountVerificationCompleted(
+      path: '/account-verification-completed',
+      name: 'account-verification-completed'),
   profile(path: '/profile', name: 'profile'),
   activities(path: '/activities', name: 'activities'),
   news(path: '/news', name: 'news'),
@@ -74,7 +96,7 @@ final routerProvider = Provider.autoDispose<GoRouter>((ref) {
 
   return GoRouter(
     refreshListenable: notifier,
-    initialLocation: AppRoute.home.path,
+    initialLocation: AppRoute.splash.path,
     routes: routes,
     redirect: notifier.redirect,
   );

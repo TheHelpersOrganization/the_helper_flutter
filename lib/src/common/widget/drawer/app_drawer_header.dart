@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
 
-class AppDrawerHeader extends StatelessWidget {
+class AppDrawerHeader extends ConsumerWidget {
   const AppDrawerHeader({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final account = ref.watch(authServiceProvider).valueOrNull?.account;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: Row(
@@ -18,15 +21,15 @@ class AppDrawerHeader extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Volunteer Name',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  'mymail@example.com',
-                )
+                  account?.email ?? 'Unknown',
+                ),
               ],
             ),
           ),

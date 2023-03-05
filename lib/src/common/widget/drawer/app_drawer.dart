@@ -37,7 +37,7 @@ class AppDrawer extends ConsumerWidget {
           route: AppRoute.home,
           title: 'Home',
           icon: Icons.home,
-          onTap: () => context.goNamed(AppRoute.home.name),
+          onTap: () => context.goNamed(AppRoute.changeRole.name),
         ),
         AppDrawerItem(
           route: AppRoute.activities,
