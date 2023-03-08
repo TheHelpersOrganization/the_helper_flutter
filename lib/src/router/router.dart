@@ -3,14 +3,16 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
 
 import './router_notifier.dart';
-import '../features/change_role/presentation/change_role_screen.dart';
-import '../features/change_role/presentation/home_screen.dart';
+import '../features/change_role/presentation/screens/change_role_screen.dart';
+import '../features/change_role/presentation/screens/home_screen.dart';
 
 final routes = [
   GoRoute(
     name: AppRoute.home.name,
     path: AppRoute.home.path,
-    builder: (context, state) => const HomeScreen(),
+    builder: (context, state) => const HomeScreen(
+      // role: state.params['role'],
+    ),
   ),
   GoRoute(
       name: AppRoute.login.name,
@@ -20,34 +22,34 @@ final routes = [
       name: AppRoute.changeRole.name,
       path: AppRoute.changeRole.path,
       builder: (context, state) => const ChangeRoleScreen()),
-  GoRoute(
-      name: AppRoute.profile.name,
-      path: AppRoute.profile.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.activities.name,
-      path: AppRoute.activities.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.news.name,
-      path: AppRoute.news.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.chat.name,
-      path: AppRoute.chat.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.notification.name,
-      path: AppRoute.notification.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.report.name,
-      path: AppRoute.report.path,
-      builder: (context, state) => const HomeScreen()),
-  GoRoute(
-      name: AppRoute.settings.name,
-      path: AppRoute.settings.path,
-      builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.profile.name,
+  //     path: AppRoute.profile.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.activities.name,
+  //     path: AppRoute.activities.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.news.name,
+  //     path: AppRoute.news.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.chat.name,
+  //     path: AppRoute.chat.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.notification.name,
+  //     path: AppRoute.notification.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.report.name,
+  //     path: AppRoute.report.path,
+  //     builder: (context, state) => const HomeScreen()),
+  // GoRoute(
+  //     name: AppRoute.settings.name,
+  //     path: AppRoute.settings.path,
+  //     builder: (context, state) => const HomeScreen()),
 ];
 
 enum AppRoute {

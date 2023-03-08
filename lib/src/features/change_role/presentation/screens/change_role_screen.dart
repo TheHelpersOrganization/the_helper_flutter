@@ -178,7 +178,7 @@ class RoleOption extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => context.goNamed('homescreen', params: {'role': role.toString()}),
+      onTap: () => context.goNamed('home', params: {'role': role.toString()}),
     );
   }
 }
