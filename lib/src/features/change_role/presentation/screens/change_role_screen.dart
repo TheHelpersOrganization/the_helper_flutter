@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/change_role/data/role_repository.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -180,7 +181,8 @@ class RoleOption extends ConsumerWidget {
         ),
       ),
       onTap: () {
-        // ref.read(roleRepositoryProvider). = role;
+        ref.read(homeScreenControllerProvider.notifier).changeRole(role);
+        context.goNamed('home');
       },
     );
   }
