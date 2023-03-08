@@ -28,12 +28,12 @@ class RoleRepository {
   }
 }
 
-final roleRepositoryProvider = Provider<RoleRepository>((ref) {
+final roleRepositoryProvider = Provider<UserRole?>((ref) {
   final role = RoleRepository(
     client: ref.read(dioProvider),
     url: ref.read(baseUrlProvider),
   );
-  return role;
+  return role._roleState.value;
 });
 
 // final roleStateChangeProvider = 

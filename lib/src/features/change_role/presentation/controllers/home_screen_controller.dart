@@ -7,7 +7,19 @@ import 'package:simple_auth_flutter_riverpod/src/features/change_role/domain/use
 class HomeScreenController extends StateNotifier<UserRole> {
   HomeScreenController({required this.roleRepository})
       : super(const UserRole(isMod: false, isAdmin: false, role: 0));
-  final UserRole roleRepository;
+  final UserRole? roleRepository;
 
-  Future<void> changeRole()
+  Future<UserRole> changeRole(int role) async {
+    return UserRole(
+      isMod: roleRepository!.isMod,
+      isAdmin: roleRepository!.isAdmin,
+      role: role,
+    );
+  }
 }
+
+final homeScreenControllerProvider =
+    StateNotifierProvider<HomeScreenController, UserRole>((ref) {
+  return HomeScreenController(
+      roleRepository: ref.watch(roleRepositoryProvider));
+});

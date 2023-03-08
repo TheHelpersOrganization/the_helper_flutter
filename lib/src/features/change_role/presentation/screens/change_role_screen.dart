@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/change_role/data/role_repository.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -111,7 +112,7 @@ class RoleChoice extends StatelessWidget {
   }
 }
 
-class RoleOption extends StatelessWidget {
+class RoleOption extends ConsumerWidget {
   final Color optionColor;
   final String title;
   final String description;
@@ -126,7 +127,7 @@ class RoleOption extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       child: Container(
         height: 100,
@@ -178,7 +179,9 @@ class RoleOption extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => context.goNamed('home', params: {'role': role.toString()}),
+      onTap: () {
+        // ref.read(roleRepositoryProvider). = role;
+      },
     );
   }
 }
