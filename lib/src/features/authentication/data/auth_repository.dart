@@ -1,67 +1,110 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/app_user.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/in_memory_store.dart';
+import 'dart:async';
+
 import 'package:dio/dio.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/token.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/account_token.dart';
 import 'package:simple_auth_flutter_riverpod/src/utils/dio_provider.dart';
+import 'package:simple_auth_flutter_riverpod/src/utils/flutter_secure_storage_provider.dart';
 
 import '../../../utils/domain_provider.dart';
+import '../domain/account.dart';
+import '../domain/token.dart';
 
 class AuthRepository {
   AuthRepository({
     required this.client,
     required this.url,
+    required this.localStorage,
   });
+
   final Dio client;
   final String url;
-  // AppUser? get userId 
-  final _authState = InMemoryStore<AppUser?>(null);
-  Stream<AppUser?> authStateChanges() => _authState.stream;
-  AppUser? get currentUser => _authState.value;
-  // Future<void> signInAnonymously() async {
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   // final response = await client.post(
-  //   // '$baseUrl/auth/login',
-  //   // data: {"email": "hello@hello.com", "password": "123456"},
-  //   // );
+  final FlutterSecureStorage localStorage;
 
-  //   _authState.value = const AppUser(
-  //     email: "guest",
-  //     token: null,
-  //   );
-  // }
+  Future<AccountToken?> signIn(String email, String password) async {
+    try {
+      final response = await client.post(
+        '$url/auth/login',
+        data: {
+          "email": email,
+          "password": password,
+        },
+      );
+      final accountToken = AccountToken.fromMap(response.data['data']);
+      await _saveCredentialsToLocalStorage(accountToken.token);
+      return accountToken;
+    } on DioError catch (ex) {
+      return Future.error(BackendException.fromMap(ex.response?.data));
+    }
+  }
 
-  Future<void> signIn(String email, String password) async {
-    final response = await client.post(
-      '$url/auth/login',
-      data: {
-        "email": email,
-        "password": password,
-      },
-    );
-    _authState.value = AppUser(
-      email: email,
-      token: Token.fromJson(response.data['data']),
-    );
+  Future<AccountToken?> autoSignIn() async {
+    final refreshToken = await localStorage.read(key: 'auth.refreshToken');
+    if (refreshToken == null) {
+      return null;
+    }
+    try {
+      final response = await client.post(
+        '$url/auth/refresh-token',
+        data: {
+          "refreshToken": refreshToken,
+        },
+      );
+      final accountToken = AccountToken.fromMap(response.data['data']);
+      await _saveCredentialsToLocalStorage(accountToken.token);
+      return accountToken;
+    } on DioError catch (ex) {
+      return Future.error(BackendException.fromMap(ex.response?.data));
+    }
   }
 
   Future<void> signOut() async {
-    _authState.value = null;
+    await localStorage.delete(key: 'auth.accessToken');
+    await localStorage.delete(key: 'auth.refreshToken');
   }
 
-  void dispose() => _authState.close();
+  Future<void> _saveCredentialsToLocalStorage(Token token) async {
+    await localStorage.write(key: 'auth.accessToken', value: token.access);
+    await localStorage.write(key: 'auth.refreshToken', value: token.refresh);
+  }
+
+  Future<void> sendOtp(String email) async {
+    try {
+      final response = await client.post(
+        '$url/auth/verify-account-token',
+        data: {
+          'email': email,
+        },
+      );
+    } on DioError catch (ex) {
+      return Future.error(BackendException.fromMap(ex.response?.data));
+    }
+  }
+
+  Future<Account> verifyAccount(String email, String otp) async {
+    try {
+      final response = await client.post(
+        '$url/auth/verify-account',
+        data: {
+          'email': email,
+          'token': otp,
+        },
+      );
+      final account = Account.fromMap(response.data['data']);
+      return account;
+    } on DioError catch (ex) {
+      return Future.error(BackendException.fromMap(ex.response?.data));
+    }
+  }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final auth = AuthRepository(
     client: ref.read(dioProvider),
     url: ref.read(baseUrlProvider),
+    localStorage: ref.read(secureStorageProvider),
   );
-  ref.onDispose(() => auth.dispose());
   return auth;
-});
-
-final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>((ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
-  return authRepository.authStateChanges();
 });

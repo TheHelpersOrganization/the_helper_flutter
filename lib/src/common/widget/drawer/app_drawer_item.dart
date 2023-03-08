@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/router.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
 
 import '../../../router/router.dart';
 
@@ -19,7 +19,7 @@ class AppDrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = route?.path == context.currentRoute();
+    bool isSelected = route?.path == context.currentRoute;
 
     return Ink(
       decoration: BoxDecoration(

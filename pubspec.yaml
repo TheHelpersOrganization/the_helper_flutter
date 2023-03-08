@@ -20,9 +20,13 @@ dependencies:
   riverpod_annotation: ^1.1.1
   rxdart: ^0.27.3
   dio: ^5.0.0
-  json_serializable: ^6.6.1
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
+  flutter_svg: ^2.0.2
+  pin_code_fields: ^7.4.0
+  fpdart: ^0.4.1
+  flutter_secure_storage: ^8.0.0
+  flutter_native_splash: ^2.2.18
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +38,13 @@ dev_dependencies:
   go_router_builder:
   riverpod_generator: ^1.1.1
   freezed: ^2.3.2
+  json_serializable: ^6.6.1
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: assets/images/logo.png

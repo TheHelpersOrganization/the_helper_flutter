@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/data/auth_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
 
 part 'login_controller.g.dart';
 
@@ -9,15 +9,10 @@ part 'login_controller.g.dart';
 class LoginController extends _$LoginController {
   @override
   FutureOr<void> build() {}
-  // Future<void> signInAnonymously() async {
-  //   final authService = ref.read(authServiceProvider);
-  //   state = const AsyncLoading();
-  //   state = await AsyncValue.guard(authService.signInAnonymously);
-  // }
+  
   Future<void> signIn(String email, String password) async {
-    final authRepository = ref.read(authRepositoryProvider);
+    final authService = ref.read(authServiceProvider.notifier);
     state = const AsyncLoading();
-    state =
-        await AsyncValue.guard(() => authRepository.signIn(email, password));
+    state = await AsyncValue.guard(() => authService.signIn(email, password));
   }
 }
