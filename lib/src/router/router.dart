@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
 import './router_notifier.dart';
@@ -41,6 +42,10 @@ final routes = [
       path: AppRoute.profile.path,
       builder: (context, state) => const HomeScreen()),
   GoRoute(
+      name: AppRoute.editProfile.name,
+      path: AppRoute.editProfile.path,
+      builder: (context, state) => EditProfileScreen()),
+  GoRoute(
       name: AppRoute.activities.name,
       path: AppRoute.activities.path,
       builder: (context, state) => const HomeScreen()),
@@ -77,6 +82,7 @@ enum AppRoute {
       path: '/account-verification-completed',
       name: 'account-verification-completed'),
   profile(path: '/profile', name: 'profile'),
+  editProfile(path: '/profile/edit', name: 'profile-edit'),
   activities(path: '/activities', name: 'activities'),
   news(path: '/news', name: 'news'),
   chat(path: '/chat', name: 'chat'),
@@ -96,7 +102,8 @@ final routerProvider = Provider.autoDispose<GoRouter>((ref) {
 
   return GoRouter(
     refreshListenable: notifier,
-    initialLocation: AppRoute.splash.path,
+    //initialLocation: AppRoute.splash.path,
+    initialLocation: AppRoute.editProfile.path,
     routes: routes,
     redirect: notifier.redirect,
   );

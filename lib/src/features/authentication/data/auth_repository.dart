@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/account_token.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/dio_provider.dart';
 import 'package:simple_auth_flutter_riverpod/src/utils/flutter_secure_storage_provider.dart';
+import 'package:simple_auth_flutter_riverpod/src/utils/raw_dio_provider.dart';
 
 import '../../../utils/domain_provider.dart';
 import '../domain/account.dart';
@@ -102,7 +102,7 @@ class AuthRepository {
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final auth = AuthRepository(
-    client: ref.read(dioProvider),
+    client: ref.read(rawDioProvider),
     url: ref.read(baseUrlProvider),
     localStorage: ref.read(secureStorageProvider),
   );
