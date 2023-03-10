@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/change_role/data/role_repository.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/change_role_screen_controller.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+
+import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -69,18 +72,19 @@ class ChangeRoleScreen extends ConsumerWidget {
   }
 }
 
-class RoleChoice extends StatelessWidget {
+class RoleChoice extends ConsumerWidget {
   const RoleChoice({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userRole = ref.watch(changeRoleScreenControllerProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        RoleOption(
+      children: [
+        const RoleOption(
           optionColor: Colors.purple,
           title: 'Volunteer',
           description: 'Join thousands of activities, by trusted organizations',
@@ -88,26 +92,24 @@ class RoleChoice extends StatelessWidget {
         ),
 
         //Second Option
-        SizedBox(
-          height: 20,
-        ),
-        RoleOption(
+        userRole.isMod
+        ? const RoleOption(
           optionColor: Colors.red,
           title: 'Organization',
           description: 'Manage your organization activites, members and more',
           role: 1,
-        ),
+        )
+        : const SizedBox(),
 
         //Third Option
-        SizedBox(
-          height: 20,
-        ),
-        RoleOption(
+        userRole.isAdmin
+        ? const RoleOption(
           optionColor: Colors.blue,
           title: 'Admin',
           description: 'Dashboard for Volunteer App Admin',
           role: 2,
-        ),
+        )
+        : const SizedBox(),
       ],
     );
   }
@@ -129,61 +131,71 @@ class RoleOption extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      child: Container(
-        height: 100,
-        width: 300,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: optionColor,
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
         ),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
+        InkWell(
+          child: Container(
+            height: 100,
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: optionColor,
             ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        description,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Colors.white),
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    description,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.white),
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  //Add image here
+                  margin: const EdgeInsets.all(5.0),
+                  height: 95,
+                  width: 95,
+                  color: Colors.white,
+                )
+              ],
             ),
-            const SizedBox(
-              width: 20,
-            ),
-            Container(
-              //Add image here
-              margin: const EdgeInsets.all(5.0),
-              height: 95,
-              width: 95,
-              color: Colors.white,
-            )
-          ],
+          ),
+          onTap: () {
+            ref.read(homeScreenControllerProvider.notifier).changeRole(role);
+            context.goNamed(AppRoute.home.name);
+          },
         ),
-      ),
-      onTap: () {
-        ref.read(homeScreenControllerProvider.notifier).changeRole(role);
-        context.goNamed('home');
-      },
+        const SizedBox(
+          height: 20,
+        ),
+      ],
     );
   }
 }

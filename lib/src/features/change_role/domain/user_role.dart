@@ -1,14 +1,12 @@
-import 'dart:ffi';
-
 class UserRole {
   final bool isMod;
   final bool isAdmin;
-  final int? role;
+  final int role;
 
   const UserRole({
     required this.isMod,
     required this.isAdmin,
-    this.role,
+    required this.role,
   });
 
   factory UserRole.fromJson(Map<String, dynamic> data) {
@@ -17,6 +15,7 @@ class UserRole {
     return UserRole(
       isMod: isMod,
       isAdmin: isAdmin,
+      role: 0
     );
   }
 }
