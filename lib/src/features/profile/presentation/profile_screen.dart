@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/profile_controller.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/profile_detail_tab.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_controller.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_detail_tab.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
@@ -10,8 +10,8 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Detail'),
 ];
 
-class ProfileW extends ConsumerWidget {
-  const ProfileW({super.key});
+class ProfileScreen extends ConsumerWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

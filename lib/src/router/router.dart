@@ -3,10 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/profile_widget.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
-import '../features/authentication/presentation/profile_w.dart';
+import '../features/profile/presentation/profile_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/change_role_screen.dart';
 import '../features/change_role/presentation/home_screen.dart';
@@ -20,7 +19,7 @@ final routes = [
   GoRoute(
     name: AppRoute.home.name,
     path: AppRoute.home.path,
-    builder: (context, state) => const ProfileW(),
+    builder: (context, state) => const ProfileScreen(),
   ),
   GoRoute(
       name: AppRoute.login.name,
