@@ -19,6 +19,24 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
 
 final routes = [
+  GoRoute(
+    name: AppRoute.accountVerification.name,
+    path: AppRoute.accountVerification.path,
+    builder: (context, state) => const AccountVerificationScreen()
+  ),
+  GoRoute(
+    name: AppRoute.changeRole.name,
+    path: AppRoute.changeRole.path,
+    builder: (context, state) => const ChangeRoleScreen()
+  ),
+  GoRoute(
+    name: AppRoute.accountVerificationCompleted.name,
+    path: AppRoute.accountVerificationCompleted.path,
+    builder: (context, state) =>
+        const AccountVerificationCompletedScreen()
+  ),
+
+  //Any route that need nav bar put inside shellroute
   ShellRoute(
     navigatorKey: _shellNavigatorKey,
     builder: (context, state, child) {
@@ -39,19 +57,6 @@ final routes = [
           name: AppRoute.login.name,
           path: AppRoute.login.path,
           builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
-          name: AppRoute.accountVerification.name,
-          path: AppRoute.accountVerification.path,
-          builder: (context, state) => const AccountVerificationScreen()),
-      GoRoute(
-          name: AppRoute.accountVerificationCompleted.name,
-          path: AppRoute.accountVerificationCompleted.path,
-          builder: (context, state) =>
-              const AccountVerificationCompletedScreen()),
       GoRoute(
           name: AppRoute.profile.name,
           path: AppRoute.profile.path,
@@ -90,6 +95,7 @@ final routes = [
 
 enum AppRoute {
   splash(path: '/splash', name: 'splash'), // Internal access only
+  root(path:'/r', name: 'root'),
   home(path: '/', name: 'home'),
   changeRole(path: '/change-role', name: 'change-role'),
   login(path: '/login', name: 'login'),
