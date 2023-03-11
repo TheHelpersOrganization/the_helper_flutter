@@ -28,7 +28,7 @@ class AppDrawer extends ConsumerWidget {
       children: [
         SafeArea(
           child: InkWell(
-            onTap: () => context.goNamed(AppRoute.profile.name),
+            onTap: () => context.pushNamed(AppRoute.profile.name),
             child: const AppDrawerHeader(),
           ),
         ),
@@ -37,7 +37,7 @@ class AppDrawer extends ConsumerWidget {
           route: AppRoute.home,
           title: 'Home',
           icon: Icons.home,
-          onTap: () => context.goNamed(AppRoute.changeRole.name),
+          onTap: () => context.goNamed(AppRoute.home.name),
         ),
         AppDrawerItem(
           route: AppRoute.activities,
@@ -65,10 +65,9 @@ class AppDrawer extends ConsumerWidget {
             icon: Icons.settings,
             onTap: () => context.goNamed(AppRoute.settings.name)),
         AppDrawerItem(
-          title: 'Switch Role',
-          icon: Icons.change_circle,
-          onTap: () => context.goNamed(AppRoute.changeRole.name)
-        ),
+            title: 'Switch Role',
+            icon: Icons.change_circle,
+            onTap: () => context.goNamed(AppRoute.changeRole.name)),
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout,
