@@ -9,6 +9,7 @@ import 'package:simple_auth_flutter_riverpod/src/features/authentication/present
 import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
+import '../features/profile/presentation/profile_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';

@@ -19,6 +19,7 @@ Dio dio(DioRef ref) {
     String? refresh = _auth?.token.refresh;
     if (access == null || refresh == null) return handler.next(options);
     options.headers['Authorization'] = "Bearer $access";
+    return handler.next(options);
   }));
   return dio;
 }
