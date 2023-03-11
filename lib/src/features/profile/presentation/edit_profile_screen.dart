@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/app_bar/app_bar.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_avatar_picker_widget.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_controller.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_gender_widget.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_phone_number_widget.dart';
+import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
 
 import '../../../common/widget/button/primary_button.dart';
-import '../../authentication/domain/profile.dart';
+import '../domain/profile.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   EditProfileScreen({super.key});
@@ -26,8 +27,15 @@ class EditProfileScreen extends ConsumerWidget {
     final profile = editProfileControllerState;
 
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'Edit Profile',
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              context.goNamed(AppRoute.profile.name);
+            },
+          ),
+          title: const Text('Edit Profile'),
+          centerTitle: true,
         ),
         body: profile.when(
           error: (error, stacktrace) => Text(error.toString()),
