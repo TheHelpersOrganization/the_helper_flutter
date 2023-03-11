@@ -67,7 +67,7 @@ class AppDrawer extends ConsumerWidget {
         AppDrawerItem(
           title: 'Switch Role',
           icon: Icons.change_circle,
-          onTap: () => context.goNamed(AppRoute.changeRole.name),
+          onTap: () => context.goNamed(AppRoute.changeRole.name)
         ),
         AppDrawerItem(
             title: 'Logout',
