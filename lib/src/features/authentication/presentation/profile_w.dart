@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/profile_controller.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/profile_detail_tab.dart';
+import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
@@ -24,12 +26,14 @@ class ProfileW extends ConsumerWidget {
             return <Widget>[
               SliverAppBar(
                 elevation: 0,
-                leading: Icon(Icons.menu),
+                leading: const Icon(Icons.menu),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.edit),
                     tooltip: 'Add new entry',
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goNamed(AppRoute.editProfile.name);
+                    },
                   ),
                   IconButton(
                     icon: const Icon(Icons.settings),
@@ -43,7 +47,7 @@ class ProfileW extends ConsumerWidget {
                   centerTitle: true,
                   title: profile.when(
                     data: (profile) => Text(
-                      profile.username,
+                      profile.username ?? '',
                       textScaleFactor: 1,
                     ),
                     error: (Object error, StackTrace stackTrace) =>
@@ -84,7 +88,7 @@ class ProfileW extends ConsumerWidget {
                       ),
                       Text('Duy Phong',
                           style: Theme.of(context).primaryTextTheme.labelLarge),
-                      Text('huhuhu'),
+                      const Text('huhuhu'),
                     ],
                   )),
                   stretchModes: const [StretchMode.zoomBackground],
@@ -107,7 +111,7 @@ class ProfileW extends ConsumerWidget {
               const Tab(text: 'Activity'),
               const Tab(text: 'Organization'),
               Column(
-                children: [
+                children: const [
                   SizedBox(
                     height: 160,
                   ),
@@ -130,6 +134,7 @@ class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
+
   @override
   double get maxExtent => _tabBar.preferredSize.height;
 

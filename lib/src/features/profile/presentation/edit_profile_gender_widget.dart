@@ -4,23 +4,29 @@ import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.
 import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
 
 import '../../../common/widget/radio/app_radio_grouped_button.dart';
-import 'edit_profile_controller.dart';
+import '../domain/gender.dart';
 
 class EditProfileGenderWidget extends ConsumerWidget {
-  const EditProfileGenderWidget({super.key});
+  final String? initialValue;
+  final Function(String) onValueChange;
+
+  const EditProfileGenderWidget(
+      {super.key, required this.onValueChange, this.initialValue});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final genderSelection = ref.watch(genderInputSelectionProvider);
-
-    return Row(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Gender',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+              fontSize: 16,
+              color: context.theme.inputDecorationTheme.labelStyle?.color),
         ),
-        AppRadioButtonGroup(
-          width: context.mediaQuery.size.width * 0.2,
+        AppRadioButtonGroup<String>(
+          width: context.mediaQuery.size.width * 0.23,
           enableShape: true,
           elevation: 0,
           buttonLabels: const [
@@ -28,10 +34,10 @@ class EditProfileGenderWidget extends ConsumerWidget {
             'Female',
             'Other',
           ],
-          buttonValues: const [
-            Gender.male,
-            Gender.female,
-            Gender.other,
+          buttonValues: [
+            Gender.male.name,
+            Gender.female.name,
+            Gender.other.name,
           ],
           buttonTextStyle: const ButtonTextStyle(
               selectedColor: Colors.white,
@@ -41,10 +47,8 @@ class EditProfileGenderWidget extends ConsumerWidget {
           unSelectedColor: Theme.of(context).canvasColor,
           unSelectedBorderColor: context.theme.disabledColor,
           selectedColor: Theme.of(context).primaryColor,
-          defaultSelected: genderSelection,
-          onValueChange: (Gender value) {
-            ref.read(genderInputSelectionProvider.notifier).state = value;
-          },
+          defaultSelected: initialValue,
+          onValueChange: onValueChange,
         ),
       ].padding(const EdgeInsets.all(16), ignoreFirst: true),
     );

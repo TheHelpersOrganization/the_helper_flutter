@@ -29,13 +29,10 @@ class AppCheckBoxGroup<T> extends StatefulWidget {
     this.scrollController,
     this.margin,
     this.enableButtonWrap = false,
-  })
-      : assert(buttonLables.length == buttonValuesList.length,
-  "Button values list and button lables list should have same number of eliments "),
-        assert(buttonValuesList
-            .toSet()
-            .length == buttonValuesList.length,
-        "Multiple buttons with same value cannot exist") {
+  })  : assert(buttonLables.length == buttonValuesList.length,
+            "Button values list and button lables list should have same number of eliments "),
+        assert(buttonValuesList.toSet().length == buttonValuesList.length,
+            "Multiple buttons with same value cannot exist") {
     if (absoluteZeroSpacing) {
       this.padding = 0;
       this.spacing = 0;
@@ -126,9 +123,7 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
       (selectedLables.contains(e)
           ? widget.selectedBorderColor
           : widget.unSelectedBorderColor) ??
-          Theme
-              .of(context)
-              .primaryColor;
+      Theme.of(context).primaryColor;
 
   @override
   void initState() {
@@ -153,29 +148,26 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
               : widget.unSelectedColor,
           elevation: widget.elevation,
           shape: widget.enableShape
-              ? widget.customShape == null
-              ? RoundedRectangleBorder(
-            borderRadius:
-            BorderRadius.all(Radius.circular(widget.shapeRadius)),
-          )
-              : widget.customShape
+              ? widget.customShape ??
+                  RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(widget.shapeRadius)),
+                  )
               : null,
           child: Container(
             height: widget.height,
             child: MaterialButton(
               shape: widget.enableShape
-                  ? widget.customShape == null
-                  ? OutlineInputBorder(
-                borderSide:
-                BorderSide(color: borderColor(e), width: 1),
-                borderRadius:
-                BorderRadius.all(Radius.circular(widget.radius)),
-              )
-                  : widget.customShape
+                  ? widget.customShape ??
+                      OutlineInputBorder(
+                        borderSide: BorderSide(color: borderColor(e), width: 1),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(widget.radius)),
+                      )
                   : OutlineInputBorder(
-                borderSide: BorderSide(color: borderColor(e), width: 1),
-                borderRadius: BorderRadius.zero,
-              ),
+                      borderSide: BorderSide(color: borderColor(e), width: 1),
+                      borderRadius: BorderRadius.zero,
+                    ),
               onPressed: () {
                 if (selectedLables.contains(e)) {
                   selectedLables.remove(e);
@@ -208,36 +200,35 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
       int index = widget.buttonValuesList.indexOf(e);
       return Card(
         margin:
-        widget.margin ?? EdgeInsets.all(widget.absoluteZeroSpacing ? 0 : 4),
+            widget.margin ?? EdgeInsets.all(widget.absoluteZeroSpacing ? 0 : 4),
         color: selectedLables.contains(e)
             ? widget.selectedColor
             : widget.unSelectedColor,
         elevation: widget.elevation,
         shape: widget.enableShape
-            ? widget.customShape == null
-            ? RoundedRectangleBorder(
-          borderRadius:
-          BorderRadius.all(Radius.circular(widget.shapeRadius)),
-        )
-            : widget.customShape
+            ? widget.customShape ??
+                RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(widget.shapeRadius)),
+                )
             : null,
         child: Container(
           height: widget.height,
           width: widget.autoWidth ? null : widget.width,
-          constraints: widget.autoWidth ? null : BoxConstraints(maxWidth: 250),
+          constraints:
+              widget.autoWidth ? null : const BoxConstraints(maxWidth: 250),
           child: MaterialButton(
             shape: widget.enableShape
-                ? widget.customShape == null
-                ? OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor(e), width: 1),
-              borderRadius:
-              BorderRadius.all(Radius.circular(widget.radius)),
-            )
-                : widget.customShape
+                ? widget.customShape ??
+                    OutlineInputBorder(
+                      borderSide: BorderSide(color: borderColor(e), width: 1),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(widget.radius)),
+                    )
                 : OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor(e), width: 1),
-              borderRadius: BorderRadius.zero,
-            ),
+                    borderSide: BorderSide(color: borderColor(e), width: 1),
+                    borderRadius: BorderRadius.zero,
+                  ),
             onPressed: () {
               if (selectedLables.contains(e)) {
                 selectedLables.remove(e);

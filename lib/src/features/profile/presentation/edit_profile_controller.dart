@@ -1,37 +1,39 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/data/profile_repository.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/profile.dart';
+
+import '../domain/gender.dart';
 
 final imageInputControllerProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
-final emailInputControllerProvider = Provider.autoDispose((ref) =>
-    TextEditingController(
-        text: ref.watch(authServiceProvider).valueOrNull?.account.email));
-
-final usernameFieldControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
-
-final firstNameFieldControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
-
-final lastNameFieldControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
-
-final bioFieldControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
-
-enum Gender {
-  male,
-  female,
-  other,
-}
-
 final genderInputSelectionProvider =
     StateProvider.autoDispose<Gender?>((ref) => null);
 
-final dateInputControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
+class EditProfileController extends AutoDisposeAsyncNotifier<Profile> {
+  @override
+  FutureOr<Profile> build() async {
+    final profile = await ref.watch(profileRepositoryProvider).getProfile();
+    return profile;
+  }
 
-final phoneNumberInputControllerProvider =
-    Provider.autoDispose((ref) => TextEditingController());
+  Future<void> updateProfile(
+    Profile profile,
+  ) async {
+    state = const AsyncValue.loading();
+    try {
+      final res =
+          await ref.read(profileRepositoryProvider).updateProfile(profile);
+      state = AsyncValue.data(res);
+    } on BackendException catch (ex) {
+      state = AsyncValue.error(ex.error.message, StackTrace.current);
+    }
+  }
+}
+
+final editProfileControllerProvider =
+    AutoDisposeAsyncNotifierProvider<EditProfileController, Profile>(
+        () => EditProfileController());

@@ -7,6 +7,7 @@ import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/e
 import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
 import './router_notifier.dart';
+import '../features/authentication/presentation/profile_w.dart';
 import '../features/change_role/presentation/change_role_screen.dart';
 import '../features/change_role/presentation/home_screen.dart';
 
@@ -40,7 +41,7 @@ final routes = [
   GoRoute(
       name: AppRoute.profile.name,
       path: AppRoute.profile.path,
-      builder: (context, state) => const HomeScreen()),
+      builder: (context, state) => const ProfileW()),
   GoRoute(
       name: AppRoute.editProfile.name,
       path: AppRoute.editProfile.path,
@@ -102,8 +103,7 @@ final routerProvider = Provider.autoDispose<GoRouter>((ref) {
 
   return GoRouter(
     refreshListenable: notifier,
-    //initialLocation: AppRoute.splash.path,
-    initialLocation: AppRoute.editProfile.path,
+    initialLocation: AppRoute.splash.path,
     routes: routes,
     redirect: notifier.redirect,
   );

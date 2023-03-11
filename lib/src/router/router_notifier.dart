@@ -10,6 +10,7 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<void>
     implements Listenable {
   bool _isAuth = false;
   bool _isInitializing = true;
+  String? _startingLocation;
   VoidCallback? _routerListener;
 
   @override
@@ -25,8 +26,12 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<void>
 
   /// Redirects the user when our authentication changes
   String? redirect(BuildContext context, GoRouterState state) {
-    // return null;
-    if (this.state.isLoading || this.state.hasError || _isInitializing) {
+    if (_isInitializing) {
+      _startingLocation ??= state.location;
+      return AppRoute.splash.path;
+    }
+
+    if (this.state.isLoading || this.state.hasError) {
       return null;
     }
 
@@ -34,15 +39,19 @@ class RouterNotifier extends AutoDisposeAsyncNotifier<void>
       FlutterNativeSplash.remove();
     }
 
+    if (_startingLocation == AppRoute.splash.path) {
+      _startingLocation = AppRoute.home.path;
+    }
+
     // Navigate to home or login after auto login has finished
     final isSplash = state.location == AppRoute.splash.path;
     if (isSplash) {
-      return _isAuth ? AppRoute.home.path : AppRoute.login.path;
+      return _isAuth ? _startingLocation : AppRoute.login.path;
     }
 
     // Navigate to home if user has logged in
     final isLoggingIn = state.location == AppRoute.login.path;
-    if (isLoggingIn) return _isAuth ? AppRoute.home.path : null;
+    if (isLoggingIn) return _isAuth ? _startingLocation : null;
 
     return _isAuth ? null : AppRoute.splash.path;
   }
