@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/screens/screen404.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/menu_screen.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
 import './router_notifier.dart';
@@ -53,31 +54,31 @@ final routes = [
       GoRoute(
           name: AppRoute.profile.name,
           path: AppRoute.profile.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.activities.name,
           path: AppRoute.activities.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.news.name,
           path: AppRoute.news.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.chat.name,
           path: AppRoute.chat.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.notification.name,
           path: AppRoute.notification.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.report.name,
           path: AppRoute.report.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
           name: AppRoute.settings.name,
           path: AppRoute.settings.path,
-          builder: (context, state) => const HomeScreen()),
+          builder: (context, state) => const DevelopingScreen()),
       GoRoute(
         name: AppRoute.menu.name,
         path: AppRoute.menu.path,

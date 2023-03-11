@@ -6,8 +6,8 @@ enum RoleFeatures {
     features: [
       FeaturePath(label: 'Home', path: '/', icon: Icons.home),
       FeaturePath(label: 'News', path: '/news', icon: Icons.newspaper),
-      FeaturePath(label: 'Activities', path: '/', icon: Icons.search),
-      FeaturePath(label: 'Chat', path: '/news', icon: Icons.chat),
+      FeaturePath(label: 'Activities', path: '/activities', icon: Icons.search),
+      FeaturePath(label: 'Chat', path: '/chat', icon: Icons.chat),
       FeaturePath(label: 'Menu', path: '/menu', icon: Icons.menu),
     ],
   ),
@@ -16,7 +16,7 @@ enum RoleFeatures {
     features: [
       FeaturePath(label: 'Home', path: '/', icon: Icons.home),
       FeaturePath(label: 'Org', path: '/', icon: Icons.work),
-      FeaturePath(label: 'Activities', path: '/', icon: Icons.search),
+      FeaturePath(label: 'Activities', path: '/activities', icon: Icons.search),
       FeaturePath(label: 'Chat', path: '/chat', icon: Icons.chat),
       FeaturePath(label: 'Menu', path: '/menu', icon: Icons.menu),
     ],
@@ -25,7 +25,7 @@ enum RoleFeatures {
     role: 'admin',
     features: [
       FeaturePath(label: 'Home', path: '/', icon: Icons.home),
-      FeaturePath(label: 'Activities', path: '/', icon: Icons.search),
+      FeaturePath(label: 'Activities', path: '/activities', icon: Icons.search),
       FeaturePath(label: 'Chat', path: '/chat', icon: Icons.chat),
       FeaturePath(label: 'Menu', path: '/menu', icon: Icons.menu),
     ],
