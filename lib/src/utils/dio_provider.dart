@@ -3,23 +3,33 @@ import 'package:dio/dio.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
+import 'package:simple_auth_flutter_riverpod/src/utils/domain_provider.dart';
 
-part 'dio_provider.g.dart';
+final dioProvider = Provider((ref) {
+  final baseUrl = ref.read(baseUrlProvider);
+  final authService = ref.watch(authServiceProvider.notifier);
 
-@riverpod
-Dio dio(DioRef ref) {
   final dio = Dio(
-    BaseOptions(contentType: "application/json"),
+    BaseOptions(baseUrl: baseUrl, contentType: "application/json"),
   );
-  dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
-    final _auth = ref.read(authServiceProvider).valueOrNull;
+  dio.interceptors
+      .add(QueuedInterceptorsWrapper(onRequest: (options, handler) async {
+    final token = await authService.getToken();
+
+    if (token == null) {
+      return handler.reject(DioError(
+          requestOptions: options,
+          type: DioErrorType.unknown,
+          message: 'Invalid token'));
+    }
+
+    final access = token.access;
+
+    options.headers['Authorization'] = "Bearer $access";
     options.connectTimeout = const Duration(seconds: 3000);
     options.receiveTimeout = const Duration(seconds: 3000);
-    String? access = _auth?.token.access;
-    String? refresh = _auth?.token.refresh;
-    if (access == null || refresh == null) return handler.next(options);
-    options.headers['Authorization'] = "Bearer $access";
+
     return handler.next(options);
   }));
   return dio;
-}
+});

@@ -44,7 +44,6 @@ class AccountVerificationController extends AutoDisposeAsyncNotifier<void> {
     } on BackendException catch (ex) {
       state = AsyncValue.error(ex.error.message, StackTrace.current);
     } catch (ex) {
-      print(ex);
       state = AsyncValue.error('Cannot send OTP', StackTrace.current);
     }
   }

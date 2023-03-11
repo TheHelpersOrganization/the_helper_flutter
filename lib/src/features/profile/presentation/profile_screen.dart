@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_controller.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_detail_tab.dart';
+import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
@@ -31,11 +34,15 @@ class _ProfileScreenState extends ConsumerState {
 
   @override
   Widget build(BuildContext context) {
+    final email =
+        ref.watch(authServiceProvider).valueOrNull?.account.email ?? '';
+
     final profile = ref.watch(profileControllerProvider);
     return profile.when(
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Text('Error: $error'),
       data: (profile) => Scaffold(
+        drawer: const AppDrawer(),
         body: DefaultTabController(
           length: tabs.length,
           child: NestedScrollView(
@@ -43,12 +50,13 @@ class _ProfileScreenState extends ConsumerState {
               return <Widget>[
                 SliverAppBar(
                   elevation: 0,
-                  leading: const Icon(Icons.menu),
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.edit),
                       tooltip: 'Edit profile',
-                      onPressed: () {},
+                      onPressed: () {
+                        context.pushNamed(AppRoute.editProfile.name);
+                      },
                     ),
                     IconButton(
                       icon: const Icon(Icons.settings),
@@ -80,15 +88,19 @@ class _ProfileScreenState extends ConsumerState {
                             ),
                           ),
                         ),
-                        Text(
-                          profile.username,
-                          style:
-                              Theme.of(context).primaryTextTheme.displayMedium,
+                        const SizedBox(
+                          height: 8,
                         ),
                         Text(
-                          profile.bio,
-                          style:
-                              Theme.of(context).primaryTextTheme.headlineMedium,
+                          profile.username ?? email,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          profile.bio ?? '',
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -114,7 +126,7 @@ class _ProfileScreenState extends ConsumerState {
                 Column(
                   children: const [
                     SizedBox(
-                      height: 160,
+                      height: 16,
                     ),
                     ProfileDetailTab(),
                   ],

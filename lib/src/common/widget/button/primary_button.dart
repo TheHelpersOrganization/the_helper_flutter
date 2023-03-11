@@ -4,6 +4,7 @@ import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.
 class PrimaryButton extends StatelessWidget {
   final Function()? onPressed;
   final Widget child;
+  final ButtonStyle? style;
   final bool isLoading;
   final String loadingText;
 
@@ -13,15 +14,17 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.loadingText = 'Please wait...',
+    this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return FilledButton(
       onPressed: isLoading ? () {} : onPressed,
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size.fromHeight(context.mediaQuery.size.height * 0.06),
-      ),
+      style: style ??
+          FilledButton.styleFrom(
+            minimumSize: Size(0, context.mediaQuery.size.height * 0.06),
+          ),
       child: isLoading
           ? Row(
               mainAxisSize: MainAxisSize.min,
@@ -31,7 +34,6 @@ class PrimaryButton extends StatelessWidget {
                   height: 16,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation(Colors.white),
-                    backgroundColor: Colors.blue,
                     strokeWidth: 3,
                   ),
                 ),

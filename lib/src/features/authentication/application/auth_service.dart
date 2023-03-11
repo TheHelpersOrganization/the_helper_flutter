@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/data/auth_repository.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/account_token.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/token.dart';
 
 class AuthService extends AsyncNotifier<AccountToken?> {
   @override
@@ -18,10 +20,44 @@ class AuthService extends AsyncNotifier<AccountToken?> {
     state = AsyncValue.data(res);
   }
 
+  Future<AccountToken?> refreshToken() async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final res = await authRepository.autoSignIn();
+    state = AsyncValue.data(res);
+    return res;
+  }
+
   Future<void> signOut() async {
     final authRepository = ref.read(authRepositoryProvider);
     await authRepository.signOut();
     state = const AsyncValue.data(null);
+  }
+
+  Future<Token?> getToken() async {
+    final accountToken = state.valueOrNull;
+    if (accountToken == null) {
+      return null;
+    }
+
+    final access = accountToken.token.access;
+    final refresh = accountToken.token.refresh;
+    final accessTokenHasExpired = JwtDecoder.isExpired(access);
+    final refreshTokenHasExpired = JwtDecoder.isExpired(refresh);
+
+    if (refreshTokenHasExpired) {
+      await signOut();
+      return null;
+    }
+
+    if (accessTokenHasExpired) {
+      final accountToken = await refreshToken();
+      if (accountToken == null) {
+        throw Exception('Unable to refresh token');
+      }
+      return accountToken.token;
+    }
+
+    return accountToken.token;
   }
 
   Future<void> sendOtp() async {
