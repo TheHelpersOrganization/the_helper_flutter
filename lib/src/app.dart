@@ -14,7 +14,8 @@ class MyApp extends ConsumerWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+          useMaterial3: true, colorSchemeSeed: const Color(0xFF254687)),
     );
   }
 }
