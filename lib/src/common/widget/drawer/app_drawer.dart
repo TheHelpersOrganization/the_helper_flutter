@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer_item.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/async_value_ui.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
@@ -20,10 +19,6 @@ class AppDrawer extends ConsumerWidget {
       );
 
   _buildDrawerItem(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue>(
-      logoutControllerProvider,
-      (_, state) => state.showSnackbarOnError(context),
-    );
     return Column(
       children: [
         SafeArea(
@@ -45,6 +40,14 @@ class AppDrawer extends ConsumerWidget {
           icon: Icons.search,
           onTap: () {
             context.goNamed(AppRoute.activities.name);
+          },
+        ),
+        AppDrawerItem(
+          route: AppRoute.organizationSearch,
+          title: 'Organizations',
+          icon: Icons.search,
+          onTap: () {
+            context.goNamed(AppRoute.organizationSearch.name);
           },
         ),
         AppDrawerItem(
@@ -71,7 +74,7 @@ class AppDrawer extends ConsumerWidget {
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout,
-            onTap: () => ref.read(logoutControllerProvider.notifier).signOut()),
+            onTap: () => ref.read(logoutControllerProvider).signOut()),
       ],
     );
   }

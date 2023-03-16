@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/screens/loading_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_controller.dart';
@@ -39,7 +40,7 @@ class _ProfileScreenState extends ConsumerState {
 
     final profile = ref.watch(profileControllerProvider);
     return profile.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const LoadingScreen(),
       error: (error, stack) => Text('Error: $error'),
       data: (profile) => Scaffold(
         drawer: const AppDrawer(),
