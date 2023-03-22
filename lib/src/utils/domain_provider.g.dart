@@ -6,7 +6,7 @@ part of 'domain_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$baseUrlHash() => r'83b010057a41f72881a52e74618ce74f6c0eea0f';
+String _$baseUrlHash() => r'fe172b4a9cba849d7d165761279aec030cd5789c';
 
 /// See also [baseUrl].
 @ProviderFor(baseUrl)
