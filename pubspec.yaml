@@ -20,11 +20,13 @@ dependencies:
   riverpod_annotation:
   rxdart: ^0.27.3
   dio: ^5.0.0
+  http_parser: ^4.0.2
+  mime: ^1.0.4
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
   flutter_svg: ^2.0.2
   pin_code_fields: ^7.4.0
-  fpdart: ^0.4.1
+  fpdart: ^0.5.0
   flutter_secure_storage: ^8.0.0
   flutter_native_splash: ^2.2.18
   jwt_decoder: ^2.0.1
@@ -41,6 +43,7 @@ dependencies:
   flutter_google_places_hoc081098: ^1.2.0
   geocoding: ^2.1.0
   geolocator: ^9.0.2
+  infinite_scroll_pagination: ^3.2.0
 
 dev_dependencies:
   flutter_test:
