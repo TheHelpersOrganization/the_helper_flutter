@@ -8,11 +8,13 @@ import 'package:simple_auth_flutter_riverpod/src/features/authentication/present
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/logout_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/screens/menu_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/organization/presentation/organization_search_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_screen.dart';
 
 import '../common/screens/safe_screen.dart';
+import '../common/screens/splash_screen.dart';
+import '../features/organization/presentation/organization_search_screen.dart';
+import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
+import '../features/profile/presentation/profile_screen/profile_screen.dart';
+import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -78,7 +80,7 @@ final routes = [
           GoRoute(
             path: AppRoute.organizationSearch.path,
             name: AppRoute.organizationSearch.name,
-            builder: (context, state) => OrganizationSearchScreen(),
+            builder: (context, state) => const OrganizationSearchScreen(),
           ),
         ],
       ),
@@ -104,6 +106,22 @@ final routes = [
           builder: (context, state) => EditProfileScreen()),
     ],
   ),
+  GoRoute(
+      name: AppRoute.login.name,
+      path: AppRoute.login.path,
+      builder: (context, state) => const LoginScreen()),
+  GoRoute(
+      name: AppRoute.accountVerification.name,
+      path: AppRoute.accountVerification.path,
+      builder: (context, state) => const AccountVerificationScreen()),
+  GoRoute(
+      name: AppRoute.profile.name,
+      path: AppRoute.profile.path,
+      builder: (context, state) => const ProfileScreen()),
+  GoRoute(
+      name: AppRoute.editProfile.name,
+      path: AppRoute.editProfile.path,
+      builder: (context, state) => EditProfileScreen()),
 ];
 
 enum AppRoute {
@@ -119,12 +137,20 @@ enum AppRoute {
       name: 'account-verification-completed'),
   profile(path: '/profile', name: 'profile'),
   editProfile(path: '/profile/edit', name: 'profile-edit'),
+  profileSetting(
+    path: '/profile/setting',
+    name: 'profile-setting',
+  ),
   activities(path: '/activities', name: 'activities'),
   news(path: '/news', name: 'news'),
   chat(path: '/chat', name: 'chat'),
   notification(path: '/notification', name: 'notification'),
   report(path: '/report', name: 'report'),
   settings(path: '/settings', name: 'setting'),
+
+  // Quick access to develop screen
+  testScreen(path: '/test', name: 'test'),
+
   //Admin feature
   menu(
     path: '/menu',
@@ -133,8 +159,7 @@ enum AppRoute {
   organizationSearch(
     path: '/organization/search',
     name: 'organization-search',
-  ),
-  ;
+  );
 
   const AppRoute({
     required this.path,

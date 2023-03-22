@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/screens/loading_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_controller.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_detail_tab.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_screen/profile_detail_tab.dart';
 import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
+
+import '../../data/profile_repository.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
@@ -18,10 +19,10 @@ const List<Tab> tabs = <Tab>[
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _ProfileScreenState extends ConsumerState {
+class ProfileScreenState extends ConsumerState {
   late ScrollController _scrollController;
 
   bool get _isSliverAppBarExtended =>
@@ -38,7 +39,7 @@ class _ProfileScreenState extends ConsumerState {
     final email =
         ref.watch(authServiceProvider).valueOrNull?.account.email ?? '';
 
-    final profile = ref.watch(profileControllerProvider);
+    final profile = ref.watch(profileProvider);
     return profile.when(
       loading: () => const LoadingScreen(),
       error: (error, stack) => Text('Error: $error'),

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
 
-import '../../../common/widget/radio/app_radio_grouped_button.dart';
-import '../domain/gender.dart';
+import '../../../../common/widget/radio/app_radio_grouped_button.dart';
+import '../../domain/gender.dart';
 
 class EditProfileGenderWidget extends ConsumerWidget {
   final String? initialValue;
@@ -22,8 +22,9 @@ class EditProfileGenderWidget extends ConsumerWidget {
         Text(
           'Gender',
           style: TextStyle(
-              fontSize: 16,
-              color: context.theme.inputDecorationTheme.labelStyle?.color),
+            fontSize: 16,
+            color: context.theme.inputDecorationTheme.labelStyle?.color,
+          ),
         ),
         AppRadioButtonGroup<String>(
           width: context.mediaQuery.size.width * 0.23,

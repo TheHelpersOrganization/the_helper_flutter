@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/file/data/file_repository.dart';
 
-import '../data/profile_repository.dart';
-import '../domain/gender.dart';
-import '../domain/profile.dart';
+import '../../data/profile_repository.dart';
+import '../../domain/gender.dart';
+import '../../domain/profile.dart';
 
 final imageInputControllerProvider =
     StateProvider.autoDispose<String?>((ref) => null);

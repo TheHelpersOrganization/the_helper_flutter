@@ -39,6 +39,22 @@ class AuthRepository {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
+  // Future<AccountToken?> register(String email, String password) async {
+  //   try {
+  //     final response = await client.post(
+  //       '$url/auth/register',
+  //       data: {
+  //         "email": email,
+  //         "password": password,
+  //       },
+  //     );
+  //     final accountToken = AccountToken.fromMap(response.data['data']);
+  //     await _saveCredentialsToLocalStorage(accountToken.token);
+  //     return accountToken;
+  //   } on DioError catch (ex) {
+  //     return Future.error(Back)
+  //   }
+  // }
 
   Future<AccountToken?> autoSignIn() async {
     final refreshToken = await localStorage.read(key: 'auth.refreshToken');
@@ -98,6 +114,9 @@ class AuthRepository {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
+
+  // TODO: register method
+  // TODO: password recovery
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

@@ -23,9 +23,10 @@ class VolunteerMenu extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: featuresList.ofProfile
-              .map<Widget>(
-                (item) => FeatureOption(icon: item.icon, name: item.label)
-              ).toList(),
+                  .map<Widget>(
+                    (item) => FeatureOption(icon: item.icon, name: item.label),
+                  )
+                  .toList(),
             ),
           ),
           Text('Menu'),
@@ -35,9 +36,9 @@ class VolunteerMenu extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: featuresList.ofMenu
-              .map<Widget>(
-                (item) => FeatureOption(icon: item.icon, name: item.label)
-              ).toList(),
+                  .map<Widget>((item) =>
+                      FeatureOption(icon: item.icon, name: item.label))
+                  .toList(),
             ),
           ),
           Text('Account'),
@@ -47,9 +48,9 @@ class VolunteerMenu extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: featuresList.ofAccount
-              .map<Widget>(
-                (item) => FeatureOption(icon: item.icon, name: item.label)
-              ).toList(),
+                  .map<Widget>((item) =>
+                      FeatureOption(icon: item.icon, name: item.label))
+                  .toList(),
             ),
           ),
         ],
