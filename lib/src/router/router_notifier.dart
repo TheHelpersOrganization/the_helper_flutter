@@ -2,8 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
-import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/router/router.dart';
 
 // Need to implement Listenable so that GoRouter can listen
 class RouterNotifier extends AutoDisposeNotifier<bool> implements Listenable {

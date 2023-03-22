@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_controller.dart';
-// import 'package:simple_auth_flutter_riverpod/src/utils/async_value_ui.dart';
+// import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
+// import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});

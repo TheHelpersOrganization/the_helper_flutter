@@ -94,7 +94,7 @@ BEGIN
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "The Helper" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "simple_auth_flutter_riverpod.exe" "\0"
+            VALUE "OriginalFilename", "the_helper.exe" "\0"
             VALUE "ProductName", "The Helper" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END

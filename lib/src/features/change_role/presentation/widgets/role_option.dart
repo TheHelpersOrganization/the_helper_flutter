@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 class RoleOption extends ConsumerWidget {
   final Color optionColor;

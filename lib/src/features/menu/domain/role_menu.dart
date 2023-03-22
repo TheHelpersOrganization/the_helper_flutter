@@ -1,4 +1,4 @@
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
 
 class RoleMenu {
   final List<FeaturePath> ofProfile;

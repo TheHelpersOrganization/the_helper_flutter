@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/common/exception/backend_exception.dart';
 
 import '../../data/profile_repository.dart';
 import '../../domain/gender.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
 
 import 'organization_widget.dart';
 

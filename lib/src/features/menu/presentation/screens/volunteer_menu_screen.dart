@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/data/menu_feature_list.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/domain/role_menu.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/widgets/feature_option.dart';
+import 'package:the_helper/src/features/menu/data/menu_feature_list.dart';
+import 'package:the_helper/src/features/menu/domain/role_menu.dart';
+import 'package:the_helper/src/features/menu/presentation/widgets/feature_option.dart';
 
 class VolunteerMenu extends ConsumerWidget {
   const VolunteerMenu({

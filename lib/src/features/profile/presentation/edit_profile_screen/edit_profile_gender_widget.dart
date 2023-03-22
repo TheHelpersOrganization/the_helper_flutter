@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
 
 import '../../../../common/widget/radio/app_radio_grouped_button.dart';
 import '../../domain/gender.dart';

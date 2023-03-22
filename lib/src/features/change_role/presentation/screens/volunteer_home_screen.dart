@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/summary_card.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/activity_card.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/summary_card.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/activity_card.dart';
 
 class VolunteerView extends ConsumerWidget {
   const VolunteerView({
@@ -28,17 +28,13 @@ class VolunteerView extends ConsumerWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const<Widget>[
+            children: const <Widget>[
               SummaryCard(
-                title: 'Activities',
-                total: 30,
-                info: '+5 this month'
-              ),
+                  title: 'Activities', total: 30, info: '+5 this month'),
               SummaryCard(
-                title: 'Hours contribute',
-                total: 120,
-                info: '24h this month'
-              ),
+                  title: 'Hours contribute',
+                  total: 120,
+                  info: '24h this month'),
             ],
           ),
           const SizedBox(

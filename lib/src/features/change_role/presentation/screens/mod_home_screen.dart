@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/activity_card.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/activity_card.dart';
 
 class ModView extends ConsumerWidget {
   const ModView({

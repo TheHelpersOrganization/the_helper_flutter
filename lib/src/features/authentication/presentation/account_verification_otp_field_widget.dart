@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_controller.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_controller.dart';
 
 class AccountVerificationOtpFieldWidget extends ConsumerWidget {
   const AccountVerificationOtpFieldWidget({Key? key}) : super(key: key);

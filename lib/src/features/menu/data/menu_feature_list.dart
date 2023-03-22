@@ -1,5 +1,5 @@
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/domain/role_menu.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
+import 'package:the_helper/src/features/menu/domain/role_menu.dart';
 import 'package:flutter/material.dart';
 
 RoleMenu volunteerList = RoleMenu(ofProfile: [

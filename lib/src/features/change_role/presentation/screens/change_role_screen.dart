@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/data/role_repository.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/change_role_screen_controller.dart';
+import 'package:the_helper/src/features/change_role/data/role_repository.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/change_role_screen_controller.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/role_option.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -90,23 +90,24 @@ class RoleChoice extends ConsumerWidget {
 
         //Second Option
         userRole.isMod
-        ? const RoleOption(
-          optionColor: Colors.red,
-          title: 'Organization',
-          description: 'Manage your organization activites, members and more',
-          role: 1,
-        )
-        : const SizedBox(),
+            ? const RoleOption(
+                optionColor: Colors.red,
+                title: 'Organization',
+                description:
+                    'Manage your organization activites, members and more',
+                role: 1,
+              )
+            : const SizedBox(),
 
         //Third Option
         userRole.isAdmin
-        ? const RoleOption(
-          optionColor: Colors.blue,
-          title: 'Admin',
-          description: 'Dashboard for Volunteer App Admin',
-          role: 2,
-        )
-        : const SizedBox(),
+            ? const RoleOption(
+                optionColor: Colors.blue,
+                title: 'Admin',
+                description: 'Dashboard for Volunteer App Admin',
+                role: 2,
+              )
+            : const SizedBox(),
       ],
     );
   }

@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/domain/user_role.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/dio_provider.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/domain_provider.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/in_memory_store.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/utils/dio_provider.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
+import 'package:the_helper/src/utils/in_memory_store.dart';
 
 //Role Repository class
 class RoleRepository {

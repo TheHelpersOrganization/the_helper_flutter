@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 
 class LogoutController {
   final AuthService _authService;

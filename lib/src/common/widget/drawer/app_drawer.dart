@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer_header.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer_item.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';

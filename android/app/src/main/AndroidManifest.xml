@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.simple_auth_flutter_riverpod">
+    package="com.new.the_helper.name">
    <application
         android:label="The Helper"
         android:name="${applicationName}"

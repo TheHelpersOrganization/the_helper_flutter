@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //Widgets
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/home_screen_controller.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 
 //Screens
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/screens/volunteer_home_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/screens/mod_home_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/screens/admin_home_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/volunteer_home_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/mod_home_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/admin_home_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   // final String? role;
@@ -37,10 +37,7 @@ class HomeScreen extends ConsumerWidget {
       drawer: const AppDrawer(),
       body: (userRole.role == 0)
           ? const VolunteerView()
-          : (userRole.role == 1 
-            ? const ModView() 
-            : const AdminView()
-          ),
+          : (userRole.role == 1 ? const ModView() : const AdminView()),
       //body: const VolunteerView(),
       //bottomNavigationBar: const CustomBottomNavigator(),
     );

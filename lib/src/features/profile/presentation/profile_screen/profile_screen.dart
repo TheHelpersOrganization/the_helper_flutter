@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
 import '../../../../router/router.dart';
 import '../../data/profile_repository.dart';

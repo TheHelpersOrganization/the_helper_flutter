@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/screens/loading_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/drawer/app_drawer.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_screen/profile_detail_tab.dart';
-import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
+import 'package:the_helper/src/common/screens/loading_screen.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_screen/profile_detail_tab.dart';
+import 'package:the_helper/src/router/router.dart';
 
 import '../../data/profile_repository.dart';
 

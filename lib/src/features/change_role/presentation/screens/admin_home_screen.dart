@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/summary_card.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/summary_card.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({
@@ -103,10 +103,10 @@ class AdminView extends ConsumerWidget {
                 itemCount: 3,
                 itemBuilder: (BuildContext context, int index) =>
                     const SummaryCard(
-                      title: 'Something',
-                      total: 120,
-                      info: 'Something',
-                    ),
+                  title: 'Something',
+                  total: 120,
+                  info: 'Something',
+                ),
               )),
         ],
       ),

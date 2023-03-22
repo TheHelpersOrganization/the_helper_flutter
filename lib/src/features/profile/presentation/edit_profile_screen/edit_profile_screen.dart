@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
 import '../../domain/profile.dart';
