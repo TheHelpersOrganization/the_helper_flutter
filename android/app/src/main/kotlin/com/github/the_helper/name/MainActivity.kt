@@ -1,4 +1,4 @@
-package com.new.the_helper.name
+package com.github.the_helper.name
 
 import io.flutter.embedding.android.FlutterActivity
 

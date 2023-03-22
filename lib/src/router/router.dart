@@ -106,22 +106,6 @@ final routes = [
           builder: (context, state) => EditProfileScreen()),
     ],
   ),
-  GoRoute(
-      name: AppRoute.login.name,
-      path: AppRoute.login.path,
-      builder: (context, state) => const LoginScreen()),
-  GoRoute(
-      name: AppRoute.accountVerification.name,
-      path: AppRoute.accountVerification.path,
-      builder: (context, state) => const AccountVerificationScreen()),
-  GoRoute(
-      name: AppRoute.profile.name,
-      path: AppRoute.profile.path,
-      builder: (context, state) => const ProfileScreen()),
-  GoRoute(
-      name: AppRoute.editProfile.name,
-      path: AppRoute.editProfile.path,
-      builder: (context, state) => EditProfileScreen()),
 ];
 
 enum AppRoute {
