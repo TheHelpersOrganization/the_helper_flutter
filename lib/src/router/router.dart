@@ -8,11 +8,9 @@ import 'package:simple_auth_flutter_riverpod/src/features/authentication/present
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/logout_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/screens/menu_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/splash/presentation/splash_screen.dart';
 
 import '../common/screens/safe_screen.dart';
+import '../common/screens/splash_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
 import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
@@ -128,11 +126,12 @@ enum AppRoute {
   menu(
     path: '/menu',
     name: 'menu',
+  ),
   organizationSearch(
     path: '/organization/search',
     name: 'organization-search',
-  ),
-  ;
+  );
+
   const AppRoute({
     required this.path,
     required this.name,
