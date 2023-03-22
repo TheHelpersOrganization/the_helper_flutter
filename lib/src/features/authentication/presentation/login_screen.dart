@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_auth_flutter_riverpod/src/common/widget/button/primary_button.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_controller.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/register_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/utils/async_value_ui.dart';
@@ -47,7 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 height: 32,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
@@ -58,7 +59,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   obscureText: true,
                   enableSuggestions: false,
@@ -71,43 +72,49 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () {},
-                child: const Text('Forgot password?'),
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text('Forgot password?'),
+                    ),
+                  ],
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: state.isLoading
-                            ? null
-                            : () {
-                                ref
-                                    .read(loginControllerProvider.notifier)
-                                    .signIn(
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
-                              },
-                        child: state.isLoading
-                            ? const CircularProgressIndicator()
-                            : const Text('Sign In'),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: PrimaryButton(
+                        isLoading: state.isLoading,
+                        loadingText: "Logging in...",
+                        onPressed: () {
+                          ref.read(loginControllerProvider.notifier).signIn(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                        },
+                        child: const Text('Sign In'),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: OutlinedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterScreen()),
-                          );
-                        },
+                        onPressed: state.isLoading
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterScreen()),
+                                );
+                              },
                         child: const Text('Register'),
                       ),
                     ),

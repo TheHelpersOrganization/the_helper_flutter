@@ -71,8 +71,8 @@ class AuthRepository {
       final accountToken = AccountToken.fromMap(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
-    } on DioError catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
+    } catch (err) {
+      return null;
     }
   }
 

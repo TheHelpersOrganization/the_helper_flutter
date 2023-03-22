@@ -15,7 +15,9 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
-          useMaterial3: true, colorSchemeSeed: const Color(0xFF254687)),
+        useMaterial3: true,
+        colorSchemeSeed: const Color(0xFF254687),
+      ),
     );
   }
 }

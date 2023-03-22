@@ -11,6 +11,7 @@ import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/scre
 
 import '../common/screens/safe_screen.dart';
 import '../common/screens/splash_screen.dart';
+import '../features/organization/presentation/organization_search_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
 import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
@@ -24,58 +25,86 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 
 final routes = [
   ShellRoute(
-      navigatorKey: _shellNavigatorKey,
-      builder: (context, state, child) {
-        return CustomBottomNavigator(child: child);
-      },
-      routes: [
-        GoRoute(
-          name: AppRoute.home.name,
-          path: AppRoute.home.path,
-          builder: (context, state) => const HomeScreen(),
-        ),
-        GoRoute(
-            name: AppRoute.changeRole.name,
-            path: AppRoute.changeRole.path,
-            builder: (context, state) => const ChangeRoleScreen()),
-        GoRoute(
-            name: AppRoute.accountVerificationCompleted.name,
-            path: AppRoute.accountVerificationCompleted.path,
-            builder: (context, state) =>
-                const AccountVerificationCompletedScreen()),
-        GoRoute(
-            name: AppRoute.activities.name,
-            path: AppRoute.activities.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.news.name,
-            path: AppRoute.news.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.chat.name,
-            path: AppRoute.chat.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.notification.name,
-            path: AppRoute.notification.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.report.name,
-            path: AppRoute.report.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.settings.name,
-            path: AppRoute.settings.path,
-            builder: (context, state) => const DevelopingScreen()),
-        GoRoute(
-            name: AppRoute.menu.name,
-            path: AppRoute.menu.path,
-            builder: (context, state) => const MenuScreen()),
-      ]),
-  GoRoute(
-    name: AppRoute.splash.name,
-    path: AppRoute.splash.path,
-    builder: (context, state) => const SplashScreen(),
+    builder: (context, state, child) {
+      return SafeScreen(child: child);
+    },
+    routes: [
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
+          return CustomBottomNavigator(child: child);
+        },
+        routes: [
+          GoRoute(
+            name: AppRoute.home.name,
+            path: AppRoute.home.path,
+            builder: (context, state) => const HomeScreen(),
+          ),
+          GoRoute(
+              name: AppRoute.changeRole.name,
+              path: AppRoute.changeRole.path,
+              builder: (context, state) => const ChangeRoleScreen()),
+          GoRoute(
+              name: AppRoute.accountVerificationCompleted.name,
+              path: AppRoute.accountVerificationCompleted.path,
+              builder: (context, state) =>
+                  const AccountVerificationCompletedScreen()),
+          GoRoute(
+              name: AppRoute.activities.name,
+              path: AppRoute.activities.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.news.name,
+              path: AppRoute.news.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.chat.name,
+              path: AppRoute.chat.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.notification.name,
+              path: AppRoute.notification.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.report.name,
+              path: AppRoute.report.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.settings.name,
+              path: AppRoute.settings.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
+              name: AppRoute.menu.name,
+              path: AppRoute.menu.path,
+              builder: (context, state) => const MenuScreen()),
+          GoRoute(
+            path: AppRoute.organizationSearch.path,
+            name: AppRoute.organizationSearch.name,
+            builder: (context, state) => const OrganizationSearchScreen(),
+          ),
+        ],
+      ),
+      GoRoute(
+          name: AppRoute.login.name,
+          path: AppRoute.login.path,
+          builder: (context, state) => const LoginScreen()),
+      GoRoute(
+          name: AppRoute.logout.name,
+          path: AppRoute.logout.path,
+          builder: (context, state) => const LogoutScreen()),
+      GoRoute(
+          name: AppRoute.accountVerification.name,
+          path: AppRoute.accountVerification.path,
+          builder: (context, state) => const AccountVerificationScreen()),
+      GoRoute(
+          name: AppRoute.profile.name,
+          path: AppRoute.profile.path,
+          builder: (context, state) => const ProfileScreen()),
+      GoRoute(
+          name: AppRoute.editProfile.name,
+          path: AppRoute.editProfile.path,
+          builder: (context, state) => EditProfileScreen()),
+    ],
   ),
   GoRoute(
       name: AppRoute.login.name,
