@@ -29,6 +29,7 @@ class AuthService extends AsyncNotifier<AccountToken?> {
 
   Future<void> signOut() async {
     final authRepository = ref.read(authRepositoryProvider);
+    state = const AsyncValue.loading();
     await authRepository.signOut();
     state = const AsyncValue.data(null);
   }

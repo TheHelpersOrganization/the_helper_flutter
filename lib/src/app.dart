@@ -14,7 +14,8 @@ class MyApp extends ConsumerWidget {
       title: 'The Helper',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+          useMaterial3: true, colorSchemeSeed: const Color(0xFF254687)),
     );
   }
 }
