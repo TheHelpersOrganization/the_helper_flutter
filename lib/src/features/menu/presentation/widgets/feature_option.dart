@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../router/router.dart';
 
 class FeatureOption extends StatelessWidget {
   final IconData icon;
@@ -17,16 +20,18 @@ class FeatureOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         InkWell(
           child: Container(
             height: 70,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(width: 1, color: Colors.black)
-              // color: optionColor,
-            ),
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(width: 1, color: Colors.black)
+                // color: optionColor,
+                ),
             child: Row(
               children: [
                 Padding(
@@ -34,20 +39,23 @@ class FeatureOption extends StatelessWidget {
                   child: Icon(icon),
                 ),
                 Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name),
-                    if (additionalInfo != null) Text(additionalInfo!)
-                  ],
-                )),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name),
+                      if (additionalInfo != null) Text(additionalInfo!),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
           onTap: () {},
         ),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
       ],
     );
   }

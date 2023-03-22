@@ -5,14 +5,16 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_avatar_picker_widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_controller.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_gender_widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_phone_number_widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
 
-import '../../../common/widget/button/primary_button.dart';
-import '../domain/profile.dart';
+import '../../../../common/widget/button/primary_button.dart';
+import '../../domain/profile.dart';
+import 'edit_profile_avatar_picker_widget.dart';
+import 'edit_profile_controller.dart';
+import 'edit_profile_gender_widget.dart';
+import 'edit_profile_phone_number_widget.dart';
+
+// import '../../../common/widget/button/primary_button.dart';
+// import '../domain/profile.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   EditProfileScreen({super.key});
@@ -31,7 +33,7 @@ class EditProfileScreen extends ConsumerWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              context.goNamed(AppRoute.profile.name);
+              context.pop();
             },
           ),
           title: const Text('Edit Profile'),
@@ -119,24 +121,24 @@ class EditProfileScreen extends ConsumerWidget {
                 EditProfilePhoneNumberWidget(
                   initialValue: profile.phoneNumber,
                 ),
-                FormBuilderTextField(
-                  name: 'addressLine1',
-                  initialValue: profile.addressLine1,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your street name',
-                    labelText: 'Address Line 1',
-                  ),
-                ),
-                FormBuilderTextField(
-                  name: 'addressLine2',
-                  initialValue: profile.addressLine2,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your district, city',
-                    labelText: 'Address Line 2',
-                  ),
-                ),
+                // FormBuilderTextField(
+                //   name: 'addressLine1',
+                //   initialValue: profile.addressLine1,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //     hintText: 'Enter your street name',
+                //     labelText: 'Address Line 1',
+                //   ),
+                // ),
+                // FormBuilderTextField(
+                //   name: 'addressLine2',
+                //   initialValue: profile.addressLine2,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //     hintText: 'Enter your district, city',
+                //     labelText: 'Address Line 2',
+                //   ),
+                // ),
                 const SizedBox(height: 16),
                 Row(
                   children: [

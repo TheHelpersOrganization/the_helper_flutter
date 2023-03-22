@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_phone_field/form_builder_phone_field.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
-import '../../../common/constant/regex.dart';
+import '../../../../common/constant/regex.dart';
 
 class EditProfilePhoneNumberWidget extends ConsumerWidget {
   final String? initialValue;
