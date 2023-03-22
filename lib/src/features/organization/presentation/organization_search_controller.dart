@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/organization/data/organization_repository.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/organization/domain/organization_model.dart';
+import 'package:the_helper/src/features/organization/data/organization_repository.dart';
+import 'package:the_helper/src/features/organization/domain/organization_model.dart';
 
 class OrganizationSearchController
     extends AutoDisposeAsyncNotifier<List<OrganizationModel>> {

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:simple_auth_flutter_riverpod/src/features/contact/domain/contact_model.dart';
+import 'package:the_helper/src/features/contact/domain/contact_model.dart';
 
 import '../../location/domain/location_model.dart';
 

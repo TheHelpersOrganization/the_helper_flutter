@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 
 import '../../../common/extension/image.dart';
 import '../domain/organization_model.dart';

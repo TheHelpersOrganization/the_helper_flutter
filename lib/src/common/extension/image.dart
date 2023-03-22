@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/domain_provider.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 
 extension ImageX on Image {
   static Image backend(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/side_sheet.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/side_sheet.dart';
 
 class DebounceSearchBar extends StatefulWidget {
   final TextEditingController? controller;

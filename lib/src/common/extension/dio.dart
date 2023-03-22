@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/common/exception/backend_exception.dart';
 
 extension DioX on Dio {
   Future<Response<T>> getOrCatch<T>(
