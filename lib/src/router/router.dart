@@ -78,7 +78,7 @@ final routes = [
           GoRoute(
             path: AppRoute.organizationSearch.path,
             name: AppRoute.organizationSearch.name,
-            builder: (context, state) => const OrganizationSearchScreen(),
+            builder: (context, state) => OrganizationSearchScreen(),
           ),
         ],
       ),

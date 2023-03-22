@@ -12,6 +12,7 @@ class EditProfileAvatarPickerWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final avatarProvider = ref.watch(editProfileAvatarControllerProvider);
     final imageUrl = ref.watch(imageInputControllerProvider);
     ImageProvider image;
     if (imageUrl == null) {
@@ -28,7 +29,7 @@ class EditProfileAvatarPickerWidget extends ConsumerWidget {
       children: [
         CircleAvatar(
           radius: context.mediaQuery.size.width * 0.15,
-          backgroundImage: image,
+          //backgroundImage: image,
         ),
         RawMaterialButton(
           onPressed: () async {
@@ -38,6 +39,9 @@ class EditProfileAvatarPickerWidget extends ConsumerWidget {
               return;
             }
             ref.read(imageInputControllerProvider.notifier).state = file.path;
+            ref
+                .read(editProfileAvatarControllerProvider.notifier)
+                .updateAvatar(file.path);
           },
           elevation: 2.0,
           fillColor: Colors.transparent,
