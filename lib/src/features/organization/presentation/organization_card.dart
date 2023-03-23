@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 
-import '../../../common/extension/image.dart';
+import '../../../utils/domain_provider.dart';
 import '../domain/organization_model.dart';
 
 class OrganizationCard extends StatelessWidget {
@@ -49,7 +49,8 @@ class OrganizationCard extends StatelessWidget {
                       CircleAvatar(
                         backgroundImage: logo == null
                             ? Image.asset('assets/images/logo.png').image
-                            : ImageX.backend(logo).image,
+                            //: Image.asset('assets/images/logo.png').image,
+                            : NetworkImage(getImageUrl(logo)),
                         radius: 24,
                       ),
                       const SizedBox(

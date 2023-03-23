@@ -7,6 +7,8 @@ String baseUrl(ref) {
   return domain;
 }
 
+String getImageUrl(int id) => '$domain/files/public/image/i/$id';
+
 const String baseDomain = '34.82.74.166';
 const String basePort = '3000';
 const String basePrefix = 'api/v1';

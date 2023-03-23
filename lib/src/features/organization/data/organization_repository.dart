@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/features/organization/domain/organization_query.dart';
 import 'package:the_helper/src/utils/dio_provider.dart';
 
 import '../domain/organization_model.dart';
@@ -12,8 +13,13 @@ class OrganizationRepository {
   Future<List<OrganizationModel>> getAll({
     int limit = 100,
     int offset = 0,
+    OrganizationQuery? query,
   }) async {
-    final List<dynamic> res = (await client.get('/organizations')).data['data'];
+    final List<dynamic> res = (await client.get(
+      '/organizations',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
     return res.map((e) => OrganizationModel.fromMap(e)).toList();
   }
 
