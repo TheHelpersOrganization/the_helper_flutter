@@ -22,10 +22,12 @@ class ProfileRepository {
   Future<Profile> getProfile() async {
     try {
       final response = await client.get(
-        '$url/profiles/me',
+        '/profiles/me',
       );
+      print(response.data['data']);
       return Profile.fromJson(response.data['data']);
     } on DioError catch (ex) {
+      print('here');
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
@@ -36,7 +38,7 @@ class ProfileRepository {
   Future<Profile> updateProfile(Profile profile) async {
     try {
       final response = await client.put(
-        '$url/profiles/me',
+        '/profiles/me',
         data: profile.toJson(),
       );
       return Profile.fromJson(response.data['data']);
