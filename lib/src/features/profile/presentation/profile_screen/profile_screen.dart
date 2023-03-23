@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
 import '../../../../router/router.dart';
@@ -73,10 +74,14 @@ class ProfileScreen extends ConsumerWidget {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 shape: BoxShape.circle,
-                                image: const DecorationImage(
-                                  image: NetworkImage(
-                                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                                  ),
+                                image: DecorationImage(
+                                  image: profile.avatarId == null
+                                      ? Image.asset(
+                                          'assets/images/organization_placeholder.jpg',
+                                        ).image
+                                      : ImageX.backend(
+                                          profile.avatarId!,
+                                        ).image,
                                   fit: BoxFit.fitHeight,
                                 ),
                               ),

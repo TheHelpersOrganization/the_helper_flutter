@@ -106,7 +106,7 @@ class EditProfileScreen extends ConsumerWidget {
                     }),
                 FormBuilderDateTimePicker(
                   inputType: InputType.date,
-                  initialValue: profile.dateOfBirth,
+                  initialValue: profile.dateOfBirth?.toLocal(),
                   format: DateFormat('yyyy-MM-dd'),
                   name: 'dateOfBirth',
                   firstDate: DateTime(1900),
@@ -163,7 +163,13 @@ class EditProfileScreen extends ConsumerWidget {
                             return;
                           }
                           final value = _formKey.currentState!.value;
-                          final profile = Profile.fromJson(value);
+                          final newValue = {
+                            ...value,
+                            'dateOfBirth': (value['dateOfBirth'] as DateTime)
+                                .toUtc()
+                                .toIso8601String(),
+                          };
+                          final profile = Profile.fromJson(newValue);
                           editProfileController.updateProfile(profile);
                         },
                         child: const Text('Submit'),

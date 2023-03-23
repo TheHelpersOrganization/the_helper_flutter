@@ -34,15 +34,12 @@ class ProfileRepository {
 
   // TODO: this method should be rename as update your profile
   Future<Profile> updateProfile(Profile profile) async {
-    try {
-      final response = await client.put(
-        '$url/profiles/me',
-        data: profile.toJson(),
-      );
-      return Profile.fromJson(response.data['data']);
-    } on DioError catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
-    }
+    print(profile.toJson());
+    final response = await client.put(
+      '$url/profiles/me',
+      data: profile.toJson(),
+    );
+    return Profile.fromJson(response.data['data']);
   }
 }
 

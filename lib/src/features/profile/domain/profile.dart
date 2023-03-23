@@ -16,6 +16,7 @@ class Profile with _$Profile {
     String? bio,
     DateTime? dateOfBirth,
     LocationModel? location,
+    int? avatarId,
   }) = _Profile;
   factory Profile.fromJson(Map<String, dynamic> json) =>
       _$ProfileFromJson(json);
