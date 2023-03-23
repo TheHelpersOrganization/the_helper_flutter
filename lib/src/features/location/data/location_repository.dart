@@ -11,7 +11,7 @@ class LocationRepository {
 
   Future<LocationModel> getById(int id) async {
     final res = await client.get('/locations/$id');
-    return LocationModel.fromMap(res.data['data']);
+    return LocationModel.fromJson(res.data['data']);
   }
 
   Future<void> create(LocationModel location) async {
@@ -24,7 +24,7 @@ class LocationRepository {
 
   Future<LocationModel> delete(int id) async {
     final res = await client.delete('/locations/$id');
-    return LocationModel.fromMap(res.data['data']);
+    return LocationModel.fromJson(res.data['data']);
   }
 }
 

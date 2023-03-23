@@ -14,17 +14,28 @@ final imageInputControllerProvider =
 final genderInputSelectionProvider =
     StateProvider.autoDispose<Gender?>((ref) => null);
 
-class EditProfileAvatarController extends AutoDisposeAsyncNotifier<String?> {
+class EditProfileAvatarController extends AutoDisposeAsyncNotifier<int?> {
   @override
-  String? build() {
-    return null;
+  int? build() {
+    final profile = ref.watch(editProfileControllerProvider);
+    return profile.when(
+      data: (data) => data.avatarId,
+      error: (_, __) => null,
+      loading: () => null,
+    );
   }
 
   void updateAvatar(String path) async {
     state = const AsyncValue.loading();
     try {
       final fileModel = await ref.read(fileRepositoryProvider).upload(path);
-      state = const AsyncData(null);
+      final profile = ref.read(editProfileControllerProvider).valueOrNull;
+      if (profile == null) {
+        return;
+      }
+      await ref
+          .watch(editProfileControllerProvider.notifier)
+          .updateProfile(profile.copyWith(avatarId: fileModel.id));
     } on BackendException catch (ex) {
       state = AsyncValue.error(ex.error.message, StackTrace.current);
     }
@@ -57,5 +68,5 @@ final editProfileControllerProvider =
         () => EditProfileController());
 
 final editProfileAvatarControllerProvider =
-    AutoDisposeAsyncNotifierProvider<EditProfileAvatarController, String?>(
+    AutoDisposeAsyncNotifierProvider<EditProfileAvatarController, int?>(
         () => EditProfileAvatarController());
