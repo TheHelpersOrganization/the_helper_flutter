@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -67,7 +66,7 @@ class OrganizationModel {
       'website': website,
       'logo': logo,
       'banner': banner,
-      'locations': locations?.map((x) => x.toMap()).toList(),
+      'locations': locations?.map((x) => x.toJson()).toList(),
       'files': files,
       'contacts': contacts?.map((x) => x.toMap()).toList(),
     };
@@ -85,7 +84,7 @@ class OrganizationModel {
       locations: map['locations'] != null
           ? List<LocationModel>.from(
               (map['locations'] as List<dynamic>).map<LocationModel?>(
-                (x) => LocationModel.fromMap(x as Map<String, dynamic>),
+                (x) => LocationModel.fromJson(x as Map<String, dynamic>),
               ),
             )
           : null,
