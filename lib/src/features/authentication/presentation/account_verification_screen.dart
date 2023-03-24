@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/button/primary_button.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_controller.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_header_widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_otp_field_widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_send_otp_widget.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
+import 'package:the_helper/src/common/widget/button/primary_button.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_controller.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_header_widget.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_otp_field_widget.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_send_otp_widget.dart';
 
 class AccountVerificationScreen extends ConsumerWidget {
   const AccountVerificationScreen({super.key});

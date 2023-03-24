@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/token.dart';
+import 'package:the_helper/src/features/authentication/domain/token.dart';
 
 import 'account.dart';
 

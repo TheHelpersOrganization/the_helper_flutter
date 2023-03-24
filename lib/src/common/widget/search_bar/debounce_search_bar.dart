@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/side_sheet.dart';
 
 class DebounceSearchBar extends StatefulWidget {
+  final TextEditingController? controller;
   final Duration _debounceDuration;
   final void Function(String value)? _onChanged;
   final void Function()? _onClear;
   final void Function(String value)? _onDebounce;
+  final Widget? filter;
 
   const DebounceSearchBar({
     super.key,
     required Duration debounceDuration,
+    this.controller,
     void Function(String value)? onChanged,
     void Function()? onClear,
     void Function(String value)? onDebounce,
+    this.filter,
   })  : _debounceDuration = debounceDuration,
         _onChanged = onChanged,
         _onClear = onClear,
@@ -25,7 +32,7 @@ class DebounceSearchBar extends StatefulWidget {
 }
 
 class _DebounceSearchBarState extends State<DebounceSearchBar> {
-  final TextEditingController _inputController = TextEditingController();
+  late final TextEditingController _inputController;
   final BehaviorSubject<String> _searchAfterDuration =
       BehaviorSubject<String>();
 
@@ -33,6 +40,7 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
   void initState() {
     super.initState();
     final onDebounce = widget._onDebounce;
+    _inputController = widget.controller ?? TextEditingController();
     if (onDebounce != null) {
       _searchAfterDuration
           .debounceTime(widget._debounceDuration)
@@ -42,6 +50,32 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _buildTextField(),
+        ),
+        if (widget.filter != null) _buildFilter(widget.filter!),
+      ],
+    );
+  }
+
+  Row _buildFilter(Widget body) {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 8,
+        ),
+        IconButton(
+            onPressed: () {
+              _openSideSheet(body);
+            },
+            icon: const Icon(Icons.filter_list_rounded)),
+      ],
+    );
+  }
+
+  TextField _buildTextField() {
     return TextField(
       controller: _inputController,
       decoration: InputDecoration(
@@ -58,6 +92,64 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
         ),
       ),
       onChanged: (value) => _internalOnChange(value),
+    );
+  }
+
+  void _openSideSheet(Widget body) {
+    SideSheet.right(
+      context: context,
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filter',
+                  style: context.theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  icon: const Icon(Icons.close_rounded),
+                )
+              ],
+            ),
+            body,
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: OutlinedButton.icon(
+                    icon: const Icon(
+                      Icons.clear_outlined,
+                      size: 18,
+                    ),
+                    label: const Text('Clear'),
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  flex: 3,
+                  child: FilledButton(
+                    child: const Text('Apply'),
+                    onPressed: () {},
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+      width: context.mediaQuery.size.width * 0.8,
     );
   }
 

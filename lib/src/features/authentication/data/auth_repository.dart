@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/account_token.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/flutter_secure_storage_provider.dart';
-import 'package:simple_auth_flutter_riverpod/src/utils/raw_dio_provider.dart';
+import 'package:the_helper/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/features/authentication/domain/account_token.dart';
+import 'package:the_helper/src/utils/flutter_secure_storage_provider.dart';
+import 'package:the_helper/src/utils/raw_dio_provider.dart';
 
 import '../../../utils/domain_provider.dart';
 import '../domain/account.dart';
@@ -39,6 +39,22 @@ class AuthRepository {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
+  // Future<AccountToken?> register(String email, String password) async {
+  //   try {
+  //     final response = await client.post(
+  //       '$url/auth/register',
+  //       data: {
+  //         "email": email,
+  //         "password": password,
+  //       },
+  //     );
+  //     final accountToken = AccountToken.fromMap(response.data['data']);
+  //     await _saveCredentialsToLocalStorage(accountToken.token);
+  //     return accountToken;
+  //   } on DioError catch (ex) {
+  //     return Future.error(Back)
+  //   }
+  // }
 
   Future<AccountToken?> autoSignIn() async {
     final refreshToken = await localStorage.read(key: 'auth.refreshToken');
@@ -55,8 +71,8 @@ class AuthRepository {
       final accountToken = AccountToken.fromMap(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
-    } on DioError catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
+    } catch (err) {
+      return null;
     }
   }
 
@@ -98,6 +114,9 @@ class AuthRepository {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
+
+  // TODO: register method
+  // TODO: password recovery
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

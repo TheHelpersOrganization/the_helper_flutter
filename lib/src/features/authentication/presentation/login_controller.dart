@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 
 part 'login_controller.g.dart';
 
@@ -9,7 +9,7 @@ part 'login_controller.g.dart';
 class LoginController extends _$LoginController {
   @override
   FutureOr<void> build() {}
-  
+
   Future<void> signIn(String email, String password) async {
     final authService = ref.read(authServiceProvider.notifier);
     state = const AsyncLoading();

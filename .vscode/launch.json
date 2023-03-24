@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "simple_auth_flutter_riverpod",
+            "name": "the_helper",
             "request": "launch",
             "type": "dart"
         }

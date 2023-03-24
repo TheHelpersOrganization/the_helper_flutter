@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/data/auth_repository.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/account_token.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/domain/token.dart';
+import 'package:the_helper/src/features/authentication/data/auth_repository.dart';
+import 'package:the_helper/src/features/authentication/domain/account_token.dart';
+import 'package:the_helper/src/features/authentication/domain/token.dart';
 
 class AuthService extends AsyncNotifier<AccountToken?> {
   @override

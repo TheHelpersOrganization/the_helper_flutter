@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/screens/screen404.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/admin/account_manage/presentation/screens/account_manage_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/logout_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/menu/presentation/screens/menu_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/organization/presentation/organization_search_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/edit_profile_screen.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/profile/presentation/profile_screen.dart';
+import 'package:the_helper/src/common/screens/screen404.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
+import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 
 import '../common/screens/safe_screen.dart';
+import '../common/screens/splash_screen.dart';
+import '../features/organization/presentation/organization_search_screen.dart';
+import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
+import '../features/profile/presentation/profile_screen/profile_screen.dart';
+import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -124,12 +125,20 @@ enum AppRoute {
       name: 'account-verification-completed'),
   profile(path: '/profile', name: 'profile'),
   editProfile(path: '/profile/edit', name: 'profile-edit'),
+  profileSetting(
+    path: '/profile/setting',
+    name: 'profile-setting',
+  ),
   activities(path: '/activities', name: 'activities'),
   news(path: '/news', name: 'news'),
   chat(path: '/chat', name: 'chat'),
   notification(path: '/notification', name: 'notification'),
   report(path: '/report', name: 'report'),
   settings(path: '/settings', name: 'setting'),
+
+  // Quick access to develop screen
+  testScreen(path: '/test', name: 'test'),
+
   //Admin feature
   menu(
     path: '/menu',
@@ -138,9 +147,7 @@ enum AppRoute {
   organizationSearch(
     path: '/organization/search',
     name: 'organization-search',
-  ),
-  accountManage(name: 'account-manage', path: '/account_manage')
-  ;
+  );
 
   const AppRoute({
     required this.path,

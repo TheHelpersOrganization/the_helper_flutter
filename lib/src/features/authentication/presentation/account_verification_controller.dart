@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/exception/backend_exception.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
-import 'package:simple_auth_flutter_riverpod/src/router/router.dart';
+import 'package:the_helper/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/router/router.dart';
 
 final otpEditingControllerProvider = Provider.autoDispose((ref) {
   return TextEditingController();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/widget.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 
 class AccountVerificationHeaderWidget extends ConsumerWidget {
   const AccountVerificationHeaderWidget({Key? key}) : super(key: key);

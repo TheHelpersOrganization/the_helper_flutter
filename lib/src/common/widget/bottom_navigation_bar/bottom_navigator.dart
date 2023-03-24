@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 //State
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/extension/build_context.dart';
-import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 //Nav Component
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
-import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/bottom_navigator_item.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
+import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator_item.dart';
 
 class CustomBottomNavigator extends ConsumerWidget {
   const CustomBottomNavigator({

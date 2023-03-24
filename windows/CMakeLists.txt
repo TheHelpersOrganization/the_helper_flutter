@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(simple_auth_flutter_riverpod LANGUAGES CXX)
+project(the_helper LANGUAGES CXX)
 
-set(BINARY_NAME "simple_auth_flutter_riverpod")
+set(BINARY_NAME "the_helper")
 
 cmake_policy(SET CMP0063 NEW)
 
