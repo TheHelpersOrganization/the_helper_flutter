@@ -44,7 +44,7 @@ class EditProfileAvatarPickerWidget extends ConsumerWidget {
               ref.read(imageInputControllerProvider.notifier).state = file.path;
               ref
                   .read(editProfileAvatarControllerProvider.notifier)
-                  .updateAvatar(file.path);
+                  .updateAvatar(file);
             },
             elevation: 2.0,
             fillColor: Colors.transparent,

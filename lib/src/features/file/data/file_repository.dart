@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
 import 'package:the_helper/src/utils/dio_provider.dart';
@@ -10,15 +12,21 @@ class FileRepository {
 
   FileRepository({required this.client});
 
-  Future<FileModel> upload(String path) async {
-    String filename = path.split('/').last;
-    String? mimetype = lookupMimeType(path);
+  Future<FileModel> upload(XFile file) async {
+    String? mimetype = file.mimeType;
+    if (kIsWeb) {
+      mimetype = file.mimeType;
+    } else {
+      mimetype = lookupMimeType(file.path);
+    }
+    final stream = file.openRead();
     FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(
-        path,
-        filename: filename,
+      "file": MultipartFile(
+        stream,
+        await file.length(),
+        filename: file.name,
         contentType: mimetype == null ? null : MediaType.parse(mimetype),
-      )
+      ),
     });
     final response = await client.post('/files/upload', data: formData);
     return FileModel.fromMap(response.data['data']);
