@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/screens/screen404.dart';
 import 'package:simple_auth_flutter_riverpod/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:simple_auth_flutter_riverpod/src/features/admin/account_manage/presentation/screens/account_manage_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/authentication/presentation/login_screen.dart';
@@ -22,24 +23,6 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
     GlobalKey<NavigatorState>();
 
 final routes = [
-  GoRoute(
-    name: AppRoute.accountVerification.name,
-    path: AppRoute.accountVerification.path,
-    builder: (context, state) => const AccountVerificationScreen()
-  ),
-  GoRoute(
-    name: AppRoute.changeRole.name,
-    path: AppRoute.changeRole.path,
-    builder: (context, state) => const ChangeRoleScreen()
-  ),
-  GoRoute(
-    name: AppRoute.accountVerificationCompleted.name,
-    path: AppRoute.accountVerificationCompleted.path,
-    builder: (context, state) =>
-        const AccountVerificationCompletedScreen()
-  ),
-
-  //Any route that need nav bar put inside shellroute
   ShellRoute(
     builder: (context, state, child) {
       return SafeScreen(child: child);
@@ -56,10 +39,6 @@ final routes = [
             path: AppRoute.home.path,
             builder: (context, state) => const HomeScreen(),
           ),
-          GoRoute(
-              name: AppRoute.changeRole.name,
-              path: AppRoute.changeRole.path,
-              builder: (context, state) => const ChangeRoleScreen()),
           GoRoute(
               name: AppRoute.accountVerificationCompleted.name,
               path: AppRoute.accountVerificationCompleted.path,
@@ -120,13 +99,20 @@ final routes = [
           name: AppRoute.editProfile.name,
           path: AppRoute.editProfile.path,
           builder: (context, state) => EditProfileScreen()),
+      GoRoute(
+          name: AppRoute.changeRole.name,
+          path: AppRoute.changeRole.path,
+          builder: (context, state) => const ChangeRoleScreen()),
+      GoRoute(
+        name: AppRoute.accountManage.name,
+        path: AppRoute.accountManage.path,
+        builder: (context, state) => const AccountManageScreen()),
     ],
   ),
 ];
 
 enum AppRoute {
   splash(path: '/splash', name: 'splash'), // Internal access only
-  root(path:'/r', name: 'root'),
   home(path: '/', name: 'home'),
   changeRole(path: '/change-role', name: 'change-role'),
   login(path: '/login', name: 'login'),
@@ -153,6 +139,7 @@ enum AppRoute {
     path: '/organization/search',
     name: 'organization-search',
   ),
+  accountManage(name: 'account-manage', path: '/account_manage')
   ;
 
   const AppRoute({

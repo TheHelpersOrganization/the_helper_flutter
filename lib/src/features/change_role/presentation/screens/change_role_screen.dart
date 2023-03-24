@@ -85,7 +85,7 @@ class RoleChoice extends ConsumerWidget {
           optionColor: Colors.purple,
           title: 'Volunteer',
           description: 'Join thousands of activities, by trusted organizations',
-          role: 0,
+          role: 1,
         ),
 
         //Second Option
@@ -94,7 +94,7 @@ class RoleChoice extends ConsumerWidget {
           optionColor: Colors.red,
           title: 'Organization',
           description: 'Manage your organization activites, members and more',
-          role: 1,
+          role: 2,
         )
         : const SizedBox(),
 
@@ -104,7 +104,7 @@ class RoleChoice extends ConsumerWidget {
           optionColor: Colors.blue,
           title: 'Admin',
           description: 'Dashboard for Volunteer App Admin',
-          role: 2,
+          role: 3,
         )
         : const SizedBox(),
       ],

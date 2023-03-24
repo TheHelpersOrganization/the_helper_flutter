@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_auth_flutter_riverpod/src/features/change_role/presentation/widgets/summary_card.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({
@@ -42,7 +43,7 @@ class AdminView extends ConsumerWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => context.pushNamed('account-manage'),
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
                   fixedSize: MaterialStateProperty.all(const Size(100, 100)),
