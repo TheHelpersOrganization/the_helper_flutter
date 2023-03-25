@@ -9,13 +9,13 @@ part 'profile_service.g.dart';
 class ProfileService extends _$ProfileService {
   @override
   FutureOr<Profile> build() async {
-    return _fetchProfile();
-  }
-
-  Future<Profile> _fetchProfile() async {
-    final profileRepository = ref.watch(profileRepositoryProvider);
-    final profile = profileRepository.getProfile();
-
+    final profile = ref.watch(profileProvider.future);
     return profile;
+    // return _fetchProfile();
   }
+
+  // Future<Profile> _fetchProfile() async {
+  //   // final profileRepository = ref.watch(profileRepositoryProvider);
+
+  // }
 }

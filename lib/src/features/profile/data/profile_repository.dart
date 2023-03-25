@@ -54,9 +54,9 @@ ProfileRepository profileRepository(ProfileRepositoryRef ref) =>
       client: ref.watch(dioProvider),
       url: ref.read(baseUrlProvider),
     );
-@riverpod
+@Riverpod(keepAlive: true)
 Future<Profile> profile(ProfileRef ref) =>
-    ref.watch(profileRepositoryProvider).getProfile();
+    ref.read(profileRepositoryProvider).getProfile();
 
 // final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 //   final profile = ProfileRepository(
