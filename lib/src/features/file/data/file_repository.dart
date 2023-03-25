@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
-import 'package:the_helper/src/utils/dio_provider.dart';
+import 'package:the_helper/src/utils/dio.dart';
 
 class FileRepository {
   final Dio client;

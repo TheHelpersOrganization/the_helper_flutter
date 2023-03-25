@@ -5,17 +5,19 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization_model.dart';
 
+import '../domain/organization.dart';
+
 class OrganizationSearchController
-    extends AutoDisposeAsyncNotifier<List<OrganizationModel>> {
+    extends AutoDisposeAsyncNotifier<List<Organization>> {
   @override
-  FutureOr<List<OrganizationModel>> build() {
+  FutureOr<List<Organization>> build() {
     return ref.watch(organizationRepositoryProvider).getAll();
   }
 }
 
 final organizationSearchControllerProvider = AutoDisposeAsyncNotifierProvider<
     OrganizationSearchController,
-    List<OrganizationModel>>(() => OrganizationSearchController());
+    List<Organization>>(() => OrganizationSearchController());
 
 final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 
@@ -25,7 +27,7 @@ final pagingControllerProvider = Provider.autoDispose(
     //final searchPattern = ref.watch(organizationSearchControllerProvider);
 
     final controller =
-        PagingController<int, OrganizationModel>(firstPageKey: 0);
+        PagingController<int, Organization>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await organizationRepo.getAll(offset: pageKey * 100);

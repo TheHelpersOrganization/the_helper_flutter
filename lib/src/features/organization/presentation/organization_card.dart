@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 
 import '../../../common/extension/image.dart';
+import '../domain/organization.dart';
 import '../domain/organization_model.dart';
 
 class OrganizationCard extends StatelessWidget {
-  final OrganizationModel organizationModel;
+  final Organization organizationModel;
 
   const OrganizationCard({super.key, required this.organizationModel});
 

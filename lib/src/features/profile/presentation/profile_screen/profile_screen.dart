@@ -32,16 +32,18 @@ class ProfileScreen extends ConsumerWidget {
         body: DefaultTabController(
           length: tabs.length,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
                 SliverOverlapAbsorber(
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: SliverAppBar(
+                    forceElevated: innerBoxIsScrolled,
                     title: Text(
                       profile.username.toString().toUpperCase(),
                     ),
+                    centerTitle: true,
+                    pinned: true,
                     actions: [
                       IconButton(
                         icon: const Icon(Icons.edit),
@@ -57,10 +59,7 @@ class ProfileScreen extends ConsumerWidget {
                         },
                       )
                     ],
-                    centerTitle: true,
-                    pinned: true,
                     expandedHeight: 300 + kTextTabBarHeight + kToolbarHeight,
-                    forceElevated: innerBoxIsScrolled,
                     // forceElevated: true,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
@@ -112,10 +111,8 @@ class ProfileScreen extends ConsumerWidget {
                         key: PageStorageKey<String>(tab.text.toString()),
                         slivers: <Widget>[
                           SliverOverlapInjector(
-                            handle:
-                                NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                    context),
-                          ),
+                              handle: NestedScrollView
+                                  .sliverOverlapAbsorberHandleFor(context)),
                           SliverPadding(
                             padding: const EdgeInsets.all(8),
                             sliver: SliverFixedExtentList(

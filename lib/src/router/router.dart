@@ -15,6 +15,8 @@ import '../features/organization/presentation/organization_search_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
 import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
+import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
+
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -82,6 +84,12 @@ final routes = [
             name: AppRoute.organizationSearch.name,
             builder: (context, state) => const OrganizationSearchScreen(),
           ),
+          GoRoute(
+            path: AppRoute.organization.path,
+            name: AppRoute.organization.name,
+            builder: (_, state) =>
+                OrganizationDetailScreen(orgId: state.params['id']!),
+          ),
         ],
       ),
       GoRoute(
@@ -139,6 +147,10 @@ enum AppRoute {
   menu(
     path: '/menu',
     name: 'menu',
+  ),
+  organization(
+    path: '/organization/:id',
+    name: 'organization',
   ),
   organizationSearch(
     path: '/organization/search',

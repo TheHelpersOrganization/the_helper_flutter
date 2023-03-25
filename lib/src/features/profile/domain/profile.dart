@@ -7,7 +7,6 @@ part 'profile.freezed.dart';
 
 @freezed
 class Profile with _$Profile {
-  // @JsonSerializable(explicitToJson: true)
   factory Profile({
     String? username,
     String? phoneNumber,
