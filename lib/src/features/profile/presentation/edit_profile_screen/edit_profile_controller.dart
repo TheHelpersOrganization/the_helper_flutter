@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 
@@ -25,7 +26,7 @@ class EditProfileAvatarController extends AutoDisposeAsyncNotifier<int?> {
     );
   }
 
-  void updateAvatar(String path) async {
+  void updateAvatar(XFile path) async {
     state = const AsyncValue.loading();
     try {
       final fileModel = await ref.read(fileRepositoryProvider).upload(path);

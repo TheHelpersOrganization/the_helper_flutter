@@ -33,17 +33,23 @@ class OrganizationSearchScreen extends ConsumerWidget {
             DebounceSearchBar(
               debounceDuration: const Duration(seconds: 1),
               onDebounce: (value) {
-                ref.watch(searchPatternProvider.notifier).state = value;
+                if (value.trim().isEmpty) {
+                  ref.read(searchPatternProvider.notifier).state = null;
+                } else {
+                  ref.read(searchPatternProvider.notifier).state = value;
+                }
+                ref.read(hasUsedSearchProvider.notifier).state = true;
               },
               onClear: () {
-                ref.watch(searchPatternProvider.notifier).state = '';
+                ref.read(searchPatternProvider.notifier).state = null;
+                ref.read(hasUsedSearchProvider.notifier).state = true;
               },
               filter: _buildFilter(context),
             ),
             const SizedBox(
               height: 16,
             ),
-            if (searchPattern.isNotEmpty)
+            if (searchPattern != null)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -68,6 +74,26 @@ class OrganizationSearchScreen extends ConsumerWidget {
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) =>
                       OrganizationCard(organizationModel: item),
+                  noItemsFoundIndicatorBuilder: (context) => Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 32,
+                        ),
+                        Text(
+                          'No Organizations was found',
+                          style: context.theme.textTheme.titleLarge,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          'Please try other search terms',
+                          style: context.theme.textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

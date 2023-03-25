@@ -50,7 +50,8 @@ class OrganizationCard extends StatelessWidget {
                       CircleAvatar(
                         backgroundImage: logo == null
                             ? Image.asset('assets/images/logo.png').image
-                            : ImageX.backend(logo).image,
+                            //: Image.asset('assets/images/logo.png').image,
+                            : NetworkImage(getImageUrl(logo)),
                         radius: 24,
                       ),
                       const SizedBox(
