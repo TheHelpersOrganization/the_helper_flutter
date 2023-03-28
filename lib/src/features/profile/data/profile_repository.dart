@@ -24,10 +24,8 @@ class ProfileRepository {
       final response = await client.get(
         '/profiles/me',
       );
-      print(response.data['data']);
       return Profile.fromJson(response.data['data']);
     } on DioError catch (ex) {
-      print('here');
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
@@ -48,16 +46,22 @@ class ProfileRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 ProfileRepository profileRepository(ProfileRepositoryRef ref) =>
     ProfileRepository(
       client: ref.watch(dioProvider),
       url: ref.read(baseUrlProvider),
     );
-@Riverpod(keepAlive: true)
+// @Riverpod(keepAlive: true)
+@riverpod
 Future<Profile> profile(ProfileRef ref) =>
-    ref.read(profileRepositoryProvider).getProfile();
+    ref.watch(profileRepositoryProvider).getProfile();
 
+// @riverpod
+// Future<Profile> updateProfile(UpdateProfileRef ref, {required Profile profile}) {
+// ref.read(profileRepositoryProvider).updateProfile(profile);
+// return ref.watch(profileProvider.future);
+// }
 // final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 //   final profile = ProfileRepository(
 //     client: ref.watch(dioProvider),

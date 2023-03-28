@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
-import 'package:the_helper/src/features/profile/application/profile_service.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 
 class AppDrawerHeader extends ConsumerWidget {
