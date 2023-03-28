@@ -47,13 +47,13 @@ class OrganizationCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: logo == null
-                            ? Image.asset('assets/images/logo.png').image
-                            //: Image.asset('assets/images/logo.png').image,
-                            : NetworkImage(getImageUrl(logo)),
-                        radius: 24,
-                      ),
+                      // CircleAvatar(
+                      //   backgroundImage: logo == null
+                      //       ? Image.asset('assets/images/logo.png').image
+                      //       //: Image.asset('assets/images/logo.png').image,
+                      //       : NetworkImage(getImageUrl(logo)),
+                      //   radius: 24,
+                      // ),
                       const SizedBox(
                         width: 12,
                       ),

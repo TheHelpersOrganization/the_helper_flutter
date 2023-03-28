@@ -35,7 +35,7 @@ final pagingControllerProvider = Provider.autoDispose(
       try {
         final items = await organizationRepo.getAll(
           offset: pageKey * 100,
-          query: OrganizationQuery(name: searchPattern),
+          // query: OrganizationQuery(name: searchPattern),
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {
