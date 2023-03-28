@@ -7,9 +7,9 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
 import 'package:the_helper/src/features/organization/domain/organization_model.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_search_controller.dart';
 
 import 'organization_card.dart';
+import 'organization_search_controller.dart';
 
 class OrganizationSearchScreen extends ConsumerWidget {
   const OrganizationSearchScreen({super.key});

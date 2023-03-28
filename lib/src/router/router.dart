@@ -8,13 +8,12 @@ import 'package:the_helper/src/features/authentication/presentation/account_veri
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
+import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
 
 import '../common/screens/safe_screen.dart';
-import '../common/screens/splash_screen.dart';
-import '../features/organization/presentation/organization_search_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
-import '../features/profile/presentation/profile_setting_screen/profile_setting_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -104,6 +103,11 @@ final routes = [
           name: AppRoute.editProfile.name,
           path: AppRoute.editProfile.path,
           builder: (context, state) => EditProfileScreen()),
+      GoRoute(
+        path: AppRoute.organizationRegistration.path,
+        name: AppRoute.organizationRegistration.name,
+        builder: (context, state) => OrganizationRegistrationScreen(),
+      ),
     ],
   ),
 ];
@@ -143,7 +147,12 @@ enum AppRoute {
   organizationSearch(
     path: '/organization/search',
     name: 'organization-search',
-  );
+  ),
+  organizationRegistration(
+    path: '/organization/registration',
+    name: 'organization-registration',
+  ),
+  ;
 
   const AppRoute({
     required this.path,

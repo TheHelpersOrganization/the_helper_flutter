@@ -24,21 +24,19 @@ class OrganizationRepository {
   }
 
   Future<OrganizationModel> getById(int id) async {
-    final res = await client.get('/locations/$id');
+    final res = await client.get('/organizations/$id');
     return OrganizationModel.fromMap(res.data['data']);
   }
 
-  Future<void> create(OrganizationModel organization) async {
-    await client.post('/locations', data: organization.toJson());
+  Future<OrganizationModel> create(OrganizationModel organization) async {
+    print(organization.toJson());
+    final res =
+        await client.post('/organizations', data: organization.toJson());
+    return OrganizationModel.fromMap(res.data['data']);
   }
 
   Future<void> update(int id, OrganizationModel organization) async {
-    await client.put('/locations/$id', data: organization.toJson());
-  }
-
-  Future<OrganizationModel> delete(int id) async {
-    final res = await client.delete('/locations/$id');
-    return OrganizationModel.fromMap(res.data['data']);
+    await client.put('/organizations/$id', data: organization.toJson());
   }
 }
 

@@ -1,4 +1,4 @@
-name: the_helper 
+name: the_helper
 description: Simple authentication flow using Flutter & Riverpod
 
 publish_to: "none"
@@ -47,6 +47,10 @@ dependencies:
   cross_file:
   flutter_cache_manager:
   cached_network_image:
+  flutter_quill:
+  image_cropper:
+  country_picker:
+  file_picker:
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +70,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-  - assets/images/
+    - assets/images/
 
 flutter_native_splash:
   color: "#42a5f5"

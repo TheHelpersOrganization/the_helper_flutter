@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
@@ -24,6 +25,25 @@ class FileRepository {
       "file": MultipartFile(
         stream,
         await file.length(),
+        filename: file.name,
+        contentType: mimetype == null ? null : MediaType.parse(mimetype),
+      ),
+    });
+    final response = await client.post('/files/upload', data: formData);
+    return FileModel.fromMap(response.data['data']);
+  }
+
+  Future<FileModel> uploadWithPlatformFile(PlatformFile file) async {
+    String? mimetype =
+        file.extension == null ? null : lookupMimeType(file.name);
+    if (file.readStream == null) {
+      throw 'No readStream found. PlatformFile must be created with readStream: true';
+    }
+    final stream = file.readStream!;
+    FormData formData = FormData.fromMap({
+      "file": MultipartFile(
+        stream,
+        file.size,
         filename: file.name,
         contentType: mimetype == null ? null : MediaType.parse(mimetype),
       ),
