@@ -57,6 +57,18 @@ final routes = [
         name: AppRoute.organizationRegistration.name,
         builder: (context, state) => const OrganizationRegistrationScreen(),
       ),
+      GoRoute(
+          name: AppRoute.changeRole.name,
+          path: AppRoute.changeRole.path,
+          builder: (context, state) => const ChangeRoleScreen()),
+      GoRoute(
+          name: AppRoute.accountManage.name,
+          path: AppRoute.accountManage.path,
+          builder: (context, state) => const AccountManageScreen()),
+      GoRoute(
+          name: AppRoute.activityManage.name,
+          path: AppRoute.activityManage.path,
+          builder: (context, state) => const ActivityManageScreen()),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
@@ -114,38 +126,6 @@ final routes = [
           ),
         ],
       ),
-      GoRoute(
-          name: AppRoute.login.name,
-          path: AppRoute.login.path,
-          builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          name: AppRoute.logout.name,
-          path: AppRoute.logout.path,
-          builder: (context, state) => const LogoutScreen()),
-      GoRoute(
-          name: AppRoute.accountVerification.name,
-          path: AppRoute.accountVerification.path,
-          builder: (context, state) => const AccountVerificationScreen()),
-      GoRoute(
-          name: AppRoute.profile.name,
-          path: AppRoute.profile.path,
-          builder: (context, state) => const ProfileScreen()),
-      GoRoute(
-          name: AppRoute.editProfile.name,
-          path: AppRoute.editProfile.path,
-          builder: (context, state) => EditProfileScreen()),
-      GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
-        name: AppRoute.accountManage.name,
-        path: AppRoute.accountManage.path,
-        builder: (context, state) => const AccountManageScreen()),
-      GoRoute(
-        name: AppRoute.activityManage.name,
-        path: AppRoute.activityManage.path,
-        builder: (context, state) => const ActivityManageScreen()),
     ],
   ),
 ];
@@ -186,22 +166,18 @@ enum AppRoute {
     path: '/organization/:id',
     name: 'organization',
   ),
-  accountManage(
-    path: '/account-manage',
-    name: 'account-manage'
-  ),
-  activityManage(
-    path: '/activity-manage',
-    name: 'activity-manage'
-  ),
+  accountManage(path: '/account-manage', name: 'account-manage'),
+  activityManage(path: '/activity-manage', name: 'activity-manage'),
   organizationSearch(
     path: '/organization-search',
     name: 'organization-search',
+  ),
   organizationRegistration(
     path: '/organization-registration',
     name: 'organization-registration',
   ),
   ;
+
   const AppRoute({
     required this.path,
     required this.name,

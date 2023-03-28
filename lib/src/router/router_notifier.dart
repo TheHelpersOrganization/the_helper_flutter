@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
@@ -32,7 +31,7 @@ class RouterNotifier extends AutoDisposeNotifier<bool> implements Listenable {
       return null;
     }
 
-    FlutterNativeSplash.remove();
+    //FlutterNativeSplash.remove();
 
     // Navigate to home if user has logged in
     final isLoggingIn = state.location == AppRoute.login.path;
