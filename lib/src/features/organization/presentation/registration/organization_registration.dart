@@ -14,10 +14,11 @@ import 'package:the_helper/src/common/widget/file_picker/form_multiple_file_pick
 import 'package:the_helper/src/common/widget/image_picker/form_custom_image_picker.dart';
 import 'package:the_helper/src/common/widget/phone_number_field.dart';
 import 'package:the_helper/src/common/widget/required_text.dart';
-import 'package:the_helper/src/features/location/domain/location_model.dart';
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/config_provider.dart';
+
+import '../../../location/domain/location.dart';
 
 class OrganizationRegistrationScreen extends ConsumerStatefulWidget {
   const OrganizationRegistrationScreen({super.key});
@@ -413,6 +414,35 @@ class _OrganizationRegistrationScreenState
     int currentStep = ref.watch(currentStepProvider);
     final res = ref.watch(createOrganizationControllerProvider);
 
+    // return Scaffold(
+    //   body: Center(
+    //     child: Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           Text(
+    //             'Organization registration successfully',
+    //             style: context.theme.textTheme.titleLarge?.copyWith(
+    //               fontWeight: FontWeight.bold,
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //           const SizedBox(
+    //             height: 16,
+    //           ),
+    //           PrimaryButton(
+    //             onPressed: () {
+    //               context.goNamed(AppRoute.home.name);
+    //             },
+    //             child: const Text('Back to Home'),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -465,7 +495,7 @@ class _OrganizationRegistrationScreenState
                   final logo = _formKeys[1].currentState!.value['logo'];
                   final banner = _formKeys[1].currentState!.value['banner'];
                   final locations = [
-                    LocationModel.fromJson({
+                    Location.fromJson({
                       ..._formKeys[2].currentState!.value,
                       'country': _formKeys[2]
                           .currentState!
@@ -537,25 +567,29 @@ class _OrganizationRegistrationScreenState
             );
           } else {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Organization registration successfully',
-                    style: context.theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Organization registration successfully',
+                      style: context.theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  PrimaryButton(
-                    onPressed: () {
-                      context.goNamed(AppRoute.home.name);
-                    },
-                    child: const Text('Back to Home'),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    PrimaryButton(
+                      onPressed: () {
+                        context.goNamed(AppRoute.home.name);
+                      },
+                      child: const Text('Back to Home'),
+                    ),
+                  ],
+                ),
               ),
             );
           }

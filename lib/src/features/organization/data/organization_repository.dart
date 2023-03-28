@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/organization/domain/organization_query.dart';
-import 'package:the_helper/src/utils/dio_provider.dart';
+import 'package:the_helper/src/utils/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../domain/organization_model.dart';
+// import '../domain/organization_model.dart';
+import '../domain/organization.dart';
+import '../domain/organization_query.dart';
+
+part 'organization_repository.g.dart';
 
 class OrganizationRepository {
   final Dio client;
 
   OrganizationRepository({required this.client});
 
-  Future<List<OrganizationModel>> getAll({
+  Future<List<Organization>> getAll({
     int limit = 100,
     int offset = 0,
     OrganizationQuery? query,
@@ -20,25 +23,46 @@ class OrganizationRepository {
       queryParameters: query?.toJson(),
     ))
         .data['data'];
-    return res.map((e) => OrganizationModel.fromMap(e)).toList();
+    return res.map((e) => Organization.fromJson(e)).toList();
   }
 
-  Future<OrganizationModel> getById(int id) async {
+  Future<Organization> getById(int id) async {
     final res = await client.get('/organizations/$id');
-    return OrganizationModel.fromMap(res.data['data']);
+    return Organization.fromJson(res.data['data']);
   }
 
-  Future<OrganizationModel> create(OrganizationModel organization) async {
-    print(organization.toJson());
+  Future<Organization> create(Organization organization) async {
     final res =
         await client.post('/organizations', data: organization.toJson());
-    return OrganizationModel.fromMap(res.data['data']);
+    return Organization.fromJson(res.data['data']);
   }
 
-  Future<void> update(int id, OrganizationModel organization) async {
-    await client.put('/organizations/$id', data: organization.toJson());
+  Future<void> update(int id, Organization organization) async {
+    await client.put('/organization/$id', data: organization.toJson());
+  }
+
+  Future<Organization> delete(int id) async {
+    final res = await client.delete('/organization/$id');
+    return Organization.fromJson(res.data['data']);
   }
 }
 
-final organizationRepositoryProvider =
-    Provider((ref) => OrganizationRepository(client: ref.watch(dioProvider)));
+// final organizationRepositoryProvider =
+// Provider((ref) => OrganizationRepository(client: ref.watch(dioProvider)));
+
+@riverpod
+OrganizationRepository organizationRepository(OrganizationRepositoryRef ref) =>
+    OrganizationRepository(client: ref.watch(dioProvider));
+
+@riverpod
+Future<Organization> getOrganization(
+  GetOrganizationRef ref,
+  int organizationId,
+) =>
+    ref.watch(organizationRepositoryProvider).getById(organizationId);
+
+@riverpod
+Future<List<Organization>> getOrganizations(
+  GetOrganizationsRef ref,
+) =>
+    ref.watch(organizationRepositoryProvider).getAll();

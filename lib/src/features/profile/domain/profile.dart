@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../location/domain/location_model.dart';
+import '../../location/domain/location.dart';
 
 part 'profile.g.dart';
 part 'profile.freezed.dart';
@@ -16,7 +16,7 @@ class Profile with _$Profile {
     String? gender,
     String? bio,
     DateTime? dateOfBirth,
-    LocationModel? location,
+    Location? location,
     int? avatarId,
   }) = _Profile;
   factory Profile.fromJson(Map<String, dynamic> json) =>

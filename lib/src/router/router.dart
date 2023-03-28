@@ -14,6 +14,8 @@ import 'package:the_helper/src/features/organization/presentation/search/organiz
 import '../common/screens/safe_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
+import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
+
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -28,6 +30,31 @@ final routes = [
       return SafeScreen(child: child);
     },
     routes: [
+      GoRoute(
+          name: AppRoute.login.name,
+          path: AppRoute.login.path,
+          builder: (context, state) => const LoginScreen()),
+      GoRoute(
+          name: AppRoute.logout.name,
+          path: AppRoute.logout.path,
+          builder: (context, state) => const LogoutScreen()),
+      GoRoute(
+          name: AppRoute.accountVerification.name,
+          path: AppRoute.accountVerification.path,
+          builder: (context, state) => const AccountVerificationScreen()),
+      GoRoute(
+          name: AppRoute.profile.name,
+          path: AppRoute.profile.path,
+          builder: (context, state) => const ProfileScreen()),
+      GoRoute(
+          name: AppRoute.editProfile.name,
+          path: AppRoute.editProfile.path,
+          builder: (context, state) => EditProfileScreen()),
+      GoRoute(
+        path: AppRoute.organizationRegistration.path,
+        name: AppRoute.organizationRegistration.name,
+        builder: (context, state) => const OrganizationRegistrationScreen(),
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
@@ -81,32 +108,13 @@ final routes = [
             name: AppRoute.organizationSearch.name,
             builder: (context, state) => const OrganizationSearchScreen(),
           ),
+          GoRoute(
+            path: AppRoute.organization.path,
+            name: AppRoute.organization.name,
+            builder: (_, state) =>
+                OrganizationDetailScreen(orgId: state.params['id']!),
+          ),
         ],
-      ),
-      GoRoute(
-          name: AppRoute.login.name,
-          path: AppRoute.login.path,
-          builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          name: AppRoute.logout.name,
-          path: AppRoute.logout.path,
-          builder: (context, state) => const LogoutScreen()),
-      GoRoute(
-          name: AppRoute.accountVerification.name,
-          path: AppRoute.accountVerification.path,
-          builder: (context, state) => const AccountVerificationScreen()),
-      GoRoute(
-          name: AppRoute.profile.name,
-          path: AppRoute.profile.path,
-          builder: (context, state) => const ProfileScreen()),
-      GoRoute(
-          name: AppRoute.editProfile.name,
-          path: AppRoute.editProfile.path,
-          builder: (context, state) => EditProfileScreen()),
-      GoRoute(
-        path: AppRoute.organizationRegistration.path,
-        name: AppRoute.organizationRegistration.name,
-        builder: (context, state) => OrganizationRegistrationScreen(),
       ),
     ],
   ),
@@ -144,12 +152,16 @@ enum AppRoute {
     path: '/menu',
     name: 'menu',
   ),
+  organization(
+    path: '/organization/:id',
+    name: 'organization',
+  ),
   organizationSearch(
-    path: '/organization/search',
+    path: '/organization-search',
     name: 'organization-search',
   ),
   organizationRegistration(
-    path: '/organization/registration',
+    path: '/organization-registration',
     name: 'organization-registration',
   ),
   ;

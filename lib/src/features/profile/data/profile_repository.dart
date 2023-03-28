@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/utils/dio_provider.dart';
+import 'package:the_helper/src/utils/dio.dart';
 
 import '../../../common/exception/backend_exception.dart';
 import '../../../utils/domain_provider.dart';
@@ -22,7 +22,7 @@ class ProfileRepository {
   Future<Profile> getProfile() async {
     try {
       final response = await client.get(
-        '$url/profiles/me',
+        '/profiles/me',
       );
       return Profile.fromJson(response.data['data']);
     } on DioError catch (ex) {
@@ -34,25 +34,34 @@ class ProfileRepository {
 
   // TODO: this method should be rename as update your profile
   Future<Profile> updateProfile(Profile profile) async {
-    print(profile.toJson());
-    final response = await client.put(
-      '$url/profiles/me',
-      data: profile.toJson(),
-    );
-    return Profile.fromJson(response.data['data']);
+    try {
+      final response = await client.put(
+        '/profiles/me',
+        data: profile.toJson(),
+      );
+      return Profile.fromJson(response.data['data']);
+    } on DioError catch (ex) {
+      return Future.error(BackendException.fromMap(ex.response?.data));
+    }
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 ProfileRepository profileRepository(ProfileRepositoryRef ref) =>
     ProfileRepository(
       client: ref.watch(dioProvider),
       url: ref.read(baseUrlProvider),
     );
+// @Riverpod(keepAlive: true)
 @riverpod
 Future<Profile> profile(ProfileRef ref) =>
-    ref.read(profileRepositoryProvider).getProfile();
+    ref.watch(profileRepositoryProvider).getProfile();
 
+// @riverpod
+// Future<Profile> updateProfile(UpdateProfileRef ref, {required Profile profile}) {
+// ref.read(profileRepositoryProvider).updateProfile(profile);
+// return ref.watch(profileProvider.future);
+// }
 // final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 //   final profile = ProfileRepository(
 //     client: ref.watch(dioProvider),

@@ -3,20 +3,21 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
-import 'package:the_helper/src/features/organization/domain/organization_model.dart';
-import 'package:the_helper/src/features/organization/domain/organization_query.dart';
+
+import '../../domain/organization.dart';
+import '../../domain/organization_query.dart';
 
 class OrganizationSearchController
-    extends AutoDisposeAsyncNotifier<List<OrganizationModel>> {
+    extends AutoDisposeAsyncNotifier<List<Organization>> {
   @override
-  FutureOr<List<OrganizationModel>> build() {
+  FutureOr<List<Organization>> build() {
     return ref.watch(organizationRepositoryProvider).getAll();
   }
 }
 
 final organizationSearchControllerProvider = AutoDisposeAsyncNotifierProvider<
     OrganizationSearchController,
-    List<OrganizationModel>>(() => OrganizationSearchController());
+    List<Organization>>(() => OrganizationSearchController());
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
@@ -27,8 +28,7 @@ final pagingControllerProvider = Provider.autoDispose(
     final organizationRepo = ref.watch(organizationRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller =
-        PagingController<int, OrganizationModel>(firstPageKey: 0);
+    final controller = PagingController<int, Organization>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await organizationRepo.getAll(

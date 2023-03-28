@@ -6,19 +6,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
-import 'package:the_helper/src/features/organization/domain/organization_model.dart';
 
-import '../../../contact/domain/contact_model.dart';
-import '../../../location/domain/location_model.dart';
+import '../../../contact/domain/contact.dart';
+import '../../../location/domain/location.dart';
+import '../../domain/organization.dart';
 
 final currentStepProvider = StateProvider((ref) => 0);
 final logoUrlProvider = StateProvider<String?>((ref) => null);
 final bannerUrlProvider = StateProvider<String?>((ref) => null);
 
 class CreateOrganizationController
-    extends AutoDisposeAsyncNotifier<OrganizationModel?> {
+    extends AutoDisposeAsyncNotifier<Organization?> {
   @override
-  FutureOr<OrganizationModel?> build() {
+  FutureOr<Organization?> build() {
     return null;
   }
 
@@ -30,9 +30,9 @@ class CreateOrganizationController
     required String website,
     required XFile logo,
     XFile? banner,
-    List<LocationModel>? locations,
+    List<Location>? locations,
     List<PlatformFile>? files,
-    List<ContactModel>? contacts,
+    List<Contact>? contacts,
   }) async {
     state = const AsyncLoading();
     final fileRepo = ref.read(fileRepositoryProvider);
@@ -55,7 +55,7 @@ class CreateOrganizationController
 
     try {
       final org = await ref.read(organizationRepositoryProvider).create(
-            OrganizationModel(
+            Organization(
               name: name,
               email: email,
               phoneNumber: phoneNumber,
@@ -77,6 +77,6 @@ class CreateOrganizationController
 }
 
 final createOrganizationControllerProvider = AutoDisposeAsyncNotifierProvider<
-    CreateOrganizationController, OrganizationModel?>(
+    CreateOrganizationController, Organization?>(
   () => CreateOrganizationController(),
 );

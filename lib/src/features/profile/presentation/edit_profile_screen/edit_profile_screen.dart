@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
+import '../profile_controller.dart';
 import '../../domain/profile.dart';
 import 'edit_profile_avatar_picker_widget.dart';
 import 'edit_profile_controller.dart';
@@ -23,10 +24,11 @@ class EditProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editProfileController =
-        ref.watch(editProfileControllerProvider.notifier);
-    final editProfileControllerState = ref.watch(editProfileControllerProvider);
-    final profile = editProfileControllerState;
+    // final editProfileController =
+    //     ref.watch(editProfileControllerProvider.notifier);
+    // final editProfileControllerState = ref.watch(editProfileControllerProvider);
+    // final profile = editProfileControllerState;
+    final profile = ref.watch(profileServiceProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -155,7 +157,7 @@ class EditProfileScreen extends ConsumerWidget {
                     Expanded(
                       flex: 2,
                       child: PrimaryButton(
-                        isLoading: editProfileControllerState.isLoading,
+                        // isLoading: profile.isLoading,
                         onPressed: () {
                           _formKey.currentState!.save();
                           // Validate returns true if the form is valid, or false otherwise.
@@ -170,7 +172,9 @@ class EditProfileScreen extends ConsumerWidget {
                                 .toIso8601String(),
                           };
                           final profile = Profile.fromJson(newValue);
-                          editProfileController.updateProfile(profile);
+                          ref
+                              .read(profileServiceProvider.notifier)
+                              .updateProfile(profile);
                         },
                         child: const Text('Submit'),
                       ),

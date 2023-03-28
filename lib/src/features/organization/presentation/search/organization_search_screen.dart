@@ -6,8 +6,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/organization/domain/organization_model.dart';
 
+import '../../domain/organization.dart';
 import 'organization_card.dart';
 import 'organization_search_controller.dart';
 
@@ -68,11 +68,11 @@ class OrganizationSearchScreen extends ConsumerWidget {
                 height: 24,
               ),
             Expanded(
-              child: PagedListView<int, OrganizationModel>(
+              child: PagedListView<int, Organization>(
                 pagingController: pagingController,
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) =>
-                      OrganizationCard(organizationModel: item),
+                      OrganizationCard(organization: item),
                   noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Column(
                       children: [
