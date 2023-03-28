@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
@@ -35,11 +36,22 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: (userRole.role == 0)
-          ? const VolunteerView()
-          : (userRole.role == 1 ? const ModView() : const AdminView()),
+      body: getHomeScreen(userRole.role),
       //body: const VolunteerView(),
       //bottomNavigationBar: const CustomBottomNavigator(),
     );
+  }
+}
+
+Widget getHomeScreen(int role) {
+  switch (role) {
+    case 1:
+      return const VolunteerView();
+    case 2:
+      return const ModView();
+    case 3:
+      return const AdminView();
+    default:
+      return const VolunteerView();
   }
 }

@@ -14,6 +14,7 @@ class RouterNotifier extends AutoDisposeNotifier<bool> implements Listenable {
   bool build() {
     final authState = ref.watch(authServiceProvider);
     _isAuth = authState.valueOrNull?.token != null;
+    // _isAuth = authState.valueOrNull?.token == null;
     ref.listenSelf((_, __) {
       if (!state) return;
       _routerListener?.call();
