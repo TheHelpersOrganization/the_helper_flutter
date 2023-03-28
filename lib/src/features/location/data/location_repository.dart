@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/utils/dio_provider.dart';
+import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/location_model.dart';
 

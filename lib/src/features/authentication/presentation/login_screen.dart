@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
-import 'package:the_helper/src/features/authentication/presentation/register_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/register/register_screen.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -13,6 +13,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
@@ -26,6 +27,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -112,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const RegisterScreen()),
+                                          RegisterScreen()),
                                 );
                               },
                         child: const Text('Register'),

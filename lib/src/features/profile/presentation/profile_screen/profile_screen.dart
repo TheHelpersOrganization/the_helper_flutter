@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_screen/profile_controller.dart';
 
 import '../../../../router/router.dart';
-import '../../data/profile_repository.dart';
+import '../profile_controller.dart';
 
 // Todo: implement tab provider
 const List<Tab> tabs = <Tab>[
@@ -21,7 +23,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(profileProvider);
+    final profile = ref.watch(profileServiceProvider);
     return profile.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
@@ -32,16 +34,18 @@ class ProfileScreen extends ConsumerWidget {
         body: DefaultTabController(
           length: tabs.length,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
                 SliverOverlapAbsorber(
                   handle:
                       NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                   sliver: SliverAppBar(
+                    forceElevated: innerBoxIsScrolled,
                     title: Text(
                       profile.username.toString().toUpperCase(),
                     ),
+                    centerTitle: true,
+                    pinned: true,
                     actions: [
                       IconButton(
                         icon: const Icon(Icons.edit),
@@ -57,10 +61,7 @@ class ProfileScreen extends ConsumerWidget {
                         },
                       )
                     ],
-                    centerTitle: true,
-                    pinned: true,
                     expandedHeight: 300 + kTextTabBarHeight + kToolbarHeight,
-                    forceElevated: innerBoxIsScrolled,
                     // forceElevated: true,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(
@@ -112,10 +113,8 @@ class ProfileScreen extends ConsumerWidget {
                         key: PageStorageKey<String>(tab.text.toString()),
                         slivers: <Widget>[
                           SliverOverlapInjector(
-                            handle:
-                                NestedScrollView.sliverOverlapAbsorberHandleFor(
-                                    context),
-                          ),
+                              handle: NestedScrollView
+                                  .sliverOverlapAbsorberHandleFor(context)),
                           SliverPadding(
                             padding: const EdgeInsets.all(8),
                             sliver: SliverFixedExtentList(

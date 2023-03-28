@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 
-import '../../../utils/domain_provider.dart';
+import '../../../common/extension/image.dart';
+import '../domain/organization.dart';
 import '../domain/organization_model.dart';
 
 class OrganizationCard extends StatelessWidget {
-  final OrganizationModel organizationModel;
+  final Organization organizationModel;
 
   const OrganizationCard({super.key, required this.organizationModel});
 
@@ -46,13 +47,13 @@ class OrganizationCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage: logo == null
-                            ? Image.asset('assets/images/logo.png').image
-                            //: Image.asset('assets/images/logo.png').image,
-                            : NetworkImage(getImageUrl(logo)),
-                        radius: 24,
-                      ),
+                      // CircleAvatar(
+                      //   backgroundImage: logo == null
+                      //       ? Image.asset('assets/images/logo.png').image
+                      //       //: Image.asset('assets/images/logo.png').image,
+                      //       : NetworkImage(getImageUrl(logo)),
+                      //   radius: 24,
+                      // ),
                       const SizedBox(
                         width: 12,
                       ),
