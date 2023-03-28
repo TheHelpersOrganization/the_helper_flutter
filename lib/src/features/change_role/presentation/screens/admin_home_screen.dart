@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/summary_card.dart';
+import 'package:go_router/go_router.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({
@@ -30,8 +31,14 @@ class AdminView extends ConsumerWidget {
               ElevatedButton(
                 onPressed: () {},
                 style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      // side: const BorderSide(color: Colors.red)
+                    )
+                  ),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                  fixedSize: MaterialStateProperty.all(const Size(100, 100)),
+                  fixedSize: MaterialStateProperty.all(const Size(120, 120)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,8 +51,14 @@ class AdminView extends ConsumerWidget {
               ElevatedButton(
                 onPressed: () => context.pushNamed('account-manage'),
                 style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      // side: const BorderSide(color: Colors.red)
+                    )
+                  ),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                  fixedSize: MaterialStateProperty.all(const Size(100, 100)),
+                  fixedSize: MaterialStateProperty.all(const Size(120, 120)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,16 +69,22 @@ class AdminView extends ConsumerWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => context.pushNamed('activity-manage'),
                 style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      // side: const BorderSide(color: Colors.red)
+                    )
+                  ),
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-                  fixedSize: MaterialStateProperty.all(const Size(100, 100)),
+                  fixedSize: MaterialStateProperty.all(const Size(120, 120)),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.newspaper),
-                    Text('News'),
+                    Icon(Icons.volunteer_activism),
+                    Text('Activities'),
                   ],
                 ),
               )

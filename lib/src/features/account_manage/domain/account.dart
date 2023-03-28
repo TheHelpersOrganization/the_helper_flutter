@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
 @immutable
-class Account {
+class AccountModel {
   final int id;
   final String name;
   final String email;
   final bool isAccountDisabled;
   final bool isAccountVerified;
 
-  const Account({
+  const AccountModel({
     required this.id,
     required this.name,
     required this.email,
@@ -19,7 +20,7 @@ class Account {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Account &&
+      (other is AccountModel &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           email == other.email &&
@@ -35,17 +36,17 @@ class Account {
 
   @override
   String toString() {
-    return 'Account{ id: $id, email: $email, isAccountDisabled: $isAccountDisabled, isAccountVerified: $isAccountVerified,}';
+    return 'AccountModel{ id: $id, email: $email, isAccountDisabled: $isAccountDisabled, isAccountVerified: $isAccountVerified,}';
   }
 
-  Account copyWith({
+  AccountModel copyWith({
     int? id,
     String? name,
     String? email,
     bool? isAccountDisabled,
     bool? isAccountVerified,
   }) {
-    return Account(
+    return AccountModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -64,8 +65,8 @@ class Account {
     };
   }
 
-  factory Account.fromMap(Map<String, dynamic> map) {
-    return Account(
+  factory AccountModel.fromMap(Map<String, dynamic> map) {
+    return AccountModel(
       id: map['id'] as int,
       name: map['name'] as String,
       email: map['email'] as String,
@@ -73,4 +74,9 @@ class Account {
       isAccountVerified: map['isAccountVerified'] as bool,
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory AccountModel.fromJson(String source) =>
+      AccountModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

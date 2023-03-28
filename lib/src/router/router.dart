@@ -18,6 +18,8 @@ import '../features/profile/presentation/profile_setting_screen/profile_setting_
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
+import '../features/account_manage/presentation/screens/account_manage_screen.dart';
+import '../features/activity_manage/presentation/screens/activity_manage_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey =
@@ -108,6 +110,10 @@ final routes = [
         name: AppRoute.accountManage.name,
         path: AppRoute.accountManage.path,
         builder: (context, state) => const AccountManageScreen()),
+      GoRoute(
+        name: AppRoute.activityManage.name,
+        path: AppRoute.activityManage.path,
+        builder: (context, state) => const ActivityManageScreen()),
     ],
   ),
 ];
@@ -143,6 +149,14 @@ enum AppRoute {
   menu(
     path: '/menu',
     name: 'menu',
+  ),
+  accountManage(
+    path: '/account-manage',
+    name: 'account-manage'
+  ),
+  activityManage(
+    path: '/activity-manage',
+    name: 'activity-manage'
   ),
   organizationSearch(
     path: '/organization/search',
