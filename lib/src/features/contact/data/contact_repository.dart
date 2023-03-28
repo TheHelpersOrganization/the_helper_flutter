@@ -1,29 +1,30 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/contact/domain/contact_model.dart';
 import 'package:the_helper/src/utils/dio.dart';
+
+import '../domain/contact.dart';
 
 class ContactRepository {
   final Dio client;
 
   ContactRepository({required this.client});
 
-  Future<ContactModel> getById(int id) async {
+  Future<Contact> getById(int id) async {
     final res = await client.get('/contacts/$id');
-    return ContactModel.fromMap(res.data['data']);
+    return Contact.fromJson(res.data['data']);
   }
 
-  Future<void> create(ContactModel contact) async {
+  Future<void> create(Contact contact) async {
     await client.post('/contacts', data: contact.toJson());
   }
 
-  Future<void> update(int id, ContactModel contact) async {
+  Future<void> update(int id, Contact contact) async {
     await client.put('/contacts/$id', data: contact.toJson());
   }
 
-  Future<ContactModel> delete(int id) async {
+  Future<Contact> delete(int id) async {
     final res = await client.delete('/contacts/$id');
-    return ContactModel.fromMap(res.data['data']);
+    return Contact.fromJson(res.data['data']);
   }
 }
 

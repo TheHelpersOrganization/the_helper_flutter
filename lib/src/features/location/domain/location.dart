@@ -6,7 +6,7 @@ part 'location.freezed.dart';
 @freezed
 class Location with _$Location {
   factory Location({
-    required int id,
+    int? id,
     String? addressLine1,
     String? addressLine2,
     String? locality,
