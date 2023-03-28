@@ -197,6 +197,7 @@ enum AppRoute {
   organizationSearch(
     path: '/organization-search',
     name: 'organization-search',
+  ),
   organizationRegistration(
     path: '/organization-registration',
     name: 'organization-registration',
