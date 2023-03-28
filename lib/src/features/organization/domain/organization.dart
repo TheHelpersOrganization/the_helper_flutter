@@ -9,6 +9,7 @@ part 'organization.freezed.dart';
 @freezed
 class Organization with _$Organization {
   factory Organization({
+    int? id,
     required String name,
     required String email,
     required String phoneNumber,
@@ -20,5 +21,7 @@ class Organization with _$Organization {
     List<int>? files,
     List<Contact>? contacts,
   }) = _Organization;
-  factory Organization.fromJson(Map<String, dynamic> json) => _$OrganizationFromJson(json);
+
+  factory Organization.fromJson(Map<String, dynamic> json) =>
+      _$OrganizationFromJson(json);
 }

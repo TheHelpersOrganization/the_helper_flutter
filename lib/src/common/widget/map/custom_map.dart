@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -17,9 +16,9 @@ class CustomMap extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Web support is terrible
-    if (kIsWeb) {
-      return const SizedBox.shrink();
-    }
+    // if (kIsWeb) {
+    //   return const SizedBox.shrink();
+    // }
     final mapController = ref.watch(mapControllerProvider);
     final mapControllerNotifier = ref.watch(mapControllerProvider.notifier);
     final position = ref.watch(initialLocationProvider);

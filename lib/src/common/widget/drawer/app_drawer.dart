@@ -23,7 +23,7 @@ class AppDrawer extends ConsumerWidget {
       children: [
         SafeArea(
           child: InkWell(
-            onTap: () => context.pushNamed(AppRoute.profile.name),
+            onTap: () => context.goNamed(AppRoute.profile.name),
             child: const AppDrawerHeader(),
           ),
         ),
@@ -48,6 +48,14 @@ class AppDrawer extends ConsumerWidget {
           icon: Icons.search,
           onTap: () {
             context.goNamed(AppRoute.organizationSearch.name);
+          },
+        ),
+        AppDrawerItem(
+          route: AppRoute.organizationRegistration,
+          title: 'Register Organization',
+          icon: Icons.app_registration,
+          onTap: () {
+            context.goNamed(AppRoute.organizationRegistration.name);
           },
         ),
         AppDrawerItem(

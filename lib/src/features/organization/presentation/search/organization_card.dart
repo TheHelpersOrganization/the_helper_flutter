@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 
-import '../../../common/extension/image.dart';
-import '../domain/organization.dart';
-import '../domain/organization_model.dart';
+import '../../domain/organization.dart';
 
 class OrganizationCard extends StatelessWidget {
-  final Organization organizationModel;
+  final Organization organization;
 
-  const OrganizationCard({super.key, required this.organizationModel});
+  const OrganizationCard({super.key, required this.organization});
 
   String getAddress() {
-    final locations = organizationModel.locations;
+    final locations = organization.locations;
     final location =
         locations == null || locations.isEmpty ? null : locations[0];
     final String address;
@@ -30,7 +31,7 @@ class OrganizationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logo = organizationModel.logo;
+    final logo = organization.logo;
     final address = getAddress();
 
     return Card(
@@ -47,13 +48,12 @@ class OrganizationCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      // CircleAvatar(
-                      //   backgroundImage: logo == null
-                      //       ? Image.asset('assets/images/logo.png').image
-                      //       //: Image.asset('assets/images/logo.png').image,
-                      //       : NetworkImage(getImageUrl(logo)),
-                      //   radius: 24,
-                      // ),
+                      CircleAvatar(
+                        backgroundImage: logo == null
+                            ? Image.asset('assets/images/logo.png').image
+                            : NetworkImage(getImageUrl(logo)),
+                        radius: 24,
+                      ),
                       const SizedBox(
                         width: 12,
                       ),
@@ -63,7 +63,7 @@ class OrganizationCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 4, bottom: 4),
                             child: Text(
-                              organizationModel.name,
+                              organization.name,
                               style:
                                   context.theme.textTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -95,7 +95,7 @@ class OrganizationCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 12),
                     child: Text(
-                      organizationModel.description,
+                      organization.description,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -143,7 +143,14 @@ class OrganizationCard extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: FilledButton.tonal(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.pushNamed(
+                              AppRoute.organization.name,
+                              params: {
+                                'id': organization.id.toString(),
+                              },
+                            );
+                          },
                           child: const Text('Details'),
                         ),
                       ),

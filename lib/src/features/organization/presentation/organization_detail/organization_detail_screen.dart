@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
+import 'package:the_helper/src/router/router.dart';
 
 import '../../../../common/extension/image.dart';
 
@@ -18,6 +18,7 @@ class OrganizationDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print(orgId);
     final org = ref.watch(getOrganizationProvider(int.parse(orgId)));
     return Scaffold(
       // drawer: const AppDrawer(),
@@ -36,7 +37,9 @@ class OrganizationDetailScreen extends ConsumerWidget {
                     // Todo: extract this icon button to a widget
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () => context.pop(),
+                      onPressed: () {
+                        context.goNamed(AppRoute.organizationSearch.name);
+                      },
                     ),
                     title: Text('${org.name} Organization'),
                     centerTitle: true,
