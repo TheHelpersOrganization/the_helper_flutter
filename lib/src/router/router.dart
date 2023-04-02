@@ -79,6 +79,18 @@ final routes = [
           name: AppRoute.organizationManage.name,
           path: AppRoute.organizationManage.path,
           builder: (context, state) => const OrganizationManageScreen()),
+      GoRoute(
+          name: AppRoute.changeRole.name,
+          path: AppRoute.changeRole.path,
+          builder: (context, state) => const ChangeRoleScreen()),
+      GoRoute(
+          name: AppRoute.accountManage.name,
+          path: AppRoute.accountManage.path,
+          builder: (context, state) => const AccountManageScreen()),
+      GoRoute(
+          name: AppRoute.activityManage.name,
+          path: AppRoute.activityManage.path,
+          builder: (context, state) => const ActivityManageScreen()),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
