@@ -26,6 +26,7 @@ class AccountManageScreen extends ConsumerWidget {
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
+        drawer: const AppDrawer(),
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.black),
           backgroundColor: Colors.transparent,
@@ -33,9 +34,6 @@ class AccountManageScreen extends ConsumerWidget {
               style: TextStyle(color: Colors.black)),
           centerTitle: true,
           elevation: 0.0,
-          leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.arrow_back)),
           bottom: TabBar(
             labelColor: Theme.of(context).colorScheme.onSurface,
             tabs: tabs,

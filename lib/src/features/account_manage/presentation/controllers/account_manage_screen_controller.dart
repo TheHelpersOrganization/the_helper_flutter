@@ -14,9 +14,16 @@ class AccountManageScreenController
   }
 }
 
+final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
+final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
+
+final firstLoadPagingController = StateProvider((ref) => true);
+
 final pagingControllerProvider = Provider.autoDispose(
   (ref) {
     final accountRepository = ref.watch(accountRepositoryProvider);
+    final searchPattern = ref.watch(searchPatternProvider);
+    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
     final controller =
         PagingController<int, AccountModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
@@ -24,6 +31,7 @@ final pagingControllerProvider = Provider.autoDispose(
         final items = await accountRepository.getAll(
           offset: pageKey * 100,
           isBanned: false,
+          // query: (name: searchPattern),
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {
@@ -35,7 +43,9 @@ final pagingControllerProvider = Provider.autoDispose(
         controller.error = err;
       }
     });
-    
+    if (hasUsedSearch) {
+      controller.notifyPageRequestListeners(0);
+    }
     return controller;
   },
 );
@@ -43,6 +53,8 @@ final pagingControllerProvider = Provider.autoDispose(
 final bannedPagingControllerProvider = Provider.autoDispose(
   (ref) {
     final accountRepository = ref.watch(accountRepositoryProvider);
+    final searchPattern = ref.watch(searchPatternProvider);
+    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
     final controller =
         PagingController<int, AccountModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
@@ -61,7 +73,9 @@ final bannedPagingControllerProvider = Provider.autoDispose(
         controller.error = err;
       }
     });
-    
+    if (hasUsedSearch) {
+      controller.notifyPageRequestListeners(0);
+    }
     return controller;
   },
 );
