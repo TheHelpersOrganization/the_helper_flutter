@@ -47,3 +47,4 @@ app.*.map.json
 # dart build runner generated file
 *.g.dart
 *.freezed.dart
+.gitattributes
