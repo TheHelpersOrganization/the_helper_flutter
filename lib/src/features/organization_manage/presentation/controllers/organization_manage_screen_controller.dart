@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/account_manage/data/account_repository.dart';
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
+import 'package:the_helper/src/features/organization_manage/data/organization_model_repository.dart';
+import 'package:the_helper/src/features/organization_manage/domain/organization_model.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class AccountManageScreenController
-    extends AutoDisposeAsyncNotifier<List<AccountModel>> {
+class OrganizationManageScreenController
+    extends AutoDisposeAsyncNotifier<List<OrganizationModel>> {
   @override
-  FutureOr<List<AccountModel>> build() {
-    return ref.watch(accountRepositoryProvider).getAll();
+  FutureOr<List<OrganizationModel>> build() {
+    return ref.watch(organizationModelRepositoryProvider).getAll();
   }
 }
 
@@ -19,13 +19,12 @@ final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
 
 final firstLoadPagingController = StateProvider((ref) => true);
 
-final pagingControllerProvider = Provider.autoDispose(
+final activePagingControllerProvider = Provider.autoDispose(
   (ref) {
-    final accountRepository = ref.watch(accountRepositoryProvider);
+    final accountRepository = ref.watch(organizationModelRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller =
-        PagingController<int, AccountModel>(firstPageKey: 0);
+    final controller = PagingController<int, OrganizationModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await accountRepository.getAll(
@@ -50,13 +49,12 @@ final pagingControllerProvider = Provider.autoDispose(
   },
 );
 
-final bannedPagingControllerProvider = Provider.autoDispose(
+final pendingPagingControllerProvider = Provider.autoDispose(
   (ref) {
-    final accountRepository = ref.watch(accountRepositoryProvider);
+    final accountRepository = ref.watch(organizationModelRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller =
-        PagingController<int, AccountModel>(firstPageKey: 0);
+    final controller = PagingController<int, OrganizationModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await accountRepository.getAll(

@@ -4,23 +4,23 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/features/account_manage/presentation/widgets/account_list_item.dart';
+import 'package:the_helper/src/features/account_request_manage/domain/account_request.dart';
+import 'package:the_helper/src/features/account_request_manage/presentation/widgets/custom_list_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/account_manage/presentation/controllers/account_manage_screen_controller.dart';
+import 'package:the_helper/src/features/account_request_manage/presentation/controllers/account_request_manage_screen_controller.dart';
 
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
     super.key,
-    required this.isBanned,
+    required this.status,
   });
-  final bool isBanned;
+  final int status;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    final pagingController = ref.watch(
-        isBanned ? bannedPagingControllerProvider : pagingControllerProvider);
+    final controllerProvider = getController(status);
+    final pagingController = ref.watch(controllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
@@ -63,9 +63,9 @@ class CustomScrollList extends ConsumerWidget {
           else
             const SizedBox(
               height: 24,
-          ),
+            ),
           Expanded(
-              child: PagedListView<int, AccountModel>(
+              child: PagedListView<int, AccountRequestModel>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (context, item, index) =>
@@ -217,4 +217,17 @@ class CustomScrollList extends ConsumerWidget {
       ],
     );
   }
+}
+
+AutoDisposeProvider<PagingController<int, AccountRequestModel>> getController(
+    int status) {
+  switch (status) {
+    case 0:
+      return penddingPagingControllerProvider;
+    case 1:
+      return approvedPagingControllerProvider;
+    case 2:
+      return rejectedPagingControllerProvider;
+  }
+  throw 'Missing paging controller';
 }

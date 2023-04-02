@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/authentication/presentation/logout_scree
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
+import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
 
 import '../common/screens/safe_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
@@ -20,6 +21,7 @@ import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
 import '../features/account_manage/presentation/screens/account_manage_screen.dart';
+import '../features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
 import '../features/activity_manage/presentation/screens/activity_manage_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -57,6 +59,26 @@ final routes = [
         name: AppRoute.organizationRegistration.name,
         builder: (context, state) => const OrganizationRegistrationScreen(),
       ),
+      GoRoute(
+          name: AppRoute.changeRole.name,
+          path: AppRoute.changeRole.path,
+          builder: (context, state) => const ChangeRoleScreen()),
+      GoRoute(
+          name: AppRoute.accountManage.name,
+          path: AppRoute.accountManage.path,
+          builder: (context, state) => const AccountManageScreen()),
+      GoRoute(
+          name: AppRoute.accountRequestManage.name,
+          path: AppRoute.accountRequestManage.path,
+          builder: (context, state) => const AccountRequestManageScreen()),
+      GoRoute(
+          name: AppRoute.activityManage.name,
+          path: AppRoute.activityManage.path,
+          builder: (context, state) => const ActivityManageScreen()),
+      GoRoute(
+          name: AppRoute.organizationManage.name,
+          path: AppRoute.organizationManage.path,
+          builder: (context, state) => const OrganizationManageScreen()),
       GoRoute(
           name: AppRoute.changeRole.name,
           path: AppRoute.changeRole.path,
@@ -110,6 +132,10 @@ final routes = [
               path: AppRoute.settings.path,
               builder: (context, state) => const DevelopingScreen()),
           GoRoute(
+              name: AppRoute.developing.name,
+              path: AppRoute.developing.path,
+              builder: (context, state) => const DevelopingScreen()),
+          GoRoute(
               name: AppRoute.menu.name,
               path: AppRoute.menu.path,
               builder: (context, state) => const MenuScreen()),
@@ -157,6 +183,8 @@ enum AppRoute {
   // Quick access to develop screen
   testScreen(path: '/test', name: 'test'),
 
+  developing(path: '/not-exist', name:'not-exist'),
+
   //Admin feature
   menu(
     path: '/menu',
@@ -167,7 +195,9 @@ enum AppRoute {
     name: 'organization',
   ),
   accountManage(path: '/account-manage', name: 'account-manage'),
+  accountRequestManage(path: '/account-request-manage', name: 'account-request-manage'),
   activityManage(path: '/activity-manage', name: 'activity-manage'),
+  organizationManage(path: '/organization-manage', name: 'organization-manage'),
   organizationSearch(
     path: '/organization-search',
     name: 'organization-search',

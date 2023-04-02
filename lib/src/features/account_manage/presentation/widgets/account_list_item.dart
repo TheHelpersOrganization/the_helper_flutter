@@ -20,6 +20,7 @@ class AccountListItem extends ConsumerWidget {
         child: InkWell(
           onTap: () {
             print('dadf');
+            context.goNamed('temp', params: {'id': '21'});
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -39,7 +39,7 @@ class ActivityListItem extends ConsumerWidget {
                   children: [
                     Text(date),
                     Text(data.name),
-                    Text(data.description),
+                    Text(data.shortDescription),
                   ],
                 ),
               ),
