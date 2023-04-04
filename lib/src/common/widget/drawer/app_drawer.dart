@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_enum.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
-import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -38,7 +38,6 @@ class AppDrawer extends ConsumerWidget {
             title: i.title,
             icon: i.icon,
             onTap: () {
-              print(userRole.role);
               context.goNamed(
                   i.route != null ? i.route!.name : AppRoute.developing.name);
             },

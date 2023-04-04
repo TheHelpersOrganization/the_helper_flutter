@@ -1,27 +1,40 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 
+final joinedOrganizationIdsProvider = StateProvider<Set<int>>((ref) => {});
+
 class OrganizationJoinController extends AutoDisposeAsyncNotifier<void> {
+  final CancelToken? token = null;
+
   @override
-  void build() {}
+  void build() {
+    ref.onDispose(() => token?.cancel());
+    final orgIds = ref.watch(joinedOrganizationIdsProvider);
+  }
 
   Future<OrganizationMember?> join(int organizationId) async {
     state = const AsyncLoading();
-    await Future.delayed(const Duration(seconds: 5));
-    state = const AsyncData(null);
+    try {
+      final res = await ref
+          .watch(organizationMemberRepositoryProvider)
+          .join(organizationId);
+      state = const AsyncData(null);
+      ref.read(joinedOrganizationIdsProvider.notifier).update(
+            (state) => {
+              ...state,
+              organizationId,
+            },
+          );
+      return res;
+    } on BackendException catch (ex, st) {
+      state = AsyncError(ex, st);
+    } catch (ex, st) {
+      state = AsyncError('An error has happened', st);
+    }
     return null;
-    // try {
-    //   final res = await ref
-    //       .watch(organizationMemberRepositoryProvider)
-    //       .join(organizationId);
-    //   state = const AsyncData(null);
-    //   return res;
-    // } on BackendException catch (ex, st) {
-    //   state = AsyncError(ex, st);
-    // } catch (ex, st) {
-    //   state = AsyncError('An error has happened', st);
-    // }
-    // return null;
   }
 }
 

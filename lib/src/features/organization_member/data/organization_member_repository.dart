@@ -14,14 +14,14 @@ class OrganizationMemberRepository {
 
   Future<OrganizationMember> get(int organizationId) async {
     final res = await client.get(
-      '/organization/$organizationId/members',
+      '/organizations/$organizationId/members',
     );
     return OrganizationMember.fromJson(res.data['data']);
   }
 
   Future<OrganizationMember> join(int organizationId) async {
     final res = await client.post(
-      '/organization/$organizationId/members/join',
+      '/organizations/$organizationId/members/join',
     );
     return OrganizationMember.fromJson(res.data['data']);
   }
@@ -29,14 +29,14 @@ class OrganizationMemberRepository {
   // Cancel Join
   Future<OrganizationMember> cancel(int organizationId) async {
     final res = await client.post(
-      '/organization/$organizationId/members/cancel',
+      '/organizations/$organizationId/members/cancel',
     );
     return OrganizationMember.fromJson(res.data['data']);
   }
 
   Future<OrganizationMember> leave(int organizationId) async {
     final res = await client.post(
-      '/organization/$organizationId/members/leave',
+      '/organizations/$organizationId/members/leave',
     );
     return OrganizationMember.fromJson(res.data['data']);
   }
