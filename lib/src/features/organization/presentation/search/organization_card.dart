@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
 import '../../domain/organization.dart';
+import 'organization_join_controller.dart';
 
-class OrganizationCard extends StatelessWidget {
+class OrganizationCard extends ConsumerStatefulWidget {
   final Organization organization;
 
   const OrganizationCard({super.key, required this.organization});
@@ -30,9 +32,142 @@ class OrganizationCard extends StatelessWidget {
   }
 
   @override
+  ConsumerState<OrganizationCard> createState() => _OrganizationCardState();
+}
+
+class _OrganizationCardState extends ConsumerState<OrganizationCard> {
+  Future<dynamic> showJoinDialog() {
+    final organization = widget.organization;
+    final organizationJoinController =
+        ref.watch(organizationJoinControllerProvider.notifier);
+    final organizationJoinState = ref.watch(organizationJoinControllerProvider);
+
+    return showDialog(
+      context: context,
+      builder: (dialogContext) => SimpleDialog(
+        title: Row(
+          children: [
+            const Expanded(
+              child: Text('Join Organization'),
+            ),
+            IconButton(
+              onPressed: () {
+                dialogContext.pop();
+              },
+              icon: const Icon(
+                Icons.close,
+              ),
+            ),
+          ],
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 24,
+        ),
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Do you want to join ',
+              children: [
+                TextSpan(
+                  text: organization.name,
+                  style: TextStyle(
+                    color: dialogContext.theme.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {
+                    dialogContext.pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 2,
+                child: FilledButton(
+                  onPressed: () async {
+                    dialogContext.pop();
+                    _showJoinLoadingDialog();
+                    await organizationJoinController.join(
+                      organization.id!,
+                    );
+                    if (context.mounted) {
+                      context.pop();
+                    }
+                  },
+                  child: const Text('Join'),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showJoinLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: AlertDialog(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 24,
+          ),
+          content: Row(
+            children: [
+              const CircularProgressIndicator(),
+              const SizedBox(
+                width: 24,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Joining ${widget.organization.name}'),
+                    const Text('This may take a few minutes'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final organizationJoinController =
+        ref.watch(organizationJoinControllerProvider.notifier);
+    final organizationJoinState = ref.watch(organizationJoinControllerProvider);
+
+    final organization = widget.organization;
     final logo = organization.logo;
-    final address = getAddress();
+    final address = widget.getAddress();
 
     return Card(
       elevation: 1,
@@ -160,7 +295,9 @@ class OrganizationCard extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showJoinDialog();
+                          },
                           child: const Text('Join'),
                         ),
                       ),
