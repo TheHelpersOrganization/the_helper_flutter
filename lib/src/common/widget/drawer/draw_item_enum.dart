@@ -19,9 +19,9 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.search,
   ),
   DrawerItemModel(
-    route: AppRoute.organizationRegistration,
+    route: AppRoute.myOrganization,
     title: 'Register Organization',
-    icon: Icons.app_registration,
+    icon: Icons.work_outline,
   ),
   DrawerItemModel(
     route: AppRoute.news,
