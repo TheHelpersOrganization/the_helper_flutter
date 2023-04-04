@@ -4,7 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
 class ShiftDetailScreen extends ConsumerWidget {
-  const ShiftDetailScreen({super.key, required this.activityId,required this.shiftId,});
+  const ShiftDetailScreen({
+    super.key,
+    required this.activityId,
+    required this.shiftId,
+  });
   final String? activityId;
   final String? shiftId;
 
