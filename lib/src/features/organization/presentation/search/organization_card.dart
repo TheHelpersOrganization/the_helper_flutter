@@ -40,7 +40,6 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
     final organization = widget.organization;
     final organizationJoinController =
         ref.watch(organizationJoinControllerProvider.notifier);
-    final organizationJoinState = ref.watch(organizationJoinControllerProvider);
 
     return showDialog(
       context: context,
@@ -101,11 +100,14 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                   onPressed: () async {
                     dialogContext.pop();
                     _showJoinLoadingDialog();
-                    await organizationJoinController.join(
+                    final res = await organizationJoinController.join(
                       organization.id!,
                     );
                     if (context.mounted) {
                       context.pop();
+                      if (res != null) {
+                        _showJoinSuccessDialog();
+                      }
                     }
                   },
                   child: const Text('Join'),
@@ -118,56 +120,126 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
     );
   }
 
+  void _showJoinSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 24,
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 36,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Your request to join ',
+                      children: [
+                        TextSpan(
+                          text: widget.organization.name,
+                          style: TextStyle(
+                            color: context.theme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: ' has been received',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'After your request is approved, you will be a member of this organization',
+            ),
+          ],
+        ),
+        actions: [
+          FilledButton(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showJoinLoadingDialog() {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
-        child: AlertDialog(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 24,
-          ),
-          content: Row(
-            children: [
-              const CircularProgressIndicator(),
-              const SizedBox(
-                width: 24,
+      builder: (context) => AlertDialog(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 24,
+        ),
+        content: Row(
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(
+              width: 24,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: 'Joining ',
+                      children: [
+                        TextSpan(
+                          text: widget.organization.name,
+                          style: TextStyle(
+                            color: context.theme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text('This may take a few minutes'),
+                ],
               ),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Joining ${widget.organization.name}'),
-                    const Text('This may take a few minutes'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final organizationJoinController =
-        ref.watch(organizationJoinControllerProvider.notifier);
-    final organizationJoinState = ref.watch(organizationJoinControllerProvider);
-
     final organization = widget.organization;
     final logo = organization.logo;
     final address = widget.getAddress();
+    final joinedOrganizationIds = ref.watch(joinedOrganizationIdsProvider);
+    final hasJoined = joinedOrganizationIds.any((id) => id == organization.id);
 
     return Card(
       elevation: 1,
@@ -295,10 +367,14 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                       Expanded(
                         flex: 2,
                         child: FilledButton(
-                          onPressed: () {
-                            showJoinDialog();
-                          },
-                          child: const Text('Join'),
+                          onPressed: hasJoined
+                              ? null
+                              : () {
+                                  showJoinDialog();
+                                },
+                          child: hasJoined
+                              ? const Text('Joined')
+                              : const Text('Join'),
                         ),
                       ),
                     ],
