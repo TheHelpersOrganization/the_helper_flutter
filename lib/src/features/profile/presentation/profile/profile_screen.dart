@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/profile/presentation/profile_screen/profile_controller.dart';
 
 import '../../../../router/router.dart';
 import '../profile_controller.dart';
@@ -51,7 +50,7 @@ class ProfileScreen extends ConsumerWidget {
                         icon: const Icon(Icons.edit),
                         tooltip: 'Edit profile',
                         onPressed: () =>
-                            context.pushNamed(AppRoute.editProfile.name),
+                            context.pushNamed(AppRoute.profileEdit.name),
                       ),
                       IconButton(
                         icon: const Icon(Icons.settings),

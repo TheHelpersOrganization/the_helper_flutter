@@ -5,7 +5,7 @@ import '../domain/profile.dart';
 
 part 'profile_controller.g.dart';
 
-// actually this is
+// Todo: rename to controller
 @Riverpod(keepAlive: true)
 class ProfileService extends _$ProfileService {
   @override

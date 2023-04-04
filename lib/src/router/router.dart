@@ -8,14 +8,20 @@ import 'package:the_helper/src/features/authentication/presentation/account_veri
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
-import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
 
 import '../common/screens/safe_screen.dart';
-import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
-import '../features/profile/presentation/profile_screen/profile_screen.dart';
+import '../features/activity/presentation/activity_detail/activity_detail_screen.dart';
+import '../features/activity/presentation/activity_search/activity_search_screen.dart';
+
+import '../features/activity/presentation/shift/shift_detail_screen.dart';
+import '../features/organization/presentation/organization_manage/organization_manage_screen.dart';
+import '../features/profile/presentation/profile/profile_screen.dart';
+import '../features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
 
+import '../features/profile/presentation/profile_setting/profile_setting_screen.dart';
 import './router_notifier.dart';
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
@@ -28,153 +34,403 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 
 final routes = [
   ShellRoute(
-    builder: (context, state, child) {
+    builder: (_, __, child) {
       return SafeScreen(child: child);
     },
     routes: [
       GoRoute(
-          name: AppRoute.login.name,
-          path: AppRoute.login.path,
-          builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          name: AppRoute.logout.name,
-          path: AppRoute.logout.path,
-          builder: (context, state) => const LogoutScreen()),
-      GoRoute(
-          name: AppRoute.accountVerification.name,
-          path: AppRoute.accountVerification.path,
-          builder: (context, state) => const AccountVerificationScreen()),
-      GoRoute(
-          name: AppRoute.profile.name,
-          path: AppRoute.profile.path,
-          builder: (context, state) => const ProfileScreen()),
-      GoRoute(
-          name: AppRoute.editProfile.name,
-          path: AppRoute.editProfile.path,
-          builder: (context, state) => EditProfileScreen()),
-      GoRoute(
-        path: AppRoute.organizationRegistration.path,
-        name: AppRoute.organizationRegistration.name,
-        builder: (context, state) => const OrganizationRegistrationScreen(),
+        path: AppRoute.login.path,
+        name: AppRoute.login.name,
+        builder: (_, __) => const LoginScreen(),
       ),
       GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
+        path: AppRoute.logout.path,
+        name: AppRoute.logout.name,
+        builder: (context, state) => const LogoutScreen(),
+      ),
       GoRoute(
-          name: AppRoute.accountManage.name,
-          path: AppRoute.accountManage.path,
-          builder: (context, state) => const AccountManageScreen()),
-      GoRoute(
-          name: AppRoute.activityManage.name,
-          path: AppRoute.activityManage.path,
-          builder: (context, state) => const ActivityManageScreen()),
+        path: AppRoute.accountVerification.path,
+        name: AppRoute.accountVerification.name,
+        builder: (_, __) => const AccountVerificationScreen(),
+      ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
+        builder: (_, __, child) {
           return CustomBottomNavigator(child: child);
         },
         routes: [
           GoRoute(
-            name: AppRoute.home.name,
             path: AppRoute.home.path,
-            builder: (context, state) => const HomeScreen(),
+            name: AppRoute.home.name,
+            builder: (_, __) => const HomeScreen(),
           ),
           GoRoute(
-              name: AppRoute.accountVerificationCompleted.name,
-              path: AppRoute.accountVerificationCompleted.path,
-              builder: (context, state) =>
-                  const AccountVerificationCompletedScreen()),
-          GoRoute(
-              name: AppRoute.activities.name,
-              path: AppRoute.activities.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.news.name,
-              path: AppRoute.news.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.chat.name,
-              path: AppRoute.chat.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.notification.name,
-              path: AppRoute.notification.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.report.name,
-              path: AppRoute.report.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.settings.name,
-              path: AppRoute.settings.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.menu.name,
-              path: AppRoute.menu.path,
-              builder: (context, state) => const MenuScreen()),
-          GoRoute(
-            path: AppRoute.organizationSearch.path,
-            name: AppRoute.organizationSearch.name,
-            builder: (context, state) => const OrganizationSearchScreen(),
+            path: AppRoute.accountVerificationCompleted.path,
+            name: AppRoute.accountVerificationCompleted.name,
+            builder: (_, __) => const AccountVerificationCompletedScreen(),
           ),
           GoRoute(
-            path: AppRoute.organization.path,
-            name: AppRoute.organization.name,
-            builder: (_, state) =>
-                OrganizationDetailScreen(orgId: state.params['id']!),
+            path: AppRoute.news.path,
+            name: AppRoute.news.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.chat.path,
+            name: AppRoute.chat.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.notification.path,
+            name: AppRoute.notification.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.report.path,
+            name: AppRoute.report.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.menu.path,
+            name: AppRoute.menu.name,
+            builder: (_, __) => const MenuScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.settings.path,
+            name: AppRoute.settings.name,
+            builder: (_, __) => const MenuScreen(),
           ),
         ],
+      ),
+      profileRoutes,
+      organizationRoutes,
+      activityRoutes,
+    ],
+  ),
+];
+
+// GoRoute(
+
+//   name: AppRoute.profile.name,
+//   path: AppRoute.profile.path,
+//   builder: (context, state) => const ProfileScreen(),
+//   routes: [
+//     GoRoute(
+//         name: AppRoute.editProfile.name,
+//         path: AppRoute.editProfile.path,
+//         builder: (context, state) => ProfileEditScreen()),
+//   ],
+// ),
+// GoRoute(
+//     name: AppRoute.editProfile.name,
+//     path: AppRoute.editProfile.path,
+//     builder: (context, state) => EditProfileScreen()),
+// GoRoute(
+//   path: AppRoute.organizationRegistration.path,
+//   name: AppRoute.organizationRegistration.name,
+//   builder: (context, state) => const OrganizationRegistrationScreen(),
+// ),
+
+// ShellRoute(
+//   navigatorKey: _shellNavigatorKey,
+//   builder: (context, state, child) {
+//     return CustomBottomNavigator(child: child);
+//   },
+//   routes: [
+//     // GoRoute(
+//     //   path: '/',
+//     //   name: AppRoute.home.name,
+//     //   builder: (context, state) => const HomeScreen(),
+//     //   routes: [
+//     // organizationRoutes,
+//     // GoRoute(
+//     //   name: AppRoute.accountVerificationCompleted.name,
+//     //   path: AppRoute.accountVerificationCompleted.path,
+//     //   builder: (context, state) =>
+//     //       const AccountVerificationCompletedScreen(),
+//     // ),
+//     // GoRoute(
+//     //   name: AppRoute.activities.name,
+//     //   path: AppRoute.activities.path,
+//     //   builder: (context, state) => const DevelopingScreen(),
+//     // ),
+//     // GoRoute(
+//     //     name: AppRoute.news.name,
+//     //     path: AppRoute.news.path,
+//     //     builder: (context, state) => const DevelopingScreen()),
+//     // GoRoute(
+//     //     name: AppRoute.chat.name,
+//     //     path: AppRoute.chat.path,
+//     //     builder: (context, state) => const DevelopingScreen()),
+//     // GoRoute(
+//     //     name: AppRoute.notification.name,
+//     //     path: AppRoute.notification.path,
+//     //     builder: (context, state) => const DevelopingScreen()),
+//     // GoRoute(
+//     //     name: AppRoute.report.name,
+//     //     path: AppRoute.report.path,
+//     //     builder: (context, state) => const DevelopingScreen()),
+//     // GoRoute(
+//     //     name: AppRoute.settings.name,
+//     //     path: AppRoute.settings.path,
+//     //     builder: (context, state) => const DevelopingScreen()),
+//     // GoRoute(
+//     //     name: AppRoute.menu.name,
+//     //     path: AppRoute.menu.path,
+//     //     builder: (context, state) => const MenuScreen()),
+//     // GoRoute(
+//     //   name: AppRoute.organizationManage.name,
+//     //   path: AppRoute.organizationManage.path,
+//     //   builder: (_, __) => const OrganizationManageScreen(),
+//     // ),
+//     // GoRoute(
+//     //   path: AppRoute.activitySearch.path,
+//     //   name: AppRoute.activitySearch.name,
+//     //   builder: (_, __) => const SearchActivityScreen(),
+//     // ),
+//     // GoRoute(
+//     //   path: AppRoute.activityManage.path,
+//     //   name: AppRoute.activityManage.name,
+//     //   builder: (_, __) => const ActivityManageScreen(),
+//     // ),
+//     // GoRoute(
+//     //   path: AppRoute.organizationSearch.path,
+//     //   name: AppRoute.organizationSearch.name,
+//     //   builder: (context, state) => const OrganizationSearchScreen(),
+//     // ),
+//     // GoRoute(
+//     //   path: AppRoute.organization.path,
+//     //   name: AppRoute.organization.name,
+//     //   builder: (_, state) =>
+//     //       OrganizationDetailScreen(orgId: state.params['id']!),
+//     // ),
+//     // GoRoute(
+//     //   path: AppRoute.activity.path,
+//     //   name: AppRoute.activity.name,
+//     //   builder: (_, state) =>
+//     //       const DetailActivityScreen(activityId: state.params['id']),
+//     // ),
+//     // ],
+//     // ),
+//   ],
+// ),
+// final authRoutes = [
+
+// ];
+
+final profileRoutes = GoRoute(
+  path: AppRoute.profile.path,
+  name: AppRoute.profile.name,
+  builder: (_, __) => const ProfileScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.profileEdit.path,
+      name: AppRoute.profileEdit.name,
+      builder: (_, __) => ProfileEditScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.profileSetting.path,
+      name: AppRoute.profileSetting.name,
+      builder: (_, __) => const ProfileSettingScreen(),
+    ),
+  ],
+);
+
+final organizationRoutes = GoRoute(
+  path: AppRoute.organizationManage.path,
+  name: AppRoute.organizationManage.name,
+  builder: (_, __) => const OrganizationManageScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.organizationSearch.path,
+      name: AppRoute.organizationSearch.name,
+      builder: (_, __) => const OrganizationSearchScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.organizationRegistration.path,
+      name: AppRoute.organizationRegistration.name,
+      builder: (_, __) => const OrganizationRegistrationScreen(),
+    ),
+    // Todo: parse
+    GoRoute(
+      path: AppRoute.organization.path,
+      name: AppRoute.organization.name,
+      builder: (_, state) => OrganizationDetailScreen(
+        orgId: state.params[AppRoute.organization.path.substring(1)]!,
+      ),
+    ),
+  ],
+);
+
+final shiftRoutes = [
+  GoRoute(
+    path: AppRoute.shifts.path,
+    name: AppRoute.shifts.name,
+    // Todo: repalce with implemented screen
+    builder: (_, __) => const ActivityDetailScreen(),
+    routes: [
+      GoRoute(
+        path: AppRoute.shift.path,
+        name: AppRoute.shift.name,
+        // Todo: repalce with implemented screen
+        builder: (_, state) {
+          final activityId = state.params[AppRoute.activity.path.substring(1)];
+          final shiftId = state.params[AppRoute.shift.path.substring(1)];
+          return ShiftDetailScreen(
+            activityId: activityId,
+            shiftId: shiftId,
+          );
+        },
       ),
     ],
   ),
 ];
 
+final activityRoutes = GoRoute(
+  path: AppRoute.activityManage.path,
+  name: AppRoute.activityManage.name,
+  builder: (_, __) => const ActivityManageScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.activitySearch.path,
+      name: AppRoute.activitySearch.name,
+      builder: (_, __) => const ActivitySearchScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.activity.path,
+      name: AppRoute.activity.name,
+      builder: (_, state) {
+        final activityId = state.params[AppRoute.activity.path.substring(1)];
+        return ActivityDetailScreen(
+          activityId: activityId,
+        );
+      },
+      routes: shiftRoutes,
+    ),
+  ],
+);
+
 enum AppRoute {
-  splash(path: '/splash', name: 'splash'), // Internal access only
-  home(path: '/', name: 'home'),
-  changeRole(path: '/change-role', name: 'change-role'),
-  login(path: '/login', name: 'login'),
-  logout(path: '/logout', name: 'logout'),
-  accountVerification(
-      path: '/account-verification', name: 'account-verification'),
-  accountVerificationCompleted(
-      path: '/account-verification-completed',
-      name: 'account-verification-completed'),
-  profile(path: '/profile', name: 'profile'),
-  editProfile(path: '/profile/edit', name: 'profile-edit'),
-  profileSetting(
-    path: '/profile/setting',
-    name: 'profile-setting',
+  splash(
+    path: '/splash',
+    name: 'splash',
+  ), // Internal access only
+  home(
+    path: '/home',
+    name: 'home',
   ),
-  activities(path: '/activities', name: 'activities'),
-  news(path: '/news', name: 'news'),
-  chat(path: '/chat', name: 'chat'),
-  notification(path: '/notification', name: 'notification'),
-  report(path: '/report', name: 'report'),
-  settings(path: '/settings', name: 'setting'),
+  changeRole(
+    path: '/role',
+    name: 'change-role',
+  ),
+  login(
+    path: '/login',
+    name: 'login',
+  ),
+  logout(
+    path: '/logout',
+    name: 'logout',
+  ),
+  accountVerification(
+    path: '/verification',
+    name: 'account-verification',
+  ),
+  // Todo: create modal instead of using this route
+  accountVerificationCompleted(
+      path: '/verification-completed', name: 'account-verification-completed'),
+  // Todo: news crud
+  news(
+    path: '/news',
+    name: 'news',
+  ),
+  chat(
+    path: '/chat',
+    name: 'chat',
+  ),
+  // Todo: notification crud
+  notification(
+    path: '/notification',
+    name: 'notification',
+  ),
+  // Todo: report crud
+  report(
+    path: '/report',
+    name: 'report',
+  ),
+  settings(
+    path: '/settings',
+    name: 'setting',
+  ),
 
   // Quick access to develop screen
-  testScreen(path: '/test', name: 'test'),
-
+  testScreen(
+    path: '/test',
+    name: 'test',
+  ),
+  // Profile
+  profile(
+    path: '/profile',
+    name: 'profile',
+  ),
+  profileEdit(
+    path: 'edit',
+    name: 'profile-edit',
+  ),
+  profileSetting(
+    path: 'setting',
+    name: 'profile-setting',
+  ),
+  // Org
+  organizationManage(
+    path: '/organization',
+    name: 'organization-manage',
+  ),
+  organization(
+    path: ':orgId',
+    name: 'organization',
+  ),
+  organizationSearch(
+    path: 'search',
+    name: 'organization-search',
+  ),
+  organizationRegistration(
+    path: 'registration',
+    name: 'organization-registration',
+  ),
+  // activity
+  // activities(
+  //   path: '/activities',
+  //   name: 'activities',
+  // ),
+  activitySearch(
+    path: 'search',
+    name: 'activity-search',
+  ),
+  activity(
+    path: ':activityId',
+    name: 'activity',
+  ),
+  activityManage(
+    path: '/activity',
+    name: 'activity-manage',
+  ),
+  // shift
+  shifts(
+    path: 'shift',
+    name: 'shifts',
+  ),
+  shift(
+    path: ':shiftId',
+    name: 'shift',
+  ),
   //Admin feature
   menu(
     path: '/menu',
     name: 'menu',
   ),
-  organization(
-    path: '/organization/:id',
-    name: 'organization',
-  ),
-  accountManage(path: '/account-manage', name: 'account-manage'),
-  activityManage(path: '/activity-manage', name: 'activity-manage'),
-  organizationSearch(
-    path: '/organization-search',
-    name: 'organization-search',
-  ),
-  organizationRegistration(
-    path: '/organization-registration',
-    name: 'organization-registration',
+
+  accountManage(
+    path: '/account-manage',
+    name: 'account-manage',
   ),
   ;
 

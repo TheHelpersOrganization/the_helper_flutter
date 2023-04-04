@@ -29,29 +29,33 @@ class AppDrawer extends ConsumerWidget {
         ),
         const Divider(),
         AppDrawerItem(
-          route: AppRoute.home,
+          // route: AppRoute.home,
+          path: AppRoute.home.path,
           title: 'Home',
           icon: Icons.home,
           onTap: () => context.goNamed(AppRoute.home.name),
         ),
+        // AppDrawerItem(
+        //   // route: AppRoute.activities,
+        //   path: '/activities',
+        //   title: 'Activities',
+        //   icon: Icons.search,
+        //   onTap: () {
+        //     context.goNamed(AppRoute.activities.name);
+        //   },
+        // ),
         AppDrawerItem(
-          route: AppRoute.activities,
-          title: 'Activities',
-          icon: Icons.search,
-          onTap: () {
-            context.goNamed(AppRoute.activities.name);
-          },
-        ),
-        AppDrawerItem(
-          route: AppRoute.organizationSearch,
-          title: 'Organizations',
+          // route: AppRoute.organizationSearch,
+          path: AppRoute.organizationManage.path,
+          title: 'Organization',
           icon: Icons.search,
           onTap: () {
             context.goNamed(AppRoute.organizationSearch.name);
           },
         ),
         AppDrawerItem(
-          route: AppRoute.organizationRegistration,
+          // route: AppRoute.organizationRegistration,
+          path: AppRoute.organizationRegistration.path,
           title: 'Register Organization',
           icon: Icons.app_registration,
           onTap: () {

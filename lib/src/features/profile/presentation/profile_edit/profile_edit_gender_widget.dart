@@ -6,11 +6,11 @@ import 'package:the_helper/src/common/extension/widget.dart';
 import '../../../../common/widget/radio/app_radio_grouped_button.dart';
 import '../../domain/gender.dart';
 
-class EditProfileGenderWidget extends ConsumerWidget {
+class ProfileEditGenderWidget extends ConsumerWidget {
   final String? initialValue;
   final Function(String) onValueChange;
 
-  const EditProfileGenderWidget(
+  const ProfileEditGenderWidget(
       {super.key, required this.onValueChange, this.initialValue});
 
   @override
