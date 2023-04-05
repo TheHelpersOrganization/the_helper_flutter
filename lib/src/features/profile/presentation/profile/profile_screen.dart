@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
 import '../../../../router/router.dart';
@@ -164,17 +165,4 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class DetailListTile extends ConsumerWidget {
-  const DetailListTile({super.key, required this.label, required this.value});
-  final label;
-  final value;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(label), Text(value)]),
-    );
-  }
-}
