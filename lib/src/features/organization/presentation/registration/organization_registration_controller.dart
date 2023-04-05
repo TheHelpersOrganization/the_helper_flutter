@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
-import 'package:the_helper/src/features/organization/data/organization_repository.dart';
+import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 
 import '../../../contact/domain/contact.dart';
 import '../../../location/domain/location.dart';
@@ -54,7 +54,7 @@ class CreateOrganizationController
     final fileModels = await Future.wait(fileFutures);
 
     try {
-      final org = await ref.read(organizationRepositoryProvider).modCreate(
+      final org = await ref.read(modOrganizationRepositoryProvider).create(
             Organization(
               name: name,
               email: email,
