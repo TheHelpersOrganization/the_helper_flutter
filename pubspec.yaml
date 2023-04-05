@@ -51,6 +51,7 @@ dependencies:
   image_cropper:
   country_picker:
   file_picker:
+  back_button_interceptor:
 
 dev_dependencies:
   flutter_test:
