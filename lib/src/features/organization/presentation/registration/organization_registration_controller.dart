@@ -54,7 +54,7 @@ class CreateOrganizationController
     final fileModels = await Future.wait(fileFutures);
 
     try {
-      final org = await ref.read(organizationRepositoryProvider).create(
+      final org = await ref.read(organizationRepositoryProvider).modCreate(
             Organization(
               name: name,
               email: email,
