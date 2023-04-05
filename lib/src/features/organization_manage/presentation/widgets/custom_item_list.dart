@@ -18,9 +18,7 @@ class CustomListItem extends ConsumerWidget {
     // var date =
     //     "${data.time.hour}:${data.time.minute} ~ ${data.time.day}/${data.time.month}/${data.time.year}";
     return InkWell(
-        onTap: () {
-          print('dadf');
-        },
+        onTap: () => context.goNamed('organization-request-detail'),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(15)),

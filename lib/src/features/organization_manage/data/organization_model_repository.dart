@@ -25,7 +25,11 @@ class OrganizationModelRepository {
   });
 
   Future<List<OrganizationModel>> getAll(
-      {int limit = 100, int offset = 0, bool isBanned = false}) async {
+      {
+        int limit = 100, 
+        int offset = 0, 
+        int status = 0
+      }) async {
     // final List<dynamic> res = (await client.get(
     //   '/something',
     // ))

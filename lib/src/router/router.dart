@@ -11,6 +11,7 @@ import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.da
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/verify_organization_request/presentation/screens/organization_request_detail.dart';
 
 import '../common/screens/safe_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
@@ -60,10 +61,6 @@ final routes = [
         builder: (context, state) => const OrganizationRegistrationScreen(),
       ),
       GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
           name: AppRoute.accountManage.name,
           path: AppRoute.accountManage.path,
           builder: (context, state) => const AccountManageScreen()),
@@ -80,17 +77,13 @@ final routes = [
           path: AppRoute.organizationManage.path,
           builder: (context, state) => const OrganizationManageScreen()),
       GoRoute(
+          name: AppRoute.organizationRequestDetail.name,
+          path: AppRoute.organizationRequestDetail.path,
+          builder: (context, state) => const OrganizationRequestDetailScreen()),
+      GoRoute(
           name: AppRoute.changeRole.name,
           path: AppRoute.changeRole.path,
           builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
-          name: AppRoute.accountManage.name,
-          path: AppRoute.accountManage.path,
-          builder: (context, state) => const AccountManageScreen()),
-      GoRoute(
-          name: AppRoute.activityManage.name,
-          path: AppRoute.activityManage.path,
-          builder: (context, state) => const ActivityManageScreen()),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
@@ -183,7 +176,7 @@ enum AppRoute {
   // Quick access to develop screen
   testScreen(path: '/test', name: 'test'),
 
-  developing(path: '/not-exist', name:'not-exist'),
+  developing(path: '/not-exist', name: 'not-exist'),
 
   //Admin feature
   menu(
@@ -195,9 +188,14 @@ enum AppRoute {
     name: 'organization',
   ),
   accountManage(path: '/account-manage', name: 'account-manage'),
-  accountRequestManage(path: '/account-request-manage', name: 'account-request-manage'),
+  accountRequestManage(
+      path: '/account-request-manage', name: 'account-request-manage'),
   activityManage(path: '/activity-manage', name: 'activity-manage'),
   organizationManage(path: '/organization-manage', name: 'organization-manage'),
+  organizationRequestDetail(
+    name: 'organization-request-detail',
+    path: '/organization-request-detail',
+  ),
   organizationSearch(
     path: '/organization-search',
     name: 'organization-search',

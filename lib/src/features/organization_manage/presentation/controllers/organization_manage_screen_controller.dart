@@ -29,7 +29,7 @@ final activePagingControllerProvider = Provider.autoDispose(
       try {
         final items = await accountRepository.getAll(
           offset: pageKey * 100,
-          isBanned: false,
+          status: 0,
           // query: (name: searchPattern),
         );
         final isLastPage = items.length < 100;
@@ -59,7 +59,7 @@ final pendingPagingControllerProvider = Provider.autoDispose(
       try {
         final items = await accountRepository.getAll(
           offset: pageKey * 100,
-          isBanned: true,
+          status: 1,
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {
