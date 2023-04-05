@@ -4,7 +4,8 @@ import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 
-final joinedOrganizationIdsProvider = StateProvider<Set<int>>((ref) => {});
+final joinedOrganizationIdsProvider =
+    StateProvider.autoDispose<Set<int>>((ref) => {});
 
 class OrganizationJoinController extends AutoDisposeAsyncNotifier<void> {
   final CancelToken? token = null;

@@ -11,7 +11,7 @@ class OrganizationSearchController
     extends AutoDisposeAsyncNotifier<List<Organization>> {
   @override
   FutureOr<List<Organization>> build() {
-    return ref.watch(organizationRepositoryProvider).getAll();
+    return ref.watch(organizationRepositoryProvider).get();
   }
 }
 
@@ -31,7 +31,7 @@ final pagingControllerProvider = Provider.autoDispose(
     final controller = PagingController<int, Organization>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
-        final items = await organizationRepo.getAll(
+        final items = await organizationRepo.get(
           offset: pageKey * 100,
           query: OrganizationQuery(name: searchPattern),
         );
