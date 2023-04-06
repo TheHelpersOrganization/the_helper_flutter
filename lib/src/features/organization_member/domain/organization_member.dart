@@ -12,6 +12,7 @@ class OrganizationMember with _$OrganizationMember {
     required String status,
     int? censorId,
     String? rejectionReason,
+    DateTime? updatedAt,
   }) = _OrganizationMember;
 
   factory OrganizationMember.fromJson(Map<String, dynamic> json) =>
