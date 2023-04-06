@@ -14,8 +14,6 @@ class OrganizationRepository {
   OrganizationRepository({required this.client});
 
   Future<List<Organization>> get({
-    int limit = 100,
-    int offset = 0,
     OrganizationQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(

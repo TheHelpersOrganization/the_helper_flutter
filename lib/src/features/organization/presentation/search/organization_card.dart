@@ -316,7 +316,9 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                         size: 18,
                       ),
                       Text(
-                        '100 members',
+                        organization.numberOfMembers != null
+                            ? '${organization.numberOfMembers} member(s)'
+                            : '? member(s)',
                         style: context.theme.textTheme.bodySmall?.copyWith(
                           color: context.theme.primaryColor,
                         ),

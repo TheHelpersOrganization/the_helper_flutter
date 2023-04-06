@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
+
+import '../features/authentication/application/auth_service.dart';
 
 part 'dio.g.dart';
 // final dioProvider = Provider((ref) {

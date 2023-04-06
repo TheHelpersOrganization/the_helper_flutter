@@ -20,7 +20,7 @@ const List<DrawerItemModel> volunteer = [
   ),
   DrawerItemModel(
     route: AppRoute.myOrganization,
-    title: 'Register Organization',
+    title: 'My Organizations',
     icon: Icons.work_outline,
   ),
   DrawerItemModel(
