@@ -57,6 +57,11 @@ const List<DrawerItemModel> moderator = [
     icon: Icons.home,
   ),
   DrawerItemModel(
+    route: AppRoute.organizationMembersManagement,
+    title: 'Organization Members',
+    icon: Icons.work_outline,
+  ),
+  DrawerItemModel(
     // route: AppRoute.report,
     title: 'Chat',
     icon: Icons.report,

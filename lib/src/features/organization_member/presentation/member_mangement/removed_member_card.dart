@@ -10,21 +10,19 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import 'organization_member_management_controller.dart';
-
-class RejectedMemberCard extends ConsumerStatefulWidget {
+class RemovedMemberCard extends ConsumerStatefulWidget {
   final OrganizationMember member;
 
-  const RejectedMemberCard({
+  const RemovedMemberCard({
     super.key,
     required this.member,
   });
 
   @override
-  ConsumerState<RejectedMemberCard> createState() => _MemberCardState();
+  ConsumerState<RemovedMemberCard> createState() => _MemberCardState();
 }
 
-class _MemberCardState extends ConsumerState<RejectedMemberCard> {
+class _MemberCardState extends ConsumerState<RemovedMemberCard> {
   Future<dynamic> showRemoveDialog() {
     OrganizationMember member = widget.member;
 
@@ -50,9 +48,10 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
         onConfirm: () async {
           context.pop();
           showLoadingDialog();
-          await ref
-              .read(removeMemberControllerProvider.notifier)
-              .remove(member.organization!.id!, member.id);
+          // Add member back
+          // await ref
+          //     .read(removeMemberControllerProvider.notifier)
+          //     .remove(member.organization!.id!, member.id);
           if (context.mounted) {
             context.pop();
           }
@@ -67,7 +66,7 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
       barrierDismissible: true,
       useRootNavigator: false,
       builder: (context) => const LoadingDialog(
-        titleText: 'Removing member...',
+        titleText: 'Adding member...',
       ),
     );
   }
@@ -105,10 +104,10 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
               ),
               ListTile(
                 title: Text(
-                  'Rejection reason: ${member.rejectionReason ?? 'Unspecified'}',
+                  'Removal reason: ${member.rejectionReason ?? 'Unspecified'}',
                   style: const TextStyle(color: Colors.red),
                 ),
-                subtitle: Text('Date of rejection: $dateOfRejection'),
+                subtitle: Text('Date of removal: $dateOfRejection'),
               ),
             ],
           ),
@@ -156,8 +155,7 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
           ),
           const SizedBox(width: 4),
           Text(
-            ' Rejected at $dateOfRejection',
-            //style: context.theme.textTheme.bodySmall,
+            ' Removed at $dateOfRejection',
           ),
         ],
       ),

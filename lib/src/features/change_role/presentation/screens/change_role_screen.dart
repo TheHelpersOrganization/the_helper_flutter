@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:the_helper/src/features/change_role/data/role_repository.dart';
+import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/change_role_screen_controller.dart';
-
+import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
+import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -77,38 +80,60 @@ class RoleChoice extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userRole = ref.watch(changeRoleScreenControllerProvider);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const RoleOption(
-          optionColor: Colors.purple,
-          title: 'Volunteer',
-          description: 'Join thousands of activities, by trusted organizations',
-          role: 1,
-        ),
+    final currentOrganization = ref.watch(currentOrganizationProvider);
 
-        //Second Option
-        userRole.isMod
-            ? const RoleOption(
-                optionColor: Colors.red,
-                title: 'Organization',
-                description:
-                    'Manage your organization activites, members and more',
-                role: 2,
-              )
-            : const SizedBox(),
+    return currentOrganization.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (_, __) => const ErrorScreen(),
+      data: (data) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const RoleOption(
+            optionColor: Colors.purple,
+            title: 'Volunteer',
+            description:
+                'Join thousands of activities, by trusted organizations',
+            role: 1,
+          ),
 
-        //Third Option
-        userRole.isAdmin
-            ? const RoleOption(
-                optionColor: Colors.blue,
-                title: 'Admin',
-                description: 'Dashboard for Volunteer App Admin',
-                role: 3,
-              )
-            : const SizedBox(),
-      ],
+          //Second Option
+          userRole.isMod
+              ? RoleOption(
+                  optionColor: Colors.red,
+                  title: 'Organization',
+                  description:
+                      'Manage your organization activities, members and more',
+                  role: 2,
+                  onTap: () async {
+                    if (data == null) {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => const SwitchOrganizationDialog(),
+                      );
+                      return;
+                    }
+                    ref
+                        .read(homeScreenControllerProvider.notifier)
+                        .changeRole(2);
+                    context.goNamed(AppRoute.home.name);
+                  },
+                )
+              : const SizedBox(),
+
+          //Third Option
+          userRole.isAdmin
+              ? const RoleOption(
+                  optionColor: Colors.blue,
+                  title: 'Admin',
+                  description: 'Dashboard for Volunteer App Admin',
+                  role: 3,
+                )
+              : const SizedBox(),
+        ],
+      ),
     );
   }
 }

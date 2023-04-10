@@ -9,6 +9,7 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/joined_member_card.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/pending_member_card.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/rejected_member_card.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/removed_member_card.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import 'organization_member_management_controller.dart';
@@ -51,6 +52,11 @@ const List<TabElement> tab = [
     status: OrganizationMemberStatus.rejected,
     tabTitle: 'Rejected',
     noDataTitle: 'No rejected join request',
+  ),
+  TabElement(
+    status: OrganizationMemberStatus.removed,
+    tabTitle: 'Removed',
+    noDataTitle: 'No removed member',
   ),
 ];
 
@@ -117,6 +123,7 @@ class _MyOrganizationScreenState
           title: const Text('Organization Members'),
           centerTitle: true,
           bottom: TabBar(
+            isScrollable: true,
             controller: _tabController,
             tabs: tab.map((e) => Tab(text: e.tabTitle)).toList(),
           ),
@@ -136,8 +143,11 @@ class _MyOrganizationScreenState
                       } else if (currentStatus ==
                           OrganizationMemberStatus.pending) {
                         return PendingMemberCard(member: item);
+                      } else if (currentStatus ==
+                          OrganizationMemberStatus.rejected) {
+                        return RejectedMemberCard(member: item);
                       }
-                      return RejectedMemberCard(member: item);
+                      return RemovedMemberCard(member: item);
                     },
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Column(

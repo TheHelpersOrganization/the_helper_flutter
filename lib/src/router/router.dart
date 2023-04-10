@@ -12,6 +12,7 @@ import 'package:the_helper/src/features/organization/presentation/my/my_organiza
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
 
 import './router_notifier.dart';
 import '../common/screens/safe_screen.dart';
@@ -78,6 +79,17 @@ final routes = [
           name: AppRoute.organizationManage.name,
           path: AppRoute.organizationManage.path,
           builder: (context, state) => const OrganizationManageScreen()),
+      GoRoute(
+        path: AppRoute.organizationMembersManagement.path,
+        name: AppRoute.organizationMembersManagement.name,
+        builder: (context, state) =>
+            const OrganizationMembersManagementScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.myOrganization.path,
+        name: AppRoute.myOrganization.name,
+        builder: (context, state) => const MyOrganizationScreen(),
+      ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
         builder: (context, state, child) {
@@ -137,11 +149,6 @@ final routes = [
             builder: (_, state) =>
                 OrganizationDetailScreen(orgId: state.params['id']!),
           ),
-          GoRoute(
-            path: AppRoute.myOrganization.path,
-            name: AppRoute.myOrganization.name,
-            builder: (context, state) => const MyOrganizationScreen(),
-          )
         ],
       ),
     ],
@@ -202,6 +209,10 @@ enum AppRoute {
   myOrganization(
     path: '/my-organization',
     name: 'my-organization',
+  ),
+  organizationMembersManagement(
+    path: '/organization-members',
+    name: 'organization-members',
   ),
   ;
 

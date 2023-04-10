@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/account_manage/domain/account.dart';
+import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 part 'organization_member.freezed.dart';
 part 'organization_member.g.dart';
@@ -13,6 +16,9 @@ class OrganizationMember with _$OrganizationMember {
     int? censorId,
     String? rejectionReason,
     DateTime? updatedAt,
+    AccountModel? account,
+    Profile? profile,
+    Organization? organization,
   }) = _OrganizationMember;
 
   factory OrganizationMember.fromJson(Map<String, dynamic> json) =>

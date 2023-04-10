@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../../../common/exception/backend_exception.dart';
@@ -17,6 +18,15 @@ class ProfileRepository {
   });
   final Dio client;
   final String url;
+
+  Future<List<Profile>> getProfiles(GetProfilesData data) async {
+    final List<dynamic> res = (await client.get(
+      '/profiles',
+      data: data.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => Profile.fromJson(e)).toList();
+  }
 
   // TODO: this method should be rename as get your profile
   Future<Profile> getProfile() async {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class RoleOption extends ConsumerWidget {
   final Color optionColor;
   final String title;
   final String description;
   final int role;
+  final VoidCallback? onTap;
 
   const RoleOption({
     super.key,
@@ -16,6 +17,7 @@ class RoleOption extends ConsumerWidget {
     required this.optionColor,
     required this.description,
     required this.role,
+    this.onTap,
   });
 
   @override
@@ -26,6 +28,13 @@ class RoleOption extends ConsumerWidget {
           height: 20,
         ),
         InkWell(
+          onTap: onTap ??
+              () {
+                ref
+                    .read(homeScreenControllerProvider.notifier)
+                    .changeRole(role);
+                context.goNamed(AppRoute.home.name);
+              },
           child: Container(
             height: 100,
             width: 300,
@@ -76,10 +85,6 @@ class RoleOption extends ConsumerWidget {
               ],
             ),
           ),
-          onTap: () {
-            ref.read(homeScreenControllerProvider.notifier).changeRole(role);
-            context.goNamed(AppRoute.home.name);
-          },
         ),
         const SizedBox(
           height: 20,

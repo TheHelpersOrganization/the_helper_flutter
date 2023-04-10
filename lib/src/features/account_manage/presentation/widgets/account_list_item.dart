@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/features/account_manage/presentation/widgets/popup_menu_button.dart';
 
 class AccountListItem extends ConsumerWidget {
@@ -38,7 +37,6 @@ class AccountListItem extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(data.name),
                     Text(data.email),
                   ],
                 ),
