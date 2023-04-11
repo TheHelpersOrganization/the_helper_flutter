@@ -13,7 +13,7 @@ import 'package:the_helper/src/features/organization/presentation/registration/o
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/verify_organization_request/presentation/screens/organization_request_detail.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+// import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
 
 import './router_notifier.dart';
@@ -224,6 +224,10 @@ enum AppRoute {
   myOrganization(
     path: '/my-organization',
     name: 'my-organization',
+  ),
+  organizationMembersManagement(
+    path: '/organization-members-manage',
+    name: 'organization-members-manage'
   ),
   ;
 
