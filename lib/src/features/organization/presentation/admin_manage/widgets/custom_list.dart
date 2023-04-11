@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/organization_manage/domain/organization_model.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/widgets/custom_item_list.dart';
+
+import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_item_list.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/controllers/organization_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/controllers/organization_manage_screen_controller.dart';
 
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
     super.key,
-    required this.status,
   });
-  final int status;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    final controllerProvider = getController(status);
+    final controllerProvider = pagingControllerProvider;
     final pagingController = ref.watch(controllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -65,7 +65,7 @@ class CustomScrollList extends ConsumerWidget {
               height: 24,
             ),
           Expanded(
-              child: PagedListView<int, OrganizationModel>(
+              child: PagedListView<int, Organization>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (context, item, index) =>
@@ -217,15 +217,4 @@ class CustomScrollList extends ConsumerWidget {
       ],
     );
   }
-}
-
-AutoDisposeProvider<PagingController<int, OrganizationModel>> getController(
-    int status) {
-  switch (status) {
-    case 0:
-      return activePagingControllerProvider;
-    case 1:
-      return pendingPagingControllerProvider;
-  }
-  throw 'Missing paging controller';
 }

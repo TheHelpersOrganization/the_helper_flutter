@@ -36,7 +36,8 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: Container(
+        color: Colors.transparent,
         padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -11,7 +11,7 @@ import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.da
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/verify_organization_request/presentation/screens/organization_request_detail.dart';
 
 import './router_notifier.dart';
