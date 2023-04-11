@@ -1,8 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
-
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/account_manage/domain/account.dart';
+import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'account_repository.g.dart';
@@ -10,14 +9,12 @@ part 'account_repository.g.dart';
 List<AccountModel> accLst = [
   AccountModel(
     id: 1,
-    name: 'AAA',
     email: 'AAA@gmail',
     isAccountDisabled: false,
     isAccountVerified: true,
   ),
   AccountModel(
     id: 2,
-    name: 'BBB',
     email: 'BBB@gmail',
     isAccountDisabled: false,
     isAccountVerified: false,
@@ -27,14 +24,12 @@ List<AccountModel> accLst = [
 List<AccountModel> bannedAccLst = [
   AccountModel(
     id: 1,
-    name: 'CCC',
     email: 'CC@gmail',
     isAccountDisabled: true,
     isAccountVerified: true,
   ),
   AccountModel(
     id: 2,
-    name: 'DDD',
     email: 'DDD@gmail',
     isAccountDisabled: true,
     isAccountVerified: false,
@@ -49,15 +44,26 @@ class AccountRepository {
     required this.client,
   });
 
-  Future<List<AccountModel>> getAll(
-      {int limit = 100, int offset = 0, bool isBanned = false}) async {
-    // final List<dynamic> res = (await client.get(
-    //   '/something',
-    // ))
-    //     .data['data'];
-    final List<AccountModel> res = isBanned ? bannedAccLst : accLst;
-    // return res.map((e) => AccountModel.fromMap(e)).toList();
-    return res;
+  // Future<List<AccountModel>> getAll(
+  //     {int limit = 100, int offset = 0, bool isBanned = false}) async {
+  //   // final List<dynamic> res = (await client.get(
+  //   //   '/something',
+  //   // ))
+  //   //     .data['data'];
+  //   final List<AccountModel> res = isBanned ? bannedAccLst : accLst;
+  //   // return res.map((e) => AccountModel.fromMap(e)).toList();
+  //   return res;
+  // }
+
+  Future<List<AccountModel>> getAll({
+    GetAccountQuery? query,
+  }) async {
+    final List<dynamic> res = (await client.get(
+      '/accounts',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => AccountModel.fromJson(e)).toList();
   }
 
   Future<AccountModel> getById(int id) async {

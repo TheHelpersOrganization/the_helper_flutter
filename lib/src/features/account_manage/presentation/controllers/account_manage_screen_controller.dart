@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/account_manage/data/account_repository.dart';
 import 'package:the_helper/src/features/account_manage/domain/account.dart';
-
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
 
 class AccountManageScreenController
     extends AutoDisposeAsyncNotifier<List<AccountModel>> {
@@ -24,14 +24,15 @@ final pagingControllerProvider = Provider.autoDispose(
     final accountRepository = ref.watch(accountRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller =
-        PagingController<int, AccountModel>(firstPageKey: 0);
+    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await accountRepository.getAll(
-          offset: pageKey * 100,
-          isBanned: false,
-          // query: (name: searchPattern),
+          query: GetAccountQuery(
+            offset: pageKey * 100,
+            isBanned: false,
+            // query: (name: searchPattern),
+          ),
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {
@@ -55,13 +56,14 @@ final bannedPagingControllerProvider = Provider.autoDispose(
     final accountRepository = ref.watch(accountRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller =
-        PagingController<int, AccountModel>(firstPageKey: 0);
+    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await accountRepository.getAll(
-          offset: pageKey * 100,
-          isBanned: true,
+          query: GetAccountQuery(
+            offset: pageKey * 100,
+            isBanned: true,
+          ),
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {

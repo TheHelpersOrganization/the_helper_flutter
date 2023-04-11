@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
-import 'package:the_helper/src/features/organization/presentation/my/my_organization_controller.dart';
-import 'package:the_helper/src/features/organization/presentation/my/rejected_org_card.dart';
+import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
+import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/features/organization_member/domain/organization_member_status.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/joined_member_card.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/pending_member_card.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/rejected_member_card.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/removed_member_card.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
-import '../../../../common/widget/drawer/app_drawer.dart';
-import '../../../organization_member/domain/organization_member_status.dart';
-import '../../domain/organization.dart';
-import 'org_card.dart';
-import 'pending_org_card.dart';
+import 'organization_member_management_controller.dart';
 
-class MyOrganizationScreen extends ConsumerStatefulWidget {
-  const MyOrganizationScreen({Key? key}) : super(key: key);
+class OrganizationMembersManagementScreen extends ConsumerStatefulWidget {
+  const OrganizationMembersManagementScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<MyOrganizationScreen> createState() =>
+  ConsumerState<OrganizationMembersManagementScreen> createState() =>
       _MyOrganizationScreenState();
 }
 
@@ -37,13 +39,13 @@ class TabElement {
 const List<TabElement> tab = [
   TabElement(
     status: OrganizationMemberStatus.approved,
-    tabTitle: 'Joined',
-    noDataTitle: 'No organization found',
-    noDataSubtitle: 'Look like you haven\'t joined any organization yet',
+    tabTitle: 'Members',
+    noDataTitle: 'No member found',
+    noDataSubtitle: 'Look like you haven\'t add any member yet',
   ),
   TabElement(
     status: OrganizationMemberStatus.pending,
-    tabTitle: 'Pending',
+    tabTitle: 'Applicants',
     noDataTitle: 'No pending join request',
   ),
   TabElement(
@@ -51,9 +53,15 @@ const List<TabElement> tab = [
     tabTitle: 'Rejected',
     noDataTitle: 'No rejected join request',
   ),
+  TabElement(
+    status: OrganizationMemberStatus.removed,
+    tabTitle: 'Removed',
+    noDataTitle: 'No removed member',
+  ),
 ];
 
-class _MyOrganizationScreenState extends ConsumerState<MyOrganizationScreen>
+class _MyOrganizationScreenState
+    extends ConsumerState<OrganizationMembersManagementScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 
@@ -76,10 +84,30 @@ class _MyOrganizationScreenState extends ConsumerState<MyOrganizationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final pagingController = ref.watch(myPagingControllerProvider);
+    final pagingController = ref.watch(pagingControllerProvider);
     final currentStatus = ref.watch(currentStatusProvider);
+    final currentOrganization = ref.watch(currentOrganizationProvider);
+
     ref.listen<AsyncValue>(
-      cancelJoinControllerProvider,
+      approveMemberControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        if (state.hasValue && !state.isLoading && !state.hasError) {
+          pagingController.refresh();
+        }
+      },
+    );
+    ref.listen<AsyncValue>(
+      rejectMemberControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        if (state.hasValue && !state.isLoading && !state.hasError) {
+          pagingController.refresh();
+        }
+      },
+    );
+    ref.listen<AsyncValue>(
+      removeMemberControllerProvider,
       (_, state) {
         state.showSnackbarOnError(context);
         if (state.hasValue && !state.isLoading && !state.hasError) {
@@ -92,9 +120,10 @@ class _MyOrganizationScreenState extends ConsumerState<MyOrganizationScreen>
       length: tab.length,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('My Organizations'),
+          title: const Text('Organization Members'),
           centerTitle: true,
           bottom: TabBar(
+            isScrollable: true,
             controller: _tabController,
             tabs: tab.map((e) => Tab(text: e.tabTitle)).toList(),
           ),
@@ -105,20 +134,20 @@ class _MyOrganizationScreenState extends ConsumerState<MyOrganizationScreen>
           child: Column(
             children: [
               Expanded(
-                child: PagedListView<int, Organization>(
+                child: PagedListView<int, OrganizationMember>(
                   pagingController: pagingController,
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, item, index) {
-                      if (currentStatus == OrganizationMemberStatus.pending) {
-                        return PendingOrgCard(organization: item);
+                      if (currentStatus == OrganizationMemberStatus.approved) {
+                        return JoinedMemberCard(member: item);
+                      } else if (currentStatus ==
+                          OrganizationMemberStatus.pending) {
+                        return PendingMemberCard(member: item);
                       } else if (currentStatus ==
                           OrganizationMemberStatus.rejected) {
-                        return RejectedOrgCard(
-                          organization: item,
-                        );
-                      } else {
-                        return OrgCard(organization: item);
+                        return RejectedMemberCard(member: item);
                       }
+                      return RemovedMemberCard(member: item);
                     },
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Column(

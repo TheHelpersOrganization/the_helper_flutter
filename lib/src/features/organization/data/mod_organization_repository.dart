@@ -23,18 +23,21 @@ class ModOrganizationRepository {
     return res.map((e) => Organization.fromJson(e)).toList();
   }
 
-  Future<Organization> getOwnedOrganizationById(int id) async {
+  Future<Organization?> getOwnedOrganizationById(int id) async {
     final res = await client.get('/mod/organizations/$id');
+    if (res.data['data'] == null) {
+      return null;
+    }
     return Organization.fromJson(res.data['data']);
   }
 
-  Future<Organization> modCreate(Organization organization) async {
+  Future<Organization> create(Organization organization) async {
     final res =
         await client.post('/organizations', data: organization.toJson());
     return Organization.fromJson(res.data['data']);
   }
 
-  Future<void> modUpdate(int id, Organization organization) async {
+  Future<void> update(int id, Organization organization) async {
     await client.put('/organization/$id', data: organization.toJson());
   }
 }
@@ -43,3 +46,9 @@ class ModOrganizationRepository {
 ModOrganizationRepository modOrganizationRepository(
         ModOrganizationRepositoryRef ref) =>
     ModOrganizationRepository(client: ref.watch(dioProvider));
+
+@riverpod
+Future<List<Organization>> getOwnedOrganizations(
+    GetOwnedOrganizationsRef ref) async {
+  return ref.watch(modOrganizationRepositoryProvider).getOwnedOrganizations();
+}

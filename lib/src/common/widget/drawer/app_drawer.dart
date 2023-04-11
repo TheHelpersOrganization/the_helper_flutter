@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_enum.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
@@ -42,6 +43,17 @@ class AppDrawer extends ConsumerWidget {
                   i.route != null ? i.route!.name : AppRoute.developing.name);
             },
           ),
+        AppDrawerItem(
+          title: 'Switch Organizations',
+          icon: Icons.groups_outlined,
+          onTap: () {
+            context.pop();
+            showDialog(
+              context: context,
+              builder: (context) => const SwitchOrganizationDialog(),
+            );
+          },
+        ),
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout,
