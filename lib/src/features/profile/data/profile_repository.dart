@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../../../common/exception/backend_exception.dart';
 import '../../../utils/domain_provider.dart';
 import '../domain/profile.dart';
 import '../domain/profile_setting_options.dart';
@@ -30,29 +29,26 @@ class ProfileRepository {
 
   // TODO: this method should be rename as get your profile
   Future<Profile> getProfile() async {
-    try {
-      final response = await client.get(
-        '/profiles/me',
-      );
-      return Profile.fromJson(response.data['data']);
-    } on DioError catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
-    }
+    final response = await client.get(
+      '/profiles/me',
+    );
+    return Profile.fromJson(response.data['data']);
   }
-  // TODO: get another user profile
-  // Future<Profile> getProfile(UserID uid) async {}
+
+  Future<Profile> getProfileById(int id) async {
+    final response = await client.get(
+      '/profiles/$id',
+    );
+    return Profile.fromJson(response.data['data']);
+  }
 
   // TODO: this method should be rename as update your profile
   Future<Profile> updateProfile(Profile profile) async {
-    try {
-      final response = await client.put(
-        '/profiles/me',
-        data: profile.toJson(),
-      );
-      return Profile.fromJson(response.data['data']);
-    } on DioError catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
-    }
+    final response = await client.put(
+      '/profiles/me',
+      data: profile.toJson(),
+    );
+    return Profile.fromJson(response.data['data']);
   }
 }
 
