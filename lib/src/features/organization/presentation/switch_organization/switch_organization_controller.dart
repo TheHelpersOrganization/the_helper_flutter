@@ -5,7 +5,7 @@ import 'package:the_helper/src/features/organization/data/current_organization_r
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
-final selectedOrganization = StateProvider<int?>((ref) => null);
+final selectedOrganization = StateProvider.autoDispose<int?>((ref) => null);
 
 final currentOrganizationProvider = FutureProvider.autoDispose((ref) =>
     ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());

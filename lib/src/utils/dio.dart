@@ -54,6 +54,7 @@ part 'dio.g.dart';
 @Riverpod(keepAlive: true)
 Dio dio(DioRef ref) {
   final baseUrl = ref.read(baseUrlProvider);
+  final authServiceState = ref.watch(authServiceProvider);
   final authService = ref.watch(authServiceProvider.notifier);
 
   final client = Dio(
@@ -62,7 +63,6 @@ Dio dio(DioRef ref) {
   client.interceptors
       .add(QueuedInterceptorsWrapper(onRequest: (options, handler) async {
     final token = await authService.getToken();
-
     if (token == null) {
       return handler.reject(DioError(
           requestOptions: options,
@@ -70,7 +70,7 @@ Dio dio(DioRef ref) {
           message: 'Invalid token'));
     }
 
-    final access = token.access;
+    final access = token.accessToken;
 
     options.headers['Authorization'] = "Bearer $access";
     options.connectTimeout = const Duration(seconds: 3000);

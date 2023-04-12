@@ -32,7 +32,7 @@ class AuthRepository {
           "password": password,
         },
       );
-      final accountToken = AccountToken.fromMap(response.data['data']);
+      final accountToken = AccountToken.fromJson(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
     } on DioError catch (ex) {
@@ -68,7 +68,7 @@ class AuthRepository {
           "refreshToken": refreshToken,
         },
       );
-      final accountToken = AccountToken.fromMap(response.data['data']);
+      final accountToken = AccountToken.fromJson(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
     } catch (err) {
@@ -82,8 +82,11 @@ class AuthRepository {
   }
 
   Future<void> _saveCredentialsToLocalStorage(Token token) async {
-    await localStorage.write(key: 'auth.accessToken', value: token.access);
-    await localStorage.write(key: 'auth.refreshToken', value: token.refresh);
+    await localStorage.write(key: 'auth.accessToken', value: token.accessToken);
+    await localStorage.write(
+      key: 'auth.refreshToken',
+      value: token.refreshToken,
+    );
   }
 
   Future<void> sendOtp(String email) async {
@@ -108,7 +111,7 @@ class AuthRepository {
           'token': otp,
         },
       );
-      final account = Account.fromMap(response.data['data']);
+      final account = Account.fromJson(response.data['data']);
       return account;
     } on DioError catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));

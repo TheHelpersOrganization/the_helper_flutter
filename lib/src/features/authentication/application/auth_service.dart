@@ -40,8 +40,8 @@ class AuthService extends AsyncNotifier<AccountToken?> {
       return null;
     }
 
-    final access = accountToken.token.access;
-    final refresh = accountToken.token.refresh;
+    final access = accountToken.token.accessToken;
+    final refresh = accountToken.token.refreshToken;
     final accessTokenHasExpired = JwtDecoder.isExpired(access);
     final refreshTokenHasExpired = JwtDecoder.isExpired(refresh);
 

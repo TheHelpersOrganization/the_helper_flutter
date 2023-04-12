@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/change_role_screen_controller.dart';
-import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -81,8 +84,30 @@ class RoleChoice extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userRole = ref.watch(changeRoleScreenControllerProvider);
     final currentOrganization = ref.watch(currentOrganizationProvider);
+    final currentRole = ref.watch(roleControllerProvider);
 
-    return currentOrganization.when(
+    ref.listen<AsyncValue>(
+      roleControllerProvider,
+      (_, state) => state.showSnackbarOnError(context),
+    );
+    ref.listen<AsyncValue>(
+      currentOrganizationProvider,
+      (_, state) => state.showSnackbarOnError(context),
+    );
+
+    if (currentOrganization.isLoading || currentRole.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (currentOrganization.hasError || currentRole.hasError) {
+      return const ErrorScreen();
+    }
+
+    final organization = currentOrganization.value;
+
+    return currentRole.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
@@ -91,12 +116,16 @@ class RoleChoice extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const RoleOption(
+          RoleOption(
             optionColor: Colors.purple,
             title: 'Volunteer',
             description:
                 'Join thousands of activities, by trusted organizations',
-            role: 1,
+            role: Role.volunteer,
+            image: SvgPicture.asset(
+              'assets/images/role_volunteer.svg',
+              fit: BoxFit.cover,
+            ),
           ),
 
           //Second Option
@@ -106,7 +135,11 @@ class RoleChoice extends ConsumerWidget {
                   title: 'Organization',
                   description:
                       'Manage your organization activities, members and more',
-                  role: 2,
+                  role: Role.moderator,
+                  image: SvgPicture.asset(
+                    'assets/images/role_mod.svg',
+                    fit: BoxFit.cover,
+                  ),
                   onTap: () async {
                     if (data == null) {
                       await showDialog(
@@ -116,8 +149,8 @@ class RoleChoice extends ConsumerWidget {
                       return;
                     }
                     ref
-                        .read(homeScreenControllerProvider.notifier)
-                        .changeRole(2);
+                        .read(roleControllerProvider.notifier)
+                        .setCurrentRole(Role.moderator);
                     context.goNamed(AppRoute.home.name);
                   },
                 )
@@ -125,11 +158,15 @@ class RoleChoice extends ConsumerWidget {
 
           //Third Option
           userRole.isAdmin
-              ? const RoleOption(
+              ? RoleOption(
                   optionColor: Colors.blue,
                   title: 'Admin',
                   description: 'Dashboard for Volunteer App Admin',
-                  role: 3,
+                  role: Role.admin,
+                  image: SvgPicture.asset(
+                    'assets/images/role_admin.svg',
+                    fit: BoxFit.cover,
+                  ),
                 )
               : const SizedBox(),
         ],

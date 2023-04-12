@@ -1,70 +1,20 @@
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 
-@immutable
-class Account {
-  final int id;
-  final String email;
-  final bool isAccountDisabled;
-  final bool isAccountVerified;
+part 'account.freezed.dart';
+part 'account.g.dart';
 
-  const Account({
-    required this.id,
-    required this.email,
-    required this.isAccountDisabled,
-    required this.isAccountVerified,
-  });
+@freezed
+class Account with _$Account {
+  @JsonSerializable(includeIfNull: false)
+  const factory Account({
+    required int id,
+    required String email,
+    required List<Role> roles,
+    required bool isAccountDisabled,
+    required bool isAccountVerified,
+  }) = _Account;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Account &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          email == other.email &&
-          isAccountDisabled == other.isAccountDisabled &&
-          isAccountVerified == other.isAccountVerified);
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      email.hashCode ^
-      isAccountDisabled.hashCode ^
-      isAccountVerified.hashCode;
-
-  @override
-  String toString() {
-    return 'Account{ id: $id, email: $email, isAccountDisabled: $isAccountDisabled, isAccountVerified: $isAccountVerified,}';
-  }
-
-  Account copyWith({
-    int? id,
-    String? email,
-    bool? isAccountDisabled,
-    bool? isAccountVerified,
-  }) {
-    return Account(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      isAccountDisabled: isAccountDisabled ?? this.isAccountDisabled,
-      isAccountVerified: isAccountVerified ?? this.isAccountVerified,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'email': email,
-      'isAccountDisabled': isAccountDisabled,
-      'isAccountVerified': isAccountVerified,
-    };
-  }
-
-  factory Account.fromMap(Map<String, dynamic> map) {
-    return Account(
-      id: map['id'] as int,
-      email: map['email'] as String,
-      isAccountDisabled: map['isAccountDisabled'] as bool,
-      isAccountVerified: map['isAccountVerified'] as bool,
-    );
-  }
+  factory Account.fromJson(Map<String, dynamic> json) =>
+      _$AccountFromJson(json);
 }
