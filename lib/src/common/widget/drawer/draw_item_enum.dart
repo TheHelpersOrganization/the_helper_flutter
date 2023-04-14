@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_model.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
 
 const List<DrawerItemModel> volunteer = [
@@ -43,35 +46,46 @@ const List<DrawerItemModel> volunteer = [
     title: 'Settings',
     icon: Icons.settings,
   ),
-  DrawerItemModel(
-    route: AppRoute.changeRole,
-    title: 'Switch Role',
-    icon: Icons.change_circle,
-  ),
+  // DrawerItemModel(
+  //   route: AppRoute.changeRole,
+  //   title: 'Switch Role',
+  //   icon: Icons.change_circle,
+  // ),
 ];
 
-const List<DrawerItemModel> moderator = [
-  DrawerItemModel(
+final List<DrawerItemModel> moderator = [
+  const DrawerItemModel(
     route: AppRoute.home,
     title: 'Home',
     icon: Icons.home,
   ),
-  DrawerItemModel(
+  const DrawerItemModel(
     route: AppRoute.organizationMembersManagement,
     title: 'Organization Members',
     icon: Icons.work_outline,
   ),
-  DrawerItemModel(
+  const DrawerItemModel(
     // route: AppRoute.report,
     title: 'Chat',
     icon: Icons.report,
   ),
-  DrawerItemModel(
+  const DrawerItemModel(
     route: AppRoute.settings,
     title: 'Settings',
     icon: Icons.settings,
   ),
   DrawerItemModel(
+    title: 'Switch Organizations',
+    icon: Icons.groups_outlined,
+    onTap: (context) {
+      context.pop();
+      showDialog(
+        context: context,
+        builder: (context) => const SwitchOrganizationDialog(),
+      );
+    },
+  ),
+  const DrawerItemModel(
     route: AppRoute.changeRole,
     title: 'Switch Role',
     icon: Icons.change_circle,
@@ -146,11 +160,11 @@ const List<DrawerItemModel> admin = [
   ),
 ];
 
-List<DrawerItemModel> getDrawerItem(int role) {
+List<DrawerItemModel> getDrawerItem(Role role) {
   switch (role) {
-    case 2:
+    case Role.moderator:
       return moderator;
-    case 3:
+    case Role.admin:
       return admin;
     default:
       return volunteer;

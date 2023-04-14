@@ -12,10 +12,13 @@ class UserRole {
   factory UserRole.fromJson(Map<String, dynamic> data) {
     final isMod = data['isMod'] as bool;
     final isAdmin = data['isAdmin'] as bool;
-    return UserRole(
-      isMod: isMod,
-      isAdmin: isAdmin,
-      role: 0
-    );
+    return UserRole(isMod: isMod, isAdmin: isAdmin, role: 0);
   }
+}
+
+enum Role {
+  volunteer,
+  moderator,
+  admin,
+  operator,
 }

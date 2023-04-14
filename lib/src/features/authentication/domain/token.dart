@@ -1,37 +1,14 @@
-import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-class Token {
-  final String access;
-  final String refresh;
+part 'token.freezed.dart';
+part 'token.g.dart';
 
-  const Token({
-    required this.access,
-    required this.refresh,
-  });
+@freezed
+class Token with _$Token {
+  const factory Token({
+    required String accessToken,
+    required String refreshToken,
+  }) = _Token;
 
-  factory Token.fromJson(Map<String, dynamic> data) {
-    final access = data['accessToken'] as String;
-    final refresh = data['refreshToken'] as String;
-    return Token(
-      access: access,
-      refresh: refresh,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Token &&
-          runtimeType == other.runtimeType &&
-          access == other.access &&
-          refresh == other.refresh;
-
-  @override
-  int get hashCode => access.hashCode ^ refresh.hashCode;
-
-  @override
-  String toString() {
-    return 'Token{access: $access, refresh: $refresh}';
-  }
+  factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
 }
