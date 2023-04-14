@@ -6,8 +6,8 @@ import '../../contact/domain/contact.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'org_request_model.g.dart';
-part 'org_request_model.freezed.dart';
+part 'organization_request_model.g.dart';
+part 'organization_request_model.freezed.dart';
 
 @freezed
 class OrganizationRequestModel with _$OrganizationRequestModel {

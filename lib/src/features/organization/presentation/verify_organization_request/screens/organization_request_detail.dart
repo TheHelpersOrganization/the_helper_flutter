@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
-import 'package:the_helper/src/features/verify_organization_request/presentation/widgets/activity_type.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/activity_type.dart';
 
 //Screens
-import 'package:the_helper/src/features/verify_organization_request/domain/org_request_model.dart';
-import 'package:the_helper/src/features/verify_organization_request/data/org_request_repository.dart';
-import 'package:the_helper/src/features/verify_organization_request/presentation/widgets/file_attachment.dart';
+import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
+import 'package:the_helper/src/features/organization/data/organization_request_repository.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/file_attachment.dart';
 
 class OrganizationRequestDetailScreen extends ConsumerWidget {
   // final String? role;

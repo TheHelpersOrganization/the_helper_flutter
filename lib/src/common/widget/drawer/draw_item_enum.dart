@@ -94,6 +94,11 @@ const List<DrawerItemModel> admin = [
         title: 'Organizations Manage', 
         icon: Icons.search,
   ),
+  DrawerItemModel(
+    route: AppRoute.organizationRequestsManage,
+    title: 'Organization Request Manage',
+    icon: Icons.app_registration,
+  ),
   // DrawerItemModel(    
   //   title: 'Organizations',
   //   icon: Icons.search,

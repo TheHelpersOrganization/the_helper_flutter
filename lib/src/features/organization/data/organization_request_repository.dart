@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
-import 'package:the_helper/src/features/verify_organization_request/domain/org_request_model.dart';
+import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-part 'org_request_repository.g.dart';
+part 'organization_request_repository.g.dart';
 
 List<OrganizationRequestModel> requestList = [
   OrganizationRequestModel(
@@ -37,8 +37,13 @@ class OrganizationRequestModelRepository {
     required this.client,
   });
 
-  Future<List<OrganizationRequestModel>> getAll(
-      {int limit = 100, int offset = 0, bool isBanned = false}) async {
+  Future<List<OrganizationRequestModel>> getAll({
+    int limit = 100,
+    int offset = 0,
+    int? status,
+    // OrganizationQuery? query,
+  }) async {
+    print('aaaa');
     // final List<dynamic> res = (await client.get(
     //   '/something',
     // ))

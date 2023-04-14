@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/popup_menu_button.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/popup_menu_button.dart';
 
 class CustomListItem extends ConsumerWidget {
-  final Organization data;
+  final OrganizationRequestModel data;
 
   const CustomListItem({
     super.key,
@@ -20,7 +20,7 @@ class CustomListItem extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
-        onTap: () {},
+        onTap: () => context.goNamed('organization-request-detail'),
         child: Container(
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(15)),
