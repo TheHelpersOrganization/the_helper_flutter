@@ -16,7 +16,7 @@ class AccountManageScreenController
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
-
+final tabStatusProvider = StateProvider.autoDispose<int>((ref) => 0);
 final firstLoadPagingController = StateProvider((ref) => true);
 
 final pagingControllerProvider = Provider.autoDispose(
@@ -24,46 +24,16 @@ final pagingControllerProvider = Provider.autoDispose(
     final accountRepository = ref.watch(accountRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
+    final tabStatus = ref.watch(tabStatusProvider);
     final controller = PagingController<int, AccountModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await accountRepository.getAll(
           query: GetAccountQuery(
-            offset: pageKey * 100,
-            isBanned: false,
             // query: (name: searchPattern),
           ),
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
-      }
-    });
-    if (hasUsedSearch) {
-      controller.notifyPageRequestListeners(0);
-    }
-    return controller;
-  },
-);
-
-final bannedPagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final accountRepository = ref.watch(accountRepositoryProvider);
-    final searchPattern = ref.watch(searchPatternProvider);
-    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await accountRepository.getAll(
-          query: GetAccountQuery(
-            offset: pageKey * 100,
-            isBanned: true,
-          ),
+          offset: pageKey * 100,
+          isBanned: tabStatus,
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {

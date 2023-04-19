@@ -18,8 +18,7 @@ class AccountListItem extends ConsumerWidget {
         padding: const EdgeInsets.all(5),
         child: InkWell(
           onTap: () {
-            print('dadf');
-            context.goNamed('temp', params: {'id': '21'});
+            
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,

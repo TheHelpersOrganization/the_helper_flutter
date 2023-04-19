@@ -85,11 +85,6 @@ final List<DrawerItemModel> moderator = [
       );
     },
   ),
-  const DrawerItemModel(
-    route: AppRoute.changeRole,
-    title: 'Switch Role',
-    icon: Icons.change_circle,
-  ),
 ];
 
 const List<DrawerItemModel> admin = [
@@ -103,31 +98,31 @@ const List<DrawerItemModel> admin = [
     title: 'Accounts Manage',
     icon: Icons.search,
   ),
-  DrawerItemModel(
-        route: AppRoute.organizationManage,
-        title: 'Organizations Manage', 
-        icon: Icons.search,
-  ),
-  DrawerItemModel(
-    route: AppRoute.organizationRequestsManage,
-    title: 'Organization Request Manage',
-    icon: Icons.app_registration,
-  ),
-  // DrawerItemModel(    
-  //   title: 'Organizations',
-  //   icon: Icons.search,
-  //   subPaths: [
-  //     DrawerItemModel(
+  // DrawerItemModel(
   //       route: AppRoute.organizationManage,
   //       title: 'Organizations Manage', 
   //       icon: Icons.search,
-  //     ),
-  //     DrawerItemModel(
-  //       title: 'Organizations Requests', 
-  //       icon: Icons.search,
-  //     ),
-  //   ],
   // ),
+  // DrawerItemModel(
+  //   route: AppRoute.organizationRequestsManage,
+  //   title: 'Organization Request Manage',
+  //   icon: Icons.app_registration,
+  // ),
+  DrawerItemModel(    
+    title: 'Organizations',
+    icon: Icons.search,
+    subPaths: [
+      DrawerItemModel(
+        route: AppRoute.organizationManage,
+        title: 'Organizations Manage', 
+        icon: Icons.search,
+      ),
+      DrawerItemModel(
+        title: 'Organizations Requests', 
+        icon: Icons.search,
+      ),
+    ],
+  ),
   DrawerItemModel(
     route: AppRoute.accountRequestManage,
     title: 'Verify Request',
@@ -152,11 +147,6 @@ const List<DrawerItemModel> admin = [
     route: AppRoute.settings,
     title: 'Settings',
     icon: Icons.settings,
-  ),
-  DrawerItemModel(
-    route: AppRoute.changeRole,
-    title: 'Switch Role',
-    icon: Icons.change_circle,
   ),
 ];
 

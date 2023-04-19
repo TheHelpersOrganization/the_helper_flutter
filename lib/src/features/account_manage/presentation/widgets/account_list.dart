@@ -12,15 +12,12 @@ import 'package:the_helper/src/features/account_manage/presentation/controllers/
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
     super.key,
-    required this.isBanned,
   });
-  final bool isBanned;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    final pagingController = ref.watch(
-        isBanned ? bannedPagingControllerProvider : pagingControllerProvider);
+    final pagingController = ref.watch(pagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
