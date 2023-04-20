@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
 class ActivityCardFooter extends StatelessWidget {
-  final List<int> avatarIds;
+  final List<int?> avatarIds;
   final int joinedParticipants;
   final int? maxParticipants;
 
@@ -28,12 +28,17 @@ class ActivityCardFooter extends StatelessWidget {
         Expanded(
           child: AvatarStack(
             height: 36,
-            avatars: avatarIds
-                .map((avatarId) => Image.network(getImageUrl(avatarId)).image)
+            avatars: (avatarIds + avatarIds)
+                .map((avatarId) => avatarId == null
+                    ? Image.asset('assets/images/logo.png').image
+                    : Image.network(getImageUrl(avatarId)).image)
                 .toList(),
           ),
         ),
-        Text(slots),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text(slots),
+        ),
       ],
     );
   }

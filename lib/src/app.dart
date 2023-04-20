@@ -17,6 +17,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: const Color(0xFF254687),
+        fontFamily: 'roboto',
       ),
     );
   }

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/activity/presentation/activity_card_footer.dart';
-import 'package:the_helper/src/features/activity/presentation/datetime_card.dart';
+import 'package:the_helper/src/features/activity/presentation/search/widget/activity_card/activity_card_footer.dart';
+import 'package:the_helper/src/features/activity/presentation/search/widget/datetime_card.dart';
 import 'package:the_helper/src/utils/location.dart';
 
 class SuggestedActivityCard extends ConsumerWidget {
@@ -19,6 +19,7 @@ class SuggestedActivityCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: context.mediaQuery.size.width * 0.7,
+      height: 500,
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -81,7 +82,6 @@ class SuggestedActivityCard extends ConsumerWidget {
                 maxParticipants: activity.maxParticipants,
                 avatarIds: activity.volunteers!
                     .map((e) => e.profile!.avatarId)
-                    .whereType<int>()
                     .toList(),
               )
             ],
