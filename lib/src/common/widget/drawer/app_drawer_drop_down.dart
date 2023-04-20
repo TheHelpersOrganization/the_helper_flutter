@@ -23,34 +23,37 @@ class AppDrawerDropDown extends StatelessWidget {
         subPaths.any((child) => child.route?.path == context.currentRoute);
     bool isOpened = isSelected;
 
-    return ExpansionTile(
-      tilePadding: const EdgeInsets.only(right: 8.0),
-      title: Text(title),
-      leading: Icon(icon),
-      trailing: isOpened
-          ? const Icon(
-              Icons.arrow_left,
-              color: Colors.black,
-            )
-          : const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-      children: subPaths
-          .map<Widget>((item) => AppDrawerItem(
-                route: item.route,
-                title: item.title,
-                icon: item.icon,
-                onTap: () {
-                  context.goNamed(item.route != null
-                      ? item.route!.name
-                      : AppRoute.developing.name);
-                },
-              ))
-          .toList(),
-      onExpansionChanged: (bool expanded) {
-        isOpened = expanded;
-      },
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: ExpansionTile(
+        // tilePadding: const EdgeInsets.only(right: 8.0),
+        title: Text(title),
+        leading: Icon(icon),
+        trailing: isOpened
+            ? const Icon(
+                Icons.arrow_left,
+                color: Colors.black,
+              )
+            : const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+        children: subPaths
+            .map<Widget>((item) => AppDrawerItem(
+                  route: item.route,
+                  title: item.title,
+                  icon: item.icon,
+                  onTap: () {
+                    context.goNamed(item.route != null
+                        ? item.route!.name
+                        : AppRoute.developing.name);
+                  },
+                ))
+            .toList(),
+        onExpansionChanged: (bool expanded) {
+          isOpened = expanded;
+        },
+      ),
     );
     // return Ink(
     //   decoration: BoxDecoration(
