@@ -52,6 +52,7 @@ dependencies:
   country_picker:
   file_picker:
   back_button_interceptor:
+  avatar_stack: ^1.2.0
 
 dev_dependencies:
   flutter_test:
