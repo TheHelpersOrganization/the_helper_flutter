@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:the_helper/src/features/activity/presentation/activity_search_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
@@ -96,6 +97,11 @@ final routes = [
           name: AppRoute.changeRole.name,
           path: AppRoute.changeRole.path,
           builder: (context, state) => const ChangeRoleScreen()),
+      GoRoute(
+        path: AppRoute.activitySearch.path,
+        name: AppRoute.activitySearch.name,
+        builder: (context, state) => const ActivitySearchScreen(),
+      ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
         builder: (context, state, child) {
@@ -115,7 +121,7 @@ final routes = [
           GoRoute(
               name: AppRoute.activities.name,
               path: AppRoute.activities.path,
-              builder: (context, state) => const DevelopingScreen()),
+              builder: (context, state) => const ActivitySearchScreen()),
           GoRoute(
               name: AppRoute.news.name,
               path: AppRoute.news.path,
@@ -230,8 +236,12 @@ enum AppRoute {
     name: 'my-organization',
   ),
   organizationMembersManagement(
-    path: '/organization-members-manage',
-    name: 'organization-members-manage'
+    path: '/organization-members',
+    name: 'organization-members',
+  ),
+  activitySearch(
+    path: '/search-activities',
+    name: 'search-activities',
   ),
   ;
 
