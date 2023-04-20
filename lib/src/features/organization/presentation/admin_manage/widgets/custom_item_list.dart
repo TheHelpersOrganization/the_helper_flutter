@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/features/organization_manage/domain/organization_model.dart';
+import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/widgets/popup_menu_button.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/popup_menu_button.dart';
 
 class CustomListItem extends ConsumerWidget {
-  final OrganizationModel data;
+  final Organization data;
 
   const CustomListItem({
     super.key,
@@ -17,10 +17,10 @@ class CustomListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // var date =
     //     "${data.time.hour}:${data.time.minute} ~ ${data.time.day}/${data.time.month}/${data.time.year}";
-    return InkWell(
-        onTap: () {
-          print('dadf');
-        },
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: InkWell(
+        onTap: () {},
         child: Container(
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -48,7 +48,7 @@ class CustomListItem extends ConsumerWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [              
+                    children: [
                       Text(data.name),
                       Text(data.email),
                       RichText(
@@ -60,10 +60,13 @@ class CustomListItem extends ConsumerWidget {
                     ],
                   ),
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.chevron_right)),
+                IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.chevron_right)),
               ],
             ),
           ),
-        ));
+        )
+      ),
+    );
   }
 }

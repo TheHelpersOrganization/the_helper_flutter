@@ -4,19 +4,20 @@ import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/account_manage/presentation/widgets/account_list.dart';
-import 'package:the_helper/src/features/account_manage/presentation/controllers/account_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/controllers/organization_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_list.dart';
+
 //Screens
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
+import 'package:the_helper/src/features/organization/domain/organization.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Active'),
   Tab(text: 'Banned'),
 ];
 
-class AccountManageScreen extends ConsumerWidget {
+class OrganizationManageScreen extends ConsumerWidget {
   // final String? role;
-  const AccountManageScreen({
+  const OrganizationManageScreen({
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +37,7 @@ class AccountManageScreen extends ConsumerWidget {
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Colors.transparent,
-            title: const Text('Account Management',
+            title: const Text('Organization Management',
                 style: TextStyle(color: Colors.black)),
             centerTitle: true,
             elevation: 0.0,

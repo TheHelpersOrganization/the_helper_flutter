@@ -17,9 +17,6 @@ class PopupButton extends ConsumerWidget {
     return PopupMenuButton(
         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
           const PopupMenuItem(
-            child: Text('Detail'),
-          ),
-          const PopupMenuItem(
             child: Text('Banned'),
           ),
           const PopupMenuItem(

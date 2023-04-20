@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer_drop_down.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_user.dart';
@@ -13,6 +14,13 @@ import 'package:the_helper/src/features/profile/presentation/profile_controller.
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
+
+List<Role> tempRole = [
+  Role.admin,
+  Role.moderator,
+  Role.operator,
+  Role.volunteer
+];
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -38,7 +46,8 @@ class AppDrawer extends ConsumerWidget {
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
     final userRoleState = ref.watch(roleControllerProvider);
     final userRole = userRoleState.valueOrNull;
-    final roles = ref.watch(getAllRolesProvider).valueOrNull;
+    // final roles = ref.watch(getAllRolesProvider).valueOrNull;
+    final roles = tempRole;
 
     if (userRoleState.isLoading || roles == null) return ListView();
 
@@ -51,20 +60,28 @@ class AppDrawer extends ConsumerWidget {
         ),
         const Divider(),
         for (var i in drawerItem)
-          AppDrawerItem(
-            route: i.route,
-            title: i.title,
-            icon: i.icon,
-            onTap: () {
-              if (i.onTap != null) {
-                i.onTap!(context);
-                return;
-              }
-              context.goNamed(
-                  i.route != null ? i.route!.name : AppRoute.developing.name);
-            },
-          ),
-        if (userRole == Role.volunteer && roles.isNotEmpty)
+          if (i.subPaths != null)
+            AppDrawerDropDown(
+              title: i.title, 
+              icon: i.icon, 
+              subPaths: i.subPaths!,
+            )
+          else
+            AppDrawerItem(
+              route: i.route,
+              title: i.title,
+              icon: i.icon,
+              onTap: () {
+                if (i.onTap != null) {
+                  i.onTap!(context);
+                  return;
+                }
+                context.goNamed(
+                    i.route != null ? i.route!.name : AppRoute.developing.name);
+              },
+            ),
+        // if (userRole == Role.volunteer && roles.isNotEmpty)
+        if (roles.isNotEmpty)
           AppDrawerItem(
             title: 'Change Role',
             icon: Icons.change_circle,
