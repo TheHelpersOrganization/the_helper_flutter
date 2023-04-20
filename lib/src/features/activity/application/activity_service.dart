@@ -49,6 +49,22 @@ class ActivityService {
     }
     return res;
   }
+
+  Future<List<Activity>> getActivities({ActivityQuery? query}) async {
+    List<Activity> activities =
+        await activityRepository.getActivities(query: query);
+    List<Organization> organizations = await Future.wait(
+      activities.map(
+        (e) async => await organizationRepository.getById(e.organizationId!),
+      ),
+    );
+
+    List<Activity> res = [];
+    for (int i = 0; i < activities.length; i++) {
+      res.add(activities[i].copyWith(organization: organizations[i]));
+    }
+    return res;
+  }
 }
 
 @riverpod
