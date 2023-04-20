@@ -44,19 +44,11 @@ class AccountRepository {
     required this.client,
   });
 
-  // Future<List<AccountModel>> getAll(
-  //     {int limit = 100, int offset = 0, bool isBanned = false}) async {
-  //   // final List<dynamic> res = (await client.get(
-  //   //   '/something',
-  //   // ))
-  //   //     .data['data'];
-  //   final List<AccountModel> res = isBanned ? bannedAccLst : accLst;
-  //   // return res.map((e) => AccountModel.fromMap(e)).toList();
-  //   return res;
-  // }
-
   Future<List<AccountModel>> getAll({
     GetAccountQuery? query,
+    int isBanned = 0,
+    int limit = 100,
+    int offset = 0,
   }) async {
     final List<dynamic> res = (await client.get(
       '/accounts',
@@ -64,6 +56,8 @@ class AccountRepository {
     ))
         .data['data'];
     return res.map((e) => AccountModel.fromJson(e)).toList();
+    // final List<AccountModel> res = isBanned != 0 ? bannedAccLst : accLst;
+    // return res;
   }
 
   Future<AccountModel> getById(int id) async {

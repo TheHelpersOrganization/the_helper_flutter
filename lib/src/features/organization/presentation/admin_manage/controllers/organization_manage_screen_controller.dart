@@ -1,39 +1,37 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/account_manage/data/account_repository.dart';
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
+import 'package:the_helper/src/features/organization/data/admin_organization_repository.dart';
+import 'package:the_helper/src/features/organization/domain/organization.dart';
 
-class AccountManageScreenController
-    extends AutoDisposeAsyncNotifier<List<AccountModel>> {
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+class OrganizationManageScreenController
+    extends AutoDisposeAsyncNotifier<List<Organization>> {
   @override
-  FutureOr<List<AccountModel>> build() {
-    return ref.watch(accountRepositoryProvider).getAll();
+  FutureOr<List<Organization>> build() {
+    return ref.watch(adminOrganizationRepositoryProvider).get();
   }
 }
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
-final tabStatusProvider = StateProvider.autoDispose<int>((ref) => 0);
+final tabStatusProvider = StateProvider.autoDispose<int?>((ref) => 0);
 final firstLoadPagingController = StateProvider((ref) => true);
 
 final pagingControllerProvider = Provider.autoDispose(
   (ref) {
-    final accountRepository = ref.watch(accountRepositoryProvider);
+    final organizationRepo = ref.watch(adminOrganizationRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);
     final tabStatus = ref.watch(tabStatusProvider);
-    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
+    final controller = PagingController<int, Organization>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
-        final items = await accountRepository.getAll(
-          query: GetAccountQuery(
-            // query: (name: searchPattern),
-          ),
+        final items = await organizationRepo.get(
           offset: pageKey * 100,
-          isBanned: tabStatus,
+          status: tabStatus,
+          // query: (name: searchPattern),
         );
         final isLastPage = items.length < 100;
         if (isLastPage) {

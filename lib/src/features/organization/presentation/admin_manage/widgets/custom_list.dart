@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/features/account_manage/presentation/widgets/account_list_item.dart';
+
+import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_item_list.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/account_manage/presentation/controllers/account_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/controllers/organization_manage_screen_controller.dart';
 
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
@@ -17,7 +19,8 @@ class CustomScrollList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    final pagingController = ref.watch(pagingControllerProvider);
+    final controllerProvider = pagingControllerProvider;
+    final pagingController = ref.watch(controllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
@@ -60,13 +63,13 @@ class CustomScrollList extends ConsumerWidget {
           else
             const SizedBox(
               height: 24,
-          ),
+            ),
           Expanded(
-              child: PagedListView<int, AccountModel>(
+              child: PagedListView<int, Organization>(
             pagingController: pagingController,
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (context, item, index) =>
-                    AccountListItem(data: item)),
+                    CustomListItem(data: item)),
           )),
         ],
       ),

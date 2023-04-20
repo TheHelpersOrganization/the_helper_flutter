@@ -12,9 +12,12 @@ import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.da
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
-import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/screens/organization_request_detail.dart';
+// import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
 
+import '../features/organization/presentation/verify_organization_request/screens/organization_request_manage_screen.dart';
 import './router_notifier.dart';
 import '../common/screens/safe_screen.dart';
 import '../features/account_manage/presentation/screens/account_manage_screen.dart';
@@ -61,10 +64,6 @@ final routes = [
         builder: (context, state) => const OrganizationRegistrationScreen(),
       ),
       GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
           name: AppRoute.accountManage.name,
           path: AppRoute.accountManage.path,
           builder: (context, state) => const AccountManageScreen()),
@@ -87,10 +86,17 @@ final routes = [
             const OrganizationMembersManagementScreen(),
       ),
       GoRoute(
-        path: AppRoute.myOrganization.path,
-        name: AppRoute.myOrganization.name,
-        builder: (context, state) => const MyOrganizationScreen(),
-      ),
+          name: AppRoute.organizationRequestsManage.name,
+          path: AppRoute.organizationRequestsManage.path,
+          builder: (context, state) => const OrganizationRequestsManageScreen()),
+      GoRoute(
+          name: AppRoute.organizationRequestDetail.name,
+          path: AppRoute.organizationRequestDetail.path,
+          builder: (context, state) => const OrganizationRequestDetailScreen()),
+      GoRoute(
+          name: AppRoute.changeRole.name,
+          path: AppRoute.changeRole.path,
+          builder: (context, state) => const ChangeRoleScreen()),
       GoRoute(
         path: AppRoute.activitySearch.path,
         name: AppRoute.activitySearch.name,
@@ -155,6 +161,11 @@ final routes = [
             builder: (_, state) =>
                 OrganizationDetailScreen(orgId: state.params['id']!),
           ),
+          GoRoute(
+            path: AppRoute.myOrganization.path,
+            name: AppRoute.myOrganization.name,
+            builder: (context, state) => const MyOrganizationScreen(),
+          )
         ],
       ),
     ],
@@ -204,6 +215,14 @@ enum AppRoute {
       path: '/account-request-manage', name: 'account-request-manage'),
   activityManage(path: '/activity-manage', name: 'activity-manage'),
   organizationManage(path: '/organization-manage', name: 'organization-manage'),
+  organizationRequestsManage(
+    name: 'organization-requests-manage',
+    path: '/organization-requests-manage'
+  ),
+  organizationRequestDetail(
+    name: 'organization-request-detail',
+    path: '/organization-request-detail',
+  ),
   organizationSearch(
     path: '/organization-search',
     name: 'organization-search',

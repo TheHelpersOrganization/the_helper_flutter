@@ -4,19 +4,21 @@ import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/account_manage/presentation/widgets/account_list.dart';
-import 'package:the_helper/src/features/account_manage/presentation/controllers/account_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/controllers/organization_request_manage_screen_controller.dart';
+import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/custom_list.dart';
+
 //Screens
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
+import 'package:the_helper/src/features/organization/domain/organization.dart';
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Active'),
-  Tab(text: 'Banned'),
+  Tab(text: 'Pendding'),
+  Tab(text: 'Approve'),
+  Tab(text: 'Reject'),
 ];
 
-class AccountManageScreen extends ConsumerWidget {
+class OrganizationRequestsManageScreen extends ConsumerWidget {
   // final String? role;
-  const AccountManageScreen({
+  const OrganizationRequestsManageScreen({
     Key? key,
   }) : super(key: key);
 
@@ -36,7 +38,7 @@ class AccountManageScreen extends ConsumerWidget {
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Colors.transparent,
-            title: const Text('Account Management',
+            title: const Text('Organization Request Management',
                 style: TextStyle(color: Colors.black)),
             centerTitle: true,
             elevation: 0.0,

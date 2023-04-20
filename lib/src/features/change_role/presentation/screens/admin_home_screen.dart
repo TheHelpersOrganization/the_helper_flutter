@@ -29,7 +29,7 @@ class AdminView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => context.goNamed('organization-manage'),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
@@ -49,7 +49,7 @@ class AdminView extends ConsumerWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => context.pushNamed('account-manage'),
+                onPressed: () => context.goNamed('account-manage'),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
