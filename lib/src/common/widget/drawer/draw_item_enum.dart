@@ -12,7 +12,7 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.home,
   ),
   DrawerItemModel(
-    route: AppRoute.activities,
+    route: AppRoute.activitySearch,
     title: 'Activities',
     icon: Icons.search,
   ),
@@ -65,7 +65,7 @@ final List<DrawerItemModel> moderator = [
     icon: Icons.person_outline,
   ),
   const DrawerItemModel(
-    route: AppRoute.activityManagement,
+    route: AppRoute.activityManage,
     title: 'Organization Activities',
     icon: Icons.work_outline,
   ),
