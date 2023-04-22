@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
@@ -266,15 +267,21 @@ final shiftRoutes = [
     path: AppRoute.shifts.path,
     name: AppRoute.shifts.name,
     // Todo: repalce with implemented screen
-    builder: (_, __) => const ActivityDetailScreen(),
+    builder: (_, state) {
+      final activityId =
+          int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+      return ShiftsScreen(activityId: activityId);
+    },
     routes: [
       GoRoute(
         path: AppRoute.shift.path,
         name: AppRoute.shift.name,
         // Todo: repalce with implemented screen
         builder: (_, state) {
-          final activityId = state.params[AppRoute.activity.path.substring(1)];
-          final shiftId = state.params[AppRoute.shift.path.substring(1)];
+          final activityId =
+              int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+          final shiftId =
+              int.parse(state.params[AppRoute.shift.path.substring(1)]!);
           return ShiftDetailScreen(
             activityId: activityId,
             shiftId: shiftId,
@@ -291,20 +298,21 @@ final activityRoutes = GoRoute(
   builder: (_, __) => const ActivityManageScreen(),
   routes: [
     GoRoute(
-      path: AppRoute.activitySearch.path,
-      name: AppRoute.activitySearch.name,
-      builder: (_, __) => const ActivitySearchScreen(),
-    ),
-    GoRoute(
       path: AppRoute.activity.path,
       name: AppRoute.activity.name,
       builder: (_, state) {
-        final activityId = state.params[AppRoute.activity.path.substring(1)];
+        final activityId =
+            int.parse(state.params[AppRoute.activity.path.substring(1)]!);
         return ActivityDetailScreen(
           activityId: activityId,
         );
       },
       routes: shiftRoutes,
+    ),
+    GoRoute(
+      path: AppRoute.activitySearch.path,
+      name: AppRoute.activitySearch.name,
+      builder: (_, __) => const ActivitySearchScreen(),
     ),
   ],
 );

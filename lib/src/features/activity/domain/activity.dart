@@ -16,9 +16,9 @@ class Activity with _$Activity {
     int? organizationId,
     List<int>? activityTypeIds,
     List<int>? activityManagerIds,
-    DateTime startTime,
-    DateTime endTime,
-    Location location,
+    DateTime? startTime,
+    DateTime? endTime,
+    Location? location,
     int? maxParticipants,
     int? joinedParticipants,
   }) = _Activity;
