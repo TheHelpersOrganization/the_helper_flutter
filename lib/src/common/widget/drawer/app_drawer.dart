@@ -1,92 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer_drop_down.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
+import 'package:the_helper/src/common/widget/drawer/app_drawer_user.dart';
+import 'package:the_helper/src/common/widget/drawer/draw_item_enum.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/change_role/data/role_repository.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
+import 'package:the_helper/src/features/profile/data/profile_repository.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
+
+List<Role> tempRole = [
+  Role.admin,
+  Role.moderator,
+  Role.operator,
+  Role.volunteer
+];
 
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Drawer(
-        child: SingleChildScrollView(
-          child: _buildDrawerItem(context, ref),
-          padding: const EdgeInsets.only(right: 8),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        child: Column(
+          children: [
+            const AppDrawerHeader(),
+            const Divider(
+              height: 0,
+            ),
+            Expanded(
+              child: _buildDrawerItem(context, ref),
+            ),
+          ],
         ),
       );
 
-  _buildDrawerItem(BuildContext context, WidgetRef ref) {
-    return Column(
+  Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
+    final userRoleState = ref.watch(roleControllerProvider);
+    final userRole = userRoleState.valueOrNull;
+    // final roles = ref.watch(getAllRolesProvider).valueOrNull;
+    final roles = tempRole;
+
+    if (userRoleState.isLoading) return ListView();
+
+    final drawerItem = getDrawerItem(userRole ?? Role.volunteer);
+    return ListView(
       children: [
-        SafeArea(
-          child: InkWell(
-            onTap: () => context.goNamed(AppRoute.profile.name),
-            child: const AppDrawerHeader(),
-          ),
+        InkWell(
+          onTap: () => context.goNamed(AppRoute.profile.name),
+          child: const AppDrawerUser(),
         ),
         const Divider(),
-        AppDrawerItem(
-          // route: AppRoute.home,
-          path: AppRoute.home.path,
-          title: 'Home',
-          icon: Icons.home,
-          onTap: () => context.goNamed(AppRoute.home.name),
-        ),
-        // AppDrawerItem(
-        //   // route: AppRoute.activities,
-        //   path: '/activities',
-        //   title: 'Activities',
-        //   icon: Icons.search,
-        //   onTap: () {
-        //     context.goNamed(AppRoute.activities.name);
-        //   },
-        // ),
-        AppDrawerItem(
-          // route: AppRoute.organizationSearch,
-          path: AppRoute.organizationManage.path,
-          title: 'Organization',
-          icon: Icons.search,
-          onTap: () {
-            context.goNamed(AppRoute.organizationSearch.name);
-          },
-        ),
-        AppDrawerItem(
-          // route: AppRoute.organizationRegistration,
-          path: AppRoute.organizationRegistration.path,
-          title: 'Register Organization',
-          icon: Icons.app_registration,
-          onTap: () {
-            context.goNamed(AppRoute.organizationRegistration.name);
-          },
-        ),
-        AppDrawerItem(
-            title: 'News',
-            icon: Icons.newspaper,
-            onTap: () => context.goNamed(AppRoute.news.name)),
-        AppDrawerItem(
-            title: 'Chat',
-            icon: Icons.chat,
-            onTap: () => context.goNamed(AppRoute.chat.name)),
-        AppDrawerItem(
-            title: 'Report',
-            icon: Icons.report,
-            onTap: () => context.goNamed(AppRoute.report.name)),
-        const Divider(),
-        AppDrawerItem(
-            title: 'Settings',
-            icon: Icons.settings,
-            onTap: () => context.goNamed(AppRoute.settings.name)),
-        AppDrawerItem(
-            title: 'Switch Role',
+        for (var i in drawerItem)
+          if (i.subPaths != null)
+            AppDrawerDropDown(
+              title: i.title,
+              icon: i.icon,
+              subPaths: i.subPaths!,
+            )
+          else
+            AppDrawerItem(
+              title: i.title,
+              icon: i.icon,
+              onTap: () {
+                if (i.onTap != null) {
+                  i.onTap!(context);
+                  return;
+                }
+                context.goNamed(
+                    i.route != null ? i.route!.name : AppRoute.developing.name);
+              },
+            ),
+        // if (userRole == Role.volunteer && roles.isNotEmpty)
+        if (roles.isNotEmpty)
+          AppDrawerItem(
+            title: 'Change Role',
             icon: Icons.change_circle,
-            onTap: () => context.goNamed(AppRoute.changeRole.name)),
+            onTap: () => context.goNamed(AppRoute.changeRole.name),
+          ),
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout,
-            onTap: () => ref.read(logoutControllerProvider).signOut()),
+            onTap: () {
+              ref.read(logoutControllerProvider).signOut();
+              ref.read(roleRepositoryProvider).removeCurrentRole();
+              ref.invalidate(profileServiceProvider);
+              ref.invalidate(profileRepositoryProvider);
+              ref.invalidate(authServiceProvider);
+            }),
       ],
     );
   }

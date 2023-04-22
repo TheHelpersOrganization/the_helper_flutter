@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:the_helper/src/utils/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/utils/dio.dart';
 
 // import '../domain/organization_model.dart';
 import '../domain/organization.dart';
@@ -13,9 +13,7 @@ class OrganizationRepository {
 
   OrganizationRepository({required this.client});
 
-  Future<List<Organization>> getAll({
-    int limit = 100,
-    int offset = 0,
+  Future<List<Organization>> get({
     OrganizationQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(
@@ -28,21 +26,6 @@ class OrganizationRepository {
 
   Future<Organization> getById(int id) async {
     final res = await client.get('/organizations/$id');
-    return Organization.fromJson(res.data['data']);
-  }
-
-  Future<Organization> create(Organization organization) async {
-    final res =
-        await client.post('/organizations', data: organization.toJson());
-    return Organization.fromJson(res.data['data']);
-  }
-
-  Future<void> update(int id, Organization organization) async {
-    await client.put('/organization/$id', data: organization.toJson());
-  }
-
-  Future<Organization> delete(int id) async {
-    final res = await client.delete('/organization/$id');
     return Organization.fromJson(res.data['data']);
   }
 }
@@ -65,4 +48,4 @@ Future<Organization> getOrganization(
 Future<List<Organization>> getOrganizations(
   GetOrganizationsRef ref,
 ) =>
-    ref.watch(organizationRepositoryProvider).getAll();
+    ref.watch(organizationRepositoryProvider).get();

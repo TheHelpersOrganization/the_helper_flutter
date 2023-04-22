@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/change_role/presentation/controllers/home_screen_controller.dart';
 
 class RoleOption extends ConsumerWidget {
   final Color optionColor;
   final String title;
   final String description;
-  final int role;
+  final Role role;
+  final VoidCallback? onTap;
+  final SvgPicture? image;
 
   const RoleOption({
     super.key,
@@ -16,16 +20,28 @@ class RoleOption extends ConsumerWidget {
     required this.optionColor,
     required this.description,
     required this.role,
+    this.image,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        const SizedBox(
-          height: 20,
-        ),
         InkWell(
+          onTap: onTap ??
+              () async {
+                // ref
+                //     .read(homeScreenControllerProvider.notifier)
+                //     .changeRole(role);
+                await ref
+                    .read(roleControllerProvider.notifier)
+                    .setCurrentRole(role);
+
+                if (context.mounted) {
+                  context.goNamed(AppRoute.home.name);
+                }
+              },
           child: Container(
             height: 100,
             width: 300,
@@ -66,20 +82,28 @@ class RoleOption extends ConsumerWidget {
                 const SizedBox(
                   width: 20,
                 ),
-                Container(
-                  //Add image here
-                  margin: const EdgeInsets.all(5.0),
-                  height: 95,
-                  width: 95,
-                  color: Colors.white,
-                )
+                if (image == null)
+                  Container(
+                    //Add image here
+                    margin: const EdgeInsets.all(5.0),
+                    height: 95,
+                    width: 95,
+                    color: Colors.white,
+                  )
+                else
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                    ),
+                    margin: const EdgeInsets.all(4),
+                    height: 95,
+                    width: 95,
+                    child: image!,
+                  )
               ],
             ),
           ),
-          onTap: () {
-            ref.read(homeScreenControllerProvider.notifier).changeRole(role);
-            context.goNamed(AppRoute.home.name);
-          },
         ),
         const SizedBox(
           height: 20,

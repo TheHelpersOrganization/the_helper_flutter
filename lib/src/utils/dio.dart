@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
+
+import '../features/authentication/application/auth_service.dart';
 
 part 'dio.g.dart';
 // final dioProvider = Provider((ref) {
@@ -54,6 +54,7 @@ part 'dio.g.dart';
 @Riverpod(keepAlive: true)
 Dio dio(DioRef ref) {
   final baseUrl = ref.read(baseUrlProvider);
+  final authServiceState = ref.watch(authServiceProvider);
   final authService = ref.watch(authServiceProvider.notifier);
 
   final client = Dio(
@@ -62,7 +63,6 @@ Dio dio(DioRef ref) {
   client.interceptors
       .add(QueuedInterceptorsWrapper(onRequest: (options, handler) async {
     final token = await authService.getToken();
-
     if (token == null) {
       return handler.reject(DioError(
           requestOptions: options,
@@ -70,7 +70,7 @@ Dio dio(DioRef ref) {
           message: 'Invalid token'));
     }
 
-    final access = token.access;
+    final access = token.accessToken;
 
     options.headers['Authorization'] = "Bearer $access";
     options.connectTimeout = const Duration(seconds: 3000);

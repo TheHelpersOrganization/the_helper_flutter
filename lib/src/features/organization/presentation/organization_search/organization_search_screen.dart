@@ -5,10 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/common/widget/snack_bar.dart';
 
 import '../../domain/organization.dart';
 import 'organization_card.dart';
+import 'organization_join_controller.dart';
 import 'organization_search_controller.dart';
 
 class OrganizationSearchScreen extends ConsumerWidget {
@@ -18,6 +21,16 @@ class OrganizationSearchScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
     final pagingController = ref.watch(pagingControllerProvider);
+    ref.listen<AsyncValue<void>>(
+      organizationJoinControllerProvider,
+      (_, state) => state.whenOrNull(
+        error: (error, st) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            errorSnackBarFromException(error),
+          );
+        },
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -73,24 +86,28 @@ class OrganizationSearchScreen extends ConsumerWidget {
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) =>
                       OrganizationCard(organization: item),
-                  noItemsFoundIndicatorBuilder: (context) => Center(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        Text(
-                          'No Organizations was found',
-                          style: context.theme.textTheme.titleLarge,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          'Please try other search terms',
-                          style: context.theme.textTheme.bodyLarge,
-                        ),
-                      ],
+                  noItemsFoundIndicatorBuilder: (context) => const Center(
+                    // child: Column(
+                    //   children: [
+                    //     const SizedBox(
+                    //       height: 32,
+                    //     ),
+                    //     Text(
+                    //       'No Organizations was found',
+                    //       style: context.theme.textTheme.titleLarge,
+                    //     ),
+                    //     const SizedBox(
+                    //       height: 8,
+                    //     ),
+                    //     Text(
+                    //       'Please try other search terms',
+                    //       style: context.theme.textTheme.bodyLarge,
+                    //     ),
+                    //   ],
+                    // ),
+                    child: NoDataFound(
+                      contentTitle: 'No organization was found',
+                      contentSubtitle: 'Please try other search terms',
                     ),
                   ),
                 ),

@@ -1,0 +1,86 @@
+import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/organization/domain/reject_organization_data.dart';
+
+import '../../../utils/dio.dart';
+import '../domain/organization.dart';
+import '../domain/organization_query.dart';
+
+part 'admin_organization_repository.g.dart';
+
+List<Organization> lst = [
+  Organization(
+    name: 'Something',
+    email: 'dd@email',
+    phoneNumber: '231223412123',
+    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
+    website: 'website.com'
+  ),
+  Organization(
+    name: 'Something',
+    email: 'dd@email',
+    phoneNumber: '231223412123',
+    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
+    website: 'website.com'
+  ),
+  Organization(
+    name: 'Something',
+    email: 'dd@email',
+    phoneNumber: '231223412123',
+    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
+    website: 'website.com'
+  ),
+];
+
+List<Organization> lst2 = [
+  Organization(
+      name: 'Anything',
+      email: 'ddfasdfd@email',
+      phoneNumber: '23122223',
+      description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
+      website: 'ite.com')
+];
+
+class AdminOrganizationRepository {
+  final Dio client;
+
+  AdminOrganizationRepository({required this.client});
+
+  Future<List<Organization>> get({
+    int limit = 100,
+    int offset = 0,
+    int? status,
+    OrganizationQuery? query,
+  }) async {
+    final List<dynamic> res = (await client.get(
+      '/admin/organizations',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => Organization.fromJson(e)).toList();
+    // return status == 0 ? lst : lst2;
+  }
+
+  Future<Organization> getById(int id) async {
+    final res = await client.get('/admin/organizations/$id');
+    return Organization.fromJson(res.data['data']);
+  }
+
+  Future<Organization> verify(int id) async {
+    final res = await client.post('/admin/organizations/$id/verify');
+    return Organization.fromJson(res.data['data']);
+  }
+
+  Future<Organization> reject(int id, RejectOrganizationData data) async {
+    final res = await client.post(
+      '/admin/organizations/$id/reject',
+      data: data,
+    );
+    return Organization.fromJson(res.data['data']);
+  }
+}
+
+@riverpod
+AdminOrganizationRepository adminOrganizationRepository(
+        AdminOrganizationRepositoryRef ref) =>
+    AdminOrganizationRepository(client: ref.watch(dioProvider));

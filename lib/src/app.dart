@@ -9,9 +9,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('adsfsdfdsfsdf');
     final router = ref.watch(routerProvider);
-    print('asdfdsfdsf');
     return MaterialApp.router(
       title: 'The Helper',
       debugShowCheckedModeBanner: false,
@@ -19,6 +17,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: const Color(0xFF254687),
+        fontFamily: 'roboto',
       ),
     );
   }

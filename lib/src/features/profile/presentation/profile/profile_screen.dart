@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-
-import '../../../../router/router.dart';
-import '../profile_controller.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/router/router.dart';
 
 // Todo: implement tab provider
 const List<Tab> tabs = <Tab>[
@@ -23,7 +22,9 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final accountToken = ref.watch(authServiceProvider);
     final profile = ref.watch(profileServiceProvider);
+
     return profile.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
@@ -88,9 +89,16 @@ class ProfileScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                          Text(
-                            profile.username!,
-                            style: Theme.of(context).textTheme.displayLarge,
+                          accountToken.when(
+                            loading: () => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            error: (_, __) =>
+                                const Text('An error has happened'),
+                            data: (data) => Text(
+                              profile.username ?? data!.account.email,
+                              style: Theme.of(context).textTheme.displayLarge,
+                            ),
                           ),
                           const SizedBox(height: kTextTabBarHeight),
                         ],
@@ -164,5 +172,3 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
-
-

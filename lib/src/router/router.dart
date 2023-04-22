@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
+import 'package:the_helper/src/features/activity/presentation/activity_detail/activity_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/activity_search/activity_search_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
+import 'package:the_helper/src/features/activity_manage/presentation/screens/activity_manage_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_detail/organization_detail_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
+import 'package:the_helper/src/router/router_notifier.dart';
 
-import '../common/screens/safe_screen.dart';
-import '../features/activity/presentation/activity_detail/activity_detail_screen.dart';
-import '../features/activity/presentation/activity_search/activity_search_screen.dart';
-
-import '../features/activity/presentation/shift/shift_detail_screen.dart';
-import '../features/organization/presentation/organization_manage/organization_manage_screen.dart';
-import '../features/profile/presentation/profile/profile_screen.dart';
-import '../features/profile/presentation/profile_edit/profile_edit_screen.dart';
-import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
-
-import '../features/profile/presentation/profile_setting/profile_setting_screen.dart';
-import './router_notifier.dart';
-import '../features/change_role/presentation/screens/change_role_screen.dart';
-import '../features/change_role/presentation/screens/home_screen.dart';
-import '../features/account_manage/presentation/screens/account_manage_screen.dart';
-import '../features/activity_manage/presentation/screens/activity_manage_screen.dart';
-
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routes = [
   ShellRoute(
@@ -39,6 +35,11 @@ final routes = [
       return SafeScreen(child: child);
     },
     routes: [
+      GoRoute(
+        path: AppRoute.developing.path,
+        name: AppRoute.developing.name,
+        builder: (_, __) => const ChangeRoleScreen(),
+      ),
       GoRoute(
         path: AppRoute.login.path,
         name: AppRoute.login.name,
@@ -54,8 +55,13 @@ final routes = [
         name: AppRoute.accountVerification.name,
         builder: (_, __) => const AccountVerificationScreen(),
       ),
+      GoRoute(
+        path: AppRoute.changeRole.path,
+        name: AppRoute.changeRole.name,
+        builder: (_, __) => const ChangeRoleScreen(),
+      ),
       ShellRoute(
-        navigatorKey: _shellNavigatorKey,
+        navigatorKey: shellNavigatorKey,
         builder: (_, __, child) {
           return CustomBottomNavigator(child: child);
         },
@@ -100,6 +106,11 @@ final routes = [
             name: AppRoute.settings.name,
             builder: (_, __) => const MenuScreen(),
           ),
+          GoRoute(
+            path: AppRoute.myOrganization.path,
+            name: AppRoute.myOrganization.name,
+            builder: (context, state) => const MyOrganizationScreen(),
+          )
         ],
       ),
       profileRoutes,
@@ -318,10 +329,12 @@ final activityRoutes = GoRoute(
 );
 
 enum AppRoute {
-  splash(
-    path: '/splash',
-    name: 'splash',
-  ), // Internal access only
+  // 404
+  developing(
+    path: '/developing',
+    name: 'developing',
+  ),
+
   home(
     path: '/home',
     name: 'home',
@@ -342,9 +355,11 @@ enum AppRoute {
     path: '/verification',
     name: 'account-verification',
   ),
+
   // Todo: create modal instead of using this route
   accountVerificationCompleted(
       path: '/verification-completed', name: 'account-verification-completed'),
+
   // Todo: news crud
   news(
     path: '/news',
@@ -354,11 +369,13 @@ enum AppRoute {
     path: '/chat',
     name: 'chat',
   ),
+
   // Todo: notification crud
   notification(
     path: '/notification',
     name: 'notification',
   ),
+
   // Todo: report crud
   report(
     path: '/report',
@@ -374,6 +391,7 @@ enum AppRoute {
     path: '/test',
     name: 'test',
   ),
+
   // Profile
   profile(
     path: '/profile',
@@ -387,6 +405,7 @@ enum AppRoute {
     path: 'setting',
     name: 'profile-setting',
   ),
+
   // Org
   organizationManage(
     path: '/organization',
@@ -404,11 +423,7 @@ enum AppRoute {
     path: 'registration',
     name: 'organization-registration',
   ),
-  // activity
-  // activities(
-  //   path: '/activities',
-  //   name: 'activities',
-  // ),
+
   activitySearch(
     path: 'search',
     name: 'activity-search',
@@ -421,6 +436,7 @@ enum AppRoute {
     path: '/activity',
     name: 'activity-manage',
   ),
+
   // shift
   shifts(
     path: 'shift',
@@ -430,6 +446,7 @@ enum AppRoute {
     path: ':shiftId',
     name: 'shift',
   ),
+
   //Admin feature
   menu(
     path: '/menu',
@@ -439,6 +456,14 @@ enum AppRoute {
   accountManage(
     path: '/account-manage',
     name: 'account-manage',
+  ),
+  myOrganization(
+    path: '/my-organization',
+    name: 'my-organization',
+  ),
+  organizationMembersManagement(
+    path: '/organization-members',
+    name: 'organization-members',
   ),
   ;
 
@@ -457,7 +482,7 @@ final routerProvider = Provider.autoDispose<GoRouter>((ref) {
   return GoRouter(
     refreshListenable: notifier,
     initialLocation: AppRoute.home.path,
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     routes: routes,
     redirect: notifier.redirect,
   );

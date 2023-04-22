@@ -8,17 +8,14 @@ import 'package:the_helper/src/features/account_manage/presentation/controllers/
 class PopupButton extends ConsumerWidget {
   const PopupButton({
     super.key,
-    required this.accountId,
+    this.accountId,
   });
-  final int accountId;
+  final int? accountId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton(
         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-          const PopupMenuItem(
-            child: Text('Detail'),
-          ),
           const PopupMenuItem(
             child: Text('Banned'),
           ),

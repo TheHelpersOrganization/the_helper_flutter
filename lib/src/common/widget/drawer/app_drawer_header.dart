@@ -1,63 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/common/extension/image.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
-import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
-import 'package:the_helper/src/features/profile/data/profile_repository.dart';
+import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/router/router.dart';
 
-class AppDrawerHeader extends ConsumerWidget {
+class AppDrawerHeader extends StatelessWidget {
   const AppDrawerHeader({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final account = ref.watch(authServiceProvider).valueOrNull?.account;
-    // final avatarId = ref.watch(profileProvider.select((profile) => profile.avatarId));
-    // final avatarId = ref.watch(profileServiceProvider).valueOrNull?.avatarId;
-    final profile = ref.watch(profileServiceProvider);
-    // final image = avatarId == null
-    //     ? Image.asset('assets/images/organization_placeholder.jpg')
-    //     : ImageX.backend(avatarId);
-    // final image = profile.when(
-    //   data: (profile) => ImageX.backend(profile.avatarId!),
-    //   error: (_, __) =>
-    //       Image.asset('assets/images/organization_placeholder.jpg'),
-    //   loading: () => const CircularProgressIndicator(),
-    // );
-
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+      padding: const EdgeInsets.only(
+        top: 12,
+        bottom: 12,
+        left: 24,
+        right: 12,
+      ),
       child: Row(
         children: [
-          // CircleAvatar(
-          //   radius: 24,
-          //   backgroundImage: image.image,
-          //   backgroundColor: Colors.white,
-          // ),
-          profile.when(
-            data: (profile) => CircleAvatar(
-                radius: 24,
-                backgroundImage: ImageX.backend(profile.avatarId!).image,
-                backgroundColor: Colors.white),
-            error: (_, __) => const Text('error'),
-            loading: () => const CircleAvatar(
-              child: CircularProgressIndicator(),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                context.pop();
+                context.goNamed(AppRoute.home.name);
+              },
+              splashFactory: NoSplash.splashFactory,
+              hoverColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 16,
+                    backgroundImage:
+                        Image.asset('assets/images/logo.png').image,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'The Helpers',
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Volunteer Name',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  account?.email ?? 'Unknown',
-                ),
-              ],
-            ),
+          IconButton(
+            onPressed: () => context.pop(),
+            icon: const Icon(Icons.close),
           ),
         ],
       ),

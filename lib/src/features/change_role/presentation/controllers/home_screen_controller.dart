@@ -20,7 +20,6 @@ class HomeScreenController extends StateNotifier<UserRole> {
 }
 
 final homeScreenControllerProvider =
-    StateNotifierProvider<HomeScreenController, UserRole>((ref) {
-  return HomeScreenController(
-      roleRepository: ref.watch(roleRepositoryProvider));
+    StateNotifierProvider.autoDispose<HomeScreenController, UserRole>((ref) {
+  return HomeScreenController(roleRepository: ref.watch(roleProvider));
 });
