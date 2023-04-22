@@ -108,7 +108,7 @@ final routes = [
       accountRoutes,
       profileRoutes,
       organizationRoutes,
-      // activityRoutes,
+      activityRoutes,
     ],
   ),
 ];
@@ -210,8 +210,8 @@ final activityRoutes = GoRoute(
       builder: (_, __) => const ActivitySearchScreen(),
     ),
     GoRoute(
-      path: AppRoute.activityManage.path,
-      name: AppRoute.activityManage.name,
+      path: AppRoute.organizationActivityManagement.path,
+      name: AppRoute.organizationActivityManagement.name,
       builder: (_, __) => const ActivityModManagementScreen(),
     ),
   ],
@@ -346,6 +346,10 @@ enum AppRoute {
     name: 'organization-registration',
   ),
 
+  activityManage(
+    path: '/activity',
+    name: 'activity-manage',
+  ),
   activitySearch(
     path: 'search',
     name: 'activity-search',
@@ -354,9 +358,9 @@ enum AppRoute {
     path: ':activityId',
     name: 'activity',
   ),
-  activityManage(
-    path: '/activity',
-    name: 'activity-manage',
+  organizationActivityManagement(
+    path: 'activity-management',
+    name: 'activity-management',
   ),
 
   // shift
