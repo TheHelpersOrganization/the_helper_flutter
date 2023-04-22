@@ -141,7 +141,7 @@ class RoleChoice extends ConsumerWidget {
                     fit: BoxFit.cover,
                   ),
                   onTap: () async {
-                    if (data == null) {
+                    if (organization == null) {
                       await showDialog(
                         context: context,
                         builder: (context) => const SwitchOrganizationDialog(),

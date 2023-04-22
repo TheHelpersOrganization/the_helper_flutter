@@ -19,7 +19,6 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final role = ref.watch(roleControllerProvider);
-    print(role);
 
     return role.when(
         loading: () => const Center(
