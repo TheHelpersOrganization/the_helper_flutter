@@ -3,21 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
-import 'package:the_helper/src/features/activity/presentation/search/activity_search_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/verify_organization_request/screens/organization_request_detail.dart';
 // import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
 
-import '../features/organization/presentation/verify_organization_request/screens/organization_request_manage_screen.dart';
 import './router_notifier.dart';
 import '../common/screens/safe_screen.dart';
 import '../features/account_manage/presentation/screens/account_manage_screen.dart';
@@ -26,6 +26,7 @@ import '../features/activity_manage/presentation/screens/activity_manage_screen.
 import '../features/change_role/presentation/screens/change_role_screen.dart';
 import '../features/change_role/presentation/screens/home_screen.dart';
 import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
+import '../features/organization/presentation/verify_organization_request/screens/organization_request_manage_screen.dart';
 import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
 import '../features/profile/presentation/profile_screen/profile_screen.dart';
 
@@ -76,6 +77,10 @@ final routes = [
           path: AppRoute.activityManage.path,
           builder: (context, state) => const ActivityManageScreen()),
       GoRoute(
+          name: AppRoute.activityManagement.name,
+          path: AppRoute.activityManagement.path,
+          builder: (context, state) => const ActivityModManagementScreen()),
+      GoRoute(
           name: AppRoute.organizationManage.name,
           path: AppRoute.organizationManage.path,
           builder: (context, state) => const OrganizationManageScreen()),
@@ -88,7 +93,8 @@ final routes = [
       GoRoute(
           name: AppRoute.organizationRequestsManage.name,
           path: AppRoute.organizationRequestsManage.path,
-          builder: (context, state) => const OrganizationRequestsManageScreen()),
+          builder: (context, state) =>
+              const OrganizationRequestsManageScreen()),
       GoRoute(
           name: AppRoute.organizationRequestDetail.name,
           path: AppRoute.organizationRequestDetail.path,
@@ -214,11 +220,14 @@ enum AppRoute {
   accountRequestManage(
       path: '/account-request-manage', name: 'account-request-manage'),
   activityManage(path: '/activity-manage', name: 'activity-manage'),
+  activityManagement(
+    path: '/organization-activities',
+    name: 'organization-activities',
+  ),
   organizationManage(path: '/organization-manage', name: 'organization-manage'),
   organizationRequestsManage(
-    name: 'organization-requests-manage',
-    path: '/organization-requests-manage'
-  ),
+      name: 'organization-requests-manage',
+      path: '/organization-requests-manage'),
   organizationRequestDetail(
     name: 'organization-request-detail',
     path: '/organization-request-detail',

@@ -17,6 +17,7 @@ class RoleController extends _$RoleController {
   }
 
   Future<void> setCurrentRole(Role role) async {
+    print('Set role: $role');
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () => ref.read(roleRepositoryProvider).setCurrentRole(
