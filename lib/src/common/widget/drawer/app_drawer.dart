@@ -52,8 +52,6 @@ class AppDrawer extends ConsumerWidget {
 
     if (userRoleState.isLoading) return ListView();
 
-    print(userRoleState);
-
     final drawerItem = getDrawerItem(userRole ?? Role.volunteer);
     return ListView(
       children: [
@@ -71,7 +69,6 @@ class AppDrawer extends ConsumerWidget {
             )
           else
             AppDrawerItem(
-              route: i.route,
               title: i.title,
               icon: i.icon,
               onTap: () {

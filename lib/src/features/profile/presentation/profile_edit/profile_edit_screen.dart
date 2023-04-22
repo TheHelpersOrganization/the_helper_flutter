@@ -9,16 +9,16 @@ import 'package:the_helper/src/common/extension/widget.dart';
 import '../../../../common/widget/button/primary_button.dart';
 import '../profile_controller.dart';
 import '../../domain/profile.dart';
-import 'edit_profile_avatar_picker_widget.dart';
-import 'edit_profile_controller.dart';
-import 'edit_profile_gender_widget.dart';
-import 'edit_profile_phone_number_widget.dart';
+import 'profile_edit_avatar_picker_widget.dart';
+import 'profile_edit_controller.dart';
+import 'profile_edit_gender_widget.dart';
+import 'profile_edit_phone_number_widget.dart';
 
 // import '../../../common/widget/button/primary_button.dart';
 // import '../domain/profile.dart';
 
-class EditProfileScreen extends ConsumerWidget {
-  EditProfileScreen({super.key});
+class ProfileEditScreen extends ConsumerWidget {
+  ProfileEditScreen({super.key});
 
   final _formKey = GlobalKey<FormBuilderState>();
 
@@ -50,7 +50,7 @@ class EditProfileScreen extends ConsumerWidget {
               key: _formKey,
               child: Column(
                   children: <Widget>[
-                const EditProfileAvatarPickerWidget(),
+                const ProfileEditAvatarPickerWidget(),
                 const SizedBox(
                   height: 16,
                 ),
@@ -100,7 +100,7 @@ class EditProfileScreen extends ConsumerWidget {
                     name: 'gender',
                     initialValue: profile.gender,
                     builder: (FormFieldState<dynamic> field) {
-                      return EditProfileGenderWidget(
+                      return ProfileEditGenderWidget(
                           initialValue: profile.gender,
                           onValueChange: (gender) => {
                                 field.didChange(gender),
@@ -120,7 +120,7 @@ class EditProfileScreen extends ConsumerWidget {
                     labelText: 'Date Of Birth',
                   ),
                 ),
-                EditProfilePhoneNumberWidget(
+                ProfileEditPhoneNumberWidget(
                   initialValue: profile.phoneNumber,
                 ),
                 // FormBuilderTextField(

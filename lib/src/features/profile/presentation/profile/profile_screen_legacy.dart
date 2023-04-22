@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/loading_screen.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
-import 'package:the_helper/src/features/profile/presentation/profile_screen/profile_detail_tab.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../data/profile_repository.dart';
+import 'profile_detail_tab.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
@@ -57,7 +57,7 @@ class ProfileScreenState extends ConsumerState {
                       icon: const Icon(Icons.edit),
                       tooltip: 'Edit profile',
                       onPressed: () {
-                        context.pushNamed(AppRoute.editProfile.name);
+                        context.pushNamed(AppRoute.profileEdit.name);
                       },
                     ),
                     IconButton(

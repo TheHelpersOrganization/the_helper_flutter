@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
-
-import '../../../../router/router.dart';
-import '../profile_controller.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/router/router.dart';
 
 // Todo: implement tab provider
 const List<Tab> tabs = <Tab>[
@@ -52,7 +52,7 @@ class ProfileScreen extends ConsumerWidget {
                         icon: const Icon(Icons.edit),
                         tooltip: 'Edit profile',
                         onPressed: () =>
-                            context.pushNamed(AppRoute.editProfile.name),
+                            context.pushNamed(AppRoute.profileEdit.name),
                       ),
                       IconButton(
                         icon: const Icon(Icons.settings),
@@ -169,21 +169,6 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class DetailListTile extends ConsumerWidget {
-  const DetailListTile({super.key, required this.label, required this.value});
-  final label;
-  final value;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
-      title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text(label), Text(value)]),
     );
   }
 }

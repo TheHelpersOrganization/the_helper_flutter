@@ -14,11 +14,11 @@ import 'package:the_helper/src/common/widget/file_picker/form_multiple_file_pick
 import 'package:the_helper/src/common/widget/image_picker/form_custom_image_picker.dart';
 import 'package:the_helper/src/common/widget/phone_number_field.dart';
 import 'package:the_helper/src/common/widget/required_text.dart';
-import 'package:the_helper/src/features/organization/presentation/registration/organization_registration_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/config_provider.dart';
 
 import '../../../location/domain/location.dart';
+import 'organization_registration_controller.dart';
 
 class OrganizationRegistrationScreen extends ConsumerStatefulWidget {
   const OrganizationRegistrationScreen({super.key});
