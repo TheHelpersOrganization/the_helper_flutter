@@ -338,6 +338,10 @@ enum AppRoute {
     path: '/organization',
     name: 'organization-manage',
   ),
+  organizationRequestsManage(
+    path: '/organization-requests',
+    name: 'organization-requests-manage',
+  ),
   organization(
     path: ':orgId',
     name: 'organization',

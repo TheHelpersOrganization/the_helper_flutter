@@ -63,7 +63,6 @@ class _AppDrawerDropDownState extends State<AppDrawerDropDown> {
                 ),
           children: widget.subPaths
               .map<Widget>((item) => AppDrawerItem(
-                    route: item.route,
                     title: item.title,
                     icon: item.icon,
                     onTap: () {
