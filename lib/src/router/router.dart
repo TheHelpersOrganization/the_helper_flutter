@@ -6,11 +6,10 @@ import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/activity_detail_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/activity_search/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
-import 'package:the_helper/src/features/activity_manage/presentation/screens/activity_manage_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
@@ -23,6 +22,7 @@ import 'package:the_helper/src/features/organization/presentation/organization_d
 import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
@@ -56,6 +56,17 @@ final routes = [
         path: AppRoute.changeRole.path,
         name: AppRoute.changeRole.name,
         builder: (_, __) => const ChangeRoleScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.organizationMembersManagement.path,
+        name: AppRoute.organizationMembersManagement.name,
+        builder: (context, state) =>
+            const OrganizationMembersManagementScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.organizationActivityManagement.path,
+        name: AppRoute.organizationActivityManagement.name,
+        builder: (_, __) => const ActivityModManagementScreen(),
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
@@ -146,7 +157,6 @@ final organizationRoutes = GoRoute(
       name: AppRoute.organizationRegistration.name,
       builder: (_, __) => const OrganizationRegistrationScreen(),
     ),
-    // Todo: parse
     GoRoute(
       path: AppRoute.organization.path,
       name: AppRoute.organization.name,
@@ -190,8 +200,13 @@ final shiftRoutes = [
 final activityRoutes = GoRoute(
   path: AppRoute.activityManage.path,
   name: AppRoute.activityManage.name,
-  builder: (_, __) => const ActivityManageScreen(),
+  builder: (_, __) => const DevelopingScreen(),
   routes: [
+    GoRoute(
+      path: AppRoute.activitySearch.path,
+      name: AppRoute.activitySearch.name,
+      builder: (_, __) => const ActivitySearchScreen(),
+    ),
     GoRoute(
       path: AppRoute.activity.path,
       name: AppRoute.activity.name,
@@ -203,16 +218,6 @@ final activityRoutes = GoRoute(
         );
       },
       routes: shiftRoutes,
-    ),
-    GoRoute(
-      path: AppRoute.activitySearch.path,
-      name: AppRoute.activitySearch.name,
-      builder: (_, __) => const ActivitySearchScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.organizationActivityManagement.path,
-      name: AppRoute.organizationActivityManagement.name,
-      builder: (_, __) => const ActivityModManagementScreen(),
     ),
   ],
 );
@@ -345,6 +350,10 @@ enum AppRoute {
     path: 'registration',
     name: 'organization-registration',
   ),
+  organizationMembersManagement(
+    path: '/organization-members',
+    name: 'organization-members',
+  ),
 
   activityManage(
     path: '/activity',
@@ -359,7 +368,7 @@ enum AppRoute {
     name: 'activity',
   ),
   organizationActivityManagement(
-    path: 'activity-management',
+    path: '/activity-management',
     name: 'activity-management',
   ),
 
@@ -386,10 +395,6 @@ enum AppRoute {
   myOrganization(
     path: '/my-organization',
     name: 'my-organization',
-  ),
-  organizationMembersManagement(
-    path: '/organization-members',
-    name: 'organization-members',
   ),
   ;
 

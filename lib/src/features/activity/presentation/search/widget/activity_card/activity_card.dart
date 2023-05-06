@@ -27,72 +27,75 @@ class ActivityCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       elevation: 1,
-      child: Row(
-        children: [
-          SizedBox(
-            width: context.mediaQuery.size.width * 0.3,
-            child: SvgPicture.asset('assets/images/role_admin.svg'),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    activity.name!,
-                    style: context.theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+      child: InkWell(
+        onTap: () {},
+        child: Row(
+          children: [
+            SizedBox(
+              width: context.mediaQuery.size.width * 0.3,
+              child: SvgPicture.asset('assets/images/role_admin.svg'),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      activity.name!,
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    activity.organization!.name,
-                    style: TextStyle(
-                      color: context.theme.primaryColor,
-                      fontWeight: FontWeight.bold,
+                    const SizedBox(
+                      height: 4,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    getAddress(activity.location),
-                  ),
-                  const Divider(),
-                  Row(
-                    children: [
-                      const Icon(Icons.access_time),
-                      const SizedBox(
-                        width: 8,
+                    Text(
+                      activity.organization!.name,
+                      style: TextStyle(
+                        color: context.theme.primaryColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        '${dateTime.hour}:${dateTime.minute} - ',
-                      ),
-                      Text(
-                        DateFormat('MMM dd, yyyy').format(dateTime),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.supervisor_account),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Text(slots),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      getAddress(activity.location),
+                    ),
+                    const Divider(),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          DateFormat('hh:mm - ').format(dateTime),
+                        ),
+                        Text(
+                          DateFormat('MMM dd, yyyy').format(dateTime),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.supervisor_account),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(slots),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
