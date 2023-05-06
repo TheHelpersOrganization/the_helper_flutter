@@ -12,7 +12,7 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.home,
   ),
   DrawerItemModel(
-    route: AppRoute.activities,
+    route: AppRoute.activitySearch,
     title: 'Activities',
     icon: Icons.search,
   ),
@@ -62,6 +62,11 @@ final List<DrawerItemModel> moderator = [
   const DrawerItemModel(
     route: AppRoute.organizationMembersManagement,
     title: 'Organization Members',
+    icon: Icons.person_outline,
+  ),
+  const DrawerItemModel(
+    route: AppRoute.organizationActivityManagement,
+    title: 'Organization Activities',
     icon: Icons.work_outline,
   ),
   const DrawerItemModel(
@@ -100,7 +105,7 @@ const List<DrawerItemModel> admin = [
   ),
   // DrawerItemModel(
   //       route: AppRoute.organizationManage,
-  //       title: 'Organizations Manage', 
+  //       title: 'Organizations Manage',
   //       icon: Icons.search,
   // ),
   // DrawerItemModel(
@@ -108,13 +113,13 @@ const List<DrawerItemModel> admin = [
   //   title: 'Organization Request Manage',
   //   icon: Icons.app_registration,
   // ),
-  DrawerItemModel(    
+  DrawerItemModel(
     title: 'Organizations',
     icon: Icons.search,
     subPaths: [
       DrawerItemModel(
         route: AppRoute.organizationManage,
-        title: 'Organizations Manage', 
+        title: 'Organizations Manage',
         icon: Icons.search,
       ),
       DrawerItemModel(

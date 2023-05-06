@@ -35,8 +35,12 @@ class RoleRepository {
   }
 
   Future<Role?> setCurrentRole(Role role) async {
-    localStorage.write(key: currentRoleKey, value: role.toString());
+    await localStorage.write(key: currentRoleKey, value: role.toString());
     return role;
+  }
+
+  Future<void> removeCurrentRole() async {
+    await localStorage.write(key: currentRoleKey, value: null);
   }
 
   Future<Role?> getCurrentRole() async {

@@ -1,84 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
-import 'package:the_helper/src/features/activity/presentation/search/activity_search_screen.dart';
+import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/activity_detail/activity_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/registration/organization_registration.dart';
-import 'package:the_helper/src/features/organization/presentation/search/organization_search_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_manage_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/verify_organization_request/screens/organization_request_detail.dart';
-// import 'package:the_helper/src/features/organization_manage/presentation/screens/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_detail/organization_detail_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
-
-import '../features/organization/presentation/verify_organization_request/screens/organization_request_manage_screen.dart';
-import './router_notifier.dart';
-import '../common/screens/safe_screen.dart';
-import '../features/account_manage/presentation/screens/account_manage_screen.dart';
-import '../features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
-import '../features/activity_manage/presentation/screens/activity_manage_screen.dart';
-import '../features/change_role/presentation/screens/change_role_screen.dart';
-import '../features/change_role/presentation/screens/home_screen.dart';
-import '../features/organization/presentation/organization_detail/organization_detail_screen.dart';
-import '../features/profile/presentation/edit_profile_screen/edit_profile_screen.dart';
-import '../features/profile/presentation/profile_screen/profile_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
+import 'package:the_helper/src/router/router_notifier.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routes = [
   ShellRoute(
-    builder: (context, state, child) {
+    builder: (_, __, child) {
       return SafeScreen(child: child);
     },
     routes: [
       GoRoute(
-          name: AppRoute.login.name,
-          path: AppRoute.login.path,
-          builder: (context, state) => const LoginScreen()),
-      GoRoute(
-          name: AppRoute.logout.name,
-          path: AppRoute.logout.path,
-          builder: (context, state) => const LogoutScreen()),
-      GoRoute(
-          name: AppRoute.accountVerification.name,
-          path: AppRoute.accountVerification.path,
-          builder: (context, state) => const AccountVerificationScreen()),
-      GoRoute(
-          name: AppRoute.profile.name,
-          path: AppRoute.profile.path,
-          builder: (context, state) => const ProfileScreen()),
-      GoRoute(
-          name: AppRoute.editProfile.name,
-          path: AppRoute.editProfile.path,
-          builder: (context, state) => EditProfileScreen()),
-      GoRoute(
-        path: AppRoute.organizationRegistration.path,
-        name: AppRoute.organizationRegistration.name,
-        builder: (context, state) => const OrganizationRegistrationScreen(),
+        path: AppRoute.developing.path,
+        name: AppRoute.developing.name,
+        builder: (_, __) => const ChangeRoleScreen(),
       ),
       GoRoute(
-          name: AppRoute.accountManage.name,
-          path: AppRoute.accountManage.path,
-          builder: (context, state) => const AccountManageScreen()),
+        path: AppRoute.login.path,
+        name: AppRoute.login.name,
+        builder: (_, __) => const LoginScreen(),
+      ),
       GoRoute(
-          name: AppRoute.accountRequestManage.name,
-          path: AppRoute.accountRequestManage.path,
-          builder: (context, state) => const AccountRequestManageScreen()),
+        path: AppRoute.logout.path,
+        name: AppRoute.logout.name,
+        builder: (context, state) => const LogoutScreen(),
+      ),
       GoRoute(
-          name: AppRoute.activityManage.name,
-          path: AppRoute.activityManage.path,
-          builder: (context, state) => const ActivityManageScreen()),
-      GoRoute(
-          name: AppRoute.organizationManage.name,
-          path: AppRoute.organizationManage.path,
-          builder: (context, state) => const OrganizationManageScreen()),
+        path: AppRoute.changeRole.path,
+        name: AppRoute.changeRole.name,
+        builder: (_, __) => const ChangeRoleScreen(),
+      ),
       GoRoute(
         path: AppRoute.organizationMembersManagement.path,
         name: AppRoute.organizationMembersManagement.name,
@@ -86,80 +64,50 @@ final routes = [
             const OrganizationMembersManagementScreen(),
       ),
       GoRoute(
-          name: AppRoute.organizationRequestsManage.name,
-          path: AppRoute.organizationRequestsManage.path,
-          builder: (context, state) => const OrganizationRequestsManageScreen()),
-      GoRoute(
-          name: AppRoute.organizationRequestDetail.name,
-          path: AppRoute.organizationRequestDetail.path,
-          builder: (context, state) => const OrganizationRequestDetailScreen()),
-      GoRoute(
-          name: AppRoute.changeRole.name,
-          path: AppRoute.changeRole.path,
-          builder: (context, state) => const ChangeRoleScreen()),
-      GoRoute(
-        path: AppRoute.activitySearch.path,
-        name: AppRoute.activitySearch.name,
-        builder: (context, state) => const ActivitySearchScreen(),
+        path: AppRoute.organizationActivityManagement.path,
+        name: AppRoute.organizationActivityManagement.name,
+        builder: (_, __) => const ActivityModManagementScreen(),
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
-        builder: (context, state, child) {
+        builder: (_, __, child) {
           return CustomBottomNavigator(child: child);
         },
         routes: [
           GoRoute(
-            name: AppRoute.home.name,
             path: AppRoute.home.path,
-            builder: (context, state) => const HomeScreen(),
+            name: AppRoute.home.name,
+            builder: (_, __) => const HomeScreen(),
           ),
           GoRoute(
-              name: AppRoute.accountVerificationCompleted.name,
-              path: AppRoute.accountVerificationCompleted.path,
-              builder: (context, state) =>
-                  const AccountVerificationCompletedScreen()),
-          GoRoute(
-              name: AppRoute.activities.name,
-              path: AppRoute.activities.path,
-              builder: (context, state) => const ActivitySearchScreen()),
-          GoRoute(
-              name: AppRoute.news.name,
-              path: AppRoute.news.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.chat.name,
-              path: AppRoute.chat.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.notification.name,
-              path: AppRoute.notification.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.report.name,
-              path: AppRoute.report.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.settings.name,
-              path: AppRoute.settings.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.developing.name,
-              path: AppRoute.developing.path,
-              builder: (context, state) => const DevelopingScreen()),
-          GoRoute(
-              name: AppRoute.menu.name,
-              path: AppRoute.menu.path,
-              builder: (context, state) => const MenuScreen()),
-          GoRoute(
-            path: AppRoute.organizationSearch.path,
-            name: AppRoute.organizationSearch.name,
-            builder: (context, state) => const OrganizationSearchScreen(),
+            path: AppRoute.news.path,
+            name: AppRoute.news.name,
+            builder: (_, __) => const DevelopingScreen(),
           ),
           GoRoute(
-            path: AppRoute.organization.path,
-            name: AppRoute.organization.name,
-            builder: (_, state) =>
-                OrganizationDetailScreen(orgId: state.params['id']!),
+            path: AppRoute.chat.path,
+            name: AppRoute.chat.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.notification.path,
+            name: AppRoute.notification.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.report.path,
+            name: AppRoute.report.name,
+            builder: (_, __) => const DevelopingScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.menu.path,
+            name: AppRoute.menu.name,
+            builder: (_, __) => const MenuScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.settings.path,
+            name: AppRoute.settings.name,
+            builder: (_, __) => const MenuScreen(),
           ),
           GoRoute(
             path: AppRoute.myOrganization.path,
@@ -168,80 +116,285 @@ final routes = [
           )
         ],
       ),
+      accountRoutes,
+      profileRoutes,
+      organizationRoutes,
+      activityRoutes,
     ],
   ),
 ];
 
-enum AppRoute {
-  splash(path: '/splash', name: 'splash'), // Internal access only
-  home(path: '/', name: 'home'),
-  changeRole(path: '/change-role', name: 'change-role'),
-  login(path: '/login', name: 'login'),
-  logout(path: '/logout', name: 'logout'),
-  accountVerification(
-      path: '/account-verification', name: 'account-verification'),
-  accountVerificationCompleted(
-      path: '/account-verification-completed',
-      name: 'account-verification-completed'),
-  profile(path: '/profile', name: 'profile'),
-  editProfile(path: '/profile/edit', name: 'profile-edit'),
-  profileSetting(
-    path: '/profile/setting',
-    name: 'profile-setting',
+final profileRoutes = GoRoute(
+  path: AppRoute.profile.path,
+  name: AppRoute.profile.name,
+  builder: (_, __) => const ProfileScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.profileEdit.path,
+      name: AppRoute.profileEdit.name,
+      builder: (_, __) => ProfileEditScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.profileSetting.path,
+      name: AppRoute.profileSetting.name,
+      builder: (_, __) => const ProfileSettingScreen(),
+    ),
+  ],
+);
+
+final organizationRoutes = GoRoute(
+  path: AppRoute.organizationManage.path,
+  name: AppRoute.organizationManage.name,
+  builder: (_, __) => const OrganizationManageScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.organizationSearch.path,
+      name: AppRoute.organizationSearch.name,
+      builder: (_, __) => const OrganizationSearchScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.organizationRegistration.path,
+      name: AppRoute.organizationRegistration.name,
+      builder: (_, __) => const OrganizationRegistrationScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.organization.path,
+      name: AppRoute.organization.name,
+      builder: (_, state) => OrganizationDetailScreen(
+        orgId: state.params[AppRoute.organization.path.substring(1)]!,
+      ),
+    ),
+  ],
+);
+
+final shiftRoutes = [
+  GoRoute(
+    path: AppRoute.shifts.path,
+    name: AppRoute.shifts.name,
+    // Todo: repalce with implemented screen
+    builder: (_, state) {
+      final activityId =
+          int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+      return ShiftsScreen(activityId: activityId);
+    },
+    routes: [
+      GoRoute(
+        path: AppRoute.shift.path,
+        name: AppRoute.shift.name,
+        // Todo: repalce with implemented screen
+        builder: (_, state) {
+          final activityId =
+              int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+          final shiftId =
+              int.parse(state.params[AppRoute.shift.path.substring(1)]!);
+          return ShiftDetailScreen(
+            activityId: activityId,
+            shiftId: shiftId,
+          );
+        },
+      ),
+    ],
   ),
-  activities(path: '/activities', name: 'activities'),
-  news(path: '/news', name: 'news'),
-  chat(path: '/chat', name: 'chat'),
-  notification(path: '/notification', name: 'notification'),
-  report(path: '/report', name: 'report'),
-  settings(path: '/settings', name: 'setting'),
+];
+
+final activityRoutes = GoRoute(
+  path: AppRoute.activityManage.path,
+  name: AppRoute.activityManage.name,
+  builder: (_, __) => const DevelopingScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.activitySearch.path,
+      name: AppRoute.activitySearch.name,
+      builder: (_, __) => const ActivitySearchScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.activity.path,
+      name: AppRoute.activity.name,
+      builder: (_, state) {
+        final activityId =
+            int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+        return ActivityDetailScreen(
+          activityId: activityId,
+        );
+      },
+      routes: shiftRoutes,
+    ),
+  ],
+);
+
+final accountRoutes = GoRoute(
+  path: AppRoute.account.path,
+  name: AppRoute.account.name,
+  builder: (_, __) => const DevelopingScreen(),
+  routes: [
+    GoRoute(
+      path: AppRoute.accountVerification.path,
+      name: AppRoute.accountVerification.name,
+      builder: (context, state) => const AccountVerificationScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.accountVerificationCompleted.path,
+      name: AppRoute.accountVerificationCompleted.name,
+      builder: (context, state) => const AccountVerificationCompletedScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.accountRequestManage.path,
+      name: AppRoute.accountRequestManage.name,
+      builder: (context, state) => const AccountRequestManageScreen(),
+    ),
+  ],
+);
+
+enum AppRoute {
+  // 404
+  developing(
+    path: '/developing',
+    name: 'developing',
+  ),
+
+  home(
+    path: '/home',
+    name: 'home',
+  ),
+  changeRole(
+    path: '/role',
+    name: 'change-role',
+  ),
+  login(
+    path: '/login',
+    name: 'login',
+  ),
+  logout(
+    path: '/logout',
+    name: 'logout',
+  ),
+
+  // Todo: create modal instead of using this route
+  account(
+    path: '/account',
+    name: 'account',
+  ),
+  accountVerification(
+    path: 'verification',
+    name: 'account-verification',
+  ),
+  accountVerificationCompleted(
+    path: 'verification-completed',
+    name: 'account-verification-completed',
+  ),
+  accountRequestManage(
+    path: 'manage',
+    name: 'account-request-manage',
+  ),
+
+  // Todo: news crud
+  news(
+    path: '/news',
+    name: 'news',
+  ),
+  chat(
+    path: '/chat',
+    name: 'chat',
+  ),
+
+  // Todo: notification crud
+  notification(
+    path: '/notification',
+    name: 'notification',
+  ),
+
+  // Todo: report crud
+  report(
+    path: '/report',
+    name: 'report',
+  ),
+  settings(
+    path: '/settings',
+    name: 'setting',
+  ),
 
   // Quick access to develop screen
-  testScreen(path: '/test', name: 'test'),
+  testScreen(
+    path: '/test',
+    name: 'test',
+  ),
 
-  developing(path: '/not-exist', name: 'not-exist'),
+  // Profile
+  profile(
+    path: '/profile',
+    name: 'profile',
+  ),
+  profileEdit(
+    path: 'edit',
+    name: 'profile-edit',
+  ),
+  profileSetting(
+    path: 'setting',
+    name: 'profile-setting',
+  ),
+
+  // Org
+  organizationManage(
+    path: '/organization',
+    name: 'organization-manage',
+  ),
+  organization(
+    path: ':orgId',
+    name: 'organization',
+  ),
+  organizationSearch(
+    path: 'search',
+    name: 'organization-search',
+  ),
+  organizationRegistration(
+    path: 'registration',
+    name: 'organization-registration',
+  ),
+  organizationMembersManagement(
+    path: '/organization-members',
+    name: 'organization-members',
+  ),
+
+  activityManage(
+    path: '/activity',
+    name: 'activity-manage',
+  ),
+  activitySearch(
+    path: 'search',
+    name: 'activity-search',
+  ),
+  activity(
+    path: ':activityId',
+    name: 'activity',
+  ),
+  organizationActivityManagement(
+    path: '/activity-management',
+    name: 'activity-management',
+  ),
+
+  // shift
+  shifts(
+    path: 'shift',
+    name: 'shifts',
+  ),
+  shift(
+    path: ':shiftId',
+    name: 'shift',
+  ),
 
   //Admin feature
   menu(
     path: '/menu',
     name: 'menu',
   ),
-  organization(
-    path: '/organization/:id',
-    name: 'organization',
-  ),
-  accountManage(path: '/account-manage', name: 'account-manage'),
-  accountRequestManage(
-      path: '/account-request-manage', name: 'account-request-manage'),
-  activityManage(path: '/activity-manage', name: 'activity-manage'),
-  organizationManage(path: '/organization-manage', name: 'organization-manage'),
-  organizationRequestsManage(
-    name: 'organization-requests-manage',
-    path: '/organization-requests-manage'
-  ),
-  organizationRequestDetail(
-    name: 'organization-request-detail',
-    path: '/organization-request-detail',
-  ),
-  organizationSearch(
-    path: '/organization-search',
-    name: 'organization-search',
-  ),
-  organizationRegistration(
-    path: '/organization-registration',
-    name: 'organization-registration',
+
+  accountManage(
+    path: '/account-manage',
+    name: 'account-manage',
   ),
   myOrganization(
     path: '/my-organization',
     name: 'my-organization',
-  ),
-  organizationMembersManagement(
-    path: '/organization-members',
-    name: 'organization-members',
-  ),
-  activitySearch(
-    path: '/search-activities',
-    name: 'search-activities',
   ),
   ;
 

@@ -7,19 +7,20 @@ class AppDrawerItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final GestureTapCallback? onTap;
-  final AppRoute? route;
+  // final AppRoute? route;
+  final String? path;
 
   const AppDrawerItem({
     super.key,
     required this.title,
     required this.icon,
     this.onTap,
-    this.route,
+    this.path,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = route?.path == context.currentRoute;
+    bool isSelected = path == context.currentRoute;
 
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),

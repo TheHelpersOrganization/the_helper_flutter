@@ -15,10 +15,10 @@ final imageInputControllerProvider =
 final genderInputSelectionProvider =
     StateProvider.autoDispose<Gender?>((ref) => null);
 
-class EditProfileAvatarController extends AutoDisposeAsyncNotifier<int?> {
+class ProfileEditAvatarController extends AutoDisposeAsyncNotifier<int?> {
   @override
   int? build() {
-    final profile = ref.watch(editProfileControllerProvider);
+    final profile = ref.watch(profileEditControllerProvider);
     return profile.when(
       data: (data) => data.avatarId,
       error: (_, __) => null,
@@ -30,12 +30,12 @@ class EditProfileAvatarController extends AutoDisposeAsyncNotifier<int?> {
     state = const AsyncValue.loading();
     try {
       final fileModel = await ref.read(fileRepositoryProvider).upload(path);
-      final profile = ref.read(editProfileControllerProvider).valueOrNull;
+      final profile = ref.read(profileEditControllerProvider).valueOrNull;
       if (profile == null) {
         return;
       }
       await ref
-          .watch(editProfileControllerProvider.notifier)
+          .watch(profileEditControllerProvider.notifier)
           .updateProfile(profile.copyWith(avatarId: fileModel.id));
     } on BackendException catch (ex) {
       state = AsyncValue.error(ex.error.message, StackTrace.current);
@@ -43,7 +43,7 @@ class EditProfileAvatarController extends AutoDisposeAsyncNotifier<int?> {
   }
 }
 
-class EditProfileController extends AutoDisposeAsyncNotifier<Profile> {
+class ProfileEditController extends AutoDisposeAsyncNotifier<Profile> {
   @override
   FutureOr<Profile> build() async {
     final profile = await ref.watch(profileRepositoryProvider).getProfile();
@@ -64,10 +64,10 @@ class EditProfileController extends AutoDisposeAsyncNotifier<Profile> {
   }
 }
 
-final editProfileControllerProvider =
-    AutoDisposeAsyncNotifierProvider<EditProfileController, Profile>(
-        () => EditProfileController());
+final profileEditControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ProfileEditController, Profile>(
+        () => ProfileEditController());
 
-final editProfileAvatarControllerProvider =
-    AutoDisposeAsyncNotifierProvider<EditProfileAvatarController, int?>(
-        () => EditProfileAvatarController());
+final profileEditAvatarControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ProfileEditAvatarController, int?>(
+        () => ProfileEditAvatarController());

@@ -21,13 +21,13 @@ class DateTimeCard extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              '${DateFormat('MMM').format(DateTime(0, dateTime.month))} ${dateTime.day}',
+              DateFormat('MMM dd').format(dateTime),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              '${dateTime.hour}:${dateTime.minute}',
+              DateFormat('hh:mm').format(dateTime),
             ),
           ],
         ),

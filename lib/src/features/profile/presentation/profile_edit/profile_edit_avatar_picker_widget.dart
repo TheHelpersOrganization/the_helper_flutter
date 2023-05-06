@@ -4,14 +4,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 
-import 'edit_profile_controller.dart';
+import 'profile_edit_controller.dart';
 
-class EditProfileAvatarPickerWidget extends ConsumerWidget {
-  const EditProfileAvatarPickerWidget({super.key});
+class ProfileEditAvatarPickerWidget extends ConsumerWidget {
+  const ProfileEditAvatarPickerWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final avatarId = ref.watch(editProfileAvatarControllerProvider);
+    final avatarId = ref.watch(profileEditAvatarControllerProvider);
 
     return Stack(
       alignment: Alignment.center,
@@ -43,7 +43,7 @@ class EditProfileAvatarPickerWidget extends ConsumerWidget {
               }
               ref.read(imageInputControllerProvider.notifier).state = file.path;
               ref
-                  .read(editProfileAvatarControllerProvider.notifier)
+                  .read(profileEditAvatarControllerProvider.notifier)
                   .updateAvatar(file);
             },
             elevation: 2.0,

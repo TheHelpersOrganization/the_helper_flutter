@@ -6,10 +6,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../../../../common/constant/regex.dart';
 
-class EditProfilePhoneNumberWidget extends ConsumerWidget {
+class ProfileEditPhoneNumberWidget extends ConsumerWidget {
   final String? initialValue;
 
-  const EditProfilePhoneNumberWidget({
+  const ProfileEditPhoneNumberWidget({
     super.key,
     this.initialValue,
   });

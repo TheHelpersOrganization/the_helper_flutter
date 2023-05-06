@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/utils/async_value.dart';
@@ -17,11 +19,10 @@ class SwitchOrganizationController extends AutoDisposeAsyncNotifier<void> {
   }
 
   Future<Organization?> switchOrganization(int organizationId) async {
-    //state = const AsyncLoading();
     final res = await guardAsyncValue(() => ref
         .read(currentOrganizationRepositoryProvider)
         .setCurrentOrganization(organizationId));
-    //state = res;
+    ref.read(roleControllerProvider.notifier).setCurrentRole(Role.moderator);
     return res.valueOrNull;
   }
 }

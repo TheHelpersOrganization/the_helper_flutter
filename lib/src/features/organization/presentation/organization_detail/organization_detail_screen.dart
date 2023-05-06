@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/router/router.dart';
-
-import '../../../../common/extension/image.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
   Tab(text: 'Activity'),
+  Tab(text: 'Detail'),
 ];
 
 class OrganizationDetailScreen extends ConsumerWidget {
@@ -49,35 +50,40 @@ class OrganizationDetailScreen extends ConsumerWidget {
                     // TODO: should change this fixed size to varialbles of display content inside flexibleSpace
                     expandedHeight: 300 + kTextTabBarHeight + kToolbarHeight,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: Column(
+                      background: Stack(
                         children: [
-                          const SizedBox(height: kToolbarHeight),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 4,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                image: DecorationImage(
-                                  image: org.logo == null
-                                      ? Image.asset(
-                                              'assets/images/organization_placeholder.jpg')
-                                          .image
-                                      : ImageX.backend(org.logo!).image,
-                                  fit: BoxFit.fitHeight,
+                          Column(
+                            children: [
+                              const SizedBox(height: kToolbarHeight),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 4,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    image: DecorationImage(
+                                      image: org.logo == null
+                                          ? Image.asset(
+                                                  'assets/images/organization_placeholder.jpg')
+                                              .image
+                                          : ImageX.backend(org.logo!).image,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                              Text(
+                                org.name,
+                                style:
+                                    Theme.of(context).textTheme.displayMedium,
+                              ),
+                              const SizedBox(
+                                height: kTextTabBarHeight,
+                              )
+                            ],
                           ),
-                          Text(
-                            org.name,
-                            style: Theme.of(context).textTheme.displayMedium,
-                          ),
-                          const SizedBox(
-                            height: kTextTabBarHeight,
-                          )
                         ],
                       ),
                     ),
@@ -103,7 +109,20 @@ class OrganizationDetailScreen extends ConsumerWidget {
                                 sliver: SliverFixedExtentList(
                                     itemExtent: 48.0,
                                     delegate: (tab.text == 'Detail')
-                                        ? SliverChildListDelegate([])
+                                        ? SliverChildListDelegate([
+                                            DetailListTile(
+                                              label: 'Phone Number',
+                                              value: org.phoneNumber,
+                                            ),
+                                            DetailListTile(
+                                              label: 'Email Address',
+                                              value: org.email,
+                                            ),
+                                            DetailListTile(
+                                              label: 'Website',
+                                              value: org.website,
+                                            ),
+                                          ])
                                         : SliverChildBuilderDelegate(
                                             (context, index) => ListTile(
                                                 title: Text('Item $index')),

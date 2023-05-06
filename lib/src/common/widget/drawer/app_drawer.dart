@@ -7,6 +7,7 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_user.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_enum.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
@@ -49,7 +50,7 @@ class AppDrawer extends ConsumerWidget {
     // final roles = ref.watch(getAllRolesProvider).valueOrNull;
     final roles = tempRole;
 
-    if (userRoleState.isLoading || roles == null) return ListView();
+    if (userRoleState.isLoading) return ListView();
 
     final drawerItem = getDrawerItem(userRole ?? Role.volunteer);
     return ListView(
@@ -62,13 +63,12 @@ class AppDrawer extends ConsumerWidget {
         for (var i in drawerItem)
           if (i.subPaths != null)
             AppDrawerDropDown(
-              title: i.title, 
-              icon: i.icon, 
+              title: i.title,
+              icon: i.icon,
               subPaths: i.subPaths!,
             )
           else
             AppDrawerItem(
-              route: i.route,
               title: i.title,
               icon: i.icon,
               onTap: () {
@@ -92,6 +92,7 @@ class AppDrawer extends ConsumerWidget {
             icon: Icons.logout,
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
+              ref.read(roleRepositoryProvider).removeCurrentRole();
               ref.invalidate(profileServiceProvider);
               ref.invalidate(profileRepositoryProvider);
               ref.invalidate(authServiceProvider);
