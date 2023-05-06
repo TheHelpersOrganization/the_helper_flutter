@@ -43,7 +43,6 @@ class OrganizationRequestModelRepository {
     int? status,
     // OrganizationQuery? query,
   }) async {
-    print('aaaa');
     // final List<dynamic> res = (await client.get(
     //   '/something',
     // ))

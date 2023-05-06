@@ -69,8 +69,14 @@ class AccountRepository {
     await client.post('/something', data: account.toJson());
   }
 
-  Future<void> update(int id, AccountModel account) async {
-    await client.put('/something/$id', data: account.toJson());
+  Future<AccountModel> banAccount(int id) async {
+    final res = await client.put('/something/$id');
+    return AccountModel.fromJson(res.data['data']);
+  }
+
+  Future<AccountModel> unbanAccount(int id) async {
+    final res = await client.put('/something/$id');
+    return AccountModel.fromJson(res.data['data']);
   }
 
   Future<AccountModel> delete(int id) async {

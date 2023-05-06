@@ -6,13 +6,41 @@ import 'package:the_helper/src/features/account_manage/data/account_repository.d
 import 'package:the_helper/src/features/account_manage/domain/account.dart';
 import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
 
-class AccountManageScreenController
-    extends AutoDisposeAsyncNotifier<List<AccountModel>> {
+import '../../../../utils/async_value.dart';
+
+class AccountManageScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
-  FutureOr<List<AccountModel>> build() {
-    return ref.watch(accountRepositoryProvider).getAll();
+  build() {}
+
+  Future<AccountModel?> ban(int accountId) async {
+    state = const AsyncLoading();
+    final res = await guardAsyncValue(() async =>
+        await ref.watch(accountRepositoryProvider).banAccount(accountId));
+    state = const AsyncData(null);
+    return res.valueOrNull;
+  }
+
+  Future<AccountModel?> unban(int accountId) async {
+    state = const AsyncLoading();
+    final res = await guardAsyncValue(() async =>
+        await ref.watch(accountRepositoryProvider).unbanAccount(accountId));
+    state = const AsyncData(null);
+    return res.valueOrNull;
+  }
+
+  Future<AccountModel?> delete(int accountId) async {
+    state = const AsyncLoading();
+    final res = await guardAsyncValue(() async =>
+        await ref.watch(accountRepositoryProvider).delete(accountId));
+    state = const AsyncData(null);
+    return res.valueOrNull;
   }
 }
+
+final accountManageControllerProvider =
+    AutoDisposeAsyncNotifierProvider<AccountManageScreenController, void>(
+  () => AccountManageScreenController(),
+);
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
@@ -30,8 +58,8 @@ final pagingControllerProvider = Provider.autoDispose(
       try {
         final items = await accountRepository.getAll(
           query: GetAccountQuery(
-            // query: (name: searchPattern),
-          ),
+              // query: (name: searchPattern),
+              ),
           offset: pageKey * 100,
           isBanned: tabStatus,
         );

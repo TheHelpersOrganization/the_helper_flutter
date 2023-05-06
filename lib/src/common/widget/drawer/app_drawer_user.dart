@@ -12,8 +12,8 @@ class AppDrawerUser extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final account = ref.watch(authServiceProvider).valueOrNull?.account;
     final profile = ref.watch(profileServiceProvider);
-    print(account);
-    print(profile);
+    // print(account);
+    // print(profile);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

@@ -21,7 +21,6 @@ final firstLoadPagingController = StateProvider((ref) => true);
 
 final pagingControllerProvider = Provider.autoDispose(
   (ref) {
-    print('dfs');
     final requestRepo = ref.watch(organizationRequestModelRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final hasUsedSearch = ref.watch(hasUsedSearchProvider);

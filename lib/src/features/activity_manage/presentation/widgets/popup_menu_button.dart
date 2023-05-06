@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/features/account_manage/presentation/widgets/account_list_item.dart';
+import 'package:the_helper/src/features/account_manage/presentation/widgets/active_account_list_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/account_manage/presentation/controllers/account_manage_screen_controller.dart';
 
