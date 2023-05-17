@@ -108,69 +108,73 @@ class RoleChoice extends ConsumerWidget {
     final organization = currentOrganization.value;
 
     return currentRole.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      error: (_, __) => const ErrorScreen(),
-      data: (data) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          RoleOption(
-            optionColor: Colors.purple,
-            title: 'Volunteer',
-            description:
-                'Join thousands of activities, by trusted organizations',
-            role: Role.volunteer,
-            image: SvgPicture.asset(
-              'assets/images/role_volunteer.svg',
-              fit: BoxFit.cover,
+        loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-
-          //Second Option
-          userRole.isMod
+        error: (_, __) => const ErrorScreen(),
+        data: (data) {
+          var roleList = print(data);
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              data != Role.volunteer
               ? RoleOption(
-                  optionColor: Colors.red,
-                  title: 'Organization',
-                  description:
-                      'Manage your organization activities, members and more',
-                  role: Role.moderator,
-                  image: SvgPicture.asset(
-                    'assets/images/role_mod.svg',
-                    fit: BoxFit.cover,
-                  ),
-                  onTap: () async {
-                    if (organization == null) {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => const SwitchOrganizationDialog(),
-                      );
-                      return;
-                    }
-                    ref
-                        .read(roleControllerProvider.notifier)
-                        .setCurrentRole(Role.moderator);
-                    context.goNamed(AppRoute.home.name);
-                  },
-                )
-              : const SizedBox(),
+                optionColor: Colors.purple,
+                title: 'Volunteer',
+                description:
+                    'Join thousands of activities, by trusted organizations',
+                role: Role.volunteer,
+                image: SvgPicture.asset(
+                  'assets/images/role_volunteer.svg',
+                  fit: BoxFit.cover,
+                ),
+              ) : const SizedBox(height: 0,),
 
-          //Third Option
-          userRole.isAdmin
-              ? RoleOption(
-                  optionColor: Colors.blue,
-                  title: 'Admin',
-                  description: 'Dashboard for Volunteer App Admin',
-                  role: Role.admin,
-                  image: SvgPicture.asset(
-                    'assets/images/role_admin.svg',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : const SizedBox(),
-        ],
-      ),
-    );
+              //Second Option
+              userRole.isMod && data != Role.moderator
+                  ? RoleOption(
+                      optionColor: Colors.red,
+                      title: 'Organization',
+                      description:
+                          'Manage your organization activities, members and more',
+                      role: Role.moderator,
+                      image: SvgPicture.asset(
+                        'assets/images/role_mod.svg',
+                        fit: BoxFit.cover,
+                      ),
+                      onTap: () async {
+                        if (organization == null) {
+                          await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                const SwitchOrganizationDialog(),
+                          );
+                          return;
+                        }
+                        ref
+                            .read(roleControllerProvider.notifier)
+                            .setCurrentRole(Role.moderator);
+                        context.goNamed(AppRoute.home.name);
+                      },
+                    )
+                  : const SizedBox(),
+
+              //Third Option
+              userRole.isAdmin && data != Role.admin
+                  ? RoleOption(
+                      optionColor: Colors.blue,
+                      title: 'Admin',
+                      description: 'Dashboard for Volunteer App Admin',
+                      role: Role.admin,
+                      image: SvgPicture.asset(
+                        'assets/images/role_admin.svg',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
+          );
+        });
   }
 }

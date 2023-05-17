@@ -54,6 +54,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: TextFormField(
+                    onFieldSubmitted: (e) {
+                      ref.read(loginControllerProvider.notifier).signIn(
+                        emailController.text,
+                        passwordController.text,
+                      );
+                    },
                     controller: emailController,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.mail),
@@ -65,6 +71,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(12),
                   child: TextFormField(
+                    onFieldSubmitted: (e) {
+                      ref.read(loginControllerProvider.notifier).signIn(
+                        emailController.text,
+                        passwordController.text,
+                      );
+                    },
                     obscureText: true,
                     enableSuggestions: false,
                     autocorrect: false,
