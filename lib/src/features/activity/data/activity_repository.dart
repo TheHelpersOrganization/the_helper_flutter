@@ -30,7 +30,7 @@ class ActivityRepository {
     return activities;
   }
 
-  Future<Activity?> getActivityById(
+  Future<Activity> getActivityById(
       {required int id, ActivityQuery? query, turn}) async {
     final res = await client.get(
       '/activities/$id',

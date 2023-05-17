@@ -14,7 +14,7 @@ class Activity with _$Activity {
     String? description,
     int? thumbnail,
     int? organizationId,
-    List<int>? activityTypeIds,
+    List<int>? skillIds,
     List<int>? activityManagerIds,
     DateTime? startTime,
     DateTime? endTime,

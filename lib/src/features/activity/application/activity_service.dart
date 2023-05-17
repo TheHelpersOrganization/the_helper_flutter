@@ -42,10 +42,6 @@ class ActivityService {
 
       res.add(activities[i].copyWith(
           organization: organizations[i], volunteers: activityVolunteers));
-      res.add(activities[i].copyWith(
-          organization: organizations[i], volunteers: activityVolunteers));
-      res.add(activities[i].copyWith(
-          organization: organizations[i], volunteers: activityVolunteers));
     }
     return res;
   }
@@ -64,6 +60,13 @@ class ActivityService {
       res.add(activities[i].copyWith(organization: organizations[i]));
     }
     return res;
+  }
+
+  Future<Activity> getActivity({required int activityId}) async {
+    final activity = await activityRepository.getActivityById(id: activityId);
+    final org = await organizationRepository.getById(activity.organizationId!);
+
+    return activity.copyWith(organization: org);
   }
 }
 

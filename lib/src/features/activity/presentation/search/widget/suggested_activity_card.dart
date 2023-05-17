@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_card/activity_card_footer.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/datetime_card.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 import 'package:the_helper/src/utils/location.dart';
 
 class SuggestedActivityCard extends ConsumerWidget {
@@ -19,10 +22,14 @@ class SuggestedActivityCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: context.mediaQuery.size.width * 0.7,
-      height: 500,
+      height: 400,
       child: Card(
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            context.goNamed(AppRoute.activity.name, params: {
+              'activityId': activity.id.toString(),
+            });
+          },
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Column(
@@ -34,11 +41,17 @@ class SuggestedActivityCard extends ConsumerWidget {
                   children: [
                     SizedBox(
                       height: 150,
-                      child: SvgPicture.asset(
-                        'assets/images/role_admin.svg',
-                        width: context.mediaQuery.size.width * 0.7,
-                        fit: BoxFit.cover,
-                      ),
+                      child: activity.thumbnail != null
+                          ? Image.network(
+                              getImageUrl(activity.thumbnail!),
+                              width: context.mediaQuery.size.width * 0.7,
+                              fit: BoxFit.cover,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/role_volunteer.svg',
+                              width: context.mediaQuery.size.width * 0.7,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned(
                       bottom: 8,

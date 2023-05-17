@@ -18,7 +18,9 @@ class DefaultActivityView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const SizedBox(height: 380, child: ActivitySuggestionList()),
+        ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 380, maxHeight: 400),
+            child: const ActivitySuggestionList()),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: Divider(),
