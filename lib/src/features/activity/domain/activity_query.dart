@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/common/converter/comma_separated_datetimes_converter.dart';
 
 part 'activity_query.freezed.dart';
 part 'activity_query.g.dart';
@@ -10,8 +11,8 @@ class ActivityQuery with _$ActivityQuery {
     String? n,
     List<int>? sk,
     List<int>? org,
-    DateTime? st,
-    DateTime? et,
+    @CommaSeparatedDateTimesConverter() List<DateTime>? st,
+    @CommaSeparatedDateTimesConverter() List<DateTime>? et,
     List<int>? at,
     String? lc,
     String? rg,

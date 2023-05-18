@@ -57,6 +57,7 @@ dependencies:
   expandable_text: ^2.3.0
   auto_size_text: ^3.0.0
   skeletons: ^0.0.3
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:
