@@ -5,7 +5,7 @@ import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/activity_detail/activity_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
@@ -161,7 +161,7 @@ final organizationRoutes = GoRoute(
       path: AppRoute.organization.path,
       name: AppRoute.organization.name,
       builder: (_, state) => OrganizationDetailScreen(
-        orgId: state.params[AppRoute.organization.path.substring(1)]!,
+        orgId: state.pathParameters[AppRoute.organization.path.substring(1)]!,
       ),
     ),
   ],
@@ -174,7 +174,7 @@ final shiftRoutes = [
     // Todo: repalce with implemented screen
     builder: (_, state) {
       final activityId =
-          int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+          int.parse(state.pathParameters[AppRoute.activity.path.substring(1)]!);
       return ShiftsScreen(activityId: activityId);
     },
     routes: [
@@ -183,10 +183,10 @@ final shiftRoutes = [
         name: AppRoute.shift.name,
         // Todo: repalce with implemented screen
         builder: (_, state) {
-          final activityId =
-              int.parse(state.params[AppRoute.activity.path.substring(1)]!);
-          final shiftId =
-              int.parse(state.params[AppRoute.shift.path.substring(1)]!);
+          final activityId = int.parse(
+              state.pathParameters[AppRoute.activity.path.substring(1)]!);
+          final shiftId = int.parse(
+              state.pathParameters[AppRoute.shift.path.substring(1)]!);
           return ShiftDetailScreen(
             activityId: activityId,
             shiftId: shiftId,
@@ -211,8 +211,7 @@ final activityRoutes = GoRoute(
       path: AppRoute.activity.path,
       name: AppRoute.activity.name,
       builder: (_, state) {
-        final activityId =
-            int.parse(state.params[AppRoute.activity.path.substring(1)]!);
+        final activityId = int.parse(state.pathParameters['activityId']!);
         return ActivityDetailScreen(
           activityId: activityId,
         );
@@ -416,5 +415,6 @@ final routerProvider = Provider.autoDispose<GoRouter>((ref) {
     navigatorKey: rootNavigatorKey,
     routes: routes,
     redirect: notifier.redirect,
+    errorBuilder: (context, state) => const DevelopingScreen(),
   );
 });

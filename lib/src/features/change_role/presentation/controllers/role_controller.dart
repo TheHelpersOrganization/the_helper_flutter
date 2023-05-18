@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/router/router.dart';
 
 part 'role_controller.g.dart';
 
@@ -9,20 +10,33 @@ final getRoleProvider = FutureProvider.autoDispose(
   (ref) => ref.watch(roleRepositoryProvider).getCurrentRole(),
 );
 
-@Riverpod(keepAlive: true)
-class RoleController extends _$RoleController {
+@riverpod
+class SetRoleController extends _$SetRoleController {
+  Object? _key; // 1. create a key
+
   @override
   FutureOr<Role?> build() async {
-    return await (ref.watch(roleRepositoryProvider).getCurrentRole());
+    _key = Object(); // 2. initialize it
+    ref.onDispose(() => _key = null); // 3. set to null on dispose
+    return ref.watch(roleRepositoryProvider).getCurrentRole();
   }
 
-  Future<void> setCurrentRole(Role role) async {
+  Future<void> setCurrentRole(Role role, {bool navigateToHome = false}) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(
+    final key = _key;
+    final newState = await AsyncValue.guard(
       () => ref.read(roleRepositoryProvider).setCurrentRole(
             role,
           ),
     );
+    if (key == _key) {
+      // 5. check if the key is still the same
+      if (navigateToHome) {
+        ref.read(routerProvider).goNamed(AppRoute.home.name);
+        return;
+      }
+      state = newState;
+    }
   }
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
+import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
@@ -18,7 +20,8 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final role = ref.watch(roleControllerProvider);
+    final role = ref.watch(getRoleProvider);
+    print(role);
 
     return role.when(
         loading: () => const Center(
@@ -26,21 +29,13 @@ class HomeScreen extends ConsumerWidget {
             ),
         error: (_, __) => const ErrorScreen(),
         data: (role) => Scaffold(
-              appBar: AppBar(
-                iconTheme: const IconThemeData(color: Colors.black),
-                backgroundColor: Colors.transparent,
-                title: const Text('Homepage',
-                    style: TextStyle(color: Colors.black)),
-                centerTitle: true,
-                elevation: 0.0,
-                actions: <Widget>[
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_none_outlined)),
-                ],
-              ),
               drawer: const AppDrawer(),
-              body: getHomeScreen(role ?? Role.volunteer),
+              body: CustomSliverScrollView(
+                appBar: const CustomSliverAppBar(
+                  titleText: 'Home',
+                ),
+                body: getHomeScreen(role ?? Role.volunteer),
+              ),
               //body: const VolunteerView(),
               //bottomNavigationBar: const CustomBottomNavigator(),
             ));

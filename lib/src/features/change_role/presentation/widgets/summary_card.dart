@@ -15,10 +15,9 @@ class SummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Container(
+        child: SizedBox(
       height: 90,
       width: 150,
-      padding: const EdgeInsets.all(10.0),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
