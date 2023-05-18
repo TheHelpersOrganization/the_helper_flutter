@@ -14,6 +14,7 @@ class DevelopingScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset('assets/images/404.svg'),
             Text(
