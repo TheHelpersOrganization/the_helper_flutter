@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/search/controller/activity_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/volunteer_home_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/home_welcome_section.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_analytics.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
@@ -20,6 +20,7 @@ class VolunteerView extends ConsumerWidget {
     final email = ref.watch(authServiceProvider).value!.account.email;
     final volunteerName = ref.watch(profileProvider);
     final suggestedActivitiesState = ref.watch(suggestedActivitiesProvider);
+    final upcomingActivitiesState = ref.watch(upcomingActivitiesProvider);
 
     return volunteerName.when(
       error: (_, __) => const ErrorScreen(),
@@ -61,19 +62,19 @@ class VolunteerView extends ConsumerWidget {
               ),
               SizedBox(
                 height: 380.0,
-                child: suggestedActivitiesState.when(
+                child: upcomingActivitiesState.when(
                   loading: () => ActivityListPlaceholder(
                     itemCount: 2,
                     itemWidth: context.mediaQuery.size.width * 0.7,
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (suggestedActivities) => ListView.builder(
+                  data: (upcomingActivities) => ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: suggestedActivities.length,
+                    itemCount: upcomingActivities.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: suggestedActivities[index]),
+                        LargeActivityCard(activity: upcomingActivities[index]),
                   ),
                 ),
               ),

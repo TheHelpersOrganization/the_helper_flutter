@@ -2,16 +2,31 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/activity/domain/activity_include.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 
-part 'volunteer_home_controller.g.dart';
-
-@riverpod
-Future<List<Activity>> suggestedActivities(SuggestedActivitiesRef ref) async {
-  return ref.watch(activityServiceProvider).getSuggestedActivities(
+final suggestedActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
+  (ref) => ref.watch(activityServiceProvider).getSuggestedActivities(
         query: ActivityQuery(limit: 5),
-      );
-}
+        include: ActivityInclude(
+          organization: true,
+          volunteers: true,
+        ),
+      ),
+);
+
+final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
+  (ref) => ref.watch(activityServiceProvider).getActivities(
+        query: ActivityQuery(
+          limit: 5,
+          st: [DateTime.now(), DateTime.now().add(const Duration(days: 7))],
+        ),
+        include: ActivityInclude(
+          organization: true,
+          volunteers: true,
+        ),
+      ),
+);
 
 final pagingControllerProvider = Provider.autoDispose(
   (ref) {
