@@ -49,7 +49,7 @@ class OrgCard extends ConsumerWidget {
         onTap: () {
           context.pushNamed(
             AppRoute.organization.name,
-            params: {
+            pathParameters: {
               'id': organization.id.toString(),
             },
           );
@@ -168,7 +168,7 @@ class OrgCard extends ConsumerWidget {
                                 onPressed: () {
                                   context.pushNamed(
                                     AppRoute.organization.name,
-                                    params: {
+                                    pathParameters: {
                                       'id': organization.id.toString(),
                                     },
                                   );

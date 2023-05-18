@@ -93,10 +93,10 @@ class RoleChoice extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final roles = ref.watch(authServiceProvider).valueOrNull!.account.roles;
     final currentOrganization = ref.watch(currentOrganizationProvider);
-    final currentRole = ref.watch(roleControllerProvider);
+    final currentRole = ref.watch(setRoleControllerProvider);
 
     ref.listen<AsyncValue>(
-      roleControllerProvider,
+      setRoleControllerProvider,
       (_, state) => state.showSnackbarOnError(context),
     );
     ref.listen<AsyncValue>(
@@ -158,8 +158,8 @@ class RoleChoice extends ConsumerWidget {
                       return;
                     }
                     ref
-                        .read(roleControllerProvider.notifier)
-                        .setCurrentRole(Role.moderator);
+                        .read(setRoleControllerProvider.notifier)
+                        .setCurrentRole(Role.moderator, navigateToHome: true);
                     context.goNamed(AppRoute.home.name);
                   },
                 )

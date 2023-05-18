@@ -1,10 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
-
-import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
+import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'organization_request_repository.g.dart';

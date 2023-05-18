@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
-import 'package:the_helper/src/router/router.dart';
 
 class RoleOption extends ConsumerWidget {
   final Color optionColor;
@@ -30,18 +28,9 @@ class RoleOption extends ConsumerWidget {
       children: [
         InkWell(
           onTap: onTap ??
-              () async {
-                // ref
-                //     .read(homeScreenControllerProvider.notifier)
-                //     .changeRole(role);
-                await ref
-                    .read(roleControllerProvider.notifier)
-                    .setCurrentRole(role);
-
-                if (context.mounted) {
-                  context.goNamed(AppRoute.home.name);
-                }
-              },
+              () => ref
+                  .read(setRoleControllerProvider.notifier)
+                  .setCurrentRole(role, navigateToHome: true),
           child: Container(
             height: 100,
             width: 300,

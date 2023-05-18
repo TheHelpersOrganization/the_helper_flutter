@@ -11,27 +11,31 @@ class DefaultActivityView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Text(
-          'Activities you may interest',
-          style: context.theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Activities you may interest',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'See more',
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
-        ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 380, maxHeight: 400),
-            child: const ActivitySuggestionList()),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Divider(),
+        const SizedBox(height: 16),
+        const SizedBox(height: 380, child: ActivitySuggestionList()),
+        const SizedBox(
+          height: 48,
         ),
         Text(
           'More Activities',
-          style: context.theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.theme.textTheme.titleMedium,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         const ActivityList(),
       ],
     );

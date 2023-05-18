@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/common/screens/loading_overlay.dart';
+import 'package:the_helper/src/common/widget/loading_overlay.dart';
 
 class TestScreen extends ConsumerWidget {
   const TestScreen({super.key});

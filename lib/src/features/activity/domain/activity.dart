@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
+import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/skill/domain/skill.dart';
 
 part 'activity.freezed.dart';
 part 'activity.g.dart';
@@ -19,10 +21,12 @@ class Activity with _$Activity {
     DateTime? startTime,
     DateTime? endTime,
     Location? location,
+    List<Contact>? contacts,
     int? maxParticipants,
     int? joinedParticipants,
     Organization? organization,
     List<ActivityVolunteer>? volunteers,
+    List<Skill>? skills,
   }) = _Activity;
 
   factory Activity.fromJson(Map<String, dynamic> json) =>

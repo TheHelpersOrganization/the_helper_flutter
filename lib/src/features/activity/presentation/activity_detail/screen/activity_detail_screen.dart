@@ -1,15 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/common/widget/custom_list_tile.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/overflow_text.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/controller/activity_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/activity_contact_card.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 import 'package:the_helper/src/utils/location.dart';
 
 final List<String> tabs = [
@@ -18,6 +22,7 @@ final List<String> tabs = [
 
 class ActivityDetailScreen extends ConsumerWidget {
   const ActivityDetailScreen({super.key, required this.activityId});
+
   final int activityId;
 
   @override
@@ -40,8 +45,14 @@ class ActivityDetailScreen extends ConsumerWidget {
       drawer: const AppDrawer(),
       body: activity.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const ErrorScreen(),
+        error: (_, __) {
+          return const ErrorScreen();
+        },
         data: (activity) {
+          if (activity == null) {
+            return const ErrorScreen();
+          }
+
           final startTime = activity.startTime ?? DateTime(2000);
           final startTimeFormat =
               DateFormat('EEE dd/MM, yyyy').format(startTime);
@@ -50,6 +61,16 @@ class ActivityDetailScreen extends ConsumerWidget {
           final endTime = activity.endTime ?? DateTime(2000);
           final endTimeFormat = DateFormat('EEE dd/MM, yyyy').format(startTime);
           final shortEndTimeFormat = DateFormat('dd/MM/yyyy').format(endTime);
+          String slots = '';
+          if (activity.maxParticipants != null) {
+            slots +=
+                '${activity.joinedParticipants}/${activity.maxParticipants}';
+          } else {
+            slots += '${activity.joinedParticipants} Joined';
+          }
+          final joinedPercentage = activity.maxParticipants == null
+              ? null
+              : activity.joinedParticipants! / activity.maxParticipants!;
 
           return Padding(
             padding: const EdgeInsets.all(12),
@@ -60,11 +81,13 @@ class ActivityDetailScreen extends ConsumerWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/activity.png',
-                      width: context.mediaQuery.size.width,
-                      fit: BoxFit.fitWidth,
-                    ),
+                    child: activity.thumbnail == null
+                        ? SvgPicture.asset('assets/images/role_volunteer.svg')
+                        : CachedNetworkImage(
+                            imageUrl: getImageUrl(activity.thumbnail!),
+                            width: context.mediaQuery.size.width,
+                            fit: BoxFit.fitWidth,
+                          ),
                   ),
                   const SizedBox(
                     height: 24,
@@ -105,88 +128,115 @@ class ActivityDetailScreen extends ConsumerWidget {
                     linkColor: context.theme.primaryColor,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 48,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         'Participants',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text('10/20'),
+                      Text(slots),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: LinearProgressIndicator(
-                      value: 0.8,
+                  if (activity.maxParticipants != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: LinearProgressIndicator(
+                        value: joinedPercentage,
+                      ),
                     ),
-                  ),
-                  const Text('5 slots remaining'),
+                  if (activity.maxParticipants != null)
+                    Text(
+                      '${activity.maxParticipants! - activity.joinedParticipants!} slots remaining',
+                    )
+                  else
+                    const Text('Unlimited slots'),
                   const SizedBox(
-                    height: 8,
+                    height: 12,
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.calendar_month_outlined),
-                    title: OverflowText(
-                      text: Text('$startTime - $endTime'),
-                      fallback:
-                          Text('$shortStartTimeFormat - $shortEndTimeFormat'),
+                  CustomListTile(
+                    leading: const Padding(
+                      padding: EdgeInsets.only(right: 16),
+                      child: Icon(Icons.calendar_month_outlined),
+                    ),
+                    title: const Text('Date'),
+                    subtitle: OverflowText(
+                      text: Text(
+                        '$startTime - $endTime',
+                        style: TextStyle(
+                            color: context.theme.colorScheme.secondary),
+                      ),
+                      fallback: Text(
+                        '$shortStartTimeFormat - $shortEndTimeFormat',
+                        style: TextStyle(
+                            color: context.theme.colorScheme.secondary),
+                      ),
                     ),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.location_on_outlined),
+                  CustomListTile(
+                    leading: const Padding(
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: Icon(Icons.location_on_outlined),
+                    ),
                     title: const Text('Location'),
-                    subtitle: Text(getAddress(activity.location)),
+                    subtitle: Text(
+                      getAddress(activity.location),
+                      style:
+                          TextStyle(color: context.theme.colorScheme.secondary),
+                    ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 48,
                   ),
                   const Text(
                     'Skills Required',
                     style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Text(
+                    'Actual skill requirement depends on shift. Please check the shift details.',
+                    style:
+                        TextStyle(color: context.theme.colorScheme.secondary),
+                  ),
+                  const SizedBox(
+                    height: 12,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: const [
-                        Chip(
-                          avatar: Icon(Icons.wb_sunny_outlined),
-                          label: Text('Environment'),
-                        ),
-                        Chip(
-                          avatar: Icon(Icons.medical_services),
-                          label: Text('Healthcare'),
-                        ),
-                        Chip(
-                          avatar: Icon(Icons.construction),
-                          label: Text('Constructing'),
-                        ),
-                      ],
+                      children: activity.skills
+                              ?.map(
+                                (skill) => Chip(
+                                  avatar: const Icon(Icons.wb_sunny_outlined),
+                                  label: Text(skill.name),
+                                ),
+                              )
+                              .toList() ??
+                          <Widget>[],
                     ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 48,
                   ),
                   const Text(
                     'Contacts',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const ActivityContactCard(),
-                  ListTile(
-                    leading: const Icon(Icons.phone),
-                    title: const Text('Manager'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text('1232321321321'),
-                        Text('ABC asdfd asdfsdfdsfsdf')
-                      ],
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  if (activity.contacts != null)
+                    Column(
+                      children: activity.contacts!
+                          .map((c) => ActivityContactCard(contact: c))
+                          .toList(),
                     ),
-                  )
                 ],
               ),
             ),

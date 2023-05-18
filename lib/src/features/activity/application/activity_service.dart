@@ -7,6 +7,8 @@ import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/skill/data/skill_repository.dart';
+import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'activity_service.g.dart';
@@ -16,12 +18,14 @@ class ActivityService {
   final OrganizationRepository organizationRepository;
   final ActivityRepository activityRepository;
   final ActivityVolunteerService activityVolunteerService;
+  final SkillRepository skillRepository;
 
   const ActivityService({
     required this.client,
     required this.organizationRepository,
     required this.activityRepository,
     required this.activityVolunteerService,
+    required this.skillRepository,
   });
 
   Future<List<Activity>> getSuggestedActivities({ActivityQuery? query}) async {
@@ -68,6 +72,15 @@ class ActivityService {
 
     return activity.copyWith(organization: org);
   }
+
+  Future<Activity?> getActivityById({required int id}) async {
+    final activity = await activityRepository.getActivityById(id: id);
+    final org = await organizationRepository.getById(activity.organizationId!);
+    final skills = await skillRepository.getSkills(
+        query: SkillQuery(ids: activity.skillIds));
+
+    return activity.copyWith(skills: skills, organization: org);
+  }
 }
 
 @riverpod
@@ -77,5 +90,6 @@ ActivityService activityService(ActivityServiceRef ref) {
     organizationRepository: ref.watch(organizationRepositoryProvider),
     activityRepository: ref.watch(activityRepositoryProvider),
     activityVolunteerService: ref.watch(activityVolunteerServiceProvider),
+    skillRepository: ref.watch(skillRepositoryProvider),
   );
 }

@@ -43,11 +43,11 @@ class LoadingOverlayState extends State<LoadingOverlay>
     _animation.addStatusListener((status) {
       // ignore: unnecessary_statements
       status == AnimationStatus.forward
-          ? setState(() => {_overlayVisible = true})
+          ? setState(() => _overlayVisible = true)
           : null;
       // ignore: unnecessary_statements
       status == AnimationStatus.dismissed
-          ? setState(() => {_overlayVisible = false})
+          ? setState(() => _overlayVisible = false)
           : null;
     });
     if (widget.isLoading) {

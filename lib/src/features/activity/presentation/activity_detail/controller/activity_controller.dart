@@ -5,6 +5,6 @@ import 'package:the_helper/src/features/activity/domain/activity.dart';
 part 'activity_controller.g.dart';
 
 @riverpod
-Future<Activity> getActivity(GetActivityRef ref, int activityId) {
-  return ref.watch(activityServiceProvider).getActivity(activityId: activityId);
+Future<Activity?> getActivity(GetActivityRef ref, int activityId) {
+  return ref.watch(activityServiceProvider).getActivityById(id: activityId);
 }

@@ -45,7 +45,7 @@ class AppDrawer extends ConsumerWidget {
       );
 
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
-    final userRoleState = ref.watch(roleControllerProvider);
+    final userRoleState = ref.watch(getRoleProvider);
     final userRole = userRoleState.valueOrNull;
     final roles = ref.watch(getAllRolesProvider).valueOrNull;
     // final roles = tempRole;

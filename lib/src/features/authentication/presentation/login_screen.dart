@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/common/screens/loading_overlay.dart';
+import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
 import 'package:the_helper/src/features/authentication/presentation/register/register_screen.dart';
