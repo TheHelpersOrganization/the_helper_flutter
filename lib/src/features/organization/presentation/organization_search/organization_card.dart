@@ -355,7 +355,7 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                           onPressed: () {
                             context.pushNamed(
                               AppRoute.organization.name,
-                              params: {
+                              pathParameters: {
                                 'id': organization.id.toString(),
                               },
                             );

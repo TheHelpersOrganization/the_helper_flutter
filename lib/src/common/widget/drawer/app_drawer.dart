@@ -45,12 +45,12 @@ class AppDrawer extends ConsumerWidget {
       );
 
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
-    final userRoleState = ref.watch(roleControllerProvider);
+    final userRoleState = ref.watch(getRoleProvider);
     final userRole = userRoleState.valueOrNull;
-    // final roles = ref.watch(getAllRolesProvider).valueOrNull;
-    final roles = tempRole;
+    final roles = ref.watch(getAllRolesProvider).valueOrNull;
+    // final roles = tempRole;
 
-    if (userRoleState.isLoading) return ListView();
+    if (userRoleState.isLoading || roles == null) return ListView();
 
     final drawerItem = getDrawerItem(userRole ?? Role.volunteer);
     return ListView(
@@ -80,8 +80,7 @@ class AppDrawer extends ConsumerWidget {
                     i.route != null ? i.route!.name : AppRoute.developing.name);
               },
             ),
-        // if (userRole == Role.volunteer && roles.isNotEmpty)
-        if (roles.isNotEmpty)
+        if (roles.length > 1)
           AppDrawerItem(
             title: 'Change Role',
             icon: Icons.change_circle,

@@ -1,16 +1,23 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 import 'package:the_helper/src/utils/location.dart';
 
 class ActivityCard extends StatelessWidget {
   final Activity activity;
+  final double? height;
 
   const ActivityCard({
     super.key,
     required this.activity,
+    this.height = 190,
   });
 
   @override
@@ -26,75 +33,113 @@ class ActivityCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
+      clipBehavior: Clip.antiAlias,
       elevation: 1,
       child: InkWell(
-        onTap: () {},
-        child: Row(
-          children: [
-            SizedBox(
-              width: context.mediaQuery.size.width * 0.3,
-              child: SvgPicture.asset('assets/images/role_admin.svg'),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      activity.name!,
-                      style: context.theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+        onTap: () {
+          context.goNamed(AppRoute.activity.name, pathParameters: {
+            'activityId': activity.id.toString(),
+          });
+        },
+        child: SizedBox(
+          height: height,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: context.mediaQuery.size.width * 0.35,
+                height: height,
+                child: activity.thumbnail != null
+                    ? CachedNetworkImage(
+                        imageUrl: getImageUrl(activity.thumbnail!),
+                        fit: BoxFit.fitHeight,
+                        errorWidget: (context, error, stackTrace) =>
+                            SvgPicture.asset(
+                                'assets/images/role_volunteer.svg'),
+                      )
+                    : SvgPicture.asset(
+                        'assets/images/role_volunteer.svg',
+                        fit: BoxFit.fitHeight,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      activity.organization!.name,
-                      style: TextStyle(
-                        color: context.theme.primaryColor,
-                        fontWeight: FontWeight.bold,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        activity.name ?? 'Unknown activity',
+                        style: context.theme.textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      getAddress(activity.location),
-                    ),
-                    const Divider(),
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time),
-                        const SizedBox(
-                          width: 8,
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        activity.organization?.name ?? 'Unknown Organization',
+                        style: TextStyle(
+                          color: context.theme.primaryColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          DateFormat('hh:mm - ').format(dateTime),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      // Wrap it with flexible to detect overflow
+                      Flexible(
+                        child: AutoSizeText(
+                          getAddress(activity.location),
+                          style: TextStyle(
+                            color: context.theme.colorScheme.secondary,
+                          ),
+                          maxLines: 1,
+                          overflowReplacement: Text(
+                            getAddress(
+                              activity.location,
+                              componentCount: 2,
+                            ),
+                          ),
                         ),
-                        Text(
-                          DateFormat('MMM dd, yyyy').format(dateTime),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.supervisor_account),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(slots),
-                      ],
-                    ),
-                  ],
+                      ),
+                      const Divider(),
+                      Row(
+                        children: [
+                          const Icon(Icons.access_time),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            DateFormat('hh:mm - ').format(dateTime),
+                          ),
+                          Text(
+                            DateFormat('MMM dd, yyyy').format(dateTime),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.supervisor_account),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(slots),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
