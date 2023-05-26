@@ -58,6 +58,7 @@ dependencies:
   auto_size_text: ^3.0.0
   skeletons: ^0.0.3
   collection: ^1.17.1
+  sliver_tools: ^0.2.10
 
 dev_dependencies:
   flutter_test:

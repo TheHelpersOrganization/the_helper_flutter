@@ -1,14 +1,24 @@
+import 'dart:ui' as ui;
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/screens/loading_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 
-import '../../data/profile_repository.dart';
-import 'profile_detail_tab.dart';
+import 'profile_activity_tab.dart';
+import 'profile_organization_tab.dart';
+import 'profile_overview_tab.dart';
 
+// Todo: implement tab provider
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Overview'),
   Tab(text: 'Activity'),
@@ -16,153 +26,209 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Detail'),
 ];
 
-class ProfileScreen extends ConsumerStatefulWidget {
-  const ProfileScreen({super.key});
-  @override
-  ProfileScreenState createState() => ProfileScreenState();
-}
+class ProfileScreenOld extends ConsumerWidget {
+  const ProfileScreenOld({super.key});
 
-class ProfileScreenState extends ConsumerState {
-  late ScrollController _scrollController;
-
-  bool get _isSliverAppBarExtended =>
-      _scrollController.hasClients &&
-      _scrollController.offset > (400 - kToolbarHeight);
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
+  Size _textSize({required String text, TextStyle? style, int? maxLines}) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: maxLines,
+      textDirection: ui.TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
   }
 
   @override
-  Widget build(BuildContext context) {
-    final email =
-        ref.watch(authServiceProvider).valueOrNull?.account.email ?? '';
-
-    final profile = ref.watch(profileProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final accountToken = ref.watch(authServiceProvider);
+    final profile = ref.watch(profileServiceProvider);
     return profile.when(
-      loading: () => const LoadingScreen(),
-      error: (error, stack) => Text('Error: $error'),
-      data: (profile) => Scaffold(
-        drawer: const AppDrawer(),
-        body: DefaultTabController(
-          length: tabs.length,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  elevation: 0,
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      tooltip: 'Edit profile',
-                      onPressed: () {
-                        context.pushNamed(AppRoute.profileEdit.name);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.settings),
-                      tooltip: 'Setting profile',
-                      onPressed: () {},
-                    ),
-                  ],
-                  // title: _isSliverAppBarExtended ? Text(profile.username) : null,
-                  pinned: true,
-                  expandedHeight: 400,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    background: Column(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, __) => Text('Error: $error'),
+      data: (profile) {
+        final String bio = profile.bio ?? "Nothing here";
+        print(_textSize(text: bio));
+        return Scaffold(
+          drawer: const AppDrawer(),
+          body: DefaultTabController(
+            length: tabs.length,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: MultiSliver(
                       children: [
-                        const SizedBox(height: kToolbarHeight),
-                        Container(
-                          width: 200,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 8,
-                                color: Theme.of(context).secondaryHeaderColor),
-                            shape: BoxShape.circle,
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                              ),
-                              fit: BoxFit.fitHeight,
+                        SliverAppBar(
+                          forceElevated: innerBoxIsScrolled,
+                          title: Text(
+                            profile.username.toString().toUpperCase(),
+                          ),
+                          centerTitle: true,
+                          // pinned: true,
+                          // floating: true,
+                          // snap: true,
+                          actions: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              tooltip: 'Edit profile',
+                              onPressed: () =>
+                                  context.pushNamed(AppRoute.profileEdit.name),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.settings),
+                              tooltip: 'Setting profile',
+                              onPressed: () {
+                                context.pushNamed(AppRoute.profileSetting.name);
+                              },
+                            )
+                          ],
+                          expandedHeight:
+                              512 + kTextTabBarHeight + kToolbarHeight,
+                          // forceElevated: true,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Column(
+                              children: [
+                                const SizedBox(height: kToolbarHeight),
+                                Container(
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 8,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: profile.avatarId == null
+                                          ? Image.asset(
+                                              'assets/images/organization_placeholder.jpg',
+                                            ).image
+                                          : ImageX.backend(
+                                              profile.avatarId!,
+                                            ).image,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                ),
+                                // TODO: Should replace when reimplement profileService
+                                accountToken.when(
+                                  loading: () => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  error: (_, __) =>
+                                      const Text('An error has happened'),
+                                  data: (data) => Text(
+                                    profile.username ?? data!.account.email,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(32.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    // alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                    ),
+                                    child: ExpandableText(
+                                      profile.bio!,
+                                      maxLines: 4,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSecondary,
+                                      ),
+                                      expandText: 'See More',
+                                      collapseText: 'See Less',
+                                      linkColor: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
+                          // bottom: const TabBar(
+                          //   tabs: tabs,
+                          // ),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          profile.username ?? email,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          profile.bio ?? '',
-                          style: Theme.of(context).textTheme.titleMedium,
+                        SliverPersistentHeader(
+                          pinned: true,
+                          floating: true,
+                          delegate: _TabBarDelegate(
+                            tabBar: const TabBar(tabs: tabs),
+                          ),
                         ),
                       ],
                     ),
-                    stretchModes: const [StretchMode.zoomBackground],
                   ),
-                ),
-                SliverPersistentHeader(
-                  delegate: MySliverPersistentHeaderDelegate(
-                    TabBar(
-                      labelColor: Theme.of(context).colorScheme.onSurface,
-                      tabs: tabs,
-                    ),
+                  // SliverPersistentHeader(
+                  //   delegate: TabBarPersistentHeaderDelegate(
+                  //     tabBar: const TabBar(
+                  //       tabs: tabs,
+                  //     ),
+                  //     minHeight: 48,
+                  //     maxHeight: 48,
+                  //   ),
+                  //   pinned: true,
+                  // ),
+                ];
+              },
+              // Todo: implement TabBarView
+              body: TabBarView(
+                children: [
+                  ProfileOverviewTab(
+                    skills: profile.skills,
+                    interestedList: profile.interestedSkills,
                   ),
-                  pinned: true,
-                ),
-              ];
-            },
-            body: TabBarView(
-              children: [
-                const Tab(text: 'Overview'),
-                const Tab(text: 'Activity'),
-                const Tab(text: 'Organization'),
-                Column(
-                  children: const [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    ProfileDetailTab(),
-                  ],
-                ),
-              ],
-              // children: tabs,
+                  const ProfileActivityTab(),
+                  const ProfileOrganizationTab(),
+                  ProfileDetailTab(profile: profile),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
-class MySliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
-  MySliverPersistentHeaderDelegate(this._tabBar);
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
 
-  final TabBar _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
+  _TabBarDelegate({
+    required this.tabBar,
+  });
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      child: _tabBar,
+      color: Colors.white,
+      child: tabBar,
     );
   }
 
   @override
-  bool shouldRebuild(MySliverPersistentHeaderDelegate oldDelegate) {
+  double get maxExtent => kToolbarHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return false;
   }
 }
