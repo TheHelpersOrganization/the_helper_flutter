@@ -13,6 +13,8 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_ove
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 
+import 'profile_organization_controller.dart';
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -20,6 +22,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider);
     final activities = ref.watch(profileActivityControllerProvider);
+    final orgs = ref.watch(profileOrganizationControllerProvider);
     // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Center(
@@ -93,7 +96,7 @@ class ProfileScreen extends ConsumerWidget {
                     interestedList: profile.interestedSkills,
                   ),
                   ProfileActivityTab(activities: activities),
-                  const ProfileOrganizationTab(),
+                  ProfileOrganizationTab(orgs: orgs),
                   ProfileDetailTab(profile: profile),
                 ],
               ),

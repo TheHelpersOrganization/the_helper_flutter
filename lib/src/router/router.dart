@@ -161,7 +161,9 @@ final organizationRoutes = GoRoute(
       path: AppRoute.organization.path,
       name: AppRoute.organization.name,
       builder: (_, state) => OrganizationDetailScreen(
-        orgId: state.pathParameters[AppRoute.organization.path.substring(1)]!,
+        orgId: int.parse(
+          state.pathParameters[AppRoute.organization.path.substring(1)]!,
+        ),
       ),
     ),
   ],

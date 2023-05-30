@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 
-
 class ProfileDetailTab extends StatelessWidget {
   final Profile profile;
 
@@ -14,37 +13,35 @@ class ProfileDetailTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Builder(builder: (BuildContext context) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            SliverOverlapInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+      child: CustomScrollView(
+        key: const PageStorageKey<String>('Detail'),
+        slivers: <Widget>[
+          SliverOverlapInjector(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverFixedExtentList(
+              itemExtent: 48.0,
+              delegate: SliverChildListDelegate([
+                DetailListTile(
+                    label: 'Phone Number',
+                    value: profile.phoneNumber ?? 'Unknown'),
+                DetailListTile(
+                    label: 'First Name', value: profile.firstName ?? 'Unknown'),
+                DetailListTile(
+                    label: 'Last Name', value: profile.lastName ?? 'Unknown'),
+                DetailListTile(
+                    label: 'Date of Birth',
+                    value:
+                        DateFormat('dd-MM-yyyy').format(profile.dateOfBirth!)),
+                DetailListTile(
+                    label: 'Gender', value: profile.gender ?? 'Unknown'),
+              ]),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.all(8),
-              sliver: SliverFixedExtentList(
-                itemExtent: 48.0,
-                delegate: SliverChildListDelegate([
-                  DetailListTile(
-                      label: 'Phone Number',
-                      value: profile.phoneNumber ?? 'Unknown'),
-                  DetailListTile(
-                      label: 'First Name',
-                      value: profile.firstName ?? 'Unknown'),
-                  DetailListTile(
-                      label: 'Last Name', value: profile.lastName ?? 'Unknown'),
-                  DetailListTile(
-                      label: 'Date of Birth',
-                      value: DateFormat('dd-MM-yyyy')
-                          .format(profile.dateOfBirth!)),
-                  DetailListTile(
-                      label: 'Gender', value: profile.gender ?? 'Unknown'),
-                ]),
-              ),
-            ),
-          ],
-        );
-      }),
+          ),
+        ],
+      ),
     );
   }
 }

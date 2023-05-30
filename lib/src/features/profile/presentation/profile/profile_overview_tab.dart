@@ -74,26 +74,22 @@ class ProfileOverviewTab extends StatelessWidget {
             ],
           );
     return SafeArea(
-      child: Builder(
-        builder: (BuildContext context) {
-          return CustomScrollView(
-            slivers: <Widget>[
-              SliverOverlapInjector(
-                handle:
-                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.all(8),
-                sliver: SliverToBoxAdapter(
-                  child: Column(children: [
-                    skillsWidget,
-                    interestedWidget,
-                  ]),
-                ),
-              ),
-            ],
-          );
-        },
+      child: CustomScrollView(
+        key: const PageStorageKey<String>('Overview'),
+        slivers: <Widget>[
+          SliverOverlapInjector(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8),
+            sliver: SliverToBoxAdapter(
+              child: Column(children: [
+                skillsWidget,
+                interestedWidget,
+              ]),
+            ),
+          ),
+        ],
       ),
     );
   }
