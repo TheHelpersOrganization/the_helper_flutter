@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
@@ -17,7 +18,9 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(profileServiceProvider);
+    final profile = ref.watch(profileControllerProvider);
+    final activities = ref.watch(profileActivityControllerProvider);
+    // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Center(
         child: CircularProgressIndicator(),
@@ -89,8 +92,8 @@ class ProfileScreen extends ConsumerWidget {
                     skills: profile.skills,
                     interestedList: profile.interestedSkills,
                   ),
-                  ProfileActivityTab(),
-                  ProfileOrganizationTab(),
+                  ProfileActivityTab(activities: activities),
+                  const ProfileOrganizationTab(),
                   ProfileDetailTab(profile: profile),
                 ],
               ),
@@ -172,7 +175,7 @@ class ProfileScreen extends ConsumerWidget {
           style: Theme.of(context).textTheme.displayLarge,
         ),
         Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.all(8.0),
           child: Container(
             padding: const EdgeInsets.all(16.0),
             // alignment: Alignment.center,

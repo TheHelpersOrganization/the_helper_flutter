@@ -10,14 +10,16 @@ part 'activity.g.dart';
 
 @freezed
 class Activity with _$Activity {
+  @JsonSerializable(includeIfNull: false)
   factory Activity({
     int? id,
     String? name,
+    String? status,
     String? description,
     int? thumbnail,
     int? organizationId,
     List<int>? skillIds,
-    List<int>? activityManagerIds,
+    List<int?>? activityManagerIds,
     DateTime? startTime,
     DateTime? endTime,
     Location? location,

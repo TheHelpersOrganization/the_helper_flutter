@@ -15,6 +15,14 @@ class ActivityRepository {
     required this.client,
     required this.organizationRepository,
   });
+  //TODO: Choose only 1 between 2 approachs below
+  Future<List<Activity>> getActivitiesQ(
+      {Map<String, dynamic>? queryParameters}) async {
+    final List<dynamic> res =
+        (await client.get('/activities', queryParameters: queryParameters))
+            .data['data'];
+    return res.map((data) => Activity.fromJson(data)).toList();
+  }
 
   Future<List<Activity>> getActivities({ActivityQuery? query}) async {
     final List<dynamic> res = (await client.get(
