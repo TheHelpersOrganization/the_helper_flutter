@@ -30,7 +30,7 @@ class ProfileRepository {
   // TODO: this method should be rename as get your profile
   Future<Profile> getProfile() async {
     final response = await client.get(
-      '/profiles/me',
+      '/profiles/me?includes=interested-skills,skills',
     );
     return Profile.fromJson(response.data['data']);
   }

@@ -13,6 +13,14 @@ class OrganizationRepository {
 
   OrganizationRepository({required this.client});
 
+  Future<List<Organization>> getOrgsQ(
+      {Map<String, dynamic>? queryParameters}) async {
+    final List<dynamic> res =
+        (await client.get('/organizations', queryParameters: queryParameters))
+            .data['data'];
+    return res.map((data) => Organization.fromJson(data)).toList();
+  }
+
   Future<List<Organization>> get({
     OrganizationQuery? query,
   }) async {

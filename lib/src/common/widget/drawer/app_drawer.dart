@@ -92,7 +92,7 @@ class AppDrawer extends ConsumerWidget {
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
               ref.read(roleRepositoryProvider).removeCurrentRole();
-              ref.invalidate(profileServiceProvider);
+              ref.invalidate(profileControllerProvider);
               ref.invalidate(profileRepositoryProvider);
               ref.invalidate(authServiceProvider);
             }),

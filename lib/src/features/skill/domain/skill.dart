@@ -10,6 +10,7 @@ class Skill with _$Skill {
     required int id,
     required String name,
     String? description,
+    double? hours,
   }) = _Skill;
 
   factory Skill.fromJson(Map<String, dynamic> json) => _$SkillFromJson(json);
