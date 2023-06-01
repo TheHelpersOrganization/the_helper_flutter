@@ -8,7 +8,7 @@ import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_status.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_management/controller/mod_activity_management_controller.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_card/activity_card.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -50,16 +50,16 @@ const List<TabElement> tabs = [
   ),
 ];
 
-class ActivityModManagementScreen extends ConsumerStatefulWidget {
-  const ActivityModManagementScreen({super.key});
+class ModActivityListManagementScreen extends ConsumerStatefulWidget {
+  const ModActivityListManagementScreen({super.key});
 
   @override
-  ConsumerState<ActivityModManagementScreen> createState() =>
-      _ActivityModManagementScreenState();
+  ConsumerState<ModActivityListManagementScreen> createState() =>
+      _ModActivityListManagementScreenState();
 }
 
-class _ActivityModManagementScreenState
-    extends ConsumerState<ActivityModManagementScreen>
+class _ModActivityListManagementScreenState
+    extends ConsumerState<ModActivityListManagementScreen>
     with TickerProviderStateMixin {
   late final TabController _tabController;
 

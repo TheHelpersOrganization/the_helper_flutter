@@ -4,12 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/data/mod_activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_management/controller/mod_activity_management_controller.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 class ActivityManagerData {
@@ -40,38 +41,45 @@ final activityManagerSelectionProvider = StateProvider.autoDispose<Set<int>>(
   },
 );
 
-class CreateActivityController extends AutoDisposeAsyncNotifier<void> {
-  late ModActivityRepository _modActivityRepository;
-  late FileRepository _fileRepository;
+class CreateActivityController extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef ref;
+  final FileRepository fileRepository;
+  final ModActivityRepository modActivityRepository;
 
-  @override
-  FutureOr<void> build() {
-    _modActivityRepository = ref.watch(modActivityRepositoryProvider);
-    _fileRepository = ref.watch(fileRepositoryProvider);
-    return null;
-  }
+  CreateActivityController({
+    required this.ref,
+    required this.fileRepository,
+    required this.modActivityRepository,
+  }) : super(const AsyncData(null));
 
-  Future<Activity?> createActivity({
+  Future<void> createActivity({
     required String name,
     required String description,
     required List<int> activityManagerIds,
     Uint8List? thumbnailData,
   }) async {
     state = const AsyncLoading();
+
     int? thumbnail;
     if (thumbnailData != null) {
       final file = await guardAsyncValue(
-          () => _fileRepository.uploadWithBytes(thumbnailData));
+          () => fileRepository.uploadWithBytes(thumbnailData));
+
+      if (!mounted) {
+        return;
+      }
+
       if (file.hasError) {
         state = AsyncError(file.error!, file.stackTrace!);
-        return null;
+        return;
       }
       thumbnail = file.value!.id;
     }
+
     final currentOrganization =
         await ref.watch(currentOrganizationProvider.future);
     final res = await guardAsyncValue(
-      () => _modActivityRepository.createActivity(
+      () => modActivityRepository.createActivity(
         organizationId: currentOrganization!.id!,
         activity: Activity(
           name: name,
@@ -81,24 +89,31 @@ class CreateActivityController extends AutoDisposeAsyncNotifier<void> {
         ),
       ),
     );
-    if (res.hasError) {
-      print(res.stackTrace);
-      print(res.error);
-      state = AsyncError(res.error!, res.stackTrace!);
-      return null;
-    }
-    state = const AsyncData(null);
-    return res.valueOrNull;
-  }
 
-  Future<void> test() async {
-    state = const AsyncLoading();
-    await Future.delayed(const Duration(seconds: 3));
+    if (!mounted) {
+      return;
+    }
+
+    if (res.hasError) {
+      state = AsyncError(res.error!, res.stackTrace!);
+      return;
+    }
+
+    ref.watch(routerProvider).goNamed(
+          AppRoute.organizationActivityManagement.name,
+          pathParameters: Map.of({'activityId': res.value!.id.toString()}),
+        );
     state = const AsyncData(null);
   }
 }
 
-final createActivityControllerProvider =
-    AutoDisposeAsyncNotifierProvider<CreateActivityController, void>(
-  () => CreateActivityController(),
+final createActivityControllerProvider = StateNotifierProvider.autoDispose<
+    CreateActivityController, AsyncValue<void>>(
+  (ref) {
+    return CreateActivityController(
+      ref: ref,
+      fileRepository: ref.watch(fileRepositoryProvider),
+      modActivityRepository: ref.watch(modActivityRepositoryProvider),
+    );
+  },
 );

@@ -8,7 +8,8 @@ import 'package:the_helper/src/features/account_request_manage/presentation/scre
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_manager_chooser.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
@@ -66,14 +67,24 @@ final routes = [
             const OrganizationMembersManagementScreen(),
       ),
       GoRoute(
-        path: AppRoute.organizationActivityManagement.path,
-        name: AppRoute.organizationActivityManagement.name,
-        builder: (_, __) => const ActivityModManagementScreen(),
-      ),
+          path: AppRoute.organizationActivityListManagement.path,
+          name: AppRoute.organizationActivityListManagement.name,
+          builder: (_, __) => const ModActivityListManagementScreen(),
+          routes: [
+            GoRoute(
+              path: AppRoute.organizationActivityManagement.path,
+              name: AppRoute.organizationActivityManagement.name,
+              builder: (_, state) {
+                final activityId =
+                    int.parse(state.pathParameters['activityId']!);
+                return ModActivityManagementScreen(activityId: activityId);
+              },
+            ),
+          ]),
       GoRoute(
         path: AppRoute.organizationActivityCreation.path,
         name: AppRoute.organizationActivityCreation.name,
-        builder: (_, __) => ModActivityCreationScreen(),
+        builder: (_, __) => const ModActivityCreationScreen(),
         routes: [
           GoRoute(
             path: AppRoute.organizationActivityCreationManagerChooser.path,
@@ -382,10 +393,16 @@ enum AppRoute {
     path: ':activityId',
     name: 'activity',
   ),
-  organizationActivityManagement(
+
+  organizationActivityListManagement(
     path: '/activity-management',
+    name: 'activity-list-management',
+  ),
+  organizationActivityManagement(
+    path: ':activityId',
     name: 'activity-management',
   ),
+
   organizationActivityCreation(
     path: '/activity-creation',
     name: 'activity-creation',

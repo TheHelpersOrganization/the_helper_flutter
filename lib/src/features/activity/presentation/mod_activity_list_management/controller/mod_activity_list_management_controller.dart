@@ -5,7 +5,7 @@ import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 
-import '../screen/activity_mod_management_screen.dart';
+import '../screen/mod_activity_list_management_screen.dart';
 
 final currentStatusProvider =
     StateProvider.autoDispose((ref) => tabs.first.status);

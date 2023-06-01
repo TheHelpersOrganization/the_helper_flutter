@@ -65,7 +65,7 @@ final List<DrawerItemModel> moderator = [
     icon: Icons.person_outline,
   ),
   const DrawerItemModel(
-    route: AppRoute.organizationActivityManagement,
+    route: AppRoute.organizationActivityListManagement,
     title: 'Organization Activities',
     icon: Icons.work_outline,
   ),

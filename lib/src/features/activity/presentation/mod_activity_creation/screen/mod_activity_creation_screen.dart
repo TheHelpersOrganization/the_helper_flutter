@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -228,9 +230,13 @@ class ModActivityCreationScreen extends ConsumerWidget {
                             _formKey.currentState!.fields['description']!.value;
                         final thumbnailValue =
                             _formKey.currentState!.fields['thumbnail']!.value;
-                        final thumbnail = thumbnailValue.length > 0
-                            ? thumbnailValue[0]
-                            : null;
+                        Uint8List? thumbnail;
+                        if (thumbnailValue != null) {
+                          thumbnail =
+                              (thumbnailValue as List<dynamic>).isNotEmpty
+                                  ? thumbnailValue[0]
+                                  : null;
+                        }
 
                         ref
                             .read(createActivityControllerProvider.notifier)
