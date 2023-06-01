@@ -34,28 +34,23 @@ class ChangeRoleScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-                padding: EdgeInsets.only(
-                  top: context.mediaQuery.size.height * 0.1,
-                  bottom: 32,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Choose your role',
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Choose your role',
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      'Don\'t worry. You can change it later',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                )),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Don\'t worry. You can change it later',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
             const Expanded(child: RoleChoice()),
             Padding(
                 padding: EdgeInsets.only(

@@ -52,6 +52,18 @@ class FileRepository {
     return FileModel.fromMap(response.data['data']);
   }
 
+  Future<FileModel> uploadWithBytes(Uint8List data) async {
+    FormData formData = FormData.fromMap({
+      "file": MultipartFile.fromBytes(
+        data,
+        filename: 'any',
+        contentType: MediaType.parse('image/jpeg'),
+      ),
+    });
+    final response = await client.post('/files/upload', data: formData);
+    return FileModel.fromMap(response.data['data']);
+  }
+
   download() async {}
 }
 

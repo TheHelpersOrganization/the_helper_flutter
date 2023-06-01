@@ -1,13 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/common/converter/comma_separated_datetimes_converter.dart';
 
-part 'activity_query.freezed.dart';
-part 'activity_query.g.dart';
+part 'mod_activity_query.freezed.dart';
+part 'mod_activity_query.g.dart';
 
 @freezed
-class ActivityQuery with _$ActivityQuery {
+class ModActivityQuery with _$ModActivityQuery {
   @JsonSerializable(includeIfNull: false)
-  factory ActivityQuery({
+  factory ModActivityQuery({
     String? name,
     List<int>? skill,
     List<int>? org,
@@ -19,8 +19,8 @@ class ActivityQuery with _$ActivityQuery {
     String? availableSlots,
     int? limit,
     int? offset,
-  }) = _ActivityQuery;
+  }) = _ModActivityQuery;
 
-  factory ActivityQuery.fromJson(Map<String, dynamic> json) =>
-      _$ActivityQueryFromJson(json);
+  factory ModActivityQuery.fromJson(Map<String, dynamic> json) =>
+      _$ModActivityQueryFromJson(json);
 }

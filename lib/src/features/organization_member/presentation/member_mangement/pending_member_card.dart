@@ -113,7 +113,7 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
   String getMemberName() {
     OrganizationMember member = widget.member;
     String memberName = member.profile?.username ??
-        member.account?.email ??
+        member.profile?.email ??
         member.accountId.toString();
     return memberName;
   }

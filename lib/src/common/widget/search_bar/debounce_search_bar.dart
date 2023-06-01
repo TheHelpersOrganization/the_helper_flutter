@@ -6,7 +6,7 @@ import 'package:the_helper/src/common/widget/side_sheet.dart';
 
 class DebounceSearchBar extends StatefulWidget {
   final TextEditingController? controller;
-  final Duration _debounceDuration;
+  final Duration? _debounceDuration;
   final void Function(String value)? _onChanged;
   final void Function()? _onClear;
   final void Function(String value)? _onDebounce;
@@ -14,7 +14,7 @@ class DebounceSearchBar extends StatefulWidget {
 
   const DebounceSearchBar({
     super.key,
-    required Duration debounceDuration,
+    Duration? debounceDuration,
     this.controller,
     void Function(String value)? onChanged,
     void Function()? onClear,
@@ -43,7 +43,7 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
     _inputController = widget.controller ?? TextEditingController();
     if (onDebounce != null) {
       _searchAfterDuration
-          .debounceTime(widget._debounceDuration)
+          .debounceTime(widget._debounceDuration ?? const Duration(seconds: 3))
           .listen((event) => onDebounce(event));
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 enum LoadingOverlayType {
   linear,
   circular,
+  custom,
 }
 
 class LoadingOverlay extends StatefulWidget {
@@ -10,6 +11,7 @@ class LoadingOverlay extends StatefulWidget {
   final double opacity;
   final Color? color;
   final LoadingOverlayType loadingOverlayType;
+  final Widget? indicator;
   final Widget child;
 
   const LoadingOverlay({
@@ -19,6 +21,7 @@ class LoadingOverlay extends StatefulWidget {
     this.opacity = 0.5,
     this.loadingOverlayType = LoadingOverlayType.linear,
     this.color,
+    this.indicator,
   });
 
   @override
@@ -90,11 +93,12 @@ class LoadingOverlayState extends State<LoadingOverlay>
                 color: widget.color ?? Theme.of(context).colorScheme.background,
               ),
             ),
-            widget.loadingOverlayType == LoadingOverlayType.linear
-                ? const LinearProgressIndicator()
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+            if (widget.loadingOverlayType == LoadingOverlayType.linear)
+              const LinearProgressIndicator()
+            else if (widget.loadingOverlayType == LoadingOverlayType.circular)
+              const Center(child: CircularProgressIndicator())
+            else
+              widget.indicator ?? const SizedBox.shrink(),
           ],
         ),
       );
