@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account_manage/data/account_repository.dart';
-import 'package:the_helper/src/features/account_manage/domain/account.dart';
-import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
 import 'package:the_helper/src/features/organization_member/domain/get_organization_member_data.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/features/organization_member/domain/reject_member_data.dart';
@@ -36,11 +34,6 @@ class ModOrganizationMemberRepository {
     final List<OrganizationMember> members =
         res.map((e) => OrganizationMember.fromJson(e)).toList();
     final accountIds = members.map((e) => e.accountId).toList();
-    final accounts = await accountRepository.getAll(
-      query: GetAccountQuery(
-        ids: accountIds,
-      ),
-    );
 
     final profiles = await profileRepository.getProfiles(
       GetProfilesData(ids: accountIds),
@@ -48,15 +41,11 @@ class ModOrganizationMemberRepository {
 
     final List<OrganizationMember> result = [];
     for (final member in members) {
-      final account = accounts
-          .cast<AccountModel?>()
-          .firstWhere((e) => e!.id == member.accountId, orElse: () => null);
       final profile = profiles.cast<Profile?>().firstWhere(
             (e) => e!.id == member.accountId,
             orElse: () => null,
           );
       result.add(member.copyWith(
-        account: account,
         profile: profile,
       ));
     }

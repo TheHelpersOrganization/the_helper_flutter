@@ -6,6 +6,8 @@ import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_manager_chooser.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
@@ -67,6 +69,18 @@ final routes = [
         path: AppRoute.organizationActivityManagement.path,
         name: AppRoute.organizationActivityManagement.name,
         builder: (_, __) => const ActivityModManagementScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.organizationActivityCreation.path,
+        name: AppRoute.organizationActivityCreation.name,
+        builder: (_, __) => ModActivityCreationScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoute.organizationActivityCreationManagerChooser.path,
+            name: AppRoute.organizationActivityCreationManagerChooser.name,
+            builder: (_, __) => const ModActivityManagerChooser(),
+          ),
+        ],
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
@@ -369,6 +383,14 @@ enum AppRoute {
   organizationActivityManagement(
     path: '/activity-management',
     name: 'activity-management',
+  ),
+  organizationActivityCreation(
+    path: '/activity-creation',
+    name: 'activity-creation',
+  ),
+  organizationActivityCreationManagerChooser(
+    path: 'managers',
+    name: 'activity-creation-manager-chooser',
   ),
 
   // shift

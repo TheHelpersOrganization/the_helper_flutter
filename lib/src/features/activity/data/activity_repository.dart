@@ -39,16 +39,6 @@ class ActivityRepository {
     return Activity.fromJson(res.data['data']);
   }
 
-  Future<Activity> createActivity({
-    required Activity activity,
-  }) async {
-    final res = await client.post(
-      '/activities/',
-      data: activity.toJson(),
-    );
-    return Activity.fromJson(res.data['data']);
-  }
-
   Future<Activity?> updateActivity({
     required int id,
     required Activity activity,

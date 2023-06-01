@@ -2,7 +2,7 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 
 String getMemberName(OrganizationMember member) {
   String memberName = member.profile?.username ??
-      member.account?.email ??
+      member.profile?.email ??
       member.accountId.toString();
   return memberName;
 }

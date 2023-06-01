@@ -265,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.3"
+  crop_your_image:
+    dependency: "direct main"
+    description:
+      name: crop_your_image
+      sha256: "8c74c6a6ad1f418c462ef2fd7a31a2dc72139ddc5ab9287d8049b3872f2321f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.4"
   cross_file:
     dependency: "direct main"
     description:
@@ -677,6 +685,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.0.0"
+  form_builder_image_picker:
+    dependency: "direct main"
+    description:
+      name: form_builder_image_picker
+      sha256: d3920ba0472db8d66a96ab49d9103eb7c60699451e9d3674f24657cf87e2019d
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   form_builder_phone_field:
     dependency: "direct main"
     description:

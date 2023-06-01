@@ -10,6 +10,7 @@ class Profile with _$Profile {
   @JsonSerializable(includeIfNull: false)
   factory Profile({
     int? id,
+    String? email,
     String? username,
     String? phoneNumber,
     String? firstName,
