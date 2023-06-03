@@ -37,11 +37,6 @@ class ModOrganizationMemberRepository {
     final List<OrganizationMember> members =
         res.map((e) => OrganizationMember.fromJson(e)).toList();
     final accountIds = members.map((e) => e.accountId).toList();
-    final accounts = await accountRepository.getAll(
-      query: AccountQuery(
-        ids: accountIds,
-      ),
-    );
 
     final profiles = await profileRepository.getProfiles(
       GetProfilesData(ids: accountIds),
@@ -49,15 +44,11 @@ class ModOrganizationMemberRepository {
 
     final List<OrganizationMember> result = [];
     for (final member in members) {
-      final account = accounts
-          .cast<AccountModel?>()
-          .firstWhere((e) => e!.id == member.accountId, orElse: () => null);
       final profile = profiles.cast<Profile?>().firstWhere(
             (e) => e!.id == member.accountId,
             orElse: () => null,
           );
       result.add(member.copyWith(
-        account: account,
         profile: profile,
       ));
     }

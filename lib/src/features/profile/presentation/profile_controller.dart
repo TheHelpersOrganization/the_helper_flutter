@@ -5,9 +5,10 @@ import '../domain/profile.dart';
 
 part 'profile_controller.g.dart';
 
-// Todo: rename to controller
-@Riverpod(keepAlive: true)
-class ProfileService extends _$ProfileService {
+// TODO: resolve conflict betweeen keepAlive and autoDispose
+// @Riverpod(keepAlive: true)
+@riverpod
+class ProfileController extends _$ProfileController {
   @override
   FutureOr<Profile> build() async {
     return _fetchProfile();

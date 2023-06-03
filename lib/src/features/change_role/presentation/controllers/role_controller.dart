@@ -29,6 +29,7 @@ class SetRoleController extends _$SetRoleController {
             role,
           ),
     );
+    ref.invalidate(getRoleProvider);
     if (key == _key) {
       // 5. check if the key is still the same
       if (navigateToHome) {

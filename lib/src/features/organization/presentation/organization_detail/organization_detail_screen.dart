@@ -14,11 +14,11 @@ const List<Tab> tabs = <Tab>[
 
 class OrganizationDetailScreen extends ConsumerWidget {
   const OrganizationDetailScreen({super.key, required this.orgId});
-  final String orgId;
+  final int orgId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final org = ref.watch(getOrganizationProvider(int.parse(orgId)));
+    final org = ref.watch(getOrganizationProvider(orgId));
     return Scaffold(
       // drawer: const AppDrawer(),
 

@@ -8,16 +8,15 @@ part 'activity_query.g.dart';
 class ActivityQuery with _$ActivityQuery {
   @JsonSerializable(includeIfNull: false)
   factory ActivityQuery({
-    String? n,
-    List<int>? sk,
+    String? name,
+    List<int>? skill,
     List<int>? org,
-    @CommaSeparatedDateTimesConverter() List<DateTime>? st,
-    @CommaSeparatedDateTimesConverter() List<DateTime>? et,
-    List<int>? at,
-    String? lc,
-    String? rg,
-    String? ct,
-    String? av,
+    @CommaSeparatedDateTimesConverter() List<DateTime>? startDate,
+    @CommaSeparatedDateTimesConverter() List<DateTime>? endDate,
+    String? locality,
+    String? region,
+    String? country,
+    String? availableSlots,
     int? limit,
     int? offset,
   }) = _ActivityQuery;

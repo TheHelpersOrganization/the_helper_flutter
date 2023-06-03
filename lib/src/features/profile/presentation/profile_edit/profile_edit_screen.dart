@@ -10,7 +10,6 @@ import '../../../../common/widget/button/primary_button.dart';
 import '../profile_controller.dart';
 import '../../domain/profile.dart';
 import 'profile_edit_avatar_picker_widget.dart';
-import 'profile_edit_controller.dart';
 import 'profile_edit_gender_widget.dart';
 import 'profile_edit_phone_number_widget.dart';
 
@@ -28,7 +27,7 @@ class ProfileEditScreen extends ConsumerWidget {
     //     ref.watch(editProfileControllerProvider.notifier);
     // final editProfileControllerState = ref.watch(editProfileControllerProvider);
     // final profile = editProfileControllerState;
-    final profile = ref.watch(profileServiceProvider);
+    final profile = ref.watch(profileControllerProvider);
 
     return Scaffold(
         appBar: AppBar(
@@ -173,7 +172,7 @@ class ProfileEditScreen extends ConsumerWidget {
                           };
                           final profile = Profile.fromJson(newValue);
                           ref
-                              .read(profileServiceProvider.notifier)
+                              .read(profileControllerProvider.notifier)
                               .updateProfile(profile);
                         },
                         child: const Text('Submit'),

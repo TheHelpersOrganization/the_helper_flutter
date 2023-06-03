@@ -16,7 +16,6 @@ class OrganizationMember with _$OrganizationMember {
     int? censorId,
     String? rejectionReason,
     DateTime? updatedAt,
-    AccountModel? account,
     Profile? profile,
     Organization? organization,
   }) = _OrganizationMember;

@@ -22,7 +22,9 @@ class SwitchOrganizationController extends AutoDisposeAsyncNotifier<void> {
     final res = await guardAsyncValue(() => ref
         .read(currentOrganizationRepositoryProvider)
         .setCurrentOrganization(organizationId));
-    ref.read(setRoleControllerProvider.notifier).setCurrentRole(Role.moderator);
+    ref
+        .read(setRoleControllerProvider.notifier)
+        .setCurrentRole(Role.moderator, navigateToHome: true);
     return res.valueOrNull;
   }
 }

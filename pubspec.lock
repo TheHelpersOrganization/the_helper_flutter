@@ -265,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.3"
+  crop_your_image:
+    dependency: "direct main"
+    description:
+      name: crop_your_image
+      sha256: "8c74c6a6ad1f418c462ef2fd7a31a2dc72139ddc5ab9287d8049b3872f2321f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.4"
   cross_file:
     dependency: "direct main"
     description:
@@ -676,7 +684,15 @@ packages:
       sha256: f4777480fa93cb942900835a28c2f8ee10e58766d1ea8698b3498e5be9412c0c
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "10.0.0"
+  form_builder_image_picker:
+    dependency: "direct main"
+    description:
+      name: form_builder_image_picker
+      sha256: d3920ba0472db8d66a96ab49d9103eb7c60699451e9d3674f24657cf87e2019d
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   form_builder_phone_field:
     dependency: "direct main"
     description:
@@ -1491,7 +1507,7 @@ packages:
     source: sdk
     version: "0.0.99"
   sliver_tools:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sliver_tools
       sha256: ccdc502098a8bfa07b3ec582c282620031481300035584e1bb3aca296a505e8c
