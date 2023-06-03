@@ -26,7 +26,7 @@ final upcomingActivitiesCountProvider = FutureProvider.autoDispose<int>(
   (ref) => ref.watch(activityServiceProvider).getCount(
         query: ActivityQuery(
           limit: 5,
-          st: [DateTime.now(), DateTime.now().add(const Duration(days: 7))],
+          startDate: [DateTime.now(), DateTime.now().add(const Duration(days: 7))],
         ),
         include: ActivityInclude(
           organization: true,
