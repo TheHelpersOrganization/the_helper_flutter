@@ -123,7 +123,8 @@ const List<DrawerItemModel> admin = [
         icon: Icons.search,
       ),
       DrawerItemModel(
-        title: 'Organizations Requests',
+        route: AppRoute.organizationRequestsManage,
+        title: 'Organizations Requests', 
         icon: Icons.search,
       ),
     ],

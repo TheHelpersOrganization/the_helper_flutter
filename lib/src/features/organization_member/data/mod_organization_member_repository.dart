@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/features/account_manage/data/account_repository.dart';
+import 'package:the_helper/src/features/account/data/account_repository.dart';
+import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/organization_member/domain/get_organization_member_data.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/features/organization_member/domain/reject_member_data.dart';
@@ -8,6 +9,8 @@ import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/dio.dart';
+
+import '../../account/domain/account_query.dart';
 
 part 'mod_organization_member_repository.g.dart';
 

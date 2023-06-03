@@ -6,7 +6,7 @@ import 'package:the_helper/src/common/widget/drawer/draw_item_model.dart';
 
 import '../../../router/router.dart';
 
-class AppDrawerDropDown extends StatelessWidget {
+class AppDrawerDropDown extends StatefulWidget {
   final String title;
   final IconData icon;
   final List<DrawerItemModel> subPaths;
@@ -19,40 +19,63 @@ class AppDrawerDropDown extends StatelessWidget {
   });
 
   @override
+  State<AppDrawerDropDown> createState() => _AppDrawerDropDownState();
+}
+
+class _AppDrawerDropDownState extends State<AppDrawerDropDown> {
+  bool _customTileExpanded = false;
+
+  bool hasSelected() {
+    return widget.subPaths
+        .any((child) => child.route?.path == context.currentRoute);
+  }
+
+  @override
+  void initState() {
+    // _customTileExpanded = hasSelected();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isSelected =
-        subPaths.any((child) => child.route?.path == context.currentRoute);
-    bool isOpened = isSelected;
+    // bool isSelected = widget.subPaths
+    //     .any((child) => child.route?.path == context.currentRoute);
+    // // print(isSelected);
+    // _customTileExpanded = isSelected;
 
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
-      child: ExpansionTile(
-        // tilePadding: const EdgeInsets.only(right: 8.0),
-        title: Text(title),
-        leading: Icon(icon),
-        trailing: isOpened
-            ? const Icon(
-                Icons.arrow_left,
-                color: Colors.black,
-              )
-            : const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-        children: subPaths
-            .map<Widget>((item) => AppDrawerItem(
-                  title: item.title,
-                  icon: item.icon,
-                  onTap: () {
-                    context.goNamed(item.route != null
-                        ? item.route!.name
-                        : AppRoute.developing.name);
-                  },
-                ))
-            .toList(),
-        onExpansionChanged: (bool expanded) {
-          isOpened = expanded;
-        },
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          backgroundColor: Colors.black12,
+          tilePadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+          title: Text(widget.title),
+          leading: Icon(widget.icon),
+          trailing: _customTileExpanded
+              ? const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                )
+              : const Icon(
+                  Icons.arrow_left,
+                  color: Colors.black,
+                ),
+          children: widget.subPaths
+              .map<Widget>((item) => AppDrawerItem(
+                    title: item.title,
+                    icon: item.icon,
+                    onTap: () {
+                      context.goNamed(item.route != null
+                          ? item.route!.name
+                          : AppRoute.developing.name);
+                    },
+                  ))
+              .toList(),
+          onExpansionChanged: (bool expanded) {
+            setState(() => _customTileExpanded = expanded);
+          },
+        ),
       ),
     );
     // return Ink(

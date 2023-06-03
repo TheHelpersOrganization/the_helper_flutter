@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:the_helper/src/features/account_manage/domain/get_account_query.dart';
+import 'package:the_helper/src/features/account/domain/account_query.dart';
 
 part 'skill_query.freezed.dart';
 part 'skill_query.g.dart';
