@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
-import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
+import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
@@ -27,6 +27,9 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_scr
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
+
+import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
+import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -113,7 +116,17 @@ final routes = [
             path: AppRoute.myOrganization.path,
             name: AppRoute.myOrganization.name,
             builder: (context, state) => const MyOrganizationScreen(),
-          )
+          ),
+          GoRoute(
+            path: AppRoute.accountManage.path,
+            name: AppRoute.accountManage.name,
+            builder: (context, state) => const AccountManageScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.organizationAdminManage.path,
+            name: AppRoute.organizationAdminManage.name,
+            builder: (context, state) => const OrganizationAdminManageScreen(),
+          ),
         ],
       ),
       accountRoutes,
@@ -394,6 +407,10 @@ enum AppRoute {
   accountManage(
     path: '/account-manage',
     name: 'account-manage',
+  ),
+  organizationAdminManage(
+    path: '/organization-admin-manage',
+    name: 'organization-admin-manage',
   ),
   myOrganization(
     path: '/my-organization',
