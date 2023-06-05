@@ -7,7 +7,6 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
@@ -79,9 +78,6 @@ class ProfileScreen extends ConsumerWidget {
                             Tab(
                               text: 'Organizatons',
                             ),
-                            Tab(
-                              text: 'Detail',
-                            ),
                           ],
                         ),
                       ),
@@ -92,12 +88,10 @@ class ProfileScreen extends ConsumerWidget {
               body: TabBarView(
                 children: [
                   ProfileOverviewTab(
-                    skills: profile.skills,
-                    interestedList: profile.interestedSkills,
+                    profile: profile,
                   ),
                   ProfileActivityTab(activities: activities),
                   ProfileOrganizationTab(orgs: orgs),
-                  ProfileDetailTab(profile: profile),
                 ],
               ),
               // body: Column(
