@@ -18,7 +18,9 @@ class CustomScrollList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
+    final tabIndex = ref.watch(tabStatusProvider);
     final pagingController = ref.watch(pagingControllerProvider);
+    final customController = ref.watch(scrollPagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
@@ -32,11 +34,13 @@ class CustomScrollList extends ConsumerWidget {
               } else {
                 ref.read(searchPatternProvider.notifier).state = value;
               }
-              ref.read(hasUsedSearchProvider.notifier).state = true;
+              // ref.read(needReloadProvider.notifier).state = true;
+              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
             },
             onClear: () {
               ref.read(searchPatternProvider.notifier).state = null;
-              ref.read(hasUsedSearchProvider.notifier).state = true;
+              // ref.read(needReloadProvider.notifier).state = true;
+              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
             },
             filter: _buildFilter(context),
           ),
@@ -61,21 +65,19 @@ class CustomScrollList extends ConsumerWidget {
           else
             const SizedBox(
               height: 24,
-          ),
+            ),
           Expanded(
-            child: PagedListView<int, AccountModel>(
-              pagingController: pagingController,
-              builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, item, index) {
-                  if (index == 0) {
-                    return ActiveAccountListItem(data: item);
-                  } else {
-                    return BannedAccountListItem(data: item);
-                  }
-                }
-              )
-            )
-          ),
+              child: PagedListView<int, AccountModel>(
+                  // pagingController: pagingController,
+                  pagingController: customController,
+                  builderDelegate: PagedChildBuilderDelegate(
+                      itemBuilder: (context, item, index) {
+                    if (tabIndex == 0) {
+                      return ActiveAccountListItem(data: item);
+                    } else {
+                      return BannedAccountListItem(data: item);
+                    }
+                  }))),
         ],
       ),
     );

@@ -68,28 +68,18 @@ class AccountRepository {
   }
 
   Future<AccountModel> banAccount({
-      required int accId,
-    }) async {
-    final res = await client.put(
-      '/admin/accounts/$accId/ban',
-      data: {
-        "isBanned": true,
-        "note": "Banned!"
-      }
-    );
+    required int accId,
+  }) async {
+    final res = await client.put('/admin/accounts/$accId/ban',
+        data: {"isBanned": true, "note": "Banned!"});
     return AccountModel.fromJson(res.data['data']);
   }
 
   Future<AccountModel> unbanAccount({
-      required int accId,
-    }) async {
-    final res = await client.put(
-      '/admin/accounts/$accId/', 
-      data: {
-        "isBanned": true,
-        "note": "Banned!"
-      }
-    );
+    required int accId,
+  }) async {
+    final res = await client.put('/admin/accounts/$accId/ban',
+        data: {"isBanned": false, "note": "Unbanned!"});
     return AccountModel.fromJson(res.data['data']);
   }
 

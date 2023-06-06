@@ -50,10 +50,12 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
           onConfirm: () async {
             context.pop();
             showLoadingDialog();
-            await ref
-                .read(accountManageControllerProvider.notifier)
+            final res = await ref
+                .watch(accountManageControllerProvider.notifier)
                 .ban(account.id!);
+            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
+              print(res);
               context.pop();
             }
           }),
@@ -86,10 +88,12 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
           onConfirm: () async {
             context.pop();
             showLoadingDialog();
-            await ref
-                .read(accountManageControllerProvider.notifier)
+            final res = await ref
+                .watch(accountManageControllerProvider.notifier)
                 .delete(account.id!);
+            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
+              print(res);
               context.pop();
             }
           }),
