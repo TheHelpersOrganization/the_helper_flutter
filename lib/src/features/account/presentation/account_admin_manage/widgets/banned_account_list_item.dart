@@ -50,9 +50,10 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
           onConfirm: () async {
             context.pop();
             showLoadingDialog();
-            await ref
-                .read(accountManageControllerProvider.notifier)
+            final res = await ref
+                .watch(accountManageControllerProvider.notifier)
                 .unban(account.id!);
+            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
               context.pop();
             }
@@ -86,10 +87,12 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
           onConfirm: () async {
             context.pop();
             showLoadingDialog();
-            await ref
-                .read(accountManageControllerProvider.notifier)
+            final res = await ref
+                .watch(accountManageControllerProvider.notifier)
                 .delete(account.id!);
+            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
+              print(res);
               context.pop();
             }
           }),
