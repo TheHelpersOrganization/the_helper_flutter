@@ -40,6 +40,11 @@ class AccountManageScreenController extends AutoDisposeAsyncNotifier<void> {
   }
 }
 
+final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
+final needReloadProvider = StateProvider.autoDispose((ref) => false);
+final tabStatusProvider = StateProvider.autoDispose<int>((ref) => 0);
+final firstLoadPagingController = StateProvider((ref) => true);
+
 @riverpod
 class ScrollPagingController extends _$ScrollPagingController {
   @override
@@ -94,43 +99,4 @@ class ScrollPagingController extends _$ScrollPagingController {
 final accountManageControllerProvider =
     AutoDisposeAsyncNotifierProvider<AccountManageScreenController, void>(
   () => AccountManageScreenController(),
-);
-
-final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-final needReloadProvider = StateProvider.autoDispose((ref) => false);
-final tabStatusProvider = StateProvider.autoDispose<int>((ref) => 0);
-final firstLoadPagingController = StateProvider((ref) => true);
-
-final pagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final accountRepository = ref.watch(accountRepositoryProvider);
-    final searchPattern = ref.watch(searchPatternProvider);
-    final needReload = ref.watch(needReloadProvider);
-    final tabStatus = ref.watch(tabStatusProvider);
-    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await accountRepository.getAll(
-          query: AccountQuery(
-            limit: 5,
-            offset: pageKey,
-            email: searchPattern,
-            isBanned: tabStatus != 0,
-          ),
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
-      }
-    });
-    if (needReload) {
-      controller.notifyPageRequestListeners(0);
-    }
-    return controller;
-  },
 );

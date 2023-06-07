@@ -19,7 +19,6 @@ class CustomScrollList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabIndex = ref.watch(tabStatusProvider);
-    final pagingController = ref.watch(pagingControllerProvider);
     final customController = ref.watch(scrollPagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -68,7 +67,6 @@ class CustomScrollList extends ConsumerWidget {
             ),
           Expanded(
               child: PagedListView<int, AccountModel>(
-                  // pagingController: pagingController,
                   pagingController: customController,
                   builderDelegate: PagedChildBuilderDelegate(
                       itemBuilder: (context, item, index) {
