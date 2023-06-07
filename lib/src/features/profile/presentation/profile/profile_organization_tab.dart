@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -16,6 +15,7 @@ class ProfileOrganizationTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CustomScrollView(
+        primary: true,
         key: const PageStorageKey<String>('Organization'),
         slivers: [
           SliverOverlapInjector(

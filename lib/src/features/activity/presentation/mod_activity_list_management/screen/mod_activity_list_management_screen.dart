@@ -113,7 +113,15 @@ class _ModActivityListManagementScreenState
                 pagingController: pc,
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) {
-                    return ActivityCard(activity: item);
+                    return ActivityCard(
+                      activity: item,
+                      onTap: () => context.goNamed(
+                        AppRoute.organizationActivityManagement.name,
+                        pathParameters: {
+                          'activityId': item.id.toString(),
+                        },
+                      ),
+                    );
                   },
                   noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Column(

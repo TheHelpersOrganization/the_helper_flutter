@@ -9,6 +9,7 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
+import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -89,6 +90,8 @@ class RoleChoice extends ConsumerWidget {
     final roles = ref.watch(authServiceProvider).valueOrNull!.account.roles;
     final currentOrganization = ref.watch(currentOrganizationProvider);
     final currentRole = ref.watch(setRoleControllerProvider);
+    // Watch owned organizations so that dialog does not have to reload them
+    final organizations = ref.watch(getOwnedOrganizationsProvider);
 
     ref.listen<AsyncValue>(
       setRoleControllerProvider,
@@ -149,6 +152,7 @@ class RoleChoice extends ConsumerWidget {
                     if (organization == null) {
                       await showDialog(
                         context: context,
+                        useRootNavigator: false,
                         builder: (context) => const SwitchOrganizationDialog(),
                       );
                       return;
