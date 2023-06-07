@@ -13,16 +13,18 @@ import 'package:the_helper/src/utils/location.dart';
 class ActivityCard extends StatelessWidget {
   final Activity activity;
   final double? height;
+  final VoidCallback? onTap;
 
   const ActivityCard({
     super.key,
     required this.activity,
     this.height = 190,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final dateTime = activity.startTime!;
+    final dateTime = activity.startTime;
     String slots = activity.joinedParticipants.toString();
     if (activity.maxParticipants != null) {
       slots += '/${activity.maxParticipants}';
@@ -36,11 +38,12 @@ class ActivityCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       elevation: 1,
       child: InkWell(
-        onTap: () {
-          context.goNamed(AppRoute.activity.name, pathParameters: {
-            'activityId': activity.id.toString(),
-          });
-        },
+        onTap: onTap ??
+            () {
+              context.goNamed(AppRoute.activity.name, pathParameters: {
+                'activityId': activity.id.toString(),
+              });
+            },
         child: SizedBox(
           height: height,
           child: Row(
@@ -115,10 +118,14 @@ class ActivityCard extends StatelessWidget {
                             width: 8,
                           ),
                           Text(
-                            DateFormat('hh:mm - ').format(dateTime),
+                            dateTime != null
+                                ? DateFormat('hh:mm - ').format(dateTime)
+                                : 'Unknown',
                           ),
                           Text(
-                            DateFormat('MMM dd, yyyy').format(dateTime),
+                            dateTime != null
+                                ? DateFormat('MMM dd, yyyy').format(dateTime)
+                                : '',
                           ),
                         ],
                       ),

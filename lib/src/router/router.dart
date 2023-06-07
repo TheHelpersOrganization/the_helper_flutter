@@ -29,6 +29,9 @@ import 'package:the_helper/src/features/organization_member/presentation/member_
 import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift/screen/mod_shift_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/screen/mod_shift_creation_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_skill_view.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -72,14 +75,53 @@ final routes = [
           builder: (_, __) => const ModActivityListManagementScreen(),
           routes: [
             GoRoute(
-              path: AppRoute.organizationActivityManagement.path,
-              name: AppRoute.organizationActivityManagement.name,
-              builder: (_, state) {
-                final activityId =
-                    int.parse(state.pathParameters['activityId']!);
-                return ModActivityManagementScreen(activityId: activityId);
-              },
-            ),
+                path: AppRoute.organizationActivityManagement.path,
+                name: AppRoute.organizationActivityManagement.name,
+                builder: (_, state) {
+                  final activityId =
+                      int.parse(state.pathParameters['activityId']!);
+                  return ModActivityManagementScreen(activityId: activityId);
+                },
+                routes: [
+                  GoRoute(
+                    path: AppRoute.shiftCreation.path,
+                    name: AppRoute.shiftCreation.name,
+                    builder: (_, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModShiftCreationScreen(
+                        activityId: activityId,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: AppRoute.shiftCreationSkill.path,
+                        name: AppRoute.shiftCreationSkill.name,
+                        builder: (_, state) {
+                          return ShiftSkillView(
+                            skills: state.extra as dynamic,
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                  GoRoute(
+                    path: AppRoute.organizationShift.path,
+                    name: AppRoute.organizationShift.name,
+                    builder: (_, state) {
+                      final activityId = int.parse(
+                        state.pathParameters['activityId']!,
+                      );
+                      final shiftId = int.parse(
+                        state.pathParameters['shiftId']!,
+                      );
+                      return ModShiftScreen(
+                        activityId: activityId,
+                        shiftId: shiftId,
+                      );
+                    },
+                  ),
+                ]),
           ]),
       GoRoute(
         path: AppRoute.organizationActivityCreation.path,
@@ -212,8 +254,8 @@ final shiftRoutes = [
         builder: (_, state) {
           final activityId = int.parse(
               state.pathParameters[AppRoute.activity.path.substring(1)]!);
-          final shiftId = int.parse(
-              state.pathParameters[AppRoute.shift.path.substring(1)]!);
+          final shiftId = int.parse(state
+              .pathParameters[AppRoute.organizationShift.path.substring(1)]!);
           return ShiftDetailScreen(
             activityId: activityId,
             shiftId: shiftId,
@@ -401,6 +443,18 @@ enum AppRoute {
   organizationActivityManagement(
     path: ':activityId',
     name: 'activity-management',
+  ),
+  organizationShift(
+    path: 'shift/:shiftId',
+    name: 'organization-shift',
+  ),
+  shiftCreation(
+    path: 'shift/create',
+    name: 'shift-creation',
+  ),
+  shiftCreationSkill(
+    path: 'shift/create/skills',
+    name: 'shift-creation-skills',
   ),
 
   organizationActivityCreation(

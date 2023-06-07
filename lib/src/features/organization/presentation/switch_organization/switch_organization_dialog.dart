@@ -146,8 +146,8 @@ class SwitchOrganizationDialog extends ConsumerWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: context.mediaQuery.size.height * 0.3,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 240),
             child: child,
           ),
           const SizedBox(
@@ -160,7 +160,7 @@ class SwitchOrganizationDialog extends ConsumerWidget {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
+                child: TextButton(
                   onPressed: () {
                     context.pop();
                   },

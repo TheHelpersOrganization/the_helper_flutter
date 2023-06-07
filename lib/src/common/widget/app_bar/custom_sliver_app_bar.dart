@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
+  final Widget? title;
   final String? titleText;
   final bool centerTitle;
   final Widget? leading;
@@ -10,9 +11,12 @@ class CustomSliverAppBar extends StatelessWidget {
   final VoidCallback? onBack;
   final VoidCallback? onBackFallback;
   final List<Widget>? actions;
+  final double? expandedHeight;
+  final Widget? flexibleSpace;
 
   const CustomSliverAppBar({
     super.key,
+    this.title,
     this.titleText,
     this.centerTitle = true,
     this.leading,
@@ -21,6 +25,8 @@ class CustomSliverAppBar extends StatelessWidget {
     this.onBackFallback,
     this.bottom,
     this.actions,
+    this.expandedHeight,
+    this.flexibleSpace,
   });
 
   @override
@@ -28,9 +34,10 @@ class CustomSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       iconTheme: const IconThemeData(color: Colors.black),
       backgroundColor: Colors.transparent,
-      title: titleText == null
-          ? null
-          : Text(titleText!, style: const TextStyle(color: Colors.black)),
+      title: title ??
+          (titleText == null
+              ? null
+              : Text(titleText!, style: const TextStyle(color: Colors.black))),
       centerTitle: centerTitle,
       leading: showBackButton
           ? IconButton(
@@ -56,6 +63,8 @@ class CustomSliverAppBar extends StatelessWidget {
           ],
       bottom: bottom,
       floating: true,
+      expandedHeight: expandedHeight,
+      flexibleSpace: flexibleSpace,
     );
   }
 }

@@ -100,9 +100,12 @@ class CreateActivityController extends StateNotifier<AsyncValue<void>> {
     }
 
     ref.watch(routerProvider).goNamed(
-          AppRoute.organizationActivityManagement.name,
-          pathParameters: Map.of({'activityId': res.value!.id.toString()}),
-        );
+      AppRoute.organizationActivityManagement.name,
+      pathParameters: {'activityId': res.value!.id.toString()},
+    );
+    // ref.watch(routerProvider).goNamed(
+    //       AppRoute.organizationActivityListManagement.name,
+    //     );
     state = const AsyncData(null);
   }
 }
