@@ -123,7 +123,8 @@ class RoleChoice extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RoleOption(
+          data != Role.volunteer
+          ? RoleOption(
             optionColor: Colors.purple,
             title: 'Volunteer',
             description:
@@ -133,10 +134,10 @@ class RoleChoice extends ConsumerWidget {
               'assets/images/role_volunteer.svg',
               fit: BoxFit.fitWidth,
             ),
-          ),
+          ) : const SizedBox(),
 
           //Second Option
-          roles.contains(Role.moderator)
+          roles.contains(Role.moderator) && data != Role.moderator
               ? RoleOption(
                   optionColor: Colors.red,
                   title: 'Organization',
@@ -165,7 +166,7 @@ class RoleChoice extends ConsumerWidget {
               : const SizedBox(),
 
           //Third Option
-          roles.contains(Role.admin)
+          roles.contains(Role.admin) && data != Role.admin
               ? RoleOption(
                   optionColor: Colors.blue,
                   title: 'Admin',

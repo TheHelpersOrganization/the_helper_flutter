@@ -75,9 +75,9 @@ class ModActivityCreationScreen extends ConsumerWidget {
                           hintText: 'Pick an image',
                         ),
                         galleryLabel: const Text('Pick from Gallery'),
-                        availableImageSources: const [
-                          ImageSourceOption.gallery,
-                        ],
+                        // availableImageSources: const [
+                        //   ImageSourceOption.gallery,
+                        // ],
                         fit: BoxFit.fitWidth,
                       ),
                       const SizedBox(

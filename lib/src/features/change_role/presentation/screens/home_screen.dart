@@ -27,17 +27,20 @@ class HomeScreen extends ConsumerWidget {
               child: CircularProgressIndicator(),
             ),
         error: (_, __) => const ErrorScreen(),
-        data: (role) => Scaffold(
-              drawer: const AppDrawer(),
-              body: CustomSliverScrollView(
-                appBar: const CustomSliverAppBar(
-                  titleText: 'Home',
-                ),
-                body: getHomeScreen(role ?? Role.volunteer),
+        data: (role) {
+          print(role);
+          return Scaffold(
+            drawer: const AppDrawer(),
+            body: CustomSliverScrollView(
+              appBar: const CustomSliverAppBar(
+                titleText: 'Home',
               ),
-              //body: const VolunteerView(),
-              //bottomNavigationBar: const CustomBottomNavigator(),
-            ));
+              body: getHomeScreen(role ?? Role.volunteer),
+            ),
+            //body: const VolunteerView(),
+            //bottomNavigationBar: const CustomBottomNavigator(),
+          );
+        });
   }
 }
 
