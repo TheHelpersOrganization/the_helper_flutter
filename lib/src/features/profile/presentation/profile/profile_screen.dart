@@ -2,12 +2,12 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
@@ -21,7 +21,7 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider);
-    final activities = ref.watch(profileActivityControllerProvider);
+    // final activities = ref.watch(profileActivityControllerProvider);
     final orgs = ref.watch(profileOrganizationControllerProvider);
     // final profile = profileService.getProfile();
     return profile.when(
@@ -67,7 +67,7 @@ class ProfileScreen extends ConsumerWidget {
                         context),
                     sliver: SliverPersistentHeader(
                       pinned: true,
-                      delegate: _TabBarDelegate(
+                      delegate: TabBarDelegate(
                         tabBar: const TabBar(
                           tabs: [
                             Tab(
@@ -79,9 +79,6 @@ class ProfileScreen extends ConsumerWidget {
                             Tab(
                               text: 'Organizatons',
                             ),
-                            Tab(
-                              text: 'Detail',
-                            ),
                           ],
                         ),
                       ),
@@ -92,12 +89,10 @@ class ProfileScreen extends ConsumerWidget {
               body: TabBarView(
                 children: [
                   ProfileOverviewTab(
-                    skills: profile.skills,
-                    interestedList: profile.interestedSkills,
+                    profile: profile,
                   ),
-                  ProfileActivityTab(activities: activities),
+                  const ProfileActivityTab(),
                   ProfileOrganizationTab(orgs: orgs),
-                  ProfileDetailTab(profile: profile),
                 ],
               ),
               // body: Column(
@@ -206,29 +201,3 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _TabBarDelegate extends SliverPersistentHeaderDelegate {
-  final TabBar tabBar;
-
-  _TabBarDelegate({
-    required this.tabBar,
-  });
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: Theme.of(context).colorScheme.surface,
-      child: tabBar,
-    );
-  }
-
-  @override
-  double get maxExtent => kMinInteractiveDimension;
-
-  @override
-  double get minExtent => kMinInteractiveDimension;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-}
