@@ -5,25 +5,24 @@ import 'package:the_helper/src/features/shift/domain/create_shift_manager.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift_skill.dart';
 import 'package:the_helper/src/features/shift/domain/shift_manager.dart';
 
-part 'create_shift.freezed.dart';
-part 'create_shift.g.dart';
+part 'update_shift.freezed.dart';
+part 'update_shift.g.dart';
 
 @freezed
-class CreateShift with _$CreateShift {
+class UpdateShift with _$UpdateShift {
   @JsonSerializable(includeIfNull: false)
-  const factory CreateShift({
-    required int activityId,
-    required String name,
+  const factory UpdateShift({
+    String? name,
     String? description,
-    required DateTime startTime,
-    required DateTime endTime,
+    DateTime? startTime,
+    DateTime? endTime,
     int? numberOfParticipants,
     List<Location>? locations,
     List<Contact>? contacts,
     List<CreateShiftSkill>? shiftSkills,
     List<CreateShiftManager>? shiftManagers,
-  }) = _CreateShift;
+  }) = _UpdateShift;
 
-  factory CreateShift.fromJson(Map<String, dynamic> json) =>
-      _$CreateShiftFromJson(json);
+  factory UpdateShift.fromJson(Map<String, dynamic> json) =>
+      _$UpdateShiftFromJson(json);
 }

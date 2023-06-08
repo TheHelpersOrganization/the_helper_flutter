@@ -1,15 +1,18 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/shift/domain/shift_manager.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
 
-class ShiftManagers extends StatelessWidget {
-  final List<ShiftManager>? managers;
+class ActivityManagers extends StatelessWidget {
+  final List<int>? managers;
+  final List<Profile>? profiles;
 
-  const ShiftManagers({
+  const ActivityManagers({
     super.key,
     required this.managers,
+    required this.profiles,
   });
 
   @override
@@ -33,13 +36,15 @@ class ShiftManagers extends StatelessWidget {
         else
           Column(
             children: managers!.map((manager) {
+              final profile = profiles!.firstWhereOrNull(
+                (p) => p.id == manager,
+              );
               return ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(getProfileName(manager.profile)),
+                title: Text(getProfileName(profile)),
                 leading: CircleAvatar(
-                  backgroundImage: getBackendImageOrLogoProvider(
-                    manager.profile?.avatarId,
-                  ),
+                  backgroundImage:
+                      getBackendImageOrLogoProvider(profile?.avatarId),
                 ),
                 minVerticalPadding: 16,
               );

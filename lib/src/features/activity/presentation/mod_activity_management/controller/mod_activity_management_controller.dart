@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/profile/data/profile_repository.dart';
+import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/data/mod_shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
@@ -10,13 +13,15 @@ enum TabType {
   shift,
 }
 
-class ActivityAndShifts {
+class ExtendedActivity {
   final Activity activity;
   final List<Shift> shifts;
+  final List<Profile> managerProfiles;
 
-  ActivityAndShifts({
+  ExtendedActivity({
     required this.activity,
     required this.shifts,
+    required this.managerProfiles,
   });
 }
 
@@ -36,7 +41,7 @@ final getShiftsByActivityProvider =
 );
 
 final getActivityAndShiftsProvider =
-    FutureProvider.autoDispose.family<ActivityAndShifts?, int>(
+    FutureProvider.autoDispose.family<ExtendedActivity?, int>(
   (ref, activityId) async {
     final activity = await ref
         .watch(activityServiceProvider)
@@ -52,6 +57,18 @@ final getActivityAndShiftsProvider =
             ],
           ),
         );
-    return ActivityAndShifts(activity: activity, shifts: shifts);
+
+    final managerProfiles =
+        await ref.watch(profileRepositoryProvider).getProfiles(
+              GetProfilesData(
+                ids: activity.activityManagerIds?.toList(),
+              ),
+            );
+
+    return ExtendedActivity(
+      activity: activity,
+      shifts: shifts,
+      managerProfiles: managerProfiles,
+    );
   },
 );

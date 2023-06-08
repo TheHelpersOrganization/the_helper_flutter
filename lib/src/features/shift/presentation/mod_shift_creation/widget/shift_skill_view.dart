@@ -14,15 +14,17 @@ final _formKey = GlobalKey<FormBuilderState>();
 
 class ShiftSkillView extends ConsumerWidget {
   final List<Skill> skills;
+  final List<ShiftSkill>? initialSkills;
 
   const ShiftSkillView({
     super.key,
     required this.skills,
+    this.initialSkills,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedSkills = ref.watch(selectedSkillsProvider);
+    final selectedSkills = ref.watch(selectedSkillsProvider) ?? initialSkills;
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +40,8 @@ class ShiftSkillView extends ConsumerWidget {
               final skill = formData['skill'];
 
               if (selectedSkills
-                  .any((element) => element.skill!.id == skill.id)) {
+                      ?.any((element) => element.skill!.id == skill.id) ==
+                  true) {
                 final shouldReplace = await showDialog(
                   context: context,
                   useRootNavigator: false,
@@ -70,16 +73,16 @@ class ShiftSkillView extends ConsumerWidget {
               final unit = formData['unit'];
               final hours = unit == 'days' ? time * 24 : time;
 
-              selectedSkills
+              final List<ShiftSkill> newSelectedSkills =
+                  List.from(selectedSkills ?? []);
+              newSelectedSkills
                   .removeWhere((element) => element.skill!.id == skill.id);
-
-              ref.read(selectedSkillsProvider.notifier).state = [
-                ...selectedSkills,
-                ShiftSkill(
-                  skill: skill,
-                  hours: hours,
-                )
-              ];
+              newSelectedSkills.add(ShiftSkill(
+                skill: skill,
+                hours: hours,
+              ));
+              ref.read(selectedSkillsProvider.notifier).state =
+                  newSelectedSkills;
 
               context.pop();
             },

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/update_shift.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 class ModShiftRepository {
@@ -40,6 +41,24 @@ class ModShiftRepository {
       '/shifts',
       data: shift.toJson(),
     );
+    return Shift.fromJson(res.data['data']);
+  }
+
+  Future<Shift> updateShift({
+    required int id,
+    required UpdateShift shift,
+  }) async {
+    final res = await client.put(
+      '/shifts/$id',
+      data: shift.toJson(),
+    );
+    return Shift.fromJson(res.data['data']);
+  }
+
+  Future<Shift> deleteShift({
+    required int id,
+  }) async {
+    final res = await client.delete('/shifts/$id');
     return Shift.fromJson(res.data['data']);
   }
 }

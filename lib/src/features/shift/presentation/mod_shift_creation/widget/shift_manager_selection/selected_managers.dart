@@ -7,22 +7,23 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/co
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_manager_selection/shift_manager_list_tile.dart';
 
 class SelectedManagers extends ConsumerWidget {
-  final Set<int> selectedManagers;
   final List<OrganizationMember> managers;
   final Account myAccount;
+  final Set<int>? initialManagers;
 
   const SelectedManagers({
     super.key,
-    required this.selectedManagers,
     required this.managers,
     required this.myAccount,
+    this.initialManagers,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedManagers = ref.watch(selectedManagersProvider);
+    final selectedManagers =
+        ref.watch(selectedManagersProvider) ?? initialManagers;
 
-    return selectedManagers.isEmpty
+    return selectedManagers?.isNotEmpty != true
         ? const SizedBox.shrink()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,44 +36,41 @@ class SelectedManagers extends ConsumerWidget {
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              ...selectedManagers.map(
-                (selectedManager) {
-                  final manager = managers.firstWhere(
-                      (element) => selectedManager == element.accountId);
+              ...selectedManagers?.map(
+                    (selectedManager) {
+                      final manager = managers.firstWhere(
+                          (element) => selectedManager == element.accountId);
 
-                  return ManagerListTile(
-                    manager: manager,
-                    isMyAccount: manager.accountId == myAccount.id,
-                    onTap: () {
-                      final value =
-                          selectedManagers.contains(manager.accountId);
-                      if (value == true) {
-                        selectedManagers.remove(manager.accountId);
-                        ref.read(selectedManagersProvider.notifier).state = {
-                          ...selectedManagers
-                        };
-                      } else {
-                        ref
-                            .read(selectedManagersProvider.notifier)
-                            .update((state) => {...state, manager.accountId});
-                      }
+                      return ManagerListTile(
+                        manager: manager,
+                        isMyAccount: manager.accountId == myAccount.id,
+                        onTap: () {
+                          final value =
+                              selectedManagers.contains(manager.accountId);
+                          if (value == true) {
+                            selectedManagers.remove(manager.accountId);
+                            ref.read(selectedManagersProvider.notifier).state =
+                                {...selectedManagers};
+                          } else {
+                            ref.read(selectedManagersProvider.notifier).update(
+                                (state) => {...state ?? [], manager.accountId});
+                          }
+                        },
+                        isChecked: selectedManagers.contains(manager.accountId),
+                        onCheck: (value) {
+                          if (value == true) {
+                            ref.read(selectedManagersProvider.notifier).update(
+                                (state) => {...state ?? [], manager.accountId});
+                          } else {
+                            selectedManagers.remove(manager.accountId);
+                            ref.read(selectedManagersProvider.notifier).state =
+                                {...selectedManagers};
+                          }
+                        },
+                      );
                     },
-                    isChecked: selectedManagers.contains(manager.accountId),
-                    onCheck: (value) {
-                      if (value == true) {
-                        ref
-                            .read(selectedManagersProvider.notifier)
-                            .update((state) => {...state, manager.accountId});
-                      } else {
-                        selectedManagers.remove(manager.accountId);
-                        ref.read(selectedManagersProvider.notifier).state = {
-                          ...selectedManagers
-                        };
-                      }
-                    },
-                  );
-                },
-              ),
+                  ) ??
+                  [],
               const SizedBox(height: 12),
             ],
           );

@@ -6,6 +6,8 @@ String getAddress(Location? location, {int? componentCount}) {
     address = 'Unknown';
   } else {
     final components = [
+      location.addressLine1,
+      location.addressLine2,
       location.locality,
       location.region,
       location.country,

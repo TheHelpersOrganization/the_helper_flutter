@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
@@ -23,18 +24,20 @@ final getSkillsProvider = FutureProvider.autoDispose<List<Skill>>((ref) async {
 final currentStepProvider = StateProvider.autoDispose((ref) => 0);
 
 // Basic info
-final isParticipantLimitedProvider = StateProvider.autoDispose((ref) => false);
+final isParticipantLimitedProvider =
+    StateProvider.autoDispose<bool?>((ref) => null);
+
 final startDateProvider = StateProvider.autoDispose<DateTime?>((ref) => null);
 
 // Contact
 final selectedContactsProvider =
-    StateProvider.autoDispose<List<Contact>>((ref) => []);
+    StateProvider.autoDispose<List<Contact>?>((ref) => null);
 final selectedContactNameProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 
 // Skill
 final selectedSkillsProvider =
-    StateProvider.autoDispose<List<ShiftSkill>>((ref) => []);
+    StateProvider.autoDispose<List<ShiftSkill>?>((ref) => null);
 
 // Manager
 class ActivityManagerData {
@@ -48,7 +51,7 @@ class ActivityManagerData {
 }
 
 final selectedManagersProvider =
-    StateProvider.autoDispose<Set<int>>((ref) => {});
+    StateProvider.autoDispose<Set<int>?>((ref) => null);
 final memberDataProvider = FutureProvider.autoDispose((ref) async {
   final org = await ref
       .watch(currentOrganizationRepositoryProvider)
@@ -66,10 +69,12 @@ final memberDataProvider = FutureProvider.autoDispose((ref) async {
 });
 
 class CreateShiftController extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef ref;
   final ModShiftRepository modShiftRepository;
   final GoRouter router;
 
   CreateShiftController({
+    required this.ref,
     required this.modShiftRepository,
     required this.router,
   }) : super(const AsyncData(null));
@@ -78,6 +83,7 @@ class CreateShiftController extends StateNotifier<AsyncValue<void>> {
     state = const AsyncValue.loading();
     final res = await guardAsyncValue(
         () => modShiftRepository.createShift(shift: shift));
+    ref.invalidate(getActivityAndShiftsProvider);
     if (!mounted) {
       return;
     }
@@ -94,6 +100,7 @@ class CreateShiftController extends StateNotifier<AsyncValue<void>> {
 final createShiftControllerProvider =
     StateNotifierProvider.autoDispose<CreateShiftController, AsyncValue<void>>(
   (ref) => CreateShiftController(
+    ref: ref,
     modShiftRepository: ref.watch(modShiftRepositoryProvider),
     router: ref.watch(routerProvider),
   ),

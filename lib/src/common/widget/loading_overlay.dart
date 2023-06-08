@@ -18,7 +18,7 @@ class LoadingOverlay extends StatefulWidget {
     super.key,
     required this.isLoading,
     required this.child,
-    this.opacity = 0.5,
+    this.opacity = 0.7,
     this.loadingOverlayType = LoadingOverlayType.linear,
     this.color,
     this.indicator,
