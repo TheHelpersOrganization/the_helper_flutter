@@ -4,67 +4,129 @@ import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 // import 'package:the_helper/src/utils/utility_functions.dart';
 
-class ProfileActivityTab extends StatelessWidget {
-  final AsyncValue<List<Activity>> activities;
+class ProfileActivityTab extends ConsumerWidget {
   const ProfileActivityTab({
-    required this.activities,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: CustomScrollView(
+        primary: false,
         key: const PageStorageKey<String>('Activity'),
         slivers: [
           SliverOverlapInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
           ),
-          activities.when(
-            loading: () => const SliverFillRemaining(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-            error: (error, st) => SliverFillRemaining(
-              child: Center(
-                child: Text('Error: $error'),
-              ),
-            ),
-            data: (activities) => SliverPadding(
-              padding: const EdgeInsets.all(8.0),
-              sliver: SliverFixedExtentList(
-                itemExtent: 56.0,
-                delegate: SliverChildListDelegate([
-                  for (final activity in activities)
-                    ListTile(
-                      isThreeLine: true,
-                      onTap: () {
-                        context.pushNamed(
-                          AppRoute.activity.name,
-                          pathParameters: {
-                            'activityId': activity.id.toString(),
-                          },
-                        );
-                      },
-                      leading: const Icon(Icons.star_outline),
-                      title: Text(activity.name!),
-                      subtitle: Text(
-                          '${DateFormat("dd/MM/yyyy").format(activity.startTime!)} - ${DateFormat("dd/MM/yyyy").format(activity.endTime!)}'),
-
-                      // trailing: Text(
-                      //   getInitials(activity.organization!.name),
-                      // ),
+          SliverPadding(
+            padding: const EdgeInsets.all(8.0),
+            sliver: SliverFixedExtentList(
+              itemExtent: 56.0,
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  const size = 20;
+                  final page = index ~/ size;
+                  final itemIndex = index % size;
+                  final pageValue = ref.watch(
+                    activityControllerProvider(
+                      page,
+                      size,
                     ),
-                ]),
+                  );
+                  return pageValue.when(
+                    data: (data) {
+                      if (itemIndex >= data.length) return null;
+                      return ListTile(
+                        isThreeLine: true,
+                        onTap: () {
+                          context.pushNamed(
+                            AppRoute.activity.name,
+                            pathParameters: {
+                              'activityId': data[itemIndex].id.toString(),
+                            },
+                          );
+                        },
+                        leading: const Icon(Icons.star_outline),
+                        title: Text(data[itemIndex].name!),
+                        subtitle: Text(
+                            '${DateFormat("dd/MM/yyyy").format(data[itemIndex].startTime!)} - ${DateFormat("dd/MM/yyyy").format(data[itemIndex].endTime!)}'),
+
+                        // trailing: Text(
+                        //   getInitials(activity.organization!.name),
+                        // ),
+                      );
+                    },
+                    error: (Object error, StackTrace stackTrace) =>
+                        const Text('Some error orrcur!'),
+                    loading: () {
+                      if (itemIndex != 0) return null;
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  );
+                },
               ),
+              // delegate: SliverChildListDelegate([
+              //   for (final activity in activities)
+              //     ListTile(
+              //       isThreeLine: true,
+              //       onTap: () {
+              //         context.pushNamed(
+              //           AppRoute.activity.name,
+              //           pathParameters: {
+              //             'activityId': activity.id.toString(),
+              //           },
+              //         );
+              //       },
+              //       leading: const Icon(Icons.star_outline),
+              //       title: Text(activity.name!),
+              //       subtitle: Text(
+              //           '${DateFormat("dd/MM/yyyy").format(activity.startTime!)} - ${DateFormat("dd/MM/yyyy").format(activity.endTime!)}'),
+
+              //       // trailing: Text(
+              //       //   getInitials(activity.organization!.name),
+              //       // ),
+              //     ),
+              // ]),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class ActivityListTile extends StatelessWidget {
+  final Activity activity;
+  const ActivityListTile({
+    required this.activity,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      isThreeLine: true,
+      onTap: () {
+        context.pushNamed(
+          AppRoute.activity.name,
+          pathParameters: {
+            'activityId': activity.id.toString(),
+          },
+        );
+      },
+      leading: const Icon(Icons.star_outline),
+      title: Text(activity.name!),
+      subtitle: Text(
+          '${DateFormat("dd/MM/yyyy").format(activity.startTime!)} - ${DateFormat("dd/MM/yyyy").format(activity.endTime!)}'),
+
+      // trailing: Text(
+      //   getInitials(activity.organization!.name),
+      // ),
     );
   }
 }
