@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomSliverScrollView extends StatelessWidget {
-  final Widget body;
   final Widget appBar;
+  final Widget body;
 
   const CustomSliverScrollView({
     super.key,
-    required this.body,
     required this.appBar,
+    required this.body,
   });
 
   @override

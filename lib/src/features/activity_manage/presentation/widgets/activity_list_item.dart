@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/activity_manage/domain/activity.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/activity_manage/presentation/widgets/popup_menu_button.dart';
 
 class ActivityListItem extends ConsumerWidget {
   final ActivityModel data;
@@ -44,7 +43,6 @@ class ActivityListItem extends ConsumerWidget {
                 ),
               ),
               Text('2 day ago'),
-              PopupButton(accountId: data.id)
             ],
           ),
         ));

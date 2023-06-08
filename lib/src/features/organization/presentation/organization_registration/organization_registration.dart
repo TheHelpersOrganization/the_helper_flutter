@@ -8,8 +8,8 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
-import 'package:the_helper/src/common/widget/country_picker.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
+import 'package:the_helper/src/common/widget/country_picker.dart';
 import 'package:the_helper/src/common/widget/file_picker/form_multiple_file_picker_field.dart';
 import 'package:the_helper/src/common/widget/image_picker/form_custom_image_picker.dart';
 import 'package:the_helper/src/common/widget/phone_number_field.dart';
@@ -414,35 +414,6 @@ class _OrganizationRegistrationScreenState
     int currentStep = ref.watch(currentStepProvider);
     final res = ref.watch(createOrganizationControllerProvider);
 
-    // return Scaffold(
-    //   body: Center(
-    //     child: Padding(
-    //       padding: const EdgeInsets.all(8.0),
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           Text(
-    //             'Organization registration successfully',
-    //             style: context.theme.textTheme.titleLarge?.copyWith(
-    //               fontWeight: FontWeight.bold,
-    //             ),
-    //             textAlign: TextAlign.center,
-    //           ),
-    //           const SizedBox(
-    //             height: 16,
-    //           ),
-    //           PrimaryButton(
-    //             onPressed: () {
-    //               context.goNamed(AppRoute.home.name);
-    //             },
-    //             child: const Text('Back to Home'),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -458,9 +429,8 @@ class _OrganizationRegistrationScreenState
         data: (data) {
           if (data == null) {
             // Easier to debug
-            List<Step> steps = (<
-                    Step Function(GlobalKey<FormBuilderState> key, int index,
-                        int currentStep)>[
+            List<Step> steps = (<Step Function(GlobalKey<FormBuilderState> key,
+                    int index, int currentStep)>[
               _buildStep0,
               _buildStep1,
               _buildStep2,

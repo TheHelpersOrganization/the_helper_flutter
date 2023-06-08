@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
-import 'package:the_helper/src/features/account_request_manage/presentation/screens/account_request_manage_screen.dart';
+import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_management/screen/activity_mod_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_manager_chooser.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
@@ -26,7 +29,13 @@ import 'package:the_helper/src/features/organization_member/presentation/member_
 import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift/screen/mod_shift_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/screen/mod_shift_creation_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_skill_view.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
+
+import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
+import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -64,9 +73,70 @@ final routes = [
             const OrganizationMembersManagementScreen(),
       ),
       GoRoute(
-        path: AppRoute.organizationActivityManagement.path,
-        name: AppRoute.organizationActivityManagement.name,
-        builder: (_, __) => const ActivityModManagementScreen(),
+          path: AppRoute.organizationActivityListManagement.path,
+          name: AppRoute.organizationActivityListManagement.name,
+          builder: (_, __) => const ModActivityListManagementScreen(),
+          routes: [
+            GoRoute(
+                path: AppRoute.organizationActivityManagement.path,
+                name: AppRoute.organizationActivityManagement.name,
+                builder: (_, state) {
+                  final activityId =
+                      int.parse(state.pathParameters['activityId']!);
+                  return ModActivityManagementScreen(activityId: activityId);
+                },
+                routes: [
+                  GoRoute(
+                    path: AppRoute.shiftCreation.path,
+                    name: AppRoute.shiftCreation.name,
+                    builder: (_, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModShiftCreationScreen(
+                        activityId: activityId,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: AppRoute.shiftCreationSkill.path,
+                        name: AppRoute.shiftCreationSkill.name,
+                        builder: (_, state) {
+                          return ShiftSkillView(
+                            skills: state.extra as dynamic,
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                  GoRoute(
+                    path: AppRoute.organizationShift.path,
+                    name: AppRoute.organizationShift.name,
+                    builder: (_, state) {
+                      final activityId = int.parse(
+                        state.pathParameters['activityId']!,
+                      );
+                      final shiftId = int.parse(
+                        state.pathParameters['shiftId']!,
+                      );
+                      return ModShiftScreen(
+                        activityId: activityId,
+                        shiftId: shiftId,
+                      );
+                    },
+                  ),
+                ]),
+          ]),
+      GoRoute(
+        path: AppRoute.organizationActivityCreation.path,
+        name: AppRoute.organizationActivityCreation.name,
+        builder: (_, __) => const ModActivityCreationScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoute.organizationActivityCreationManagerChooser.path,
+            name: AppRoute.organizationActivityCreationManagerChooser.name,
+            builder: (_, __) => const ModActivityManagerChooser(),
+          ),
+        ],
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
@@ -113,7 +183,17 @@ final routes = [
             path: AppRoute.myOrganization.path,
             name: AppRoute.myOrganization.name,
             builder: (context, state) => const MyOrganizationScreen(),
-          )
+          ),
+          GoRoute(
+            path: AppRoute.accountManage.path,
+            name: AppRoute.accountManage.name,
+            builder: (context, state) => const AccountManageScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.organizationAdminManage.path,
+            name: AppRoute.organizationAdminManage.name,
+            builder: (context, state) => const OrganizationAdminManageScreen(),
+          ),
         ],
       ),
       accountRoutes,
@@ -187,8 +267,8 @@ final shiftRoutes = [
         builder: (_, state) {
           final activityId = int.parse(
               state.pathParameters[AppRoute.activity.path.substring(1)]!);
-          final shiftId = int.parse(
-              state.pathParameters[AppRoute.shift.path.substring(1)]!);
+          final shiftId = int.parse(state
+              .pathParameters[AppRoute.organizationShift.path.substring(1)]!);
           return ShiftDetailScreen(
             activityId: activityId,
             shiftId: shiftId,
@@ -339,6 +419,10 @@ enum AppRoute {
     path: '/organization',
     name: 'organization-manage',
   ),
+  organizationRequestsManage(
+    path: '/organization-requests',
+    name: 'organization-requests-manage',
+  ),
   organization(
     path: ':orgId',
     name: 'organization',
@@ -368,9 +452,35 @@ enum AppRoute {
     path: ':activityId',
     name: 'activity',
   ),
-  organizationActivityManagement(
+
+  organizationActivityListManagement(
     path: '/activity-management',
+    name: 'activity-list-management',
+  ),
+  organizationActivityManagement(
+    path: ':activityId',
     name: 'activity-management',
+  ),
+  organizationShift(
+    path: 'shift/:shiftId',
+    name: 'organization-shift',
+  ),
+  shiftCreation(
+    path: 'shift/create',
+    name: 'shift-creation',
+  ),
+  shiftCreationSkill(
+    path: 'shift/create/skills',
+    name: 'shift-creation-skills',
+  ),
+
+  organizationActivityCreation(
+    path: '/activity-creation',
+    name: 'activity-creation',
+  ),
+  organizationActivityCreationManagerChooser(
+    path: 'managers',
+    name: 'activity-creation-manager-chooser',
   ),
 
   // shift
@@ -392,6 +502,10 @@ enum AppRoute {
   accountManage(
     path: '/account-manage',
     name: 'account-manage',
+  ),
+  organizationAdminManage(
+    path: '/organization-admin-manage',
+    name: 'organization-admin-manage',
   ),
   myOrganization(
     path: '/my-organization',

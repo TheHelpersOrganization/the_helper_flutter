@@ -46,6 +46,8 @@ class RoleRepository {
   Future<Role?> getCurrentRole() async {
     final role = await localStorage.read(key: currentRoleKey);
     if (role == null) {
+      await localStorage.write(
+          key: currentRoleKey, value: Role.volunteer.toString());
       return null;
     }
     return Role.values.firstWhere((element) => element.toString() == role);

@@ -35,7 +35,7 @@ final pagingControllerProvider = Provider.autoDispose(
           query: ActivityQuery(
             limit: 5,
             offset: pageKey,
-            n: searchPattern,
+            name: searchPattern,
           ),
           include: ActivityInclude(
             organization: true,

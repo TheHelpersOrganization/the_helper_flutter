@@ -9,6 +9,7 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
+import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -34,28 +35,23 @@ class ChangeRoleScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-                padding: EdgeInsets.only(
-                  top: context.mediaQuery.size.height * 0.1,
-                  bottom: 32,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Choose your role',
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Choose your role',
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      'Don\'t worry. You can change it later',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                )),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'Don\'t worry. You can change it later',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
             const Expanded(child: RoleChoice()),
             Padding(
                 padding: EdgeInsets.only(
@@ -94,6 +90,8 @@ class RoleChoice extends ConsumerWidget {
     final roles = ref.watch(authServiceProvider).valueOrNull!.account.roles;
     final currentOrganization = ref.watch(currentOrganizationProvider);
     final currentRole = ref.watch(setRoleControllerProvider);
+    // Watch owned organizations so that dialog does not have to reload them
+    final organizations = ref.watch(getOwnedOrganizationsProvider);
 
     ref.listen<AsyncValue>(
       setRoleControllerProvider,
@@ -125,7 +123,8 @@ class RoleChoice extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          RoleOption(
+          data != Role.volunteer
+          ? RoleOption(
             optionColor: Colors.purple,
             title: 'Volunteer',
             description:
@@ -135,10 +134,10 @@ class RoleChoice extends ConsumerWidget {
               'assets/images/role_volunteer.svg',
               fit: BoxFit.fitWidth,
             ),
-          ),
+          ) : const SizedBox(),
 
           //Second Option
-          roles.contains(Role.moderator)
+          roles.contains(Role.moderator) && data != Role.moderator
               ? RoleOption(
                   optionColor: Colors.red,
                   title: 'Organization',
@@ -153,6 +152,7 @@ class RoleChoice extends ConsumerWidget {
                     if (organization == null) {
                       await showDialog(
                         context: context,
+                        useRootNavigator: false,
                         builder: (context) => const SwitchOrganizationDialog(),
                       );
                       return;
@@ -166,7 +166,7 @@ class RoleChoice extends ConsumerWidget {
               : const SizedBox(),
 
           //Third Option
-          roles.contains(Role.admin)
+          roles.contains(Role.admin) && data != Role.admin
               ? RoleOption(
                   optionColor: Colors.blue,
                   title: 'Admin',

@@ -101,6 +101,42 @@ class ActivityService {
     return activities;
   }
 
+  Future<int> getCount({
+    ActivityQuery? query,
+    ActivityInclude? include,
+  }) async {
+    List<Activity> activities =
+        await activityRepository.getActivities(query: query);
+
+    if (include?.organization == true) {
+      List<Organization> organizations = await Future.wait(
+        activities.map(
+          (e) async => await organizationRepository.getById(e.organizationId!),
+        ),
+      );
+      activities = activities
+          .mapIndexed((i, a) => a.copyWith(organization: organizations[i]))
+          .toList();
+    }
+
+    if (include?.volunteers == true) {
+      List<List<ActivityVolunteer>> activityVolunteers = await Future.wait(
+        activities.map(
+          (e) async => await activityVolunteerService.getActivityVolunteers(
+            activityId: e.id!,
+          ),
+        ),
+      );
+      activities = activities
+          .mapIndexed((index, element) => element.copyWith(
+                volunteers: activityVolunteers[index],
+              ))
+          .toList();
+    }
+
+    return activities.length;
+  }
+
   Future<Activity> getActivity({required int activityId}) async {
     final activity = await activityRepository.getActivityById(id: activityId);
     final org = await organizationRepository.getById(activity.organizationId!);
