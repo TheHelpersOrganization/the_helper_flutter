@@ -6,7 +6,7 @@ part 'create_shift_skill.g.dart';
 @freezed
 class CreateShiftSkill with _$CreateShiftSkill {
   const factory CreateShiftSkill({
-    int? skillId,
+    required int skillId,
     double? hours,
   }) = _CreateShiftSkill;
 

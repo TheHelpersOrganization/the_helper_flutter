@@ -13,7 +13,12 @@ import 'package:the_helper/src/utils/profile.dart';
 final _formKey = GlobalKey<FormBuilderState>();
 
 class ShiftContactView extends ConsumerStatefulWidget {
-  const ShiftContactView({super.key});
+  final List<Contact>? initialContacts;
+
+  const ShiftContactView({
+    super.key,
+    this.initialContacts,
+  });
 
   @override
   ConsumerState<ShiftContactView> createState() => _ShiftContactViewState();
@@ -31,7 +36,8 @@ class _ShiftContactViewState extends ConsumerState<ShiftContactView> {
   @override
   Widget build(BuildContext context) {
     final members = ref.watch(memberDataProvider);
-    final selectedContacts = ref.watch(selectedContactsProvider);
+    final selectedContacts =
+        ref.watch(selectedContactsProvider) ?? widget.initialContacts;
     final selectedContactName = ref.watch(selectedContactNameProvider);
 
     if (members.hasError) {
@@ -56,7 +62,7 @@ class _ShiftContactViewState extends ConsumerState<ShiftContactView> {
               final phoneNumber = phoneController.value;
 
               ref.read(selectedContactsProvider.notifier).state = [
-                ...selectedContacts,
+                ...selectedContacts ?? [],
                 Contact(
                   name: name,
                   email: email,

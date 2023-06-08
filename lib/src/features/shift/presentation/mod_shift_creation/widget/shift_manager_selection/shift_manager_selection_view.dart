@@ -9,12 +9,18 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/wi
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_manager_selection/unselected_managers.dart';
 
 class ShiftManagerSelectionView extends ConsumerWidget {
-  const ShiftManagerSelectionView({super.key});
+  final Set<int>? initialManagers;
+
+  const ShiftManagerSelectionView({
+    super.key,
+    this.initialManagers,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final shiftManagerDataState = ref.watch(memberDataProvider);
-    final selectedManagers = ref.watch(selectedManagersProvider);
+    final selectedManagers =
+        ref.watch(selectedManagersProvider) ?? initialManagers;
 
     return Scaffold(
       body: NestedScrollView(
@@ -62,14 +68,14 @@ class ShiftManagerSelectionView extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SelectedManagers(
-                    selectedManagers: selectedManagers,
                     managers: data.managers,
                     myAccount: data.account,
+                    initialManagers: initialManagers,
                   ),
                   UnselectedManagers(
-                    selectedManagers: selectedManagers,
                     managers: data.managers,
                     myAccount: data.account,
+                    initialManagers: initialManagers,
                   ),
                 ],
               ),

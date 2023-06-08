@@ -32,6 +32,10 @@ import 'package:the_helper/src/features/profile/presentation/profile_setting/pro
 import 'package:the_helper/src/features/shift/presentation/mod_shift/screen/mod_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/screen/mod_shift_creation_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_skill_view.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_basic_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -122,6 +126,54 @@ final routes = [
                         activityId: activityId,
                         shiftId: shiftId,
                       );
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEdit.path,
+                    name: AppRoute.shiftEdit.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditBasicScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditSkills.path,
+                    name: AppRoute.shiftEditSkills.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditSkillScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditContacts.path,
+                    name: AppRoute.shiftEditContacts.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditContactScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditManagers.path,
+                    name: AppRoute.shiftEditManagers.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditManagerScreen(
+                          activityId: activityId, shiftId: shiftId);
                     },
                   ),
                 ]),
@@ -464,6 +516,22 @@ enum AppRoute {
   organizationShift(
     path: 'shift/:shiftId',
     name: 'organization-shift',
+  ),
+  shiftEdit(
+    path: 'shift/:shiftId/edit',
+    name: 'shift-edit',
+  ),
+  shiftEditSkills(
+    path: 'shift/:shiftId/edit/skills',
+    name: 'shift-edit-skill',
+  ),
+  shiftEditContacts(
+    path: 'shift/:shiftId/edit/contacts',
+    name: 'shift-edit-contact',
+  ),
+  shiftEditManagers(
+    path: 'shift/:shiftId/edit/managers',
+    name: 'shift-edit-managers',
   ),
   shiftCreation(
     path: 'shift/create',

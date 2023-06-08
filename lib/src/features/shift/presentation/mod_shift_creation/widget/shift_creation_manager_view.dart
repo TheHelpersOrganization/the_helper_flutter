@@ -11,16 +11,19 @@ import 'package:the_helper/src/utils/member.dart';
 
 class ShiftCreationManagerView extends ConsumerWidget {
   final int activityId;
+  final Set<int>? initialManagers;
 
   const ShiftCreationManagerView({
     super.key,
     required this.activityId,
+    this.initialManagers,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activity = ref.watch(getActivityProvider(activityId));
-    final selectedManagers = ref.watch(selectedManagersProvider);
+    final selectedManagers =
+        ref.watch(selectedManagersProvider) ?? initialManagers;
     final shiftManagerDataState = ref.watch(memberDataProvider);
 
     return Column(
@@ -38,7 +41,9 @@ class ShiftCreationManagerView extends ConsumerWidget {
               onPressed: () async {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const ShiftManagerSelectionView(),
+                    builder: (_) => ShiftManagerSelectionView(
+                      initialManagers: initialManagers,
+                    ),
                   ),
                 );
               },
@@ -48,7 +53,7 @@ class ShiftCreationManagerView extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 8),
-        selectedManagers.isEmpty
+        selectedManagers?.isNotEmpty != true
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -79,33 +84,35 @@ class ShiftCreationManagerView extends ConsumerWidget {
                 ),
                 data: (shiftManagerData) {
                   return Column(
-                    children: selectedManagers.map((data) {
-                      final manager = shiftManagerData.managers
-                          .firstWhere((element) => element.accountId == data);
-                      return ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(getMemberName(manager)),
-                        subtitle:
-                            manager.accountId == shiftManagerData.account.id
-                                ? const Text('Your account')
-                                : null,
-                        leading: CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(
-                            getImageUrl(manager.profile!.avatarId!),
-                          ),
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          color: Colors.red,
-                          onPressed: () {
-                            selectedManagers.remove(manager.accountId);
-                            ref.read(selectedManagersProvider.notifier).state =
-                                {...selectedManagers};
-                          },
-                        ),
-                        minVerticalPadding: 16,
-                      );
-                    }).toList(),
+                    children: selectedManagers?.map((data) {
+                          final manager = shiftManagerData.managers.firstWhere(
+                              (element) => element.accountId == data);
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(getMemberName(manager)),
+                            subtitle:
+                                manager.accountId == shiftManagerData.account.id
+                                    ? const Text('Your account')
+                                    : null,
+                            leading: CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                getImageUrl(manager.profile!.avatarId!),
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete_outline),
+                              color: Colors.red,
+                              onPressed: () {
+                                selectedManagers.remove(manager.accountId);
+                                ref
+                                    .read(selectedManagersProvider.notifier)
+                                    .state = {...selectedManagers};
+                              },
+                            ),
+                            minVerticalPadding: 16,
+                          );
+                        }).toList() ??
+                        [],
                   );
                 },
               )

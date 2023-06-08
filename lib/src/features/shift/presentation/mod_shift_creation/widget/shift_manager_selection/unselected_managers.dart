@@ -7,21 +7,26 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/co
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_manager_selection/shift_manager_list_tile.dart';
 
 class UnselectedManagers extends ConsumerWidget {
-  final Set<int> selectedManagers;
   final List<OrganizationMember> managers;
   final Account myAccount;
+  final Set<int>? initialManagers;
 
   const UnselectedManagers({
     super.key,
-    required this.selectedManagers,
     required this.managers,
     required this.myAccount,
+    this.initialManagers,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedManagers =
+        ref.watch(selectedManagersProvider) ?? initialManagers;
+
     final unselectedManagers = managers
-        .where((manager) => !selectedManagers.contains(manager.accountId))
+        .where((manager) =>
+            selectedManagers == null ||
+            !selectedManagers.contains(manager.accountId))
         .toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,25 +45,33 @@ class UnselectedManagers extends ConsumerWidget {
             manager: manager,
             isMyAccount: manager.accountId == myAccount.id,
             onTap: () {
-              final value = selectedManagers.contains(manager.accountId);
-              if (value == true) {
-                selectedManagers.remove(manager.accountId);
-                ref.read(selectedManagersProvider.notifier).state = {
-                  ...selectedManagers
-                };
+              if (selectedManagers != null &&
+                  selectedManagers.contains(manager.accountId)) {
+                final newSelectedManagers = {...selectedManagers};
+                newSelectedManagers.remove(manager.accountId);
+                ref.read(selectedManagersProvider.notifier).state =
+                    newSelectedManagers;
               } else {
-                ref
-                    .read(selectedManagersProvider.notifier)
-                    .update((state) => {...state, manager.accountId});
+                final Set<int> newSelectedManagers =
+                    selectedManagers == null ? {} : {...selectedManagers};
+                newSelectedManagers.add(manager.accountId);
+                ref.read(selectedManagersProvider.notifier).state =
+                    newSelectedManagers;
               }
             },
-            isChecked: selectedManagers.contains(manager.accountId),
+            isChecked: selectedManagers != null &&
+                selectedManagers.contains(manager.accountId),
             onCheck: (value) {
               if (value == true) {
-                ref
-                    .read(selectedManagersProvider.notifier)
-                    .update((state) => {...state, manager.accountId});
+                final Set<int> newSelectedManagers =
+                    selectedManagers == null ? {} : {...selectedManagers};
+                newSelectedManagers.add(manager.accountId);
+                ref.read(selectedManagersProvider.notifier).state =
+                    newSelectedManagers;
               } else {
+                if (selectedManagers == null) {
+                  return;
+                }
                 selectedManagers.remove(manager.accountId);
                 ref.read(selectedManagersProvider.notifier).state = {
                   ...selectedManagers

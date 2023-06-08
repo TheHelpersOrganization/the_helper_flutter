@@ -22,7 +22,6 @@ SnackBar errorSnackBarFromException(Object error) {
       ],
     ),
     backgroundColor: Colors.red,
-    behavior: SnackBarBehavior.floating,
     showCloseIcon: true,
   );
 }

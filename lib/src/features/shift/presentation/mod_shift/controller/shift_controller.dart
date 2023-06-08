@@ -1,12 +1,16 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/shift/data/mod_shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value.dart';
 
 class ActivityAndShift {
   final Activity activity;
@@ -56,4 +60,52 @@ final getActivityAndShiftProvider =
       shift: updatedShift,
     );
   },
+);
+
+class DeleteShiftController extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef ref;
+  final ModShiftRepository modShiftRepository;
+  final GoRouter router;
+
+  DeleteShiftController({
+    required this.ref,
+    required this.modShiftRepository,
+    required this.router,
+  }) : super(const AsyncValue.data(null));
+
+  Future<void> deleteShift({
+    required int activityId,
+    required int shiftId,
+    bool navigateToActivityManagement = true,
+  }) async {
+    state = const AsyncValue.loading();
+    final res = await guardAsyncValue(
+        () => modShiftRepository.deleteShift(id: shiftId));
+
+    if (!res.hasError) {
+      ref.invalidate(getActivityAndShiftsProvider);
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    state = res;
+
+    if (navigateToActivityManagement) {
+      router.goNamed(
+        AppRoute.organizationActivityManagement.name,
+        pathParameters: {'activityId': activityId.toString()},
+      );
+    }
+  }
+}
+
+final deleteShiftControllerProvider =
+    StateNotifierProvider.autoDispose<DeleteShiftController, AsyncValue<void>>(
+  (ref) => DeleteShiftController(
+    ref: ref,
+    modShiftRepository: ref.watch(modShiftRepositoryProvider),
+    router: ref.watch(routerProvider),
+  ),
 );

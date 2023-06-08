@@ -4,14 +4,17 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/controller/mod_shift_creation_controller.dart';
 
 class ShiftCreationBasicView extends ConsumerWidget {
   final GlobalKey<FormBuilderState> formKey;
+  final Shift? initialShift;
 
   const ShiftCreationBasicView({
     super.key,
     required this.formKey,
+    this.initialShift,
   });
 
   @override
@@ -38,6 +41,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
           ),
           FormBuilderTextField(
             name: 'name',
+            initialValue: initialShift?.name,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Enter shift name',
@@ -53,6 +57,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
           ),
           FormBuilderTextField(
             name: 'description',
+            initialValue: initialShift?.description,
             keyboardType: TextInputType.multiline,
             minLines: 5,
             maxLines: null,
@@ -71,6 +76,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
           ),
           FormBuilderTextField(
             name: 'location',
+            //initialValue: initialShift?.locations?.firstOrNull,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Enter location',
@@ -84,23 +90,21 @@ class ShiftCreationBasicView extends ConsumerWidget {
           const SizedBox(
             height: 36,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Limit participants',
-                  style: context.theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          FormBuilderSwitch(
+            name: 'isParticipantLimited',
+            title: Text(
+              'Limit participants',
+              style: context.theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
-              Switch(
-                value: isParticipantLimited,
-                onChanged: (value) => ref
-                    .read(isParticipantLimitedProvider.notifier)
-                    .state = value,
-              ),
-            ],
+            ),
+            initialValue: initialShift?.numberOfParticipants != null,
+            onChanged: (value) => ref
+                .read(isParticipantLimitedProvider.notifier)
+                .state = value ?? false,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+            ),
           ),
           const SizedBox(
             height: 12,
@@ -112,12 +116,15 @@ class ShiftCreationBasicView extends ConsumerWidget {
               hintText: 'Enter number of participants',
               labelText: 'Number of Participants',
             ),
-            enabled: isParticipantLimited,
+            enabled: isParticipantLimited ??
+                initialShift?.numberOfParticipants != null,
+            initialValue: initialShift?.numberOfParticipants?.toString(),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
             validator: FormBuilderValidators.compose([
-              if (isParticipantLimited) FormBuilderValidators.required(),
+              if (isParticipantLimited == true)
+                FormBuilderValidators.required(),
               FormBuilderValidators.integer(),
               FormBuilderValidators.min(1),
             ]),
@@ -143,6 +150,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
               labelText: 'Start Time',
               suffixIcon: Icon(Icons.calendar_month_outlined),
             ),
+            initialValue: initialShift?.startTime,
             firstDate: DateTime.now(),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
@@ -153,7 +161,8 @@ class ShiftCreationBasicView extends ConsumerWidget {
           ),
           FormBuilderDateTimePicker(
             name: 'endTime',
-            initialDate: startDate ?? DateTime.now(),
+            initialValue: initialShift?.endTime,
+            initialDate: initialShift?.endTime ?? startDate ?? DateTime.now(),
             firstDate: startDate ?? DateTime.now(),
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -163,7 +172,8 @@ class ShiftCreationBasicView extends ConsumerWidget {
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
-              (value) => value!.isAfter(startDate!)
+              (value) => value!
+                      .isAfter(formKey.currentState!.fields['startTime']!.value)
                   ? null
                   : 'End time must be after start time',
             ]),

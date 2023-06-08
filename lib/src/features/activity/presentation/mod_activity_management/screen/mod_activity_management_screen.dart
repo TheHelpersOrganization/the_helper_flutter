@@ -9,8 +9,11 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/activity_title.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/mod_activity_shift_management_screen.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift/controller/shift_controller.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ModActivityManagementScreen extends ConsumerStatefulWidget {
   const ModActivityManagementScreen({super.key, required this.activityId});
@@ -46,18 +49,25 @@ class _ModActivityManagementState
   @override
   Widget build(BuildContext context) {
     final tab = ref.watch(currentTabProvider);
-    final activityAndShifts =
+    final extendedActivity =
         ref.watch(getActivityAndShiftsProvider(widget.activityId));
+
+    ref.listen<AsyncValue>(
+      deleteShiftControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        state.showSnackbarOnSuccess(
+          context,
+          content: const Text('Shift deleted'),
+        );
+      },
+    );
 
     return Scaffold(
       drawer: const AppDrawer(),
-      floatingActionButton: activityAndShifts.maybeWhen(
+      floatingActionButton: extendedActivity.maybeWhen(
         data: (data) => tab == TabType.overview
-            ? FloatingActionButton.extended(
-                onPressed: () {},
-                icon: const Icon(Icons.edit),
-                label: const Text('Edit Activity'),
-              )
+            ? null
             : FloatingActionButton.extended(
                 onPressed: () {
                   context.goNamed(
@@ -72,7 +82,8 @@ class _ModActivityManagementState
               ),
         orElse: () => null,
       ),
-      body: activityAndShifts.when(
+      body: extendedActivity.when(
+        skipLoadingOnRefresh: false,
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) {
           return const ErrorScreen();
@@ -88,7 +99,29 @@ class _ModActivityManagementState
               SliverAppBar(
                 floating: true,
                 actions: [
+                  PopupMenuButton(
+                    tooltip: 'Edit activity content',
+                    position: PopupMenuPosition.under,
+                    itemBuilder: (context) {
+                      return [
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit basic info'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit contacts'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'edit',
+                          child: Text('Edit managers'),
+                        ),
+                      ];
+                    },
+                    icon: const Icon(Icons.edit_outlined),
+                  ),
                   IconButton(
+                    tooltip: 'Delete activity',
                     onPressed: () {},
                     icon: const Icon(Icons.delete_outline),
                   ),
@@ -122,7 +155,8 @@ class _ModActivityManagementState
                     const SizedBox(
                       height: 16,
                     ),
-                    getTabAt(tab, data.activity, data.shifts),
+                    getTabAt(
+                        tab, data.activity, data.shifts, data.managerProfiles),
                   ],
                 ),
               ),
@@ -133,12 +167,18 @@ class _ModActivityManagementState
     );
   }
 
-  Widget getTabAt(TabType tabType, Activity activity, List<Shift> shifts) {
+  Widget getTabAt(
+    TabType tabType,
+    Activity activity,
+    List<Shift> shifts,
+    List<Profile> managerProfiles,
+  ) {
     switch (tabType) {
       case TabType.overview:
         return ActivityOverviewView(
           activity: activity,
           hasShift: shifts.isNotEmpty,
+          managerProfiles: managerProfiles,
         );
       case TabType.shift:
         return ModActivityShiftManagementView(
