@@ -8,6 +8,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/activity_thumbnail.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/activity_title.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/delete_activity_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/mod_activity_shift_management_screen.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
@@ -48,6 +49,7 @@ class _ModActivityManagementState
 
   @override
   Widget build(BuildContext context) {
+    final activityId = widget.activityId;
     final tab = ref.watch(currentTabProvider);
     final extendedActivity =
         ref.watch(getActivityAndShiftsProvider(widget.activityId));
@@ -56,10 +58,13 @@ class _ModActivityManagementState
       deleteShiftControllerProvider,
       (_, state) {
         state.showSnackbarOnError(context);
-        state.showSnackbarOnSuccess(
-          context,
-          content: const Text('Shift deleted'),
-        );
+      },
+    );
+
+    ref.listen<AsyncValue>(
+      deleteActivityControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
       },
     );
 
@@ -104,17 +109,35 @@ class _ModActivityManagementState
                     position: PopupMenuPosition.under,
                     itemBuilder: (context) {
                       return [
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
-                          child: Text('Edit basic info'),
+                          child: const Text('Edit basic info'),
+                          onTap: () => context.pushNamed(
+                            AppRoute.activityEdit.name,
+                            pathParameters: {
+                              'activityId': activityId.toString()
+                            },
+                          ),
                         ),
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
-                          child: Text('Edit contacts'),
+                          child: const Text('Edit contacts'),
+                          onTap: () => context.pushNamed(
+                            AppRoute.activityEditContact.name,
+                            pathParameters: {
+                              'activityId': activityId.toString()
+                            },
+                          ),
                         ),
-                        const PopupMenuItem(
+                        PopupMenuItem(
                           value: 'edit',
-                          child: Text('Edit managers'),
+                          child: const Text('Edit managers'),
+                          onTap: () => context.pushNamed(
+                            AppRoute.activityEditManager.name,
+                            pathParameters: {
+                              'activityId': activityId.toString()
+                            },
+                          ),
                         ),
                       ];
                     },
@@ -122,7 +145,15 @@ class _ModActivityManagementState
                   ),
                   IconButton(
                     tooltip: 'Delete activity',
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        useRootNavigator: false,
+                        builder: (context) => DeleteActivityDialog(
+                          activityId: activityId,
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.delete_outline),
                   ),
                 ],

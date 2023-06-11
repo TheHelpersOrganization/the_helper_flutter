@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
+import 'package:the_helper/src/features/activity/domain/update_activity.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
@@ -48,21 +49,21 @@ class ActivityRepository {
   }
 
   Future<Activity?> updateActivity({
-    required int id,
-    required Activity activity,
+    required int activityId,
+    required UpdateActivity activity,
   }) async {
     final res = await client.put(
-      '/activities/$id',
+      '/activities/$activityId',
       data: activity.toJson(),
     );
     return Activity.fromJson(res.data['data']);
   }
 
   Future<Activity?> deleteActivity({
-    required int id,
+    required int activityId,
   }) async {
     final res = await client.delete(
-      '/activities/$id',
+      '/activities/$activityId',
     );
     return Activity.fromJson(res.data['data']);
   }
