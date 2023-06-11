@@ -14,6 +14,7 @@ class ProfileDetailTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CustomScrollView(
+        primary: true,
         key: const PageStorageKey<String>('Detail'),
         slivers: <Widget>[
           SliverOverlapInjector(

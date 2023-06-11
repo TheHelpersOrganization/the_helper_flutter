@@ -9,8 +9,10 @@ import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_card/activity_card.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class TabElement {
   final ActivityStatus status;
@@ -84,6 +86,17 @@ class _ModActivityListManagementScreenState
   Widget build(BuildContext context) {
     final pagingController = ref.watch(pagingControllerProvider);
 
+    ref.listen<AsyncValue>(
+      deleteActivityControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        state.showSnackbarOnSuccess(
+          context,
+          content: const Text('Activity deleted'),
+        );
+      },
+    );
+
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
@@ -113,7 +126,15 @@ class _ModActivityListManagementScreenState
                 pagingController: pc,
                 builderDelegate: PagedChildBuilderDelegate(
                   itemBuilder: (context, item, index) {
-                    return ActivityCard(activity: item);
+                    return ActivityCard(
+                      activity: item,
+                      onTap: () => context.goNamed(
+                        AppRoute.organizationActivityManagement.name,
+                        pathParameters: {
+                          'activityId': item.id.toString(),
+                        },
+                      ),
+                    );
                   },
                   noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Column(

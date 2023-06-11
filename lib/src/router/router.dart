@@ -7,7 +7,9 @@ import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_naviga
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_manager_chooser.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_contact_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_manager_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
@@ -29,6 +31,13 @@ import 'package:the_helper/src/features/organization_member/presentation/member_
 import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift/screen/mod_shift_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/screen/mod_shift_creation_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_skill_view.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_basic_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -77,26 +86,135 @@ final routes = [
           builder: (_, __) => const ModActivityListManagementScreen(),
           routes: [
             GoRoute(
-              path: AppRoute.organizationActivityManagement.path,
-              name: AppRoute.organizationActivityManagement.name,
-              builder: (_, state) {
-                final activityId =
-                    int.parse(state.pathParameters['activityId']!);
-                return ModActivityManagementScreen(activityId: activityId);
-              },
-            ),
+                path: AppRoute.organizationActivityManagement.path,
+                name: AppRoute.organizationActivityManagement.name,
+                builder: (_, state) {
+                  final activityId =
+                      int.parse(state.pathParameters['activityId']!);
+                  return ModActivityManagementScreen(activityId: activityId);
+                },
+                routes: [
+                  GoRoute(
+                    path: AppRoute.activityEdit.path,
+                    name: AppRoute.activityEdit.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditBasicScreen(activityId: activityId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.activityEditContact.path,
+                    name: AppRoute.activityEditContact.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditContactScreen(
+                          activityId: activityId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.activityEditManager.path,
+                    name: AppRoute.activityEditManager.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditManagerScreen(
+                          activityId: activityId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftCreation.path,
+                    name: AppRoute.shiftCreation.name,
+                    builder: (_, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModShiftCreationScreen(
+                        activityId: activityId,
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: AppRoute.shiftCreationSkill.path,
+                        name: AppRoute.shiftCreationSkill.name,
+                        builder: (_, state) {
+                          return ShiftSkillView(
+                            skills: state.extra as dynamic,
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                  GoRoute(
+                    path: AppRoute.organizationShift.path,
+                    name: AppRoute.organizationShift.name,
+                    builder: (_, state) {
+                      final activityId = int.parse(
+                        state.pathParameters['activityId']!,
+                      );
+                      final shiftId = int.parse(
+                        state.pathParameters['shiftId']!,
+                      );
+                      return ModShiftScreen(
+                        activityId: activityId,
+                        shiftId: shiftId,
+                      );
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEdit.path,
+                    name: AppRoute.shiftEdit.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditBasicScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditSkills.path,
+                    name: AppRoute.shiftEditSkills.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditSkillScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditContacts.path,
+                    name: AppRoute.shiftEditContacts.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditContactScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.shiftEditManagers.path,
+                    name: AppRoute.shiftEditManagers.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      final shiftId =
+                          int.parse(state.pathParameters['shiftId']!);
+                      return ModShiftEditManagerScreen(
+                          activityId: activityId, shiftId: shiftId);
+                    },
+                  ),
+                ]),
           ]),
       GoRoute(
         path: AppRoute.organizationActivityCreation.path,
         name: AppRoute.organizationActivityCreation.name,
         builder: (_, __) => const ModActivityCreationScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoute.organizationActivityCreationManagerChooser.path,
-            name: AppRoute.organizationActivityCreationManagerChooser.name,
-            builder: (_, __) => const ModActivityManagerChooser(),
-          ),
-        ],
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
@@ -241,8 +359,8 @@ final shiftRoutes = [
         builder: (_, state) {
           final activityId = int.parse(
               state.pathParameters[AppRoute.activity.path.substring(1)]!);
-          final shiftId = int.parse(
-              state.pathParameters[AppRoute.shift.path.substring(1)]!);
+          final shiftId = int.parse(state
+              .pathParameters[AppRoute.organizationShift.path.substring(1)]!);
           return ShiftDetailScreen(
             activityId: activityId,
             shiftId: shiftId,
@@ -442,6 +560,46 @@ enum AppRoute {
   organizationActivityManagement(
     path: ':activityId',
     name: 'activity-management',
+  ),
+  activityEdit(
+    path: 'edit',
+    name: 'activity-edit',
+  ),
+  activityEditContact(
+    path: 'edit/contacts',
+    name: 'activity-edit-contact',
+  ),
+  activityEditManager(
+    path: 'edit/managers',
+    name: 'activity-edit-manager',
+  ),
+  organizationShift(
+    path: 'shift/:shiftId',
+    name: 'organization-shift',
+  ),
+  shiftEdit(
+    path: 'shift/:shiftId/edit',
+    name: 'shift-edit',
+  ),
+  shiftEditSkills(
+    path: 'shift/:shiftId/edit/skills',
+    name: 'shift-edit-skill',
+  ),
+  shiftEditContacts(
+    path: 'shift/:shiftId/edit/contacts',
+    name: 'shift-edit-contact',
+  ),
+  shiftEditManagers(
+    path: 'shift/:shiftId/edit/managers',
+    name: 'shift-edit-managers',
+  ),
+  shiftCreation(
+    path: 'shift/create',
+    name: 'shift-creation',
+  ),
+  shiftCreationSkill(
+    path: 'shift/create/skills',
+    name: 'shift-creation-skills',
   ),
 
   organizationActivityCreation(

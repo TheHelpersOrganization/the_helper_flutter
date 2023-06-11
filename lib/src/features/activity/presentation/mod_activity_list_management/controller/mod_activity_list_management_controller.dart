@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/activity/data/activity_repository.dart';
+import 'package:the_helper/src/features/activity/application/mod_activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/activity/domain/activity_query.dart';
+import 'package:the_helper/src/features/activity/domain/mod_activity_query.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 
 import '../screen/mod_activity_list_management_screen.dart';
@@ -19,7 +19,7 @@ final pagingControllerProvider = FutureProvider.autoDispose(
   (ref) async {
     final hasChangedStatus = ref.watch(hasChangedStatusProvider);
     final currentStatus = ref.watch(currentStatusProvider);
-    final activityRepo = ref.watch(activityRepositoryProvider);
+    final modActivityService = ref.watch(modActivityServiceProvider);
     final controller = PagingController<int, Activity>(firstPageKey: 0);
     final org = await ref.watch(currentOrganizationProvider.future);
 
@@ -29,8 +29,9 @@ final pagingControllerProvider = FutureProvider.autoDispose(
 
     controller.addPageRequestListener((pageKey) async {
       try {
-        final items = await activityRepo.getActivities(
-          query: ActivityQuery(
+        final items = await modActivityService.getActivitiesWithOrganization(
+          organizationId: org.id!,
+          query: ModActivityQuery(
             offset: pageKey * 5,
             org: [org.id!],
           ),
