@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/utils/image.dart';
-import 'package:the_helper/src/utils/member.dart';
+import 'package:the_helper/src/utils/profile.dart';
 
 class ManagerListTile extends StatelessWidget {
   final OrganizationMember manager;
@@ -24,7 +24,7 @@ class ManagerListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(getMemberName(manager)),
+      title: Text(getProfileName(manager.profile)),
       subtitle: isMyAccount ? const Text('Your account') : null,
       leading: CircleAvatar(
         backgroundImage: getBackendImageOrLogoProvider(

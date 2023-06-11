@@ -7,7 +7,9 @@ import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_naviga
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_manager_chooser.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_contact_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_manager_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
@@ -90,6 +92,35 @@ final routes = [
                   return ModActivityManagementScreen(activityId: activityId);
                 },
                 routes: [
+                  GoRoute(
+                    path: AppRoute.activityEdit.path,
+                    name: AppRoute.activityEdit.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditBasicScreen(activityId: activityId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.activityEditContact.path,
+                    name: AppRoute.activityEditContact.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditContactScreen(
+                          activityId: activityId);
+                    },
+                  ),
+                  GoRoute(
+                    path: AppRoute.activityEditManager.path,
+                    name: AppRoute.activityEditManager.name,
+                    builder: (context, state) {
+                      final activityId =
+                          int.parse(state.pathParameters['activityId']!);
+                      return ModActivityEditManagerScreen(
+                          activityId: activityId);
+                    },
+                  ),
                   GoRoute(
                     path: AppRoute.shiftCreation.path,
                     name: AppRoute.shiftCreation.name,
@@ -182,13 +213,6 @@ final routes = [
         path: AppRoute.organizationActivityCreation.path,
         name: AppRoute.organizationActivityCreation.name,
         builder: (_, __) => const ModActivityCreationScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoute.organizationActivityCreationManagerChooser.path,
-            name: AppRoute.organizationActivityCreationManagerChooser.name,
-            builder: (_, __) => const ModActivityManagerChooser(),
-          ),
-        ],
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
@@ -512,6 +536,18 @@ enum AppRoute {
   organizationActivityManagement(
     path: ':activityId',
     name: 'activity-management',
+  ),
+  activityEdit(
+    path: 'edit',
+    name: 'activity-edit',
+  ),
+  activityEditContact(
+    path: 'edit/contacts',
+    name: 'activity-edit-contact',
+  ),
+  activityEditManager(
+    path: 'edit/managers',
+    name: 'activity-edit-manager',
   ),
   organizationShift(
     path: 'shift/:shiftId',

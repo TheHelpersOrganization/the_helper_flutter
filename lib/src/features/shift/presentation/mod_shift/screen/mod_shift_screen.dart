@@ -15,6 +15,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift/widget/shif
 import 'package:the_helper/src/features/shift/presentation/mod_shift/widget/shift_skill_list.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift/widget/shift_title.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ModShiftScreen extends ConsumerWidget {
   final int activityId;
@@ -32,6 +33,12 @@ class ModShiftScreen extends ConsumerWidget {
       shiftId,
     ));
     final deleteShiftState = ref.watch(deleteShiftControllerProvider);
+    ref.listen<AsyncValue>(
+      deleteShiftControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+      },
+    );
 
     return LoadingOverlay(
       isLoading: deleteShiftState.isLoading,

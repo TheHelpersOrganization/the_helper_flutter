@@ -7,19 +7,27 @@ import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
+import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
+final currentStepProvider = StateProvider.autoDispose((ref) => 0);
+
+final selectedContactsProvider =
+    StateProvider.autoDispose<List<Contact>?>((ref) => null);
+final selectedContactNameProvider =
+    StateProvider.autoDispose<String?>((ref) => null);
+
 class ActivityManagerData {
   final Account account;
-  final List<OrganizationMember> activityManagers;
+  final List<OrganizationMember> managers;
 
   ActivityManagerData({
     required this.account,
-    required this.activityManagers,
+    required this.managers,
   });
 }
 
@@ -31,13 +39,12 @@ final activityManagersProvider = FutureProvider.autoDispose((ref) async {
       .watch(modOrganizationMemberRepositoryProvider)
       .getMemberWithAccountProfile(org!.id!);
 
-  return ActivityManagerData(
-      account: account!.account, activityManagers: managers);
+  return ActivityManagerData(account: account!.account, managers: managers);
 });
 
-final activityManagerSelectionProvider = StateProvider.autoDispose<Set<int>>(
+final selectedManagersProvider = StateProvider.autoDispose<Set<int>?>(
   (ref) {
-    return {};
+    return null;
   },
 );
 
@@ -55,7 +62,8 @@ class CreateActivityController extends StateNotifier<AsyncValue<void>> {
   Future<void> createActivity({
     required String name,
     required String description,
-    required List<int> activityManagerIds,
+    required List<int>? activityManagerIds,
+    required List<Contact>? contacts,
     Uint8List? thumbnailData,
   }) async {
     state = const AsyncLoading();
@@ -86,6 +94,7 @@ class CreateActivityController extends StateNotifier<AsyncValue<void>> {
           description: description,
           thumbnail: thumbnail,
           activityManagerIds: activityManagerIds,
+          contacts: contacts,
         ),
       ),
     );
