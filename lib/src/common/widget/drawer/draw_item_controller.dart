@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_model.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
@@ -166,3 +167,6 @@ List<DrawerItemModel> getDrawerItem(Role role) {
       return volunteer;
   }
 }
+
+final dropDownControllerProvider =
+    StateProvider.autoDispose<bool>((ref) => false);

@@ -33,6 +33,8 @@ import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
+import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
+import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -176,6 +178,20 @@ final profileRoutes = GoRoute(
       path: AppRoute.profileSetting.path,
       name: AppRoute.profileSetting.name,
       builder: (_, __) => const ProfileSettingScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.profileVerified.path,
+      name: AppRoute.profileVerified.name,
+      builder: (_, __) => ProfileVerifiedRequestScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.otherProfile.path,
+      name: AppRoute.otherProfile.name,
+      builder: (_, state) => OtherUserProfileScreen(
+        userId: int.parse(
+          state.pathParameters[AppRoute.otherProfile.path.substring(1)]!,
+        ),
+      ),
     ),
   ],
 );
@@ -363,6 +379,10 @@ enum AppRoute {
     path: '/profile',
     name: 'profile',
   ),
+  otherProfile(
+    path: ':userId',
+    name: 'profile-other',
+  ),
   profileEdit(
     path: 'edit',
     name: 'profile-edit',
@@ -370,6 +390,10 @@ enum AppRoute {
   profileSetting(
     path: 'setting',
     name: 'profile-setting',
+  ),
+  profileVerified(
+    path: 'verified',
+    name: 'profile-verified',
   ),
 
   // Org

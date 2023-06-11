@@ -7,6 +7,7 @@ import 'package:the_helper/src/utils/dio.dart';
 import '../../../utils/domain_provider.dart';
 import '../domain/profile.dart';
 import '../domain/profile_setting_options.dart';
+import '../domain/verified_request.dart';
 
 part 'profile_repository.g.dart';
 
@@ -49,6 +50,14 @@ class ProfileRepository {
       data: profile.toJson(),
     );
     return Profile.fromJson(response.data['data']);
+  }
+
+  Future<VerifiedRequest> requestVerifiedProfile(VerifiedRequest request) async {
+    final response = await client.post(
+      '/something',
+      data: request.toJson(),
+    );
+    return VerifiedRequest.fromJson(response.data['data']);
   }
 }
 
