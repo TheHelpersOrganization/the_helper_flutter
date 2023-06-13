@@ -13,7 +13,6 @@ import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/shift/shift_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
@@ -38,6 +37,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -341,11 +341,10 @@ final shiftRoutes = [
         name: AppRoute.shift.name,
         // Todo: repalce with implemented screen
         builder: (_, state) {
-          final activityId = int.parse(
-              state.pathParameters[AppRoute.activity.path.substring(1)]!);
-          final shiftId = int.parse(state
-              .pathParameters[AppRoute.organizationShift.path.substring(1)]!);
-          return ShiftDetailScreen(
+          final activityId = int.parse(state.pathParameters['activityId']!);
+          final shiftId = int.parse(state.pathParameters['shiftId']!);
+
+          return ShiftScreen(
             activityId: activityId,
             shiftId: shiftId,
           );
