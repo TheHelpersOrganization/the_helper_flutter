@@ -7,7 +7,7 @@ import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
-import 'package:the_helper/src/features/shift/data/mod_shift_repository.dart';
+import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_skill.dart';
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
@@ -70,7 +70,7 @@ final memberDataProvider = FutureProvider.autoDispose((ref) async {
 
 class CreateShiftController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;
-  final ModShiftRepository modShiftRepository;
+  final ShiftRepository modShiftRepository;
   final GoRouter router;
 
   CreateShiftController({
@@ -101,7 +101,7 @@ final createShiftControllerProvider =
     StateNotifierProvider.autoDispose<CreateShiftController, AsyncValue<void>>(
   (ref) => CreateShiftController(
     ref: ref,
-    modShiftRepository: ref.watch(modShiftRepositoryProvider),
+    modShiftRepository: ref.watch(shiftRepositoryProvider),
     router: ref.watch(routerProvider),
   ),
 );

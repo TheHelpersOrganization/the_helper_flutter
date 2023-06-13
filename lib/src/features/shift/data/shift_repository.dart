@@ -6,10 +6,10 @@ import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/update_shift.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-class ModShiftRepository {
+class ShiftRepository {
   final Dio client;
 
-  ModShiftRepository({
+  ShiftRepository({
     required this.client,
   });
 
@@ -63,10 +63,10 @@ class ModShiftRepository {
   }
 }
 
-final modShiftRepositoryProvider = Provider.autoDispose<ModShiftRepository>(
+final shiftRepositoryProvider = Provider.autoDispose<ShiftRepository>(
   (ref) {
     final client = ref.watch(dioProvider);
-    return ModShiftRepository(
+    return ShiftRepository(
       client: client,
     );
   },

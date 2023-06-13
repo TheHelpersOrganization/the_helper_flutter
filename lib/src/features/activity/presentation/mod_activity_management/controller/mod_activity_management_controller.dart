@@ -7,7 +7,7 @@ import 'package:the_helper/src/features/activity/presentation/mod_activity_list_
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
-import 'package:the_helper/src/features/shift/data/mod_shift_repository.dart';
+import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift/controller/shift_controller.dart';
@@ -39,13 +39,6 @@ final getActivityProvider = FutureProvider.autoDispose.family<Activity?, int>(
   },
 );
 
-final getShiftsByActivityProvider =
-    FutureProvider.autoDispose.family<List<Shift>, int>(
-  (ref, activityId) => ref
-      .watch(modShiftRepositoryProvider)
-      .getShifts(query: ShiftQuery(activityId: activityId)),
-);
-
 final getActivityAndShiftsProvider =
     FutureProvider.autoDispose.family<ExtendedActivity?, int>(
   (ref, activityId) async {
@@ -55,7 +48,7 @@ final getActivityAndShiftsProvider =
     if (activity == null) {
       return null;
     }
-    final shifts = await ref.watch(modShiftRepositoryProvider).getShifts(
+    final shifts = await ref.watch(shiftRepositoryProvider).getShifts(
           query: ShiftQuery(
             activityId: activityId,
             include: [
