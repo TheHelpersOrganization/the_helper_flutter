@@ -10,13 +10,19 @@ part 'profile_controller.g.dart';
 @riverpod
 class ProfileController extends _$ProfileController {
   @override
-  FutureOr<Profile> build() async {
-    return _fetchProfile();
+  FutureOr<Profile> build({
+    int? id
+  }) async {
+    return _fetchProfile(id: id);
   }
 
-  Future<Profile> _fetchProfile() async {
+  Future<Profile> _fetchProfile({
+    int? id,
+  }) async {
     final repository = ref.watch(profileRepositoryProvider);
-    final profile = await repository.getProfile();
+    final profile = id == null
+    ? await repository.getProfile()
+    : await repository.getProfileById(id);
     return profile;
   }
 

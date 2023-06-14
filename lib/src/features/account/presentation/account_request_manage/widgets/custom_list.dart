@@ -12,15 +12,13 @@ import 'package:the_helper/src/features/account/presentation/account_request_man
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
     super.key,
-    required this.status,
   });
-  final int status;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    final controllerProvider = getController(status);
-    final pagingController = ref.watch(controllerProvider);
+    final tabIndex = ref.watch(tabStatusProvider);
+    final customController = ref.watch(scrollPagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
@@ -30,15 +28,16 @@ class CustomScrollList extends ConsumerWidget {
             debounceDuration: const Duration(seconds: 1),
             onDebounce: (value) {
               if (value.trim().isEmpty) {
-                // ref.read(searchPatternProvider.notifier).state = null;
+                ref.read(searchPatternProvider.notifier).state = null;
               } else {
-                // ref.read(searchPatternProvider.notifier).state = value;
+                ref.read(searchPatternProvider.notifier).state = value;
               }
               // ref.read(hasUsedSearchProvider.notifier).state = true;
+              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
             },
             onClear: () {
               ref.read(searchPatternProvider.notifier).state = null;
-              ref.read(hasUsedSearchProvider.notifier).state = true;
+              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
             },
             filter: _buildFilter(context),
           ),
@@ -66,7 +65,7 @@ class CustomScrollList extends ConsumerWidget {
             ),
           Expanded(
               child: PagedListView<int, AccountRequestModel>(
-            pagingController: pagingController,
+            pagingController: customController,
             builderDelegate: PagedChildBuilderDelegate(
                 itemBuilder: (context, item, index) =>
                     AccountListItem(data: item)),
@@ -217,17 +216,4 @@ class CustomScrollList extends ConsumerWidget {
       ],
     );
   }
-}
-
-AutoDisposeProvider<PagingController<int, AccountRequestModel>> getController(
-    int status) {
-  switch (status) {
-    case 0:
-      return penddingPagingControllerProvider;
-    case 1:
-      return approvedPagingControllerProvider;
-    case 2:
-      return rejectedPagingControllerProvider;
-  }
-  throw 'Missing paging controller';
 }

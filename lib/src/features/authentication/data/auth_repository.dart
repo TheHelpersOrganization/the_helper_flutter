@@ -35,7 +35,7 @@ class AuthRepository {
       final accountToken = AccountToken.fromJson(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
@@ -97,7 +97,7 @@ class AuthRepository {
           'email': email,
         },
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
@@ -113,7 +113,7 @@ class AuthRepository {
       );
       final account = Account.fromJson(response.data['data']);
       return account;
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }

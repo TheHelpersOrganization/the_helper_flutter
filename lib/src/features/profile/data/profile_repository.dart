@@ -4,9 +4,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
+import '../../../common/exception/backend_exception.dart';
 import '../../../utils/domain_provider.dart';
+import '../../account/domain/account_verification.dart';
 import '../domain/profile.dart';
 import '../domain/profile_setting_options.dart';
+import '../domain/verified_request.dart';
 
 part 'profile_repository.g.dart';
 
@@ -49,6 +52,15 @@ class ProfileRepository {
       data: profile.toJson(),
     );
     return Profile.fromJson(response.data['data']);
+  }
+
+  Future<AccountVerificationModel> requestVerifiedProfile(
+      VerifiedRequestBody request) async {
+    final response = await client.post(
+      '/account-verifications',
+      data: request.toJson(),
+    );
+    return AccountVerificationModel.fromJson(response.data['data']);
   }
 }
 

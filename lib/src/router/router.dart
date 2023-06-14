@@ -41,7 +41,10 @@ import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_sc
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
+import '../features/account/presentation/account_request_manage/screens/account_request_detail_screen.dart';
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
+import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
+import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -270,6 +273,20 @@ final routes = [
             name: AppRoute.organizationAdminManage.name,
             builder: (context, state) => const OrganizationAdminManageScreen(),
           ),
+          GoRoute(
+            path: AppRoute.accountRequestManage.path,
+            name: AppRoute.accountRequestManage.name,
+            builder: (context, state) => const AccountRequestManageScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.accountRequestDetail.path,
+            name: AppRoute.accountRequestDetail.name,
+            builder: (_, state) => const AccountRequestDetailScreen(
+              // requestId: int.parse(
+              //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
+              // ),
+            ),
+          ),
         ],
       ),
       accountRoutes,
@@ -294,6 +311,20 @@ final profileRoutes = GoRoute(
       path: AppRoute.profileSetting.path,
       name: AppRoute.profileSetting.name,
       builder: (_, __) => const ProfileSettingScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.profileVerified.path,
+      name: AppRoute.profileVerified.name,
+      builder: (_, __) => ProfileVerifiedRequestScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.otherProfile.path,
+      name: AppRoute.otherProfile.name,
+      builder: (_, state) => OtherUserProfileScreen(
+        userId: int.parse(
+          state.pathParameters[AppRoute.otherProfile.path.substring(1)]!,
+        ),
+      ),
     ),
   ],
 );
@@ -393,11 +424,6 @@ final accountRoutes = GoRoute(
       name: AppRoute.accountVerificationCompleted.name,
       builder: (context, state) => const AccountVerificationCompletedScreen(),
     ),
-    GoRoute(
-      path: AppRoute.accountRequestManage.path,
-      name: AppRoute.accountRequestManage.name,
-      builder: (context, state) => const AccountRequestManageScreen(),
-    ),
   ],
 );
 
@@ -438,10 +464,6 @@ enum AppRoute {
     path: 'verification-completed',
     name: 'account-verification-completed',
   ),
-  accountRequestManage(
-    path: 'manage',
-    name: 'account-request-manage',
-  ),
 
   // Todo: news crud
   news(
@@ -480,6 +502,10 @@ enum AppRoute {
     path: '/profile',
     name: 'profile',
   ),
+  otherProfile(
+    path: ':userId',
+    name: 'profile-other',
+  ),
   profileEdit(
     path: 'edit',
     name: 'profile-edit',
@@ -487,6 +513,10 @@ enum AppRoute {
   profileSetting(
     path: 'setting',
     name: 'profile-setting',
+  ),
+  profileVerified(
+    path: 'verified',
+    name: 'profile-verified',
   ),
 
   // Org
@@ -613,6 +643,14 @@ enum AppRoute {
   myOrganization(
     path: '/my-organization',
     name: 'my-organization',
+  ),
+  accountRequestManage(
+    path: '/manage',
+    name: 'account-request-manage',
+  ),
+  accountRequestDetail(
+    path: '/request-detail',
+    name: 'account-request-detail',
   ),
   ;
 

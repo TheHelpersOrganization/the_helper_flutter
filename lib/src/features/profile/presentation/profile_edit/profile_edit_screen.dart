@@ -27,7 +27,7 @@ class ProfileEditScreen extends ConsumerWidget {
     //     ref.watch(editProfileControllerProvider.notifier);
     // final editProfileControllerState = ref.watch(editProfileControllerProvider);
     // final profile = editProfileControllerState;
-    final profile = ref.watch(profileControllerProvider);
+    final profile = ref.watch(profileControllerProvider());
 
     return Scaffold(
         appBar: AppBar(
@@ -172,7 +172,7 @@ class ProfileEditScreen extends ConsumerWidget {
                           };
                           final profile = Profile.fromJson(newValue);
                           ref
-                              .read(profileControllerProvider.notifier)
+                              .read(profileControllerProvider().notifier)
                               .updateProfile(profile);
                         },
                         child: const Text('Submit'),

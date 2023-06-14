@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
+import '../../../account/domain/account.dart';
 import 'organization_member_management_controller.dart';
 
 class JoinedMemberCard extends ConsumerStatefulWidget {
@@ -81,6 +82,7 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
   }
 
   void showOptionsSheet() {
+    OrganizationMember member = widget.member;
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -91,7 +93,15 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
               ListTile(
                 leading: const Icon(Icons.account_circle_outlined),
                 title: const Text('View profile'),
-                onTap: () => context.goNamed(AppRoute.profile.name),
+                onTap: () {
+                  context.pop();
+                  context.pushNamed(
+                    AppRoute.otherProfile.name,
+                    pathParameters: {
+                      'userId': member.id.toString(),
+                    },
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.person_remove_outlined),
