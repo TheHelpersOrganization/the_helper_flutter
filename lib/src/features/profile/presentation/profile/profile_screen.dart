@@ -4,12 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_verified_status.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -20,9 +23,10 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(profileControllerProvider);
+    final profile = ref.watch(profileControllerProvider());
     final activities = ref.watch(profileActivityControllerProvider);
     final orgs = ref.watch(profileOrganizationControllerProvider);
+    final account = ref.watch(authServiceProvider).value!.account;
     // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Center(
@@ -59,7 +63,7 @@ class ProfileScreen extends ConsumerWidget {
                 return [
                   SliverList(
                     delegate: SliverChildListDelegate(
-                      [_profileHeaderWidget(context, profile)],
+                      [_profileHeaderWidget(context, profile, account)],
                     ),
                   ),
                   SliverOverlapAbsorber(
@@ -149,7 +153,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _profileHeaderWidget(BuildContext context, Profile profile) {
+  Widget _profileHeaderWidget(BuildContext context, Profile profile, Account account) {
     return Column(
       children: [
         Container(
@@ -176,6 +180,9 @@ class ProfileScreen extends ConsumerWidget {
         Text(
           profile.username!,
           style: Theme.of(context).textTheme.displayLarge,
+        ),
+        ProfileVerifiedStatus(
+          verified: account.isAccountVerified,
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

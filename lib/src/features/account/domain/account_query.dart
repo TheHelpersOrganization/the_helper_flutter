@@ -15,7 +15,7 @@ class AccountQuery with _$AccountQuery {
     @CommaSeparatedDateTimesConverter() List<DateTime>? ct,
     int? limit,
     int? offset,
-  }) = _ActivityQuery;
+  }) = _AccountQuery;
 
   factory AccountQuery.fromJson(Map<String, dynamic> json) =>
       _$AccountQueryFromJson(json);

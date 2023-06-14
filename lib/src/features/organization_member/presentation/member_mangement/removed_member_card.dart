@@ -95,7 +95,15 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
               ListTile(
                 leading: const Icon(Icons.account_circle_outlined),
                 title: const Text('View profile'),
-                onTap: () => context.goNamed(AppRoute.profile.name),
+                onTap: () {
+                  context.pop();
+                  context.pushNamed(
+                    AppRoute.otherProfile.name,
+                    pathParameters: {
+                      'userId': member.id.toString(),
+                    },
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.person_add_outlined),

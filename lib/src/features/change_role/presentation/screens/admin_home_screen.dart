@@ -61,7 +61,7 @@ class AdminView extends ConsumerWidget {
                       itemWidth: context.mediaQuery.size.width * 0.9,
                       itemHeight: 80,
                     ),
-                    error: (_, __) => const ErrorScreen(),
+                    error: (er, st) => const ErrorScreen(),
                     data: (data) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(

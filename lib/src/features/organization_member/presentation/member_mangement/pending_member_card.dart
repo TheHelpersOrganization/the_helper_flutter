@@ -119,6 +119,7 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
   }
 
   void showOptionsSheet() {
+    OrganizationMember member = widget.member;
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -129,7 +130,15 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
               ListTile(
                 leading: const Icon(Icons.account_circle_outlined),
                 title: const Text('View profile'),
-                onTap: () => context.goNamed(AppRoute.profile.name),
+                onTap: () {
+                  context.pop();
+                  context.pushNamed(
+                    AppRoute.otherProfile.name,
+                    pathParameters: {
+                      'userId': member.id.toString(),
+                    },
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.check_circle_outline),

@@ -7,11 +7,12 @@ part 'account_verification.g.dart';
 @freezed
 class AccountVerificationModel with _$AccountVerificationModel {
   factory AccountVerificationModel({
-    required int performedBy,
+    required int accountId,
+    required String status,
+    int? performedBy,
     @Default(true) bool isVerified,
-    required String note,
+    String? note,
     required DateTime createdAt,
-
   }) = _AccountVerificationModel;
 
   factory AccountVerificationModel.fromJson(Map<String, dynamic> json) =>

@@ -28,7 +28,6 @@ class HomeScreen extends ConsumerWidget {
             ),
         error: (_, __) => const ErrorScreen(),
         data: (role) {
-          print(role);
           return Scaffold(
             drawer: const AppDrawer(),
             body: CustomSliverScrollView(

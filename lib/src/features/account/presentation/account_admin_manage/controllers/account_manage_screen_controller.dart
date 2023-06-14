@@ -71,7 +71,7 @@ class ScrollPagingController extends _$ScrollPagingController {
     final items = await guardAsyncValue<List<AccountModel>>(
         () => accountRepository.getAll(
               query: AccountQuery(
-                limit: 5,
+                limit: 10,
                 offset: pageKey,
                 email: searchPattern,
                 isBanned: tabStatus != 0,
