@@ -9,16 +9,23 @@ import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift_volunteer/data/shift_volunteer_repository.dart';
+import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 class ActivityAndShift {
   final Activity activity;
   final Shift shift;
+  final List<ShiftVolunteer> myShiftVolunteers;
+  final ShiftVolunteer? latestShiftVolunteer;
 
   ActivityAndShift({
     required this.activity,
     required this.shift,
+    required this.myShiftVolunteers,
+    required this.latestShiftVolunteer,
   });
 }
 
@@ -46,6 +53,19 @@ final getActivityAndShiftProvider =
                 ids: shift.shiftManagers!.map((e) => e.accountId).toList(),
               ),
             );
+    final myShiftVolunteers =
+        await ref.watch(shiftVolunteerRepositoryProvider).getShiftVolunteers(
+              query: ShiftVolunteerQuery(
+                shiftId: shift.id,
+                mine: true,
+              ),
+            );
+    var latestShiftVolunteer = myShiftVolunteers.firstOrNull;
+    for (final volunteer in myShiftVolunteers) {
+      if (volunteer.updatedAt.isAfter(latestShiftVolunteer!.updatedAt)) {
+        latestShiftVolunteer = volunteer;
+      }
+    }
     final updatedShift = shift.copyWith(
       shiftManagers: shift.shiftManagers!.map((e) {
         final profile = managerProfiles.firstWhereOrNull(
@@ -58,6 +78,8 @@ final getActivityAndShiftProvider =
     return ActivityAndShift(
       activity: activity!,
       shift: updatedShift,
+      myShiftVolunteers: myShiftVolunteers,
+      latestShiftVolunteer: latestShiftVolunteer,
     );
   },
 );

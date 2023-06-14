@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
-import 'package:the_helper/src/features/shift/data/mod_shift_repository.dart';
+import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/update_shift.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift/controller/shift_controller.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 class UpdateShiftController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;
-  final ModShiftRepository modShiftRepository;
+  final ShiftRepository modShiftRepository;
 
   UpdateShiftController({
     required this.ref,
@@ -36,6 +36,6 @@ final updateShiftControllerProvider =
     StateNotifierProvider.autoDispose<UpdateShiftController, AsyncValue<void>>(
   (ref) => UpdateShiftController(
     ref: ref,
-    modShiftRepository: ref.watch(modShiftRepositoryProvider),
+    modShiftRepository: ref.watch(shiftRepositoryProvider),
   ),
 );
