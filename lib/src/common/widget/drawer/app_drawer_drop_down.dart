@@ -26,11 +26,11 @@ class AppDrawerDropDown extends ConsumerWidget {
         subPaths.any((e) => e.route?.path == context.currentRoute);
 
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
+      padding: const EdgeInsets.only(right: 0.0),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          backgroundColor: Colors.black12,
+          backgroundColor: Colors.transparent.withOpacity(0.12),
           tilePadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           title: Text(
             title,

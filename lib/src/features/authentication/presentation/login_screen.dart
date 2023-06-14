@@ -22,7 +22,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
       loginControllerProvider,
-      (_, state) => state.showSnackbarOnError(context),
+      (err, state) => state.showSnackbarOnError(context),
     );
     final state = ref.watch(loginControllerProvider);
 

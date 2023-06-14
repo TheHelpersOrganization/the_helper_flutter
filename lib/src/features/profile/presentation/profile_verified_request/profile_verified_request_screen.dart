@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_verified_request/profile_request_controller.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
 import '../../../../common/widget/file_picker/form_multiple_file_picker_field.dart';
@@ -21,6 +22,17 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider());
     final customTileExpanded = ref.watch(expansionTitleControllerProvider);
+
+    ref.listen<AsyncValue>(
+      profileVerifiedRequestControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        state.showSnackbarOnSuccess(
+          context,
+          content: const Text('Verified request send'),
+        );
+      },
+    );
 
     return Scaffold(
         appBar: AppBar(
@@ -50,7 +62,9 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
                         : Icons.arrow_left,
                   ),
                   children: <Widget>[
-                    ProfileReviewWidget(profile: profile,),
+                    ProfileReviewWidget(
+                      profile: profile,
+                    ),
                   ],
                   onExpansionChanged: (bool expanded) {
                     ref.read(expansionTitleControllerProvider.notifier).state =
@@ -80,18 +94,19 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
                           // Validate returns true if the form is valid, or false otherwise.
 
                           final files = _formKey.currentState!.value['files'];
-                          
-                          final res = await ref
-                            .read(profileVerifiedRequestControllerProvider.notifier)
-                            .sendVerifiedRequest(files: files);
 
-                          if(res == null) {
+                          await ref
+                              .read(profileVerifiedRequestControllerProvider
+                                  .notifier)
+                              .sendVerifiedRequest(files: files);
 
-                          }
+                          print('e');
 
-                          if(context.mounted) {
+                          if (context.mounted) {
+                            print('f');
                             context.pop();
                           }
+                          print('g');
                         },
                         child: const Text('Submit'),
                       ),

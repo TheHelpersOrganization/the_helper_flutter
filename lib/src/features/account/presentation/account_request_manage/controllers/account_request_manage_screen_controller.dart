@@ -1,108 +1,102 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/data/account_request_repository.dart';
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
+
+import '../../../../../utils/async_value.dart';
+import '../../../domain/account_request_query.dart';
+
+part 'account_request_manage_screen_controller.g.dart';
 
 class AccountRequestManageScreenController
-    extends AutoDisposeAsyncNotifier<List<AccountRequestModel>> {
+    extends AutoDisposeAsyncNotifier<void> {
   @override
-  FutureOr<List<AccountRequestModel>> build() {
-    return ref.watch(accountRequestRepositoryProvider).getAll();
-  }
+  build() {}
 }
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
-
+final needReloadProvider = StateProvider.autoDispose((ref) => false);
 final firstLoadPagingController = StateProvider((ref) => true);
 
-final penddingPagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final accountRepository = ref.watch(accountRequestRepositoryProvider);
-    final searchPattern = ref.watch(searchPatternProvider);
-    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller = PagingController<int, AccountRequestModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await accountRepository.getAll(
-          offset: pageKey * 100,
-          isBanned: false,
-          // query: (name: searchPattern),
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
-      }
-    });
-    if (hasUsedSearch) {
-      controller.notifyPageRequestListeners(0);
-    }
-    return controller;
-  },
-);
+@riverpod
+class TabStatus extends _$TabStatus {
+  @override
+  String build() {
+    return 'pending';
+  }
 
-final approvedPagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final accountRepository = ref.watch(accountRequestRepositoryProvider);
-    final searchPattern = ref.watch(searchPatternProvider);
-    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller = PagingController<int, AccountRequestModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await accountRepository.getAll(
-          offset: pageKey * 100,
-          isBanned: true,
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
-      }
-    });
-    if (hasUsedSearch) {
-      controller.notifyPageRequestListeners(0);
+  void changeStatus(int index) {
+    switch(index) {
+      case 1:
+        state = 'completed';
+        break;
+      case 2:
+        state = 'rejected';
+        break;
+      default:
+        state = 'pending';
+        break;
     }
-    return controller;
-  },
-);
+  }
+}
 
-final rejectedPagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final accountRepository = ref.watch(accountRequestRepositoryProvider);
+@riverpod
+class ScrollPagingController extends _$ScrollPagingController {
+  @override
+  PagingController<int, AccountRequestModel> build() {
     final searchPattern = ref.watch(searchPatternProvider);
-    final hasUsedSearch = ref.watch(hasUsedSearchProvider);
-    final controller = PagingController<int, AccountRequestModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await accountRepository.getAll(
-          offset: pageKey * 100,
-          isBanned: true,
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
+    final tabStatus = ref.watch(tabStatusProvider);
+    final controller =
+        PagingController<int, AccountRequestModel>(firstPageKey: 0);
+    controller.addPageRequestListener((pageKey) {
+      fetchPage(
+        pageKey: pageKey,
+        searchPattern: searchPattern,
+        tabStatus: tabStatus,
+      );
+    });
+    return controller;
+  }
+
+  Future<void> fetchPage({
+    required int pageKey,
+    String? searchPattern,
+    required String tabStatus,
+  }) async {
+    final accountRepository = ref.watch(accountRequestRepositoryProvider);
+    final items = await guardAsyncValue<List<AccountRequestModel>>(
+        () => accountRepository.getAll(
+              query: AccountRequestQuery(
+                limit: 10,
+                offset: pageKey,
+                status: tabStatus,
+              ),
+            ));
+    items.whenData((value) {
+      final isLastPage = value.length < 100;
+      if (isLastPage) {
+        state.appendLastPage(value);
+      } else {
+        state.appendPage(value, pageKey + 1);
       }
     });
-    if (hasUsedSearch) {
-      controller.notifyPageRequestListeners(0);
-    }
-    return controller;
-  },
+  }
+
+  void refreshOnSearch() {
+    state.notifyPageRequestListeners(0);
+  }
+
+  void reloadPage() {
+    state.refresh();
+  }
+}
+
+final accountManageControllerProvider = AutoDisposeAsyncNotifierProvider<
+    AccountRequestManageScreenController, void>(
+  () => AccountRequestManageScreenController(),
 );
