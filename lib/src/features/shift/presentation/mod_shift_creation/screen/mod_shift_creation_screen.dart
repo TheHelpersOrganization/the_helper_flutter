@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/location.dart';
 import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
@@ -82,6 +83,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
     final selectedSkill = ref.watch(selectedSkillsProvider);
     final selectedManagers = ref.watch(selectedManagersProvider);
     final selectedContacts = ref.watch(selectedContactsProvider);
+    final place = ref.watch(placeProvider);
 
     // Preload skills for skills step
     ref.watch(getSkillsProvider);
@@ -159,21 +161,22 @@ class ModShiftCreationScreen extends ConsumerWidget {
                           return;
                         }
 
-                        final name =
+                        final String name =
                             _formKey.currentState!.fields['name']!.value;
-                        final description =
+                        final String description =
                             _formKey.currentState!.fields['description']!.value;
-                        final location =
+                        final Location? location = place?.toLocation();
+                        final String locationString =
                             _formKey.currentState!.fields['location']!.value;
-                        final numberOfParticipants = _formKey.currentState!
+                        final int? numberOfParticipants = _formKey.currentState!
                                     .fields['isParticipantLimited']!.value ==
                                 true
                             ? int.parse(_formKey.currentState!
                                 .fields['numberOfParticipants']!.value)
                             : null;
-                        final startTime =
+                        final DateTime startTime =
                             _formKey.currentState!.fields['startTime']!.value;
-                        final endTime =
+                        final DateTime endTime =
                             _formKey.currentState!.fields['endTime']!.value;
 
                         final shift = CreateShift(
@@ -184,7 +187,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
                           endTime: endTime,
                           numberOfParticipants: numberOfParticipants,
                           locations: [
-                            Location(addressLine1: location),
+                            location ?? Location(addressLine1: locationString),
                           ],
                           contacts: selectedContacts,
                           shiftSkills: selectedSkill
