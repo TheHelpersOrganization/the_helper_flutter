@@ -83,12 +83,12 @@ class AppDrawer extends ConsumerWidget {
         if (roles.length > 1)
           AppDrawerItem(
             title: 'Change Role',
-            icon: Icons.change_circle,
+            icon: Icons.change_circle_outlined,
             onTap: () => context.goNamed(AppRoute.changeRole.name),
           ),
         AppDrawerItem(
             title: 'Logout',
-            icon: Icons.logout,
+            icon: Icons.logout_outlined,
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
               ref.read(roleRepositoryProvider).removeCurrentRole();

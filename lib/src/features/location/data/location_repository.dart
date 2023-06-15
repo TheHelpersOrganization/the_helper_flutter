@@ -1,5 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/features/location/domain/place_autocomplete.dart';
+import 'package:the_helper/src/features/location/domain/place_autocomplete_query.dart';
+import 'package:the_helper/src/features/location/domain/place_details.dart';
+import 'package:the_helper/src/features/location/domain/place_details_query.dart';
+import 'package:the_helper/src/features/location/domain/reverse_geocode.dart';
+import 'package:the_helper/src/features/location/domain/reverse_geocode_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/location.dart';
@@ -25,6 +31,39 @@ class LocationRepository {
   Future<Location> delete(int id) async {
     final res = await client.delete('/locations/$id');
     return Location.fromJson(res.data['data']);
+  }
+
+  Future<List<PlaceAutocomplete>> placeAutocompleteQuery({
+    required PlaceAutocompleteQuery query,
+  }) async {
+    if (query.input.trim().isEmpty) return const [];
+    final res = await client.post(
+      '/locations/place-autocomplete',
+      data: query.toJson(),
+    );
+    final List<dynamic> resList = res.data['data'];
+    return resList.map((e) => PlaceAutocomplete.fromJson(e)).toList();
+  }
+
+  Future<PlaceDetails> placeDetailsQuery({
+    required PlaceDetailsQuery query,
+  }) async {
+    final res = await client.post(
+      '/locations/place-details',
+      data: query.toJson(),
+    );
+    return PlaceDetails.fromJson(res.data['data']);
+  }
+
+  Future<List<ReverseGeocode>> reverseGeocodeQuery({
+    required ReverseGeocodeQuery query,
+  }) async {
+    final res = await client.get(
+      '/locations/reverse-geocode',
+      queryParameters: query.toJson(),
+    );
+    final List<dynamic> resList = res.data['data'];
+    return resList.map((e) => ReverseGeocode.fromJson(e)).toList();
   }
 }
 

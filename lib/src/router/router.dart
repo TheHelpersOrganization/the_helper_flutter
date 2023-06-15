@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
+import 'package:the_helper/src/features/activity/my_activity/screen/my_activity_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
@@ -282,10 +283,10 @@ final routes = [
             path: AppRoute.accountRequestDetail.path,
             name: AppRoute.accountRequestDetail.name,
             builder: (_, state) => const AccountRequestDetailScreen(
-              // requestId: int.parse(
-              //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
-              // ),
-            ),
+                // requestId: int.parse(
+                //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
+                // ),
+                ),
           ),
         ],
       ),
@@ -394,6 +395,11 @@ final activityRoutes = GoRoute(
       path: AppRoute.activitySearch.path,
       name: AppRoute.activitySearch.name,
       builder: (_, __) => const ActivitySearchScreen(),
+    ),
+    GoRoute(
+      path: AppRoute.activityMy.path,
+      name: AppRoute.activityMy.name,
+      builder: (_, __) => const MyActivityScreen(),
     ),
     GoRoute(
       path: AppRoute.activity.path,
@@ -552,6 +558,10 @@ enum AppRoute {
   activitySearch(
     path: 'search',
     name: 'activity-search',
+  ),
+  activityMy(
+    path: 'my',
+    name: 'activity-my',
   ),
   activity(
     path: ':activityId',

@@ -11,7 +11,7 @@ extension AsyncValueUI on AsyncValue {
     BuildContext context, {
     String? name,
   }) {
-    if (!isLoading && !isRefreshing && hasError) {
+    if (!isLoading && !isRefreshing && asError != null) {
       if (name != null) {
         if (_showingSnackbar.contains(name)) {
           return;
@@ -36,7 +36,7 @@ extension AsyncValueUI on AsyncValue {
     SnackBarBehavior? behavior,
     String? name,
   }) {
-    if (!isLoading && !isRefreshing && hasValue) {
+    if (!isLoading && !isRefreshing && asData != null) {
       if (name != null) {
         if (_showingSnackbar.contains(name)) {
           return;
