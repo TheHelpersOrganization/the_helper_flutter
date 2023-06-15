@@ -24,7 +24,7 @@ class AccountListItem extends ConsumerWidget {
     return Card(
       child: InkWell(
         onTap: () {
-          context.goNamed(AppRoute.accountRequestDetail.name);
+          context.pushNamed(AppRoute.accountRequestDetail.name);
         },
         child: Padding(
           padding: const EdgeInsets.all(10),
