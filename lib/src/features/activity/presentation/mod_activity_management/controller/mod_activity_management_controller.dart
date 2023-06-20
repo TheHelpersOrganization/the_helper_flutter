@@ -31,7 +31,12 @@ class ExtendedActivity {
   });
 }
 
-final currentTabProvider = StateProvider<TabType>((ref) => TabType.overview);
+final currentTabProvider =
+    StateProvider.autoDispose<TabType>((ref) => TabType.overview);
+
+// Filter
+final isShiftManagerSelectedProvider =
+    StateProvider.autoDispose((ref) => false);
 
 final getActivityProvider = FutureProvider.autoDispose.family<Activity?, int>(
   (ref, activityId) async {
@@ -53,6 +58,7 @@ final getActivityAndShiftsProvider =
             activityId: activityId,
             include: [
               ShiftQueryInclude.shiftSkill,
+              ShiftQueryInclude.shiftManager,
             ],
           ),
         );

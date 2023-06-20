@@ -22,6 +22,7 @@ class ActivityThumbnail extends StatelessWidget {
           : CachedNetworkImage(
               imageUrl: getImageUrl(activity.thumbnail!),
               width: context.mediaQuery.size.width,
+              height: 240,
               fit: BoxFit.fitWidth,
             ),
     );

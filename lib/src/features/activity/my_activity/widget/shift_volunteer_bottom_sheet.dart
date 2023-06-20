@@ -39,9 +39,10 @@ class ShiftVolunteerBottomSheet extends ConsumerWidget {
               const SizedBox(
                 width: 8,
               ),
-              (volunteer.attendant)
-                  ? const Label(labelText: 'Attended', color: Colors.green)
-                  : const Label(labelText: 'Absent', color: Colors.red)
+              if (shift.status == ShiftStatus.completed)
+                (volunteer.attendant)
+                    ? const Label(labelText: 'Attended', color: Colors.green)
+                    : const Label(labelText: 'Absent', color: Colors.red)
             ],
           ),
         ),
@@ -53,7 +54,7 @@ class ShiftVolunteerBottomSheet extends ConsumerWidget {
               style: context.theme.textTheme.bodyLarge,
             ),
           ),
-        if (shift.status == ShiftStatus.completed)
+        if (shift.status == ShiftStatus.completed && volunteer.attendant)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SizedBox(

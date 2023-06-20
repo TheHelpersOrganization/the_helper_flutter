@@ -13,6 +13,11 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.home_outlined,
   ),
   DrawerItemModel(
+    route: AppRoute.activitySearch,
+    title: 'Activities',
+    icon: Icons.search_outlined,
+  ),
+  DrawerItemModel(
     route: AppRoute.activityMy,
     title: 'My Activities',
     icon: Icons.volunteer_activism_outlined,
