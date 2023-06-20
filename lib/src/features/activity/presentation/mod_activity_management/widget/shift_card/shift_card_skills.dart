@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/features/shift/domain/shift_skill.dart';
 
-class ShiftCardFooter extends StatelessWidget {
+class ShiftCardSkills extends StatelessWidget {
   final List<ShiftSkill> skills;
 
-  const ShiftCardFooter({
+  const ShiftCardSkills({
     super.key,
     required this.skills,
   });

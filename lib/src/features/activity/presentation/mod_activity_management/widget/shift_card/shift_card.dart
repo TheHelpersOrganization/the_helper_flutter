@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
+import 'package:the_helper/src/features/activity/my_activity/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_bottom_sheet.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_footer.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_skills.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/shift.dart';
 
 class ShiftCard extends StatelessWidget {
   final Shift shift;
@@ -54,10 +57,21 @@ class ShiftCard extends StatelessWidget {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(
-                  shift.name,
-                  style: context.theme.textTheme.bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.w500),
+                title: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Text(
+                        shift.name,
+                        style: context.theme.textTheme.bodyLarge
+                            ?.copyWith(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      getShiftStatusLabel(shift.status),
+                    ],
+                  ),
                 ),
                 subtitle: Text(
                   shift.description ?? 'No description',
@@ -81,9 +95,29 @@ class ShiftCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 4,
               ),
-              ShiftCardFooter(skills: shift.shiftSkills!),
+              ShiftCardSkills(skills: shift.shiftSkills!),
+              if (shift.me != null && shift.me!.isShiftManager == true)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    const Divider(),
+                    Row(
+                      children: [
+                        if (shift.me!.isShiftManager == true)
+                          const Label(labelText: 'Shift Manager'),
+                      ].sizedBoxSpacing(
+                        const SizedBox(
+                          width: 4,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

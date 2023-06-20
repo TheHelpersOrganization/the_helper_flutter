@@ -30,6 +30,7 @@ class ShiftQuery with _$ShiftQuery {
     @CommaSeparatedShiftVolunteerStatusConverter()
     List<ShiftVolunteerStatus>? myJoinStatus,
     String? name,
+    bool? isShiftManager,
     @CommaSeparatedStringsConverter() List<String>? include,
     @CommaSeparatedStringsConverter() List<String>? sort,
   }) = _ShiftQuery;

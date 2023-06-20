@@ -11,6 +11,9 @@ class DebounceSearchBar extends StatefulWidget {
   final void Function()? _onClear;
   final void Function(String value)? _onDebounce;
   final Widget? filter;
+  final bool small;
+  final String? hintText;
+  final String? initialValue;
 
   const DebounceSearchBar({
     super.key,
@@ -20,6 +23,9 @@ class DebounceSearchBar extends StatefulWidget {
     void Function()? onClear,
     void Function(String value)? onDebounce,
     this.filter,
+    this.small = false,
+    this.hintText,
+    this.initialValue,
   })  : _debounceDuration = debounceDuration,
         _onChanged = onChanged,
         _onClear = onClear,
@@ -40,7 +46,8 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
   void initState() {
     super.initState();
     final onDebounce = widget._onDebounce;
-    _inputController = widget.controller ?? TextEditingController();
+    _inputController =
+        widget.controller ?? TextEditingController(text: widget.initialValue);
     if (onDebounce != null) {
       _searchAfterDuration
           .debounceTime(widget._debounceDuration ?? const Duration(seconds: 3))
@@ -82,6 +89,8 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+        contentPadding: widget.small ? EdgeInsets.zero : null,
+        isDense: widget.small,
         prefixIcon: const Icon(Icons.search),
         suffixIcon: IconButton(
           icon: const Icon(Icons.clear),
@@ -90,6 +99,7 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
             widget._onClear?.call();
           },
         ),
+        hintText: widget.hintText,
       ),
       onChanged: (value) => _internalOnChange(value),
     );
