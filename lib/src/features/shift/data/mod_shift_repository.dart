@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 class ModShiftRepository {
@@ -18,6 +19,27 @@ class ModShiftRepository {
     final res = await client.get('/shifts', queryParameters: query?.toJson());
     final List<dynamic> resList = res.data['data'];
     return resList.map((e) => Shift.fromJson(e)).toList();
+  }
+
+  Future<List<ShiftVolunteer>> getShiftVolunteerQ(
+      {Map<String, dynamic>? queryParameters}) async {
+    final List<dynamic> res = (await client.get(
+      '/mod/shift-volunteers',
+      queryParameters: queryParameters,
+    ))
+        .data['data'];
+    return res.map((data) => ShiftVolunteer.fromJson(data)).toList();
+  }
+
+  Future<Shift> approveVolunteer(int shiftId, int accountId) async {
+    final res = (await client.put(
+      '/shifts/$shiftId/volunteers/$accountId/status',
+      queryParameters: {
+        "status": "approved",
+      },
+    ))
+        .data['data'];
+    return Shift.fromJson(res);
   }
 
   Future<Shift?> getShiftById({

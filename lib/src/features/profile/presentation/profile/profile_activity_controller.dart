@@ -33,10 +33,10 @@ part 'profile_activity_controller.g.dart';
 
 @riverpod
 Future<List<Activity>> activityController(
-  ActivityControllerRef ref, [
+  ActivityControllerRef ref, {
   int page = 0,
-  int size = 10,
-]) async {
+  required int size,
+}) async {
   final keepAliveLink = ref.keepAlive();
   Timer(Duration(minutes: 5), () {
     keepAliveLink.close();

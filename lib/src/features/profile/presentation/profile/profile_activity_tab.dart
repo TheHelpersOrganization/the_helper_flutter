@@ -33,8 +33,8 @@ class ProfileActivityTab extends ConsumerWidget {
                   final itemIndex = index % size;
                   final pageValue = ref.watch(
                     activityControllerProvider(
-                      page,
-                      size,
+                      page: page,
+                      size: size,
                     ),
                   );
                   return pageValue.when(

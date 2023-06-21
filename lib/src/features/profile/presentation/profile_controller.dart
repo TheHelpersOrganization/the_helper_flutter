@@ -9,14 +9,19 @@ part 'profile_controller.g.dart';
 // @Riverpod(keepAlive: true)
 @riverpod
 class ProfileController extends _$ProfileController {
+  // '/profiles/me?includes=interested-skills,skills',
   @override
   FutureOr<Profile> build() async {
-    return _fetchProfile();
+    return _getProfile();
   }
 
-  Future<Profile> _fetchProfile() async {
+  Future<Profile> _getProfile() async {
     final repository = ref.watch(profileRepositoryProvider);
-    final profile = await repository.getProfile();
+    final profile = await repository.getProfile(
+      // queryParameters: {
+        // 'includes': 'interested-skills,skills',
+      // },
+    );
     return profile;
   }
 
@@ -25,7 +30,7 @@ class ProfileController extends _$ProfileController {
     state = await AsyncValue.guard(() async {
       final profileRepository = ref.read(profileRepositoryProvider);
       await profileRepository.updateProfile(profile);
-      return _fetchProfile();
+      return _getProfile();
     });
   }
 }

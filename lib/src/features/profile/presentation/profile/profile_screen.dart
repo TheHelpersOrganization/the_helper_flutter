@@ -53,7 +53,7 @@ class ProfileScreen extends ConsumerWidget {
             ],
           ),
           body: DefaultTabController(
-            length: 4,
+            length: 3,
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [
