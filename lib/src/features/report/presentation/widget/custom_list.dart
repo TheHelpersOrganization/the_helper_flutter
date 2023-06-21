@@ -4,10 +4,13 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/account/domain/account_request.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/custom_list_item.dart';
+
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/controllers/account_request_manage_screen_controller.dart';
+
+import 'package:the_helper/src/features/report/domain/report.dart';
+
+import '../controller/report_manage_screen_controller.dart';
+import 'custom_list_item.dart';
 
 class CustomScrollList extends ConsumerWidget {
   const CustomScrollList({
@@ -17,7 +20,7 @@ class CustomScrollList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
-    // final tabIndex = ref.watch(tabStatusProvider);
+    final tabIndex = ref.watch(tabStatusProvider);
     final customController = ref.watch(scrollPagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
@@ -33,11 +36,15 @@ class CustomScrollList extends ConsumerWidget {
                 ref.read(searchPatternProvider.notifier).state = value;
               }
               // ref.read(hasUsedSearchProvider.notifier).state = true;
-              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
+              ref
+                  .read(scrollPagingControllerProvider.notifier)
+                  .refreshOnSearch();
             },
             onClear: () {
               ref.read(searchPatternProvider.notifier).state = null;
-              ref.read(scrollPagingControllerProvider.notifier).refreshOnSearch();
+              ref
+                  .read(scrollPagingControllerProvider.notifier)
+                  .refreshOnSearch();
             },
             filter: _buildFilter(context),
           ),
@@ -64,11 +71,19 @@ class CustomScrollList extends ConsumerWidget {
               height: 24,
             ),
           Expanded(
-              child: PagedListView<int, AccountRequestModel>(
+              child: PagedListView<int, ReportModel>(
             pagingController: customController,
-            builderDelegate: PagedChildBuilderDelegate(
-                itemBuilder: (context, item, index) =>
-                    AccountRequestListItem(data: item)),
+            builderDelegate:
+                PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
+              // if (tabIndex == 'user') {
+              //   return UserReportListItem(data: item);
+              // } else if (tabIndex == 'organization') {
+              //   return OrganizationReportListItem(data: item);
+              // } else {
+              //   return ActivityReportListItem(data: item);
+              // }
+              return CustomListItem(data: item);
+            }),
           )),
         ],
       ),

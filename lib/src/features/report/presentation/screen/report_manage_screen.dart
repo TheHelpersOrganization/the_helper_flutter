@@ -4,23 +4,23 @@ import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/custom_list.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
-import '../controllers/account_request_detail_screen_controller.dart';
-import '../controllers/account_request_manage_screen_controller.dart';
+import '../controller/report_manage_screen_controller.dart';
+import '../widget/custom_list.dart';
+
 
 //Screens
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Pendding'),
-  Tab(text: 'Approved'),
-  Tab(text: 'Reject'),
+  Tab(text: 'User'),
+  Tab(text: 'Organization'),
+  Tab(text: 'Activity'),
 ];
 
-class AccountRequestManageScreen extends ConsumerWidget {
+class ReportManageScreen extends ConsumerWidget {
   // final String? role;
-  const AccountRequestManageScreen({
+  const ReportManageScreen({
     Key? key,
   }) : super(key: key);
   

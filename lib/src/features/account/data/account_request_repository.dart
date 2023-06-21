@@ -12,8 +12,8 @@ part 'account_request_repository.g.dart';
 
 List<AccountRequestModel> requestList = [
   // AccountRequestModel(
-  //   name: 'AAAA', 
-  //   email: 'AAA@gmail.com', 
+  //   name: 'AAAA',
+  //   email: 'AAA@gmail.com',
   //   time: DateTime.utc(2023, 1, 1, 06, 00 ,00),
   //   locations: [
   //     Location(
@@ -24,28 +24,25 @@ List<AccountRequestModel> requestList = [
   //   ]
   // ),
   AccountRequestModel(
-    accountId: 205,
-    status: 'pending',
-    isVerified: true,
-    note: "asdfaefasvsasf",
-    createdAt: DateTime.utc(2023, 1, 1, 06, 00 ,00),
-    files: [
-      FileInfoModel(
-        name: "Filename", 
-        internalName: "internalName", 
-        mimetype: "mimetype", 
-        size: 200, 
-        sizeUnit: "sizeUnit"
-      ),
-      FileInfoModel(
-        name: "ADF", 
-        internalName: "internalName", 
-        mimetype: "mimetype", 
-        size: 20, 
-        sizeUnit: "sizeUnit"
-      ),
-    ]
-  )
+      accountId: 205,
+      status: 'pending',
+      isVerified: true,
+      note: "asdfaefasvsasf",
+      createdAt: DateTime.utc(2023, 1, 1, 06, 00, 00),
+      files: [
+        FileInfoModel(
+            name: "Filename",
+            internalName: "internalName",
+            mimetype: "mimetype",
+            size: 200,
+            sizeUnit: "sizeUnit"),
+        FileInfoModel(
+            name: "ADF",
+            internalName: "internalName",
+            mimetype: "mimetype",
+            size: 20,
+            sizeUnit: "sizeUnit"),
+      ])
 ];
 
 //Role Repository class
@@ -59,17 +56,21 @@ class AccountRequestRepository {
   Future<List<AccountRequestModel>> getAll({
     AccountRequestQuery? query,
   }) async {
-    // final List<dynamic> res = (await client.get(
-    //   '/something',
-    // ))
-    //     .data['data'];
-    final List<AccountRequestModel> res = requestList;
-    // return res.map((e) => AccountRequestModel.fromMap(e)).toList();
-    return res;
+    final List<dynamic> res = (await client.get(
+      '/account-verifications',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => AccountRequestModel.fromJson(e)).toList();
+    // final List<AccountRequestModel> res = requestList;
+    // return res;
   }
 
   Future<AccountRequestModel> getById(int id) async {
-    final res = await client.get('/something/$id');
+    final res =
+        await client.get('/account-verifications/$id', queryParameters: {
+      "include": "file",
+    });
     return AccountRequestModel.fromJson(res.data['data']);
   }
 
