@@ -9,9 +9,8 @@ import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
-import 'package:the_helper/src/features/shift_volunteer/data/shift_volunteer_repository.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
@@ -54,7 +53,7 @@ final getActivityAndShiftProvider =
               ),
             );
     final myShiftVolunteers =
-        await ref.watch(shiftVolunteerRepositoryProvider).getShiftVolunteers(
+        await ref.watch(shiftRepositoryProvider).getShiftVolunteers(
               query: ShiftVolunteerQuery(
                 shiftId: shift.id,
                 mine: true,

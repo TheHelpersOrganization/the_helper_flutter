@@ -7,7 +7,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/leave_shift_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_card/shift_card_footer.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/router/router.dart';
 
 class ShiftCard extends StatelessWidget {

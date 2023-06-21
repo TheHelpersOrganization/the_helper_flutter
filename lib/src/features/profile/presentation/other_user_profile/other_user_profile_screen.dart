@@ -1,12 +1,11 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/common/extension/image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
@@ -24,7 +23,6 @@ class OtherUserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider(id: userId));
-    final activities = ref.watch(profileActivityControllerProvider);
     final orgs = ref.watch(profileOrganizationControllerProvider);
     final account = ref.watch(authServiceProvider).value!.account;
     // final profile = profileService.getProfile();
@@ -87,10 +85,9 @@ class OtherUserProfileScreen extends ConsumerWidget {
               body: TabBarView(
                 children: [
                   ProfileOverviewTab(
-                    skills: profile.skills,
-                    interestedList: profile.interestedSkills,
+                    profile: profile,
                   ),
-                  ProfileActivityTab(activities: activities),
+                  const ProfileActivityTab(),
                   ProfileOrganizationTab(orgs: orgs),
                   ProfileDetailTab(profile: profile),
                 ],

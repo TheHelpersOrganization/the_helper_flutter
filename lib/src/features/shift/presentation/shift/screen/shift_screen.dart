@@ -6,6 +6,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/co
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/cancel_join_shift_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/join_shift_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/leave_shift_dialog.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/controller/shift_controller.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_contact.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_date_location.dart';
@@ -15,7 +16,6 @@ import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_pa
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_skill_list.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_title.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_volunteer_notification.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ShiftScreen extends ConsumerWidget {

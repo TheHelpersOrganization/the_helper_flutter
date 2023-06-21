@@ -1,19 +1,11 @@
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/attached_fIles_list.dart';
-import 'package:the_helper/src/features/location/domain/location.dart';
-import 'package:the_helper/src/features/profile/presentation/profile_verified_request/profile_request_controller.dart';
-import 'package:the_helper/src/utils/async_value_ui.dart';
+import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/attached_files_list.dart';
 
 import '../../../../../common/domain/file_info.dart';
 import '../../../../../common/extension/image.dart';
 import '../../../../../common/widget/button/primary_button.dart';
-import '../../../../../common/widget/detail_list_tile.dart';
-import '../../../../profile/domain/profile.dart';
 import '../../../../profile/presentation/profile_controller.dart';
 
 // import '../../../common/widget/button/primary_button.dart';

@@ -13,7 +13,6 @@ import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
-import 'package:the_helper/src/features/activity/presentation/shift/shifts_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
@@ -37,6 +36,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
@@ -82,136 +82,149 @@ final routes = [
             const OrganizationMembersManagementScreen(),
       ),
       GoRoute(
-          path: AppRoute.organizationActivityListManagement.path,
-          name: AppRoute.organizationActivityListManagement.name,
-          builder: (_, __) => const ModActivityListManagementScreen(),
-          routes: [
-            GoRoute(
-                path: AppRoute.organizationActivityManagement.path,
-                name: AppRoute.organizationActivityManagement.name,
-                builder: (_, state) {
-                  final activityId =
-                      int.parse(state.pathParameters['activityId']!);
-                  return ModActivityManagementScreen(activityId: activityId);
-                },
-                routes: [
-                  GoRoute(
-                    path: AppRoute.activityEdit.path,
-                    name: AppRoute.activityEdit.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      return ModActivityEditBasicScreen(activityId: activityId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.activityEditContact.path,
-                    name: AppRoute.activityEditContact.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      return ModActivityEditContactScreen(
-                          activityId: activityId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.activityEditManager.path,
-                    name: AppRoute.activityEditManager.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      return ModActivityEditManagerScreen(
-                          activityId: activityId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.shiftCreation.path,
-                    name: AppRoute.shiftCreation.name,
-                    builder: (_, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      return ModShiftCreationScreen(
-                        activityId: activityId,
-                      );
-                    },
-                    routes: [
-                      GoRoute(
-                        path: AppRoute.shiftCreationSkill.path,
-                        name: AppRoute.shiftCreationSkill.name,
-                        builder: (_, state) {
-                          return ShiftSkillView(
-                            skills: state.extra as dynamic,
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                  GoRoute(
-                    path: AppRoute.organizationShift.path,
-                    name: AppRoute.organizationShift.name,
-                    builder: (_, state) {
-                      final activityId = int.parse(
-                        state.pathParameters['activityId']!,
-                      );
-                      final shiftId = int.parse(
-                        state.pathParameters['shiftId']!,
-                      );
-                      return ModShiftScreen(
-                        activityId: activityId,
-                        shiftId: shiftId,
-                      );
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.shiftEdit.path,
-                    name: AppRoute.shiftEdit.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      final shiftId =
-                          int.parse(state.pathParameters['shiftId']!);
-                      return ModShiftEditBasicScreen(
-                          activityId: activityId, shiftId: shiftId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.shiftEditSkills.path,
-                    name: AppRoute.shiftEditSkills.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      final shiftId =
-                          int.parse(state.pathParameters['shiftId']!);
-                      return ModShiftEditSkillScreen(
-                          activityId: activityId, shiftId: shiftId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.shiftEditContacts.path,
-                    name: AppRoute.shiftEditContacts.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      final shiftId =
-                          int.parse(state.pathParameters['shiftId']!);
-                      return ModShiftEditContactScreen(
-                          activityId: activityId, shiftId: shiftId);
-                    },
-                  ),
-                  GoRoute(
-                    path: AppRoute.shiftEditManagers.path,
-                    name: AppRoute.shiftEditManagers.name,
-                    builder: (context, state) {
-                      final activityId =
-                          int.parse(state.pathParameters['activityId']!);
-                      final shiftId =
-                          int.parse(state.pathParameters['shiftId']!);
-                      return ModShiftEditManagerScreen(
-                          activityId: activityId, shiftId: shiftId);
-                    },
-                  ),
-                ]),
-          ]),
+        path: AppRoute.organizationActivityListManagement.path,
+        name: AppRoute.organizationActivityListManagement.name,
+        builder: (_, __) => const ModActivityListManagementScreen(),
+        routes: [
+          GoRoute(
+              path: AppRoute.organizationActivityManagement.path,
+              name: AppRoute.organizationActivityManagement.name,
+              builder: (_, state) {
+                final activityId =
+                    int.parse(state.pathParameters['activityId']!);
+                return ModActivityManagementScreen(activityId: activityId);
+              },
+              routes: [
+                GoRoute(
+                  path: AppRoute.activityEdit.path,
+                  name: AppRoute.activityEdit.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModActivityEditBasicScreen(activityId: activityId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.activityEditContact.path,
+                  name: AppRoute.activityEditContact.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModActivityEditContactScreen(activityId: activityId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.activityEditManager.path,
+                  name: AppRoute.activityEditManager.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModActivityEditManagerScreen(activityId: activityId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.shiftCreation.path,
+                  name: AppRoute.shiftCreation.name,
+                  builder: (_, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModShiftCreationScreen(
+                      activityId: activityId,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppRoute.shiftCreationSkill.path,
+                      name: AppRoute.shiftCreationSkill.name,
+                      builder: (_, state) {
+                        return ShiftSkillView(
+                          skills: state.extra as dynamic,
+                        );
+                      },
+                    )
+                  ],
+                ),
+                GoRoute(
+                  path: AppRoute.organizationShift.path,
+                  name: AppRoute.organizationShift.name,
+                  builder: (_, state) {
+                    final activityId = int.parse(
+                      state.pathParameters['activityId']!,
+                    );
+                    final shiftId = int.parse(
+                      state.pathParameters['shiftId']!,
+                    );
+                    return ModShiftScreen(
+                      activityId: activityId,
+                      shiftId: shiftId,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: AppRoute.shiftVolunteer.path,
+                      name: AppRoute.shiftVolunteer.name,
+                      builder: (_, state) {
+                        final activityId = int.parse(
+                          state.pathParameters['activityId']!,
+                        );
+                        final shiftId = int.parse(
+                          state.pathParameters['shiftId']!,
+                        );
+                        return ShiftVolunteerScreen(
+                          activityId: activityId,
+                          shiftId: shiftId,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  path: AppRoute.shiftEdit.path,
+                  name: AppRoute.shiftEdit.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    final shiftId = int.parse(state.pathParameters['shiftId']!);
+                    return ModShiftEditBasicScreen(
+                        activityId: activityId, shiftId: shiftId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.shiftEditSkills.path,
+                  name: AppRoute.shiftEditSkills.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    final shiftId = int.parse(state.pathParameters['shiftId']!);
+                    return ModShiftEditSkillScreen(
+                        activityId: activityId, shiftId: shiftId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.shiftEditContacts.path,
+                  name: AppRoute.shiftEditContacts.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    final shiftId = int.parse(state.pathParameters['shiftId']!);
+                    return ModShiftEditContactScreen(
+                        activityId: activityId, shiftId: shiftId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.shiftEditManagers.path,
+                  name: AppRoute.shiftEditManagers.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    final shiftId = int.parse(state.pathParameters['shiftId']!);
+                    return ModShiftEditManagerScreen(
+                        activityId: activityId, shiftId: shiftId);
+                  },
+                ),
+              ]),
+        ],
+      ),
       GoRoute(
         path: AppRoute.organizationActivityCreation.path,
         name: AppRoute.organizationActivityCreation.name,
@@ -282,10 +295,10 @@ final routes = [
             path: AppRoute.accountRequestDetail.path,
             name: AppRoute.accountRequestDetail.name,
             builder: (_, state) => const AccountRequestDetailScreen(
-              // requestId: int.parse(
-              //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
-              // ),
-            ),
+                // requestId: int.parse(
+                //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
+                // ),
+                ),
           ),
         ],
       ),
@@ -358,30 +371,18 @@ final organizationRoutes = GoRoute(
 
 final shiftRoutes = [
   GoRoute(
-    path: AppRoute.shifts.path,
-    name: AppRoute.shifts.name,
+    path: AppRoute.shift.path,
+    name: AppRoute.shift.name,
     // Todo: repalce with implemented screen
     builder: (_, state) {
-      final activityId =
-          int.parse(state.pathParameters[AppRoute.activity.path.substring(1)]!);
-      return ShiftsScreen(activityId: activityId);
-    },
-    routes: [
-      GoRoute(
-        path: AppRoute.shift.path,
-        name: AppRoute.shift.name,
-        // Todo: repalce with implemented screen
-        builder: (_, state) {
-          final activityId = int.parse(state.pathParameters['activityId']!);
-          final shiftId = int.parse(state.pathParameters['shiftId']!);
+      final activityId = int.parse(state.pathParameters['activityId']!);
+      final shiftId = int.parse(state.pathParameters['shiftId']!);
 
-          return ShiftScreen(
-            activityId: activityId,
-            shiftId: shiftId,
-          );
-        },
-      ),
-    ],
+      return ShiftScreen(
+        activityId: activityId,
+        shiftId: shiftId,
+      );
+    },
   ),
 ];
 
@@ -614,6 +615,10 @@ enum AppRoute {
   organizationActivityCreationManagerChooser(
     path: 'managers',
     name: 'activity-creation-manager-chooser',
+  ),
+  shiftVolunteer(
+    path: 'volunteer',
+    name: 'shift-volunteer',
   ),
 
   // shift
