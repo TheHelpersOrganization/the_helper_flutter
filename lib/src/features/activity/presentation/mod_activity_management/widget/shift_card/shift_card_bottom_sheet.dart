@@ -30,8 +30,21 @@ class ShiftCardBottomSheet extends ConsumerWidget {
           ),
         ),
         ListTile(
+          leading: const Icon(Icons.group_outlined),
+          title: const Text('Participants'),
+          onTap: () {
+            context.goNamed(
+              AppRoute.shiftVolunteer.name,
+              pathParameters: {
+                'activityId': shift.activityId.toString(),
+                'shiftId': shift.id.toString(),
+              },
+            );
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.info_outline),
-          title: const Text('Shift details'),
+          title: const Text('Shift overview'),
           onTap: () {
             context.goNamed(AppRoute.organizationShift.name, pathParameters: {
               'activityId': shift.activityId.toString(),

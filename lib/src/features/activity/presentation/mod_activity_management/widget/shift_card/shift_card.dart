@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
-import 'package:the_helper/src/features/activity/my_activity/widget/label.dart';
+import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_bottom_sheet.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_skills.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
@@ -26,7 +26,7 @@ class ShiftCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
-          context.goNamed(AppRoute.organizationShift.name, pathParameters: {
+          context.goNamed(AppRoute.shiftVolunteer.name, pathParameters: {
             'activityId': shift.activityId.toString(),
             'shiftId': shift.id.toString(),
           });
@@ -59,18 +59,33 @@ class ShiftCard extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      Text(
-                        shift.name,
-                        style: context.theme.textTheme.bodyLarge
-                            ?.copyWith(fontWeight: FontWeight.w500),
+                  // child: Row(
+                  //   children: [
+                  //     Text(
+                  //       shift.name,
+                  //       style: context.theme.textTheme.bodyLarge
+                  //           ?.copyWith(fontWeight: FontWeight.w500),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 4,
+                  //     ),
+                  //     getShiftStatusLabel(shift.status),
+                  //   ],
+                  // ),
+                  child: Text.rich(
+                    TextSpan(
+                      text: shift.name,
+                      style: context.theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
                       ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      getShiftStatusLabel(shift.status),
-                    ],
+                      children: [
+                        const WidgetSpan(child: SizedBox(width: 4)),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: getShiftStatusLabel(shift.status),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 subtitle: Text(
