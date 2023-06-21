@@ -10,13 +10,14 @@ part 'account_request.freezed.dart';
 @freezed
 class AccountRequestModel with _$AccountRequestModel {
   factory AccountRequestModel({
+    int? id,
     int? accountId,
     required String status,
     int? performedBy,
     @Default(true) bool isVerified,
     String? note,
     required DateTime createdAt,
-    List<FileInfoModel>? files,
+    required List<FileInfoModel> files,
   }) = _AccountRequestModel;
 
   factory AccountRequestModel.fromJson(Map<String, dynamic> json) =>

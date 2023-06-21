@@ -2,18 +2,17 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/features/account/data/account_request_repository.dart';
-import 'package:the_helper/src/features/account/domain/account_request.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
+import 'package:the_helper/src/features/report/data/report_repository.dart';
+import 'package:the_helper/src/features/report/domain/report.dart';
+import 'package:the_helper/src/features/report/domain/report_query.dart';
 
-import '../../../../../utils/async_value.dart';
-import '../../../domain/account_request_query.dart';
+import '../../../../utils/async_value.dart';
 
-part 'account_request_manage_screen_controller.g.dart';
+part 'report_manage_screen_controller.g.dart';
 
-class AccountRequestManageScreenController
+class ReportManageScreenController
     extends AutoDisposeAsyncNotifier<void> {
   @override
   build() {}
@@ -27,19 +26,19 @@ final firstLoadPagingController = StateProvider((ref) => true);
 class TabStatus extends _$TabStatus {
   @override
   String build() {
-    return 'pending';
+    return 'user';
   }
 
   void changeStatus(int index) {
     switch(index) {
       case 1:
-        state = 'completed';
+        state = 'organization';
         break;
       case 2:
-        state = 'rejected';
+        state = 'activity';
         break;
       default:
-        state = 'pending';
+        state = 'user';
         break;
     }
   }
@@ -48,11 +47,11 @@ class TabStatus extends _$TabStatus {
 @riverpod
 class ScrollPagingController extends _$ScrollPagingController {
   @override
-  PagingController<int, AccountRequestModel> build() {
+  PagingController<int, ReportModel> build() {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabStatus = ref.watch(tabStatusProvider);
     final controller =
-        PagingController<int, AccountRequestModel>(firstPageKey: 0);
+        PagingController<int, ReportModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) {
       fetchPage(
         pageKey: pageKey,
@@ -68,14 +67,13 @@ class ScrollPagingController extends _$ScrollPagingController {
     String? searchPattern,
     required String tabStatus,
   }) async {
-    final accountRepository = ref.watch(accountRequestRepositoryProvider);
-    final items = await guardAsyncValue<List<AccountRequestModel>>(
+    final accountRepository = ref.watch(reportRepositoryProvider);
+    final items = await guardAsyncValue<List<ReportModel>>(
         () => accountRepository.getAll(
-              query: AccountRequestQuery(
-                include: 'file',
+              query: ReportQuery(
                 limit: 5,
                 offset: pageKey,
-                status: tabStatus,
+                type: tabStatus,
               ),
             ));
     items.whenData((value) {
@@ -98,7 +96,7 @@ class ScrollPagingController extends _$ScrollPagingController {
   }
 }
 
-final accountManageControllerProvider = AutoDisposeAsyncNotifierProvider<
-    AccountRequestManageScreenController, void>(
-  () => AccountRequestManageScreenController(),
+final reportManageControllerProvider = AutoDisposeAsyncNotifierProvider<
+    ReportManageScreenController, void>(
+  () => ReportManageScreenController(),
 );

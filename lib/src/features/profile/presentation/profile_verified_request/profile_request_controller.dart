@@ -25,19 +25,21 @@ class ProfileVerifiedRequestController
     final fileRepo = ref.read(fileRepositoryProvider);
 
     final fileFutures = files
-    ?.map(
-      (file) => fileRepo.uploadWithPlatformFile(
-        file,
-      ),
-    )
-    .toList() ?? [];
+            ?.map(
+              (file) => fileRepo.uploadWithPlatformFile(
+                file,
+              ),
+            )
+            .toList() ??
+        [];
     final fileModels = await Future.wait(fileFutures);
 
-    state = await AsyncValue.guard(() => ref
-    .watch(profileRepositoryProvider)
-    .requestVerifiedProfile(VerifiedRequestBody(
-      content: "Profile verified request",
-      files: fileModels.map((e) => e.id).toList(),
-    )));
+    final res = await AsyncValue.guard(() => ref
+        .watch(profileRepositoryProvider)
+        .requestVerifiedProfile(VerifiedRequestBody(
+          content: "Profile verified request",
+          files: fileModels.map((e) => e.id).toList(),
+        )));
+    state = res;
   }
 }
