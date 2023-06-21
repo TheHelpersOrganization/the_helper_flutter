@@ -12,7 +12,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/activity_title.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/joined_shift_notification/activity_joined_shift_notification.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/joined_shift_notification/activity_no_joined_shift_notification.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 enum TabType {

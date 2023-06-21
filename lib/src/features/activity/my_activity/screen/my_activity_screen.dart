@@ -11,7 +11,7 @@ import 'package:the_helper/src/features/activity/my_activity/widget/label.dart';
 import 'package:the_helper/src/features/activity/my_activity/widget/shift_volunteer_bottom_sheet.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/controller/activity_controller.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 enum TabType {

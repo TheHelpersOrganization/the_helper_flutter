@@ -31,11 +31,32 @@ class ProfileRepository {
   }
 
   // TODO: this method should be rename as get your profile
-  Future<Profile> getProfile() async {
+  Future<Profile> getProfile({
+    // Map<String, dynamic>? queryParameters,
+    int? id,
+  }) async {
     final response = await client.get(
       '/profiles/me?includes=interested-skills,skills',
+      // (id != null) ? '/profiles/me' : '/profiles/$id',
+      // queryParameters: queryParameters,
     );
     return Profile.fromJson(response.data['data']);
+  }
+
+  Future<Profile> getBriefProfile({
+    required int id,
+    List<String>? includes,
+    List<String>? select,
+  }) async {
+    final res = (await client.get('/profiles',
+            queryParameters: {
+              'ids': id,
+              'includes': includes?.join(','),
+              'select': select?.join(','),
+            }..removeWhere((key, value) => value == null)))
+        .data['data'][0];
+    // print(res);
+    return Profile.fromJson(res);
   }
 
   Future<Profile> getProfileById(int id) async {
