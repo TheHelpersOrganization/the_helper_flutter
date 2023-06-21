@@ -16,6 +16,7 @@ class AccountRequestModel with _$AccountRequestModel {
     int? performedBy,
     @Default(true) bool isVerified,
     String? note,
+    List<String>? adminNote,
     required DateTime createdAt,
     required List<FileInfoModel> files,
   }) = _AccountRequestModel;

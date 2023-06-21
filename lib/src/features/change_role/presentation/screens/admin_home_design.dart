@@ -64,7 +64,9 @@ class ScreenBuilderCanvas extends ConsumerWidget {
                 ),
               ),
             ),
-            
+            Expanded(child: Center(
+              child: Text('Some thing'),
+            ),)
           ],
         ),
       ),

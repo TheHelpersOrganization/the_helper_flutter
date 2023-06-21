@@ -27,4 +27,10 @@ class AccountRequestDetailController extends _$AccountRequestDetailController {
     // state = res;
     // return res.valueOrNull;
   }
+
+  // Future<AccountRequestModel> checkIfRequestRejected({
+  //   required int id,
+  // }) async {
+
+  // }
 }

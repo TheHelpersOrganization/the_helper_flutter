@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/controllers/account_request_detail_screen_controller.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/attached_files_list.dart';
+import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/note_dialog.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/domain/file_info.dart';
@@ -27,16 +28,18 @@ class AccountRequestDetailScreen extends ConsumerWidget {
     final profile =
         ref.watch(accountProfileServiceProvider(id: requestData.accountId!));
     // final customTileExpanded = ref.watch(expansionTitleControllerProvider);
-
+    //Check if request has been reject before
+     
     ref.listen<AsyncValue>(
       accountRequestDetailControllerProvider,
       (_, state) {
         state.showSnackbarOnError(context);
-        if(state.value != null){
+        if (state.value != null) {
           state.showSnackbarOnSuccess(
-          context,
-          content: const Text('Verified account'),
-        );}
+            context,
+            content: const Text('Verified account'),
+          );
+        }
       },
     );
 
@@ -172,7 +175,13 @@ class AccountRequestDetailScreen extends ConsumerWidget {
                         child: PrimaryButton(
                           // isLoading: state.isLoading,
                           loadingText: "Processing...",
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              useRootNavigator: false, 
+                              builder: (context) => const NoteDialogWidget(),
+                            );
+                          },
                           style: ButtonStyle(
                               padding: MaterialStateProperty.all(
                                   const EdgeInsets.symmetric(vertical: 25)),
