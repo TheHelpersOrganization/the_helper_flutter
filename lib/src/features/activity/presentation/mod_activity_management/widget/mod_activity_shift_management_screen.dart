@@ -44,20 +44,30 @@ class ModActivityShiftManagementView extends ConsumerWidget {
               ...filteredShifts.map((e) => ShiftCard(shift: e)).toList(),
             ],
           )
-        : Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Column(
-                children: [
-                  Text(
-                    'No shift found',
-                    style: TextStyle(
-                      color: context.theme.colorScheme.secondary,
-                    ),
+        : Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: CheckboxListTile(
+                    value: isShiftManagerSelected,
+                    onChanged: (value) {
+                      ref.read(isShiftManagerSelectedProvider.notifier).state =
+                          value ?? false;
+                    },
+                    title: const Text('Show shifts you manage'),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.zero,
                   ),
-                  const Text('Tap "+ Shift" to add new shift')
-                ],
-              ),
+                ),
+                Text(
+                  'No shift found',
+                  style: TextStyle(
+                    color: context.theme.colorScheme.secondary,
+                  ),
+                ),
+                const Text('Tap "+ Shift" to add new shift')
+              ],
             ),
           );
   }

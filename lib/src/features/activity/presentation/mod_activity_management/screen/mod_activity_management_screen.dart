@@ -178,8 +178,8 @@ class _ModActivityManagementState
                     TabBar(
                       controller: _tabController,
                       tabs: const [
-                        Tab(text: 'Overview'),
                         Tab(text: 'Shifts'),
+                        Tab(text: 'Overview'),
                       ],
                       indicatorSize: TabBarIndicatorSize.tab,
                     ),
@@ -187,7 +187,11 @@ class _ModActivityManagementState
                       height: 16,
                     ),
                     getTabAt(
-                        tab, data.activity, data.shifts, data.managerProfiles),
+                      tab,
+                      data.activity,
+                      data.shifts,
+                      data.managerProfiles,
+                    ),
                   ],
                 ),
               ),

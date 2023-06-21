@@ -15,8 +15,8 @@ import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 enum TabType {
-  overview,
   shift,
+  overview,
 }
 
 class ExtendedActivity {
@@ -32,7 +32,7 @@ class ExtendedActivity {
 }
 
 final currentTabProvider =
-    StateProvider.autoDispose<TabType>((ref) => TabType.overview);
+    StateProvider.autoDispose<TabType>((ref) => TabType.shift);
 
 // Filter
 final isShiftManagerSelectedProvider =
