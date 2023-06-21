@@ -35,16 +35,18 @@ class ShiftParticipant extends StatelessWidget {
               'Participants',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(slots),
+            Text(
+              slots,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
-        if (joinedPercentage != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: LinearProgressIndicator(
-              value: joinedPercentage,
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: LinearProgressIndicator(
+            value: joinedPercentage ?? 100,
           ),
+        ),
         if (maxParticipants != null)
           Text(
             '${maxParticipants - jp} slots remaining',

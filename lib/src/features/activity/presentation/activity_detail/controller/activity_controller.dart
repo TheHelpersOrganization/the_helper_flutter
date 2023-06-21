@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/activity/my_activity/controller/my_activity_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
@@ -45,6 +46,7 @@ final getActivityAndShiftsProvider =
     if (activity == null) {
       return null;
     }
+    print('activityy');
     final shifts = ref.watch(shiftRepositoryProvider).getShifts(
           query: ShiftQuery(
             activityId: activityId,
@@ -53,7 +55,7 @@ final getActivityAndShiftsProvider =
             ],
           ),
         );
-
+    print('shifts');
     final managerProfiles = ref.watch(profileRepositoryProvider).getProfiles(
           GetProfilesData(
             ids: activity.activityManagerIds?.toList(),
@@ -133,6 +135,7 @@ class CancelJoinShiftController extends StateNotifier<AsyncValue<void>> {
     if (!res.hasError) {
       ref.invalidate(getActivityAndShiftsProvider);
       ref.invalidate(getActivityAndShiftProvider);
+      ref.invalidate(myActivityPagingControllerProvider);
     }
     if (!mounted) {
       return;
@@ -165,6 +168,7 @@ class LeaveShiftController extends StateNotifier<AsyncValue<void>> {
     if (!res.hasError) {
       ref.invalidate(getActivityAndShiftsProvider);
       ref.invalidate(getActivityAndShiftProvider);
+      ref.invalidate(myActivityPagingControllerProvider);
     }
     if (!mounted) {
       return;
