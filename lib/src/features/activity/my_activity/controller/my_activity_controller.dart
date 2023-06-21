@@ -4,7 +4,7 @@ import 'package:the_helper/src/features/activity/my_activity/screen/my_activity_
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 final hasChangedProvider = StateProvider.autoDispose((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose((ref) => '');

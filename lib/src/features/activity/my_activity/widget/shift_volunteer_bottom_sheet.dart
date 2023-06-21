@@ -7,7 +7,7 @@ import 'package:the_helper/src/features/activity/my_activity/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/cancel_join_shift_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/leave_shift_dialog.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/router/router.dart';
 
 class ShiftVolunteerBottomSheet extends ConsumerWidget {

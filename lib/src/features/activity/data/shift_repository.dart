@@ -9,12 +9,14 @@ class ShiftRepository {
   const ShiftRepository({required this.client});
   final Dio client;
 
-  Future<List<Shift>> fetchShifts(int activityId) async {
+  Future<List<Shift>> getShifts(int activityId) async {
     final List<dynamic> res =
         (await client.get('/activities/$activityId/shifts')).data['data'];
     final shifts = res.map((shift) => Shift.fromJson(shift)).toList();
     return shifts;
   }
+
+
   // Future<Shift> fetchShift(int shiftId) async {}
   // Future<Shift> addShift(Shift shift) async {}
   // Future<Shift> updateShift(Shift shift) async {}

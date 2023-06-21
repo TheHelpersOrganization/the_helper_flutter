@@ -6,15 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/controllers/account_request_detail_screen_controller.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/attached_files_list.dart';
+import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
-import '../../../../../common/domain/file_info.dart';
 import '../../../../../common/extension/image.dart';
 import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/detail_list_tile.dart';
 import '../../../../../common/widget/error_widget.dart';
-import '../../../../profile/application/profile_service.dart';
-import '../../../../profile/presentation/profile_controller.dart';
 import '../../../domain/account_request.dart';
 
 class AccountRequestDetailScreen extends ConsumerWidget {
@@ -32,11 +30,12 @@ class AccountRequestDetailScreen extends ConsumerWidget {
       accountRequestDetailControllerProvider,
       (_, state) {
         state.showSnackbarOnError(context);
-        if(state.value != null){
+        if (state.value != null) {
           state.showSnackbarOnSuccess(
-          context,
-          content: const Text('Verified account'),
-        );}
+            context,
+            content: const Text('Verified account'),
+          );
+        }
       },
     );
 
