@@ -10,17 +10,22 @@ const List<DrawerItemModel> volunteer = [
   DrawerItemModel(
     route: AppRoute.home,
     title: 'Home',
-    icon: Icons.home,
+    icon: Icons.home_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.activitySearch,
     title: 'Activities',
-    icon: Icons.search,
+    icon: Icons.search_outlined,
+  ),
+  DrawerItemModel(
+    route: AppRoute.activityMy,
+    title: 'My Activities',
+    icon: Icons.volunteer_activism_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.organizationSearch,
     title: 'Organizations',
-    icon: Icons.search,
+    icon: Icons.search_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.myOrganization,
@@ -30,35 +35,30 @@ const List<DrawerItemModel> volunteer = [
   DrawerItemModel(
     route: AppRoute.news,
     title: 'News',
-    icon: Icons.newspaper,
+    icon: Icons.newspaper_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.chat,
     title: 'Chat',
-    icon: Icons.chat,
+    icon: Icons.chat_outlined,
   ),
-  DrawerItemModel(
-    route: AppRoute.report,
-    title: 'Report',
-    icon: Icons.report,
-  ),
+  // DrawerItemModel(
+  //   route: AppRoute.report,
+  //   title: 'Report',
+  //   icon: Icons.report_outlined,
+  // ),
   DrawerItemModel(
     route: AppRoute.settings,
     title: 'Settings',
-    icon: Icons.settings,
+    icon: Icons.settings_outlined,
   ),
-  // DrawerItemModel(
-  //   route: AppRoute.changeRole,
-  //   title: 'Switch Role',
-  //   icon: Icons.change_circle,
-  // ),
 ];
 
 final List<DrawerItemModel> moderator = [
   const DrawerItemModel(
     route: AppRoute.home,
     title: 'Home',
-    icon: Icons.home,
+    icon: Icons.home_outlined,
   ),
   const DrawerItemModel(
     route: AppRoute.organizationMembersManagement,
@@ -73,12 +73,12 @@ final List<DrawerItemModel> moderator = [
   const DrawerItemModel(
     // route: AppRoute.report,
     title: 'Chat',
-    icon: Icons.report,
+    icon: Icons.report_outlined,
   ),
   const DrawerItemModel(
     route: AppRoute.settings,
     title: 'Settings',
-    icon: Icons.settings,
+    icon: Icons.settings_outlined,
   ),
   DrawerItemModel(
     title: 'Switch Organizations',
@@ -97,63 +97,60 @@ const List<DrawerItemModel> admin = [
   DrawerItemModel(
     route: AppRoute.home,
     title: 'Home',
-    icon: Icons.home,
+    icon: Icons.home_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.accountManage,
-    title: 'Accounts Manage',
-    icon: Icons.search,
-  ),
-  // DrawerItemModel(
-  //       route: AppRoute.organizationManage,
-  //       title: 'Organizations Manage',
-  //       icon: Icons.search,
-  // ),
-  // DrawerItemModel(
-  //   route: AppRoute.organizationRequestsManage,
-  //   title: 'Organization Request Manage',
-  //   icon: Icons.app_registration,
-  // ),
-  DrawerItemModel(
-    title: 'Organizations',
-    icon: Icons.search,
+    title: 'Accounts',
+    icon: Icons.account_circle_outlined,
     subPaths: [
       DrawerItemModel(
-        route: AppRoute.organizationManage,
-        title: 'Organizations Manage',
-        icon: Icons.search,
+        route: AppRoute.accountManage,
+        title: 'Accounts Manage',
+        icon: Icons.search_outlined,
       ),
       DrawerItemModel(
-        route: AppRoute.organizationRequestsManage,
-        title: 'Organizations Requests', 
-        icon: Icons.search,
+        route: AppRoute.accountRequestManage,
+        title: 'Verify Requests Manage',
+        icon: Icons.search_outlined,
       ),
     ],
   ),
   DrawerItemModel(
-    route: AppRoute.accountRequestManage,
-    title: 'Verify Request',
-    icon: Icons.app_registration,
+    title: 'Organizations',
+    icon: Icons.work,
+    subPaths: [
+      DrawerItemModel(
+        route: AppRoute.organizationManage,
+        title: 'Organizations Manage',
+        icon: Icons.search_outlined,
+      ),
+      DrawerItemModel(
+        route: AppRoute.organizationRequestsManage,
+        title: 'Organizations Requests',
+        icon: Icons.search_outlined,
+      ),
+    ],
   ),
   DrawerItemModel(
-    // route: AppRoute.news,
+    route: AppRoute.reportManage,
     title: 'Reports Manage',
-    icon: Icons.newspaper,
+    icon: Icons.newspaper_outlined,
   ),
   DrawerItemModel(
     // route: AppRoute.chat,
     title: 'News Manage',
-    icon: Icons.chat,
+    icon: Icons.chat_outlined,
   ),
   DrawerItemModel(
     // route: AppRoute.report,
     title: 'Chat',
-    icon: Icons.report,
+    icon: Icons.report_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.settings,
     title: 'Settings',
-    icon: Icons.settings,
+    icon: Icons.settings_outlined,
   ),
 ];
 

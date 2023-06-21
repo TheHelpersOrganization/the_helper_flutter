@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
+import 'package:the_helper/src/features/activity/my_activity/screen/my_activity_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
@@ -41,10 +42,11 @@ import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_sc
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
-import '../features/account/presentation/account_request_manage/screens/account_request_detail_screen.dart';
+import '../features/change_role/presentation/screens/admin_home_design.dart';
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
 import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
+import '../features/report/presentation/screen/report_manage_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -257,11 +259,6 @@ final routes = [
             builder: (_, __) => const DevelopingScreen(),
           ),
           GoRoute(
-            path: AppRoute.report.path,
-            name: AppRoute.report.name,
-            builder: (_, __) => const DevelopingScreen(),
-          ),
-          GoRoute(
             path: AppRoute.menu.path,
             name: AppRoute.menu.name,
             builder: (_, __) => const MenuScreen(),
@@ -292,13 +289,14 @@ final routes = [
             builder: (context, state) => const AccountRequestManageScreen(),
           ),
           GoRoute(
-            path: AppRoute.accountRequestDetail.path,
-            name: AppRoute.accountRequestDetail.name,
-            builder: (_, state) => const AccountRequestDetailScreen(
-                // requestId: int.parse(
-                //   state.pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
-                // ),
-                ),
+            path: AppRoute.reportManage.path,
+            name: AppRoute.reportManage.name,
+            builder: (context, state) => const ReportManageScreen(),
+          ),
+          GoRoute(
+            path: AppRoute.screenBuilderCanvas.path,
+            name: AppRoute.screenBuilderCanvas.name,
+            builder: (context, state) => const ScreenBuilderCanvas(),
           ),
         ],
       ),
@@ -397,6 +395,11 @@ final activityRoutes = GoRoute(
       builder: (_, __) => const ActivitySearchScreen(),
     ),
     GoRoute(
+      path: AppRoute.activityMy.path,
+      name: AppRoute.activityMy.name,
+      builder: (_, __) => const MyActivityScreen(),
+    ),
+    GoRoute(
       path: AppRoute.activity.path,
       name: AppRoute.activity.name,
       builder: (_, state) {
@@ -483,7 +486,7 @@ enum AppRoute {
   ),
 
   // Todo: report crud
-  report(
+  reportManage(
     path: '/report',
     name: 'report',
   ),
@@ -553,6 +556,10 @@ enum AppRoute {
   activitySearch(
     path: 'search',
     name: 'activity-search',
+  ),
+  activityMy(
+    path: 'my',
+    name: 'activity-my',
   ),
   activity(
     path: ':activityId',
@@ -638,8 +645,8 @@ enum AppRoute {
   ),
 
   accountManage(
-    path: '/account-manage',
-    name: 'account-manage',
+    path: '/accounts',
+    name: 'accounts',
   ),
   organizationAdminManage(
     path: '/organization-admin-manage',
@@ -650,12 +657,12 @@ enum AppRoute {
     name: 'my-organization',
   ),
   accountRequestManage(
-    path: '/manage',
-    name: 'account-request-manage',
+    path: '/account-requests',
+    name: 'account-requests',
   ),
-  accountRequestDetail(
-    path: '/request-detail',
-    name: 'account-request-detail',
+  screenBuilderCanvas(
+    path: '/screen-builder',
+    name: 'screen-builder',
   ),
   ;
 

@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
+import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
@@ -28,6 +30,11 @@ final isParticipantLimitedProvider =
     StateProvider.autoDispose<bool?>((ref) => null);
 
 final startDateProvider = StateProvider.autoDispose<DateTime?>((ref) => null);
+
+final locationTextEditingControllerProvider =
+    StateProvider.autoDispose<TextEditingController>(
+        (ref) => TextEditingController());
+final placeProvider = StateProvider<PlaceDetails?>((ref) => null);
 
 // Contact
 final selectedContactsProvider =
@@ -91,8 +98,10 @@ class CreateShiftController extends StateNotifier<AsyncValue<void>> {
       state = AsyncError(res.error!, res.stackTrace!);
       return;
     }
-    router.goNamed(AppRoute.organizationActivityManagement.name,
-        pathParameters: {'activityId': shift.activityId.toString()});
+    router.goNamed(AppRoute.organizationShift.name, pathParameters: {
+      'activityId': shift.activityId.toString(),
+      'shiftId': res.value!.id.toString()
+    });
     state = const AsyncValue.data(null);
   }
 }

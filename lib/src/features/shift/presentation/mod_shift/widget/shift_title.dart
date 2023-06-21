@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/utils/shift.dart';
 
 class ShiftTitle extends StatelessWidget {
   final Activity activity;
@@ -19,10 +20,18 @@ class ShiftTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          shift.name,
-          style: context.theme.textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
+        Row(
+          children: [
+            Text(
+              shift.name,
+              style: context.theme.textTheme.titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            getShiftStatusLabel(shift.status),
+          ],
         ),
         Row(
           children: [

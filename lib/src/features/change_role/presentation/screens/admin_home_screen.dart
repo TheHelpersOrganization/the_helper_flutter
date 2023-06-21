@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/summary_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/router/router.dart';
 
 import '../../../../common/screens/error_screen.dart';
 import '../../../authentication/application/auth_service.dart';
@@ -50,8 +51,15 @@ class AdminView extends ConsumerWidget {
                 Container(
                   height: 180,
                   color: Colors.blue,
-                  child: const Center(
-                    child: Text('1000 Online'),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const Text('1000 Online'),
+                        IconButton(onPressed: () => 
+                        context.pushNamed(AppRoute.screenBuilderCanvas.name), 
+                        icon: const Icon(Icons.golf_course)),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(

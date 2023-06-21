@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 
-class ModActivityShiftManagementView extends StatelessWidget {
+class ModActivityShiftManagementView extends ConsumerWidget {
   final List<Shift> shifts;
 
   const ModActivityShiftManagementView({
@@ -12,11 +14,35 @@ class ModActivityShiftManagementView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return shifts.isNotEmpty
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isShiftManagerSelected = ref.watch(isShiftManagerSelectedProvider);
+    final filteredShifts = shifts.where((element) {
+      if (isShiftManagerSelected) {
+        return element.me?.isShiftManager == true;
+      }
+      return true;
+    }).toList();
+
+    return filteredShifts.isNotEmpty
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: shifts.map((e) => ShiftCard(shift: e)).toList(),
+            children: [
+              const SizedBox(
+                height: 4,
+              ),
+              CheckboxListTile(
+                value: isShiftManagerSelected,
+                onChanged: (value) {
+                  ref.read(isShiftManagerSelectedProvider.notifier).state =
+                      value ?? false;
+                },
+                title: const Text('Show shifts you manage'),
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+              ),
+              const Divider(),
+              ...filteredShifts.map((e) => ShiftCard(shift: e)).toList(),
+            ],
           )
         : Padding(
             padding: const EdgeInsets.all(12),

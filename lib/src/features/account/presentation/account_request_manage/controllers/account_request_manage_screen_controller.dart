@@ -72,13 +72,15 @@ class ScrollPagingController extends _$ScrollPagingController {
     final items = await guardAsyncValue<List<AccountRequestModel>>(
         () => accountRepository.getAll(
               query: AccountRequestQuery(
-                limit: 10,
+                include: 'file',
+                limit: 5,
                 offset: pageKey,
                 status: tabStatus,
               ),
             ));
     items.whenData((value) {
       final isLastPage = value.length < 100;
+      print(value.length);
       if (isLastPage) {
         state.appendLastPage(value);
       } else {

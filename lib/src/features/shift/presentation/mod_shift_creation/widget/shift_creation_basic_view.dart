@@ -4,6 +4,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/location/domain/place_details.dart';
+import 'package:the_helper/src/features/location/presentation/location_picker/screen/location_picker_screen.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/controller/mod_shift_creation_controller.dart';
 
@@ -21,6 +23,9 @@ class ShiftCreationBasicView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isParticipantLimited = ref.watch(isParticipantLimitedProvider);
     final startDate = ref.watch(startDateProvider);
+    final locationTextEditingController =
+        ref.watch(locationTextEditingControllerProvider);
+    final place = ref.watch(placeProvider);
 
     return FormBuilder(
       key: formKey,
@@ -72,20 +77,58 @@ class ShiftCreationBasicView extends ConsumerWidget {
             ),
           ),
           const SizedBox(
+            height: 36,
+          ),
+          Text(
+            'Location',
+            style: context.theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
             height: 12,
           ),
           FormBuilderTextField(
             name: 'location',
-            //initialValue: initialShift?.locations?.firstOrNull,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
+            controller: locationTextEditingController,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
               hintText: 'Enter location',
               labelText: 'Location',
+              suffixIcon: IconButton(
+                onPressed: () => locationTextEditingController.clear(),
+                icon: const Icon(Icons.clear),
+              ),
+              helperText: 'Manually type in or select a location on map',
+              helperMaxLines: 2,
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
-              FormBuilderValidators.maxLength(50),
+              FormBuilderValidators.maxLength(1000),
             ]),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          FilledButton.tonalIcon(
+            onPressed: () async {
+              final PlaceDetails? place = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const LocationPickerScreen(),
+                ),
+              );
+              if (!context.mounted) {
+                return;
+              }
+              if (place == null) {
+                return;
+              }
+              locationTextEditingController.text =
+                  place.formattedAddress ?? locationTextEditingController.text;
+              ref.read(placeProvider.notifier).state = place;
+            },
+            icon: const Icon(Icons.location_on_outlined),
+            label: const Text('Pick Location'),
           ),
           const SizedBox(
             height: 36,
