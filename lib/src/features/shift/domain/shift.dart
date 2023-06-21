@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/shift/domain/shift_me.dart';
@@ -35,6 +36,7 @@ class Shift with _$Shift {
     List<ShiftManager>? shiftManagers,
     ShiftVolunteer? myShiftVolunteer,
     ShiftMe? me,
+    Activity? activity,
   }) = _Shift;
 
   factory Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);

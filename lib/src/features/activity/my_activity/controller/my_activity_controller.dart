@@ -6,8 +6,9 @@ import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
 
+final isSearchingProvider = StateProvider.autoDispose((ref) => false);
 final hasChangedProvider = StateProvider.autoDispose((ref) => false);
-final searchPatternProvider = StateProvider.autoDispose((ref) => '');
+final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final tabTypeProvider = StateProvider.autoDispose((ref) => TabType.ongoing);
 
 final queries = {
@@ -34,17 +35,21 @@ final queries = {
 final myActivityPagingControllerProvider = Provider.autoDispose((ref) {
   final hasChanged = ref.watch(hasChangedProvider);
   final controller = PagingController<int, Shift>(firstPageKey: 0);
-  final searchPattern = ref.watch(searchPatternProvider);
+  final searchPattern = ref.watch(searchPatternProvider)?.trim();
   final status = ref.watch(tabTypeProvider);
   final shiftVolunteerRepository = ref.watch(shiftRepositoryProvider);
 
   controller.addPageRequestListener((pageKey) async {
     try {
       final query = queries[status]!;
-      final updatedQuery = query.copyWith(name: searchPattern, include: [
-        ShiftQueryInclude.myShiftVolunteer,
-        ShiftQueryInclude.shiftSkill
-      ]);
+      final updatedQuery = query.copyWith(
+        name: searchPattern?.isNotEmpty == true ? searchPattern : null,
+        include: [
+          ShiftQueryInclude.myShiftVolunteer,
+          ShiftQueryInclude.shiftSkill,
+          ShiftQueryInclude.activity,
+        ],
+      );
       final items = await shiftVolunteerRepository.getShifts(
         query: updatedQuery,
       );

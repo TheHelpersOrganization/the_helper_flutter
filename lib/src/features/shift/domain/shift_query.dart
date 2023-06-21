@@ -11,6 +11,7 @@ class ShiftQueryInclude {
   static const shiftManager = 'shiftManager';
   static const shiftVolunteer = 'shiftVolunteer';
   static const myShiftVolunteer = 'myShiftVolunteer';
+  static const activity = 'activity';
 }
 
 class ShiftQuerySort {
