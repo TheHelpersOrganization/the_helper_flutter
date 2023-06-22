@@ -34,11 +34,12 @@ class ProfileVerifiedRequestController
         [];
     final fileModels = await Future.wait(fileFutures);
 
-    state = await AsyncValue.guard(() => ref
+    final res = await AsyncValue.guard(() => ref
         .watch(profileRepositoryProvider)
         .requestVerifiedProfile(VerifiedRequestBody(
           content: "Profile verified request",
           files: fileModels.map((e) => e.id).toList(),
         )));
+    state = res;
   }
 }

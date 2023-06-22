@@ -79,6 +79,7 @@ class ScrollPagingController extends _$ScrollPagingController {
             ));
     items.whenData((value) {
       final isLastPage = value.length < 100;
+      print(value.length);
       if (isLastPage) {
         state.appendLastPage(value);
       } else {

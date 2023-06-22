@@ -64,12 +64,12 @@ class MyActivityScreen extends ConsumerWidget {
       (_, state) {
         state.showSnackbarOnError(
           context,
-          name: shiftSnackbarName,
+          name: myShiftSnackbarName,
         );
         state.showSnackbarOnSuccess(
           context,
           content: const Text('Shift registration cancelled successfully'),
-          name: shiftSnackbarName,
+          name: myShiftSnackbarName,
         );
       },
     );
@@ -78,12 +78,30 @@ class MyActivityScreen extends ConsumerWidget {
       (_, state) {
         state.showSnackbarOnError(
           context,
-          name: shiftSnackbarName,
+          name: myShiftSnackbarName,
         );
         state.showSnackbarOnSuccess(
           context,
           content: const Text('Leave shift successfully'),
-          name: shiftSnackbarName,
+          name: myShiftSnackbarName,
+        );
+      },
+    );
+    ref.listen<AsyncValue>(
+      checkInControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(
+          context,
+          name: myShiftSnackbarName,
+        );
+      },
+    );
+    ref.listen<AsyncValue>(
+      checkOutControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(
+          context,
+          name: myShiftSnackbarName,
         );
       },
     );

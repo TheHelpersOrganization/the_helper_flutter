@@ -4,7 +4,8 @@ import 'package:the_helper/src/features/activity/my_activity/screen/my_activity_
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/utils/async_value.dart';
 
 final isSearchingProvider = StateProvider.autoDispose((ref) => false);
 final hasChangedProvider = StateProvider.autoDispose((ref) => false);
@@ -13,22 +14,22 @@ final tabTypeProvider = StateProvider.autoDispose((ref) => TabType.ongoing);
 
 final queries = {
   TabType.ongoing: const ShiftQuery(
-    status: ShiftStatus.ongoing,
+    status: [ShiftStatus.ongoing],
     myJoinStatus: [ShiftVolunteerStatus.approved],
     sort: [ShiftQuerySort.startTimeAsc],
   ),
   TabType.upcoming: const ShiftQuery(
-    status: ShiftStatus.pending,
+    status: [ShiftStatus.pending],
     myJoinStatus: [ShiftVolunteerStatus.pending, ShiftVolunteerStatus.approved],
     sort: [ShiftQuerySort.startTimeAsc],
   ),
   TabType.completed: const ShiftQuery(
-    status: ShiftStatus.completed,
+    status: [ShiftStatus.completed],
     myJoinStatus: [ShiftVolunteerStatus.approved],
     sort: [ShiftQuerySort.startTimeDesc],
   ),
   TabType.other: const ShiftQuery(
-    status: ShiftStatus.ongoing,
+    status: [ShiftStatus.ongoing],
   ),
 };
 
@@ -69,3 +70,58 @@ final myActivityPagingControllerProvider = Provider.autoDispose((ref) {
   }
   return controller;
 });
+
+class CheckInController extends StateNotifier<AsyncValue<void>> {
+  final AutoDisposeStateNotifierProviderRef ref;
+  final ShiftRepository shiftRepository;
+
+  CheckInController({
+    required this.ref,
+    required this.shiftRepository,
+  }) : super(const AsyncValue.data(null));
+
+  Future<void> checkIn({required int shiftId}) async {
+    state = const AsyncValue.loading();
+    final res =
+        await guardAsyncValue(() => shiftRepository.checkIn(shiftId: shiftId));
+    if (!mounted) {
+      return;
+    }
+    ref.invalidate(myActivityPagingControllerProvider);
+    state = res;
+  }
+}
+
+final checkInControllerProvider =
+    StateNotifierProvider.autoDispose<CheckInController, AsyncValue<void>>(
+  (ref) => CheckInController(
+    ref: ref,
+    shiftRepository: ref.watch(shiftRepositoryProvider),
+  ),
+);
+
+class CheckOutController extends StateNotifier<AsyncValue<void>> {
+  final ShiftRepository shiftRepository;
+
+  CheckOutController({
+    required this.shiftRepository,
+  }) : super(const AsyncValue.data(null));
+
+  Future<void> checkOut({required int shiftId}) async {
+    state = const AsyncValue.loading();
+    final res = await guardAsyncValue(
+      () => shiftRepository.checkOut(shiftId: shiftId),
+    );
+    if (!mounted) {
+      return;
+    }
+    state = res;
+  }
+}
+
+final checkOutControllerProvider =
+    StateNotifierProvider.autoDispose<CheckOutController, AsyncValue<void>>(
+  (ref) => CheckOutController(
+    shiftRepository: ref.watch(shiftRepositoryProvider),
+  ),
+);

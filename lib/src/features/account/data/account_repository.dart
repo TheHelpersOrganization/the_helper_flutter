@@ -83,6 +83,14 @@ class AccountRepository {
     return AccountModel.fromJson(res.data['data']);
   }
 
+  Future<AccountModel> verifyAccount({
+    required int accId,
+  }) async {
+    final res = await client.put('/admin/accounts/$accId/verify',
+        data: {"isVerified": true, "note": "Admin has verified your account"});
+    return AccountModel.fromJson(res.data['data']);
+  }
+
   Future<AccountModel> delete(int id) async {
     final res = await client.delete('/something/$id');
     return AccountModel.fromJson(res.data['data']);

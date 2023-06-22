@@ -3,7 +3,7 @@ import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/shift/domain/shift_me.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 import 'shift_manager.dart';
 import 'shift_skill.dart';

@@ -9,10 +9,9 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/controller/shift_controller.dart';
-import 'package:the_helper/src/features/shift_volunteer/data/shift_volunteer_repository.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift_volunteer/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 class ExtendedActivity {
@@ -63,7 +62,7 @@ final getActivityAndShiftsProvider =
         );
 
     final myShiftVolunteers =
-        ref.watch(shiftVolunteerRepositoryProvider).getShiftVolunteers(
+        ref.watch(shiftRepositoryProvider).getShiftVolunteers(
               query: ShiftVolunteerQuery(
                 activityId: activityId,
                 mine: true,
@@ -81,11 +80,11 @@ final getActivityAndShiftsProvider =
 
 class JoinShiftController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;
-  final ShiftVolunteerRepository shiftVolunteerRepository;
+  final ShiftRepository shiftRepository;
 
   JoinShiftController({
     required this.ref,
-    required this.shiftVolunteerRepository,
+    required this.shiftRepository,
   }) : super(const AsyncValue.data(null));
 
   Future<void> joinShift({
@@ -96,7 +95,7 @@ class JoinShiftController extends StateNotifier<AsyncValue<void>> {
     }
     state = const AsyncValue.loading();
     final res = await guardAsyncValue(
-      () => shiftVolunteerRepository.joinShift(
+      () => shiftRepository.joinShift(
         shiftId: shiftId,
       ),
     );
@@ -113,11 +112,11 @@ class JoinShiftController extends StateNotifier<AsyncValue<void>> {
 
 class CancelJoinShiftController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;
-  final ShiftVolunteerRepository shiftVolunteerRepository;
+  final ShiftRepository shiftRepository;
 
   CancelJoinShiftController({
     required this.ref,
-    required this.shiftVolunteerRepository,
+    required this.shiftRepository,
   }) : super(const AsyncValue.data(null));
 
   Future<void> cancelJoinShift({
@@ -128,7 +127,7 @@ class CancelJoinShiftController extends StateNotifier<AsyncValue<void>> {
     }
     state = const AsyncValue.loading();
     final res = await guardAsyncValue(
-      () => shiftVolunteerRepository.cancelJoinShift(
+      () => shiftRepository.cancelJoinShift(
         shiftId: shiftId,
       ),
     );
@@ -146,11 +145,11 @@ class CancelJoinShiftController extends StateNotifier<AsyncValue<void>> {
 
 class LeaveShiftController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;
-  final ShiftVolunteerRepository shiftVolunteerRepository;
+  final ShiftRepository shiftRepository;
 
   LeaveShiftController({
     required this.ref,
-    required this.shiftVolunteerRepository,
+    required this.shiftRepository,
   }) : super(const AsyncValue.data(null));
 
   Future<void> leaveShift({
@@ -161,7 +160,7 @@ class LeaveShiftController extends StateNotifier<AsyncValue<void>> {
     }
     state = const AsyncValue.loading();
     final res = await guardAsyncValue(
-      () => shiftVolunteerRepository.leaveShift(
+      () => shiftRepository.leaveShift(
         shiftId: shiftId,
       ),
     );
@@ -181,7 +180,7 @@ final joinShiftControllerProvider =
     StateNotifierProvider.autoDispose<JoinShiftController, AsyncValue<void>>(
   (ref) => JoinShiftController(
     ref: ref,
-    shiftVolunteerRepository: ref.watch(shiftVolunteerRepositoryProvider),
+    shiftRepository: ref.watch(shiftRepositoryProvider),
   ),
 );
 
@@ -189,7 +188,7 @@ final cancelJoinShiftControllerProvider = StateNotifierProvider.autoDispose<
     CancelJoinShiftController, AsyncValue<void>>(
   (ref) => CancelJoinShiftController(
     ref: ref,
-    shiftVolunteerRepository: ref.watch(shiftVolunteerRepositoryProvider),
+    shiftRepository: ref.watch(shiftRepositoryProvider),
   ),
 );
 
@@ -197,6 +196,6 @@ final leaveShiftControllerProvider =
     StateNotifierProvider.autoDispose<LeaveShiftController, AsyncValue<void>>(
   (ref) => LeaveShiftController(
     ref: ref,
-    shiftVolunteerRepository: ref.watch(shiftVolunteerRepositoryProvider),
+    shiftRepository: ref.watch(shiftRepositoryProvider),
   ),
 );

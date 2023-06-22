@@ -9,7 +9,7 @@ part 'shifts_controller.g.dart';
 class Shifts extends _$Shifts {
   Future<List<Shift>> _fetchShifts(int activityId) async {
     final shifts =
-        await ref.watch(shiftRepositoryProvider).fetchShifts(activityId);
+        await ref.watch(shiftRepositoryProvider).getShifts(activityId);
     return shifts;
   }
 

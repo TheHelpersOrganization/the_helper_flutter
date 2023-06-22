@@ -100,13 +100,11 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
                                   .notifier)
                               .sendVerifiedRequest(files: files);
 
-                          print('e');
+
 
                           if (context.mounted) {
-                            print('f');
                             context.pop();
                           }
-                          print('g');
                         },
                         child: const Text('Submit'),
                       ),

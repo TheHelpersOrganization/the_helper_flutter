@@ -42,21 +42,16 @@ const List<DrawerItemModel> volunteer = [
     title: 'Chat',
     icon: Icons.chat_outlined,
   ),
-  DrawerItemModel(
-    route: AppRoute.report,
-    title: 'Report',
-    icon: Icons.report_outlined,
-  ),
+  // DrawerItemModel(
+  //   route: AppRoute.report,
+  //   title: 'Report',
+  //   icon: Icons.report_outlined,
+  // ),
   DrawerItemModel(
     route: AppRoute.settings,
     title: 'Settings',
     icon: Icons.settings_outlined,
   ),
-  // DrawerItemModel(
-  //   route: AppRoute.changeRole,
-  //   title: 'Switch Role',
-  //   icon: Icons.change_circle,
-  // ),
 ];
 
 final List<DrawerItemModel> moderator = [
@@ -106,22 +101,24 @@ const List<DrawerItemModel> admin = [
   ),
   DrawerItemModel(
     route: AppRoute.accountManage,
-    title: 'Accounts Manage',
-    icon: Icons.search_outlined,
+    title: 'Accounts',
+    icon: Icons.account_circle_outlined,
+    subPaths: [
+      DrawerItemModel(
+        route: AppRoute.accountManage,
+        title: 'Accounts Manage',
+        icon: Icons.search_outlined,
+      ),
+      DrawerItemModel(
+        route: AppRoute.accountRequestManage,
+        title: 'Verify Requests Manage',
+        icon: Icons.search_outlined,
+      ),
+    ],
   ),
-  // DrawerItemModel(
-  //       route: AppRoute.organizationManage,
-  //       title: 'Organizations Manage',
-  //       icon: Icons.search,
-  // ),
-  // DrawerItemModel(
-  //   route: AppRoute.organizationRequestsManage,
-  //   title: 'Organization Request Manage',
-  //   icon: Icons.app_registration,
-  // ),
   DrawerItemModel(
     title: 'Organizations',
-    icon: Icons.search_outlined,
+    icon: Icons.work,
     subPaths: [
       DrawerItemModel(
         route: AppRoute.organizationManage,
@@ -136,12 +133,7 @@ const List<DrawerItemModel> admin = [
     ],
   ),
   DrawerItemModel(
-    route: AppRoute.accountRequestManage,
-    title: 'Verify Request',
-    icon: Icons.app_registration_outlined,
-  ),
-  DrawerItemModel(
-    // route: AppRoute.news,
+    route: AppRoute.reportManage,
     title: 'Reports Manage',
     icon: Icons.newspaper_outlined,
   ),

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/features/shift/domain/update_shift.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
@@ -19,6 +21,65 @@ class ShiftRepository {
     final res = await client.get('/shifts', queryParameters: query?.toJson());
     final List<dynamic> resList = res.data['data'];
     return resList.map((e) => Shift.fromJson(e)).toList();
+  }
+
+  Future<List<ShiftVolunteer>> getShiftVolunteerQ(
+      {Map<String, dynamic>? queryParameters}) async {
+    final List<dynamic> res = (await client.get(
+      '/mod/shift-volunteers',
+      queryParameters: queryParameters,
+    ))
+        .data['data'];
+    return res.map((data) => ShiftVolunteer.fromJson(data)).toList();
+  }
+
+  Future<List<ShiftVolunteer>> getShiftVolunteers({
+    ShiftVolunteerQuery? query,
+  }) async {
+    final res = await client.get(
+      '/shift-volunteers',
+      queryParameters: query?.toJson(),
+    );
+    final List<dynamic> resList = res.data['data'];
+    return resList.map((e) => ShiftVolunteer.fromJson(e)).toList();
+  }
+
+  Future<ShiftVolunteer?> joinShift({
+    required int shiftId,
+  }) async {
+    final res = await client.post(
+      '/shifts/$shiftId/volunteers/join',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer?> cancelJoinShift({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/cancel-join',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer?> leaveShift({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/leave',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<Shift> approveVolunteer(int shiftId, int accountId) async {
+    final res = (await client.put(
+      '/shifts/$shiftId/volunteers/$accountId/status',
+      queryParameters: {
+        "status": "approved",
+      },
+    ))
+        .data['data'];
+    return Shift.fromJson(res);
   }
 
   Future<Shift?> getShiftById({
@@ -60,6 +121,24 @@ class ShiftRepository {
   }) async {
     final res = await client.delete('/shifts/$id');
     return Shift.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer> checkIn({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/check-in',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer> checkOut({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/check-out',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
   }
 }
 

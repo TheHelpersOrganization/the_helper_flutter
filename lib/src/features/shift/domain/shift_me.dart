@@ -8,6 +8,8 @@ class ShiftMe with _$ShiftMe {
   @JsonSerializable(includeIfNull: false)
   const factory ShiftMe({
     bool? isShiftManager,
+    bool? canCheckIn,
+    bool? canCheckOut,
   }) = _ShiftMe;
 
   factory ShiftMe.fromJson(Map<String, dynamic> json) =>
