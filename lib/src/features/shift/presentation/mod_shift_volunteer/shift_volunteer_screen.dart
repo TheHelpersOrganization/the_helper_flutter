@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_applicant_tab.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_other_tab.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_participant_tab.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
 const List<Tab> tabs = [
   Tab(
@@ -34,6 +36,21 @@ class ShiftVolunteerScreen extends ConsumerWidget {
     // ),
     // error: (error, _) => Text('Error: $error'),
     // data: (shiftVolunteer) {
+    //TODO: 
+    // ref.listen<AsyncValue>(
+    //   approveVolunteerControllerProvider,
+    //   (_, state) {
+    //     state.showSnackbarOnError(
+    //       context,
+    //       // name: shiftSnackbarName,
+    //     );
+    //     state.showSnackbarOnSuccess(
+    //       context,
+    //       content: const Text('Approve volunteer successfully'),
+    //       // name: shiftSnackbarName,
+    //     );
+    //   },
+    // );
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

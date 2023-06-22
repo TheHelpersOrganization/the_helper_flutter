@@ -10,13 +10,14 @@ class ShiftVolunteerOtherTab extends ConsumerWidget {
     required this.shiftId,
     super.key,
   });
+  static const String tabName = 'Others';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: CustomScrollView(
         primary: true,
-        key: const PageStorageKey<String>('Participant'),
+        key: const PageStorageKey<String>(tabName),
         slivers: [
           SliverOverlapInjector(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
@@ -34,14 +35,17 @@ class ShiftVolunteerOtherTab extends ConsumerWidget {
                       shiftId: shiftId,
                       offset: offset,
                       limit: limit,
-                      status: 'Others',
+                      status: tabName,
                     ),
                   );
                   return tabData.when(
-                    data: (data) {
-                      if (itemIndex >= data.length) return null;
-                      final profile = data[itemIndex].profile!;
-                      return VolunteerListTile(profile: profile);
+                    skipLoadingOnRefresh: false,
+                    data: (volunteers) {
+                      if (itemIndex >= volunteers.length) return null;
+                      return VolunteerListTile(
+                        volunteer: volunteers[itemIndex],
+                        tab: tabName,
+                      );
                     },
                     error: (Object error, StackTrace stackTrace) =>
                         const Text('Error'),

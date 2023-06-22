@@ -4,6 +4,10 @@ String getProfileName(Profile? profile) {
   if (profile == null) {
     return 'Unknown Name';
   }
+  String fullName = '';
+  fullName += (profile.firstName != null) ? '${profile.firstName!} ' : '';
+  fullName += profile.lastName ?? '';
+  if (fullName.isNotEmpty) return fullName;
   String name = profile.username ??
       profile.email ??
       profile.id?.toString() ??

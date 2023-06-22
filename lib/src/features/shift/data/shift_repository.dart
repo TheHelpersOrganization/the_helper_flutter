@@ -71,15 +71,46 @@ class ShiftRepository {
     return ShiftVolunteer.fromJson(res.data['data']);
   }
 
-  Future<Shift> approveVolunteer(int shiftId, int accountId) async {
+  Future<ShiftVolunteer?> approveVolunteer(
+    int shiftId,
+    int volunteerId,
+    [CancelToken? cancenToken]
+  ) async {
     final res = (await client.put(
-      '/shifts/$shiftId/volunteers/$accountId/status',
+      '/shifts/$shiftId/volunteers/$volunteerId/approve',
+      cancelToken: cancenToken,
+    ))
+        .data['data'];
+    return ShiftVolunteer.fromJson(res);
+  }
+
+  Future<ShiftVolunteer?> rejectVolunteer(
+    int shiftId,
+    int volunteerId,
+  ) async {
+    final res = (await client.put(
+      '/shifts/$shiftId/volunteers/$volunteerId/reject',
+    ))
+        .data['data'];
+    return ShiftVolunteer.fromJson(res);
+  }
+
+// TODO: replace completion and reviewNote with single Review object
+  Future<ShiftVolunteer?> reviewVolunteer(
+    int shiftId,
+    int volunteerId,
+    double completion,
+    String reviewNote,
+  ) async {
+    final res = (await client.put(
+      '/shifts/$shiftId/volunteers/$volunteerId/reject',
       queryParameters: {
-        "status": "approved",
+        "completion": completion,
+        "reviewNote": reviewNote,
       },
     ))
         .data['data'];
-    return Shift.fromJson(res);
+    return ShiftVolunteer.fromJson(res);
   }
 
   Future<Shift?> getShiftById({

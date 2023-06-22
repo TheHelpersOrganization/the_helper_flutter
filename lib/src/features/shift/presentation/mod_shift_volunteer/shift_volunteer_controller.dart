@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_applicant_tab.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_other_tab.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_participant_tab.dart';
 
 import '../../application/mod_shift_volunteer_service.dart';
 
@@ -31,32 +35,77 @@ part 'shift_volunteer_controller.g.dart';
 //   });
 //   return volunteers;
 // }
-enum ApplicantStatus {
-  all,
-  satisfied,
-  unsatisfied,
-}
+// enum ApplicantStatus {
+//   all,
+//   satisfied,
+//   unsatisfied,
+// }
 
-enum OtherStatus {
-  all,
-  rejected,
-  cancelled,
-}
+// enum OtherStatus {
+//   all,
+//   rejected,
+//   cancelled,
+// }
+
+// @riverpod
+// class OtherTabFilter extends _$OtherTabFilter {
+//   @override
+//   OtherStatus build() {
+//     return OtherStatus.all;
+//   }
+// }
+
+// @riverpod
+// class ApplicantFilter extends _$ApplicantFilter {
+//   @override
+//   ApplicantStatus build() {
+//     return ApplicantStatus.all;
+//   }
+// }
 
 @riverpod
-class OtherTabFilter extends _$OtherTabFilter {
+class ApproveVolunteerController extends _$ApproveVolunteerController {
+  final cancelToken = CancelToken();
   @override
-  OtherStatus build() {
-    return OtherStatus.all;
+  FutureOr<ShiftVolunteer?> build({required int shiftId, required int volunteerId}) {
+    ref.onDispose(() => cancelToken.cancel());
+    return null;
   }
-}
 
-@riverpod
-class ApplicantFilter extends _$ApplicantFilter {
-  @override
-  ApplicantStatus build() {
-    return ApplicantStatus.all;
+  Future<ShiftVolunteer?> approveVolunteer(
+  ) async {
+    state = const AsyncValue.loading();
+    final response = await AsyncValue.guard(() async {
+      final repository = ref.watch(shiftRepositoryProvider);
+      final response = await repository.approveVolunteer(
+        shiftId,
+        volunteerId,
+        cancelToken,
+      );
+      return response;
+    });
+    if (cancelToken.isCancelled == true) return null;
+    ref.invalidate(shiftVolunteerControllerProvider);
+    state = response;
+    // state = AsyncValue.data(null);
   }
+  // Future<ShiftVolunteer?> approveVolunteer(
+  // ) async {
+  //   state = const AsyncValue.loading();
+  //   final response = await AsyncValue.guard(() async {
+  //     final repository = ref.watch(shiftRepositoryProvider);
+  //     final response = await repository.approveVolunteer(
+  //       shiftId,
+  //       volunteerId,
+  //       cancelToken,
+  //     );
+  //     return response;
+  //   });
+  //   if (cancelToken.isCancelled == true) return null;
+  //   ref.invalidate(shiftVolunteerControllerProvider);
+  //   state = response;
+  //   // state = AsyncValue.data(null);
+  // }
 }
 
 @riverpod
@@ -76,13 +125,13 @@ class ShiftVolunteerController extends _$ShiftVolunteerController {
         ref.watch(modShiftVolunteerServiceProvider);
     String? st;
     switch (status) {
-      case 'Applicant':
+      case ShiftVolunteerApplicantTab.tabName:
         st = 'pending';
         break;
-      case 'Participants':
+      case ShiftVolunteerParticipantTab.tabName:
         st = 'approved';
         break;
-      case 'Other':
+      case ShiftVolunteerOtherTab.tabName:
         st = 'rejected,removed,leaved';
         break;
       default:
@@ -99,21 +148,37 @@ class ShiftVolunteerController extends _$ShiftVolunteerController {
     return volunteers;
   }
 
-  Future<void> approveVolunteer(
-    int accountId,
-  ) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () async {
-        await ref.watch(shiftRepositoryProvider).approveVolunteer(
-              shiftId,
-              accountId,
-            );
-        return _getShiftVolunteer();
-      },
-    );
-  }
+  // Future<void> approveVolunteer(
+  //   int volunteerId,
+  // ) async {
+  //   state = const AsyncValue.loading();
+  //   state = await AsyncValue.guard(
+  //     () async {
+  //       await ref.watch(shiftRepositoryProvider).approveVolunteer(
+  //             shiftId,
+  //             volunteerId,
+  //           );
+  //       return _getShiftVolunteer();
+  //     },
+  //   );
+  // }
+
+  // Future<void> rejectVolunteer(
+  //   int volunteerId,
+  // ) async {
+  //   state = const AsyncValue.loading();
+  //   state = await AsyncValue.guard(
+  //     () async {
+  //       await ref.watch(shiftRepositoryProvider).rejectVolunteer(
+  //             shiftId,
+  //             volunteerId,
+  //           );
+  //       return _getShiftVolunteer();
+  //     },
+  //   );
+  // }
 }
+
 
 // @riverpod
 // Future<List<ShiftVolunteer>> filteredShiftOther(
