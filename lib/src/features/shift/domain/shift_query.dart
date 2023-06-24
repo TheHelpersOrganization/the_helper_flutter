@@ -35,6 +35,8 @@ class ShiftQuery with _$ShiftQuery {
     bool? isShiftManager,
     @CommaSeparatedStringsConverter() List<String>? include,
     @CommaSeparatedStringsConverter() List<String>? sort,
+    int? limit,
+    int? offset,
   }) = _ShiftQuery;
 
   factory ShiftQuery.fromJson(Map<String, dynamic> json) =>

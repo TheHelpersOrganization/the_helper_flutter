@@ -1,75 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 class ShiftVolunteerNotification extends StatelessWidget {
-  final ShiftVolunteerStatus? status;
-  final DateTime? updatedAt;
+  final String message;
+  final Widget? action;
 
   const ShiftVolunteerNotification({
     super.key,
-    this.status,
-    this.updatedAt,
+    required this.message,
+    this.action,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Widget widget;
-
-    if (status == ShiftVolunteerStatus.approved) {
-      widget = Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.yellow[100],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: Wrap(
+          spacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text(
-              'Approved at ${DateFormat('hh:mm dd/MM/yyyy').format(updatedAt!)}',
-              style: TextStyle(
-                color: context.theme.colorScheme.secondary,
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            const Chip(
-              labelPadding: EdgeInsets.symmetric(horizontal: 4),
-              padding: EdgeInsets.symmetric(horizontal: 2),
-              avatar: Icon(Icons.check),
-              label: Text('Approved'),
-            ),
+            const Icon(Icons.info_outline),
+            Text(message),
+            action ?? const SizedBox.shrink(),
           ],
         ),
-      );
-    } else if (status == ShiftVolunteerStatus.pending) {
-      widget = Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Registered at ${DateFormat('hh:mm dd/MM/yyyy').format(updatedAt!)}',
-              style: TextStyle(
-                color: context.theme.colorScheme.secondary,
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            const Chip(
-              labelPadding: EdgeInsets.symmetric(horizontal: 4),
-              padding: EdgeInsets.symmetric(horizontal: 2),
-              label: Text('Waiting for approval'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      widget = const SizedBox(
-        height: 24,
-      );
-    }
-
-    return widget;
+      ),
+    );
   }
 }

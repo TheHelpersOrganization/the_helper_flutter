@@ -4,10 +4,10 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/activity/my_activity/controller/my_activity_controller.dart';
-import 'package:the_helper/src/features/activity/my_activity/widget/my_shift_card.dart';
-import 'package:the_helper/src/features/activity/presentation/activity_detail/controller/activity_controller.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/controller/my_shift_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/my_shift_card.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 enum TabType {
@@ -35,22 +35,22 @@ final List<TabElement> tabElements = [
   const TabElement(
     type: TabType.ongoing,
     tabTitle: 'Ongoing',
-    noDataTitle: 'No activity found',
+    noDataTitle: 'No shift found',
   ),
   const TabElement(
     type: TabType.upcoming,
     tabTitle: 'Upcoming',
-    noDataTitle: 'No activity found',
+    noDataTitle: 'No shift found',
   ),
   const TabElement(
     type: TabType.completed,
     tabTitle: 'Completed',
-    noDataTitle: 'No activity found',
+    noDataTitle: 'No shift found',
   ),
 ];
 
-class MyActivityScreen extends ConsumerWidget {
-  const MyActivityScreen({super.key});
+class MyShiftScreen extends ConsumerWidget {
+  const MyShiftScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,9 +58,10 @@ class MyActivityScreen extends ConsumerWidget {
     final searchPattern = ref.watch(searchPatternProvider);
     final pagingController = ref.watch(myActivityPagingControllerProvider);
     final tabType = ref.watch(tabTypeProvider);
+    final selectedStatuses = ref.watch(selectedStatusesProvider);
 
     ref.listen<AsyncValue>(
-      cancelJoinShiftControllerProvider,
+      cancelShiftRegistrationControllerProvider,
       (_, state) {
         state.showSnackbarOnError(
           context,
@@ -176,6 +177,86 @@ class MyActivityScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
+                if (tabType == TabType.upcoming)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          const Row(
+                            children: [
+                              // const Icon(Icons.auto_awesome_outlined),
+                              // const SizedBox(
+                              //   width: 8,
+                              // ),
+                              Text(
+                                'Quick filter',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Wrap(
+                            spacing: 8,
+                            children: [
+                              FilterChip(
+                                label: const Text('Approved'),
+                                selected: selectedStatuses
+                                    .contains(ShiftVolunteerStatus.approved),
+                                onSelected: (value) {
+                                  if (value) {
+                                    ref
+                                        .read(selectedStatusesProvider.notifier)
+                                        .state = {
+                                      ...selectedStatuses
+                                        ..add(ShiftVolunteerStatus.approved)
+                                    };
+                                  } else {
+                                    ref
+                                        .read(selectedStatusesProvider.notifier)
+                                        .state = {
+                                      ...selectedStatuses
+                                        ..remove(ShiftVolunteerStatus.approved)
+                                    };
+                                  }
+                                },
+                              ),
+                              FilterChip(
+                                label: const Text('Waiting for approval'),
+                                selected: selectedStatuses
+                                    .contains(ShiftVolunteerStatus.pending),
+                                onSelected: (value) {
+                                  if (value) {
+                                    ref
+                                        .read(selectedStatusesProvider.notifier)
+                                        .state = {
+                                      ...selectedStatuses
+                                        ..add(ShiftVolunteerStatus.pending)
+                                    };
+                                  } else {
+                                    ref
+                                        .read(selectedStatusesProvider.notifier)
+                                        .state = {
+                                      ...selectedStatuses
+                                        ..remove(ShiftVolunteerStatus.pending)
+                                    };
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                  ),
                 SliverPadding(
                   padding: const EdgeInsets.all(12),
                   sliver: PagedSliverList<int, Shift>(
@@ -183,93 +264,6 @@ class MyActivityScreen extends ConsumerWidget {
                     builderDelegate: PagedChildBuilderDelegate(
                       itemBuilder: (context, shift, index) {
                         return MyShiftCard(shift: shift);
-                        // return ListTile(
-                        //   contentPadding: const EdgeInsets.symmetric(
-                        //     horizontal: 16,
-                        //     vertical: 8,
-                        //   ),
-                        //   //leading: leading,
-                        //   title: Text(shift.name),
-                        //   subtitle: Column(
-                        //     mainAxisSize: MainAxisSize.min,
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       Text('Activity ${shift.activity.name}}'),
-                        //       Row(
-                        //         children: [
-                        //           const Icon(
-                        //             Icons.calendar_month_outlined,
-                        //             size: 16,
-                        //           ),
-                        //           const SizedBox(width: 4),
-                        //           Text(
-                        //             'Start at ${shift.startTime.formatDayMonthYearBulletHourSecond()}',
-                        //             style: TextStyle(
-                        //                 color: context
-                        //                     .theme.colorScheme.onSurfaceVariant),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //       const SizedBox(height: 4),
-                        //       Row(
-                        //         children: [
-                        //           if (DateTime.now().microsecondsSinceEpoch -
-                        //                       shift.startTime
-                        //                           .microsecondsSinceEpoch >
-                        //                   0 &&
-                        //               DateTime.now().microsecondsSinceEpoch -
-                        //                       shift.startTime
-                        //                           .microsecondsSinceEpoch <
-                        //                   1000 * 60 * 60 * 24)
-                        //             const Label(
-                        //               labelText: 'Starting soon',
-                        //               color: Colors.amber,
-                        //             ),
-                        //           if (volunteerStatus ==
-                        //               ShiftVolunteerStatus.approved)
-                        //             const Label(labelText: 'Approved'),
-                        //           if (volunteerStatus ==
-                        //               ShiftVolunteerStatus.pending)
-                        //             const Label(
-                        //               labelText: 'Waiting for approval',
-                        //               color: Colors.grey,
-                        //             ),
-                        //           if (shift.status == ShiftStatus.completed &&
-                        //               volunteer.completion > 0)
-                        //             const Label(
-                        //               labelText: 'Reviewed',
-                        //               color: Colors.green,
-                        //             ),
-                        //         ].sizedBoxSpacing(const SizedBox(
-                        //           width: 4,
-                        //         )),
-                        //       ),
-                        //     ],
-                        //   ),
-                        //   trailing: IconButton(
-                        //     icon: const Icon(Icons.more_vert_outlined),
-                        //     onPressed: () {
-                        //       showModalBottomSheet(
-                        //         showDragHandle: true,
-                        //         context: context,
-                        //         builder: (context) => ShiftVolunteerBottomSheet(
-                        //           volunteer: volunteer,
-                        //           shift: shift,
-                        //         ),
-                        //       );
-                        //     },
-                        //   ),
-                        //   onTap: () {
-                        //     showModalBottomSheet(
-                        //       showDragHandle: true,
-                        //       context: context,
-                        //       builder: (context) => ShiftVolunteerBottomSheet(
-                        //         volunteer: volunteer,
-                        //         shift: shift,
-                        //       ),
-                        //     );
-                        //   },
-                        // );
                       },
                       noItemsFoundIndicatorBuilder: (context) => Center(
                         child: NoDataFound(

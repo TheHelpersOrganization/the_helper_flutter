@@ -5,9 +5,11 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/label.dart';
-import 'package:the_helper/src/features/activity/my_activity/widget/my_shift_bottom_sheet.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/ongoing_shift_bottom_sheet.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/upcoming_shift_bottom_sheet.dart';
 import 'package:the_helper/src/utils/location.dart';
+import 'package:the_helper/src/utils/shift.dart';
 
 class MyShiftCard extends ConsumerWidget {
   final Shift shift;
@@ -26,7 +28,59 @@ class MyShiftCard extends ConsumerWidget {
     } else {
       participants += ' Participants';
     }
+    if (shift.myShiftVolunteer == null) {
+      print(shift.id);
+      return const SizedBox.shrink();
+    }
     final myVolunteer = shift.myShiftVolunteer!;
+    final Widget? checkInLabelTrailing = myVolunteer.isCheckInVerified == true
+        ? const Icon(
+            Icons.check,
+            size: 14,
+            color: Colors.white,
+          )
+        : myVolunteer.isCheckInVerified == false
+            ? const Icon(
+                Icons.close,
+                size: 14,
+                color: Colors.white,
+              )
+            : null;
+    final Widget checkInLabel = myVolunteer.checkedIn == true
+        ? Label(
+            labelText: 'Checked-in',
+            color: Colors.green,
+            trailing: checkInLabelTrailing,
+          )
+        : Label(
+            labelText: 'Checked-in',
+            color: Colors.red,
+            trailing: checkInLabelTrailing,
+          );
+    final Widget? checkOutLabelTrailing = myVolunteer.isCheckOutVerified == true
+        ? const Icon(
+            Icons.check,
+            size: 14,
+            color: Colors.white,
+          )
+        : myVolunteer.isCheckOutVerified == false
+            ? const Icon(
+                Icons.close,
+                size: 14,
+                color: Colors.white,
+              )
+            : null;
+    final Widget checkOutLabel = myVolunteer.checkedOut == true
+        ? Label(
+            labelText: 'Checked-out',
+            color: Colors.green,
+            trailing: checkOutLabelTrailing,
+          )
+        : Label(
+            labelText: 'Checked-out',
+            color: Colors.red,
+            trailing: checkOutLabelTrailing,
+          );
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -34,14 +88,33 @@ class MyShiftCard extends ConsumerWidget {
       elevation: 1,
       child: InkWell(
         onTap: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => MyShiftBottomSheet(
-              shift: shift,
-              myVolunteer: myVolunteer,
-            ),
-            showDragHandle: true,
-          );
+          if (shift.status == ShiftStatus.pending) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => UpcomingShiftBottomSheet(
+                shift: shift,
+                myVolunteer: myVolunteer,
+              ),
+              showDragHandle: true,
+            );
+            return;
+          } else if (shift.status == ShiftStatus.ongoing) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => OngoingShiftBottomSheet(
+                initialShift: shift,
+              ),
+              showDragHandle: true,
+            );
+          } else if (shift.status == ShiftStatus.completed) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => OngoingShiftBottomSheet(
+                initialShift: shift,
+              ),
+              showDragHandle: true,
+            );
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -125,22 +198,44 @@ class MyShiftCard extends ConsumerWidget {
                     ),
                     Row(
                       children: [
-                        if (myVolunteer.checkedIn == true)
-                          const Label(
-                              labelText: 'Checked-in', color: Colors.green)
-                        else
-                          const Label(
-                              labelText: 'Not checked-in', color: Colors.red),
-                        if (myVolunteer.checkedOut == true)
-                          const Label(
-                              labelText: 'Checked-out', color: Colors.green)
-                        else
-                          const Label(
-                              labelText: 'Not checked-out', color: Colors.red)
+                        checkInLabel,
+                        checkOutLabel,
                       ].sizedBoxSpacing(const SizedBox(width: 4)),
                     ),
                   ],
-                ),
+                )
+              else if (shift.status == ShiftStatus.pending)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    getShiftVolunteerStatusLabel(myVolunteer.status),
+                  ],
+                )
+              else if (shift.status == ShiftStatus.completed)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Wrap(
+                      children: [
+                        checkInLabel,
+                        checkOutLabel,
+                        if (myVolunteer.reviewerId != null)
+                          const Label(
+                            labelText: 'Reviewed',
+                            color: Colors.indigo,
+                          ),
+                      ].sizedBoxSpacing(const SizedBox(width: 4)),
+                    ),
+                  ],
+                )
             ],
           ),
         ),

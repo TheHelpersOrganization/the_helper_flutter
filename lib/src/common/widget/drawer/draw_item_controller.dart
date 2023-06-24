@@ -19,7 +19,7 @@ const List<DrawerItemModel> volunteer = [
   ),
   DrawerItemModel(
     route: AppRoute.activityMy,
-    title: 'My Activities',
+    title: 'My Shifts',
     icon: Icons.volunteer_activism_outlined,
   ),
   DrawerItemModel(
