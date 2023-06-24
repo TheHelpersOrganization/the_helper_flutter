@@ -14,8 +14,6 @@ final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final currentStatusProvider =
     StateProvider.autoDispose((ref) => tabs.first.status);
 
-final hasChangedStatusProvider = StateProvider.autoDispose((ref) => false);
-
 final currentOrganizationProvider = FutureProvider.autoDispose((ref) =>
     ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
 
@@ -24,7 +22,6 @@ final isShiftManagerProvider = StateProvider.autoDispose((ref) => false);
 
 final pagingControllerProvider = FutureProvider.autoDispose(
   (ref) async {
-    final hasChangedStatus = ref.watch(hasChangedStatusProvider);
     final currentStatus = ref.watch(currentStatusProvider);
     final modActivityService = ref.watch(modActivityServiceProvider);
     final controller = PagingController<int, Activity>(firstPageKey: 0);
@@ -61,9 +58,6 @@ final pagingControllerProvider = FutureProvider.autoDispose(
         controller.error = err;
       }
     });
-    if (hasChangedStatus) {
-      controller.notifyPageRequestListeners(0);
-    }
     return controller;
   },
 );

@@ -122,6 +122,24 @@ class ShiftRepository {
     final res = await client.delete('/shifts/$id');
     return Shift.fromJson(res.data['data']);
   }
+
+  Future<ShiftVolunteer> checkIn({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/check-in',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer> checkOut({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/shifts/$shiftId/volunteers/check-out',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
 }
 
 final shiftRepositoryProvider = Provider.autoDispose<ShiftRepository>(

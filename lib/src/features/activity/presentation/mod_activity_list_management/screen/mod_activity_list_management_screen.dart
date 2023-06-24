@@ -31,18 +31,17 @@ const List<TabElement> tabs = [
   TabElement(
     status: ActivityStatus.ongoing,
     tabTitle: 'Ongoing',
-    noDataTitle: 'No organization found',
-    noDataSubtitle: 'Look like you haven\'t joined any organization yet',
+    noDataTitle: 'No activity found',
   ),
   TabElement(
     status: ActivityStatus.pending,
     tabTitle: 'Upcoming',
-    noDataTitle: 'No pending join request',
+    noDataTitle: 'No upcoming activity found',
   ),
   TabElement(
     status: ActivityStatus.completed,
     tabTitle: 'Completed',
-    noDataTitle: 'No rejected join request',
+    noDataTitle: 'No completed activity found',
   ),
 ];
 
@@ -103,27 +102,14 @@ class ModActivityListManagementScreen extends ConsumerWidget {
                       )
                     : null,
                 title: isSearching
-                    // ? TextField(
-                    //     textAlignVertical: TextAlignVertical.center,
-                    //     decoration: InputDecoration(
-                    //       isDense: true,
-                    //       prefixIcon: const Icon(Icons.search_outlined),
-                    //       suffixIcon: InkWell(
-                    //         onTap: () {},
-                    //         child: const Icon(Icons.clear),
-                    //       ),
-                    //       contentPadding: EdgeInsets.zero,
-                    //       border: const OutlineInputBorder(),
-                    //       hintText: 'Enter activity name',
-                    //     ),
-                    //   )
                     ? DebounceSearchBar(
                         small: true,
                         hintText: 'Enter activity name',
                         initialValue: searchPattern,
-                        onDebounce: (value) => ref
-                            .read(searchPatternProvider.notifier)
-                            .state = value,
+                        onDebounce: (value) {
+                          ref.read(searchPatternProvider.notifier).state =
+                              value;
+                        },
                         onClear: () => ref
                             .read(searchPatternProvider.notifier)
                             .state = null,

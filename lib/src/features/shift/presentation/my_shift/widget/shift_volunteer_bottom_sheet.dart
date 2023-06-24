@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
-import 'package:the_helper/src/features/activity/my_activity/widget/label.dart';
+import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/cancel_join_shift_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/leave_shift_dialog.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';

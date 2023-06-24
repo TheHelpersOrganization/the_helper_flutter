@@ -65,6 +65,7 @@ dependencies:
   sliver_tools: ^0.2.10
   im_stepper: 
   fuzzywuzzy: ^0.2.0
+  after_layout:
 
 dev_dependencies:
   flutter_test:
