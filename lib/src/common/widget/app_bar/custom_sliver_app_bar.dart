@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   final Widget? title;
@@ -57,8 +58,11 @@ class CustomSliverAppBar extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_none_outlined)),
+                onPressed: () {
+                  context.pushNamed(AppRoute.notifications.name);
+                },
+                icon: const Icon(Icons.notifications_none_outlined),
+              ),
             ),
           ],
       bottom: bottom,

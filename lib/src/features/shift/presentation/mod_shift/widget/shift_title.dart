@@ -20,18 +20,22 @@ class ShiftTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Text(
-              shift.name,
-              style: context.theme.textTheme.titleLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            getShiftStatusLabel(shift.status),
-          ],
+        Text.rich(
+          TextSpan(
+            text: shift.name,
+            style: context.theme.textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+            children: [
+              const WidgetSpan(
+                child: SizedBox(
+                  width: 8,
+                ),
+              ),
+              WidgetSpan(
+                child: getShiftStatusLabel(shift.status),
+              ),
+            ],
+          ),
         ),
         Row(
           children: [

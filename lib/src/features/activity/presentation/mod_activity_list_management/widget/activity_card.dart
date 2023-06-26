@@ -26,8 +26,7 @@ class ActivityCard extends StatelessWidget {
     final dateTime = activity.startTime;
     String slots = activity.joinedParticipants.toString();
     if (activity.maxParticipants != null) {
-      slots += '/${activity.maxParticipants}';
-      slots += ' Slots';
+      slots += '/${activity.maxParticipants} Participants';
     } else {
       slots += ' Participants';
     }

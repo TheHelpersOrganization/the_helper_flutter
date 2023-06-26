@@ -5,7 +5,6 @@ import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
-import 'package:the_helper/src/features/activity/my_activity/screen/my_activity_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
@@ -38,7 +37,9 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
+import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -241,6 +242,9 @@ final routes = [
             path: AppRoute.home.path,
             name: AppRoute.home.name,
             builder: (_, __) => const HomeScreen(),
+            routes: [
+              notificationRoutes,
+            ],
           ),
           GoRoute(
             path: AppRoute.news.path,
@@ -250,11 +254,6 @@ final routes = [
           GoRoute(
             path: AppRoute.chat.path,
             name: AppRoute.chat.name,
-            builder: (_, __) => const DevelopingScreen(),
-          ),
-          GoRoute(
-            path: AppRoute.notification.path,
-            name: AppRoute.notification.name,
             builder: (_, __) => const DevelopingScreen(),
           ),
           GoRoute(
@@ -396,7 +395,7 @@ final activityRoutes = GoRoute(
     GoRoute(
       path: AppRoute.activityMy.path,
       name: AppRoute.activityMy.name,
-      builder: (_, __) => const MyActivityScreen(),
+      builder: (_, __) => const MyShiftScreen(),
     ),
     GoRoute(
       path: AppRoute.activity.path,
@@ -479,8 +478,13 @@ enum AppRoute {
   ),
 
   // Todo: notification crud
+  notifications(
+    path: 'notification',
+    name: 'notifications',
+  ),
+  notificationsDelete(path: 'delete', name: 'notifications-delete'),
   notification(
-    path: '/notification',
+    path: ':notificationId',
     name: 'notification',
   ),
 

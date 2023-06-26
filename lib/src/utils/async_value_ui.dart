@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/widget/snack_bar.dart';
 final Set<String> _showingSnackbar = {};
 
 const shiftSnackbarName = 'shift';
+const myShiftSnackbarName = 'myShift';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(

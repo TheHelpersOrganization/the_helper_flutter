@@ -4,6 +4,10 @@ import 'package:the_helper/src/features/activity/application/activity_service.da
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_include.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
+import 'package:the_helper/src/features/shift/data/shift_repository.dart';
+import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 final suggestedActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
   (ref) => ref.watch(activityServiceProvider).getSuggestedActivities(
@@ -27,6 +31,18 @@ final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
         include: ActivityInclude(
           organization: true,
           volunteers: true,
+        ),
+      ),
+);
+
+final volunteerShiftProvider = FutureProvider.autoDispose<List<Shift>>(
+  (ref) => ref.watch(shiftRepositoryProvider).getShifts(
+        query: const ShiftQuery(
+          status: [ShiftStatus.pending, ShiftStatus.ongoing],
+          myJoinStatus: [
+            ShiftVolunteerStatus.approved,
+            ShiftVolunteerStatus.pending
+          ],
         ),
       ),
 );

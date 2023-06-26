@@ -10,3 +10,7 @@ ImageProvider getBackendImageOrLogoProvider(int? imageId) {
     getImageUrl(imageId),
   );
 }
+
+ImageProvider getLogoProvider() {
+  return Image.asset('assets/images/logo.png').image;
+}
