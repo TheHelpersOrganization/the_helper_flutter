@@ -132,7 +132,7 @@ class ShiftCheckInBottomSheet extends ConsumerWidget {
                       children: [
                         TextSpan(
                           text: myVolunteer.checkInAt
-                              ?.formatDayMonthYearBulletHourSecond(),
+                              ?.formatDayMonthYearBulletHourMinute(),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -200,7 +200,7 @@ class ShiftCheckInBottomSheet extends ConsumerWidget {
                         children: [
                           TextSpan(
                             text:
-                                '${myVolunteer.checkOutAt?.formatDayMonthYearBulletHourSecond()}',
+                                '${myVolunteer.checkOutAt?.formatDayMonthYearBulletHourMinute()}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ],

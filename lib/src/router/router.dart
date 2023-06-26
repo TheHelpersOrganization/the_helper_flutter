@@ -39,6 +39,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
+import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -242,6 +243,9 @@ final routes = [
             path: AppRoute.home.path,
             name: AppRoute.home.name,
             builder: (_, __) => const HomeScreen(),
+            routes: [
+              notificationRoutes,
+            ],
           ),
           GoRoute(
             path: AppRoute.news.path,
@@ -251,11 +255,6 @@ final routes = [
           GoRoute(
             path: AppRoute.chat.path,
             name: AppRoute.chat.name,
-            builder: (_, __) => const DevelopingScreen(),
-          ),
-          GoRoute(
-            path: AppRoute.notification.path,
-            name: AppRoute.notification.name,
             builder: (_, __) => const DevelopingScreen(),
           ),
           GoRoute(
@@ -480,8 +479,13 @@ enum AppRoute {
   ),
 
   // Todo: notification crud
+  notifications(
+    path: 'notification',
+    name: 'notifications',
+  ),
+  notificationsDelete(path: 'delete', name: 'notifications-delete'),
   notification(
-    path: '/notification',
+    path: ':notificationId',
     name: 'notification',
   ),
 

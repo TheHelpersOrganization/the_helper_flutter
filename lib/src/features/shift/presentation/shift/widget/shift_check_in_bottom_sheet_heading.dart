@@ -23,7 +23,7 @@ class ShiftCheckInBottomSheetHeading extends StatelessWidget {
           leading: const Icon(Icons.access_time_outlined),
           title: const Text('Shift time'),
           subtitle: Text(
-            '${shift.startTime.formatDayMonthYearBulletHourSecond()} 🡒 ${shift.endTime.formatHourSecond()}',
+            '${shift.startTime.formatDayMonthYearBulletHourMinute()} 🡒 ${shift.endTime.formatHourSecond()}',
           ),
         ),
       ],

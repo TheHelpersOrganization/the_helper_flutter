@@ -166,7 +166,7 @@ class ShiftVolunteerDescription extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Approved at ${updatedAt!.formatDayMonthYearBulletHourSecond()}',
+              'Approved at ${updatedAt!.formatDayMonthYearBulletHourMinute()}',
               style: TextStyle(
                 color: context.theme.colorScheme.secondary,
               ),

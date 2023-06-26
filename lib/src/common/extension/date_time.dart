@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeX on DateTime {
-  String formatDayMonthYearBulletHourSecond() {
+  String formatDayMonthYearBulletHourMinute() {
     return DateFormat('dd-MM-yyyy 🞄 HH:mm').format(toLocal());
   }
 
