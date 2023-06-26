@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
-import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/popup_menu_button.dart';
 
 class CustomListItem extends ConsumerWidget {
   final OrganizationRequestModel data;
@@ -31,10 +29,10 @@ class CustomListItem extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: CircleAvatar(

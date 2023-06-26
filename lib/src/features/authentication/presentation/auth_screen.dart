@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/authentication/data/auth_repository.dart';
-import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
-import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
 
 // class AuthScreen extends ConsumerWidget {
 //   const AuthScreen({Key? key}) : super(key: key);

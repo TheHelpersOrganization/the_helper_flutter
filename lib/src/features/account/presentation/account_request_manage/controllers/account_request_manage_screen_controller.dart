@@ -6,7 +6,6 @@ import 'package:the_helper/src/features/account/data/account_request_repository.
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 
 import '../../../../../utils/async_value.dart';
 import '../../../domain/account_request_query.dart';

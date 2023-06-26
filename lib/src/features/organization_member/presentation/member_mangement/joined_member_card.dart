@@ -10,7 +10,6 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import '../../../account/domain/account.dart';
 import 'organization_member_management_controller.dart';
 
 class JoinedMemberCard extends ConsumerStatefulWidget {

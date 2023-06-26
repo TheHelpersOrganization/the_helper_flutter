@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
@@ -8,7 +7,6 @@ import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/activity_type.dart';
 
 //Screens
-import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 import 'package:the_helper/src/features/organization/data/organization_request_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/file_attachment.dart';
 
@@ -74,7 +72,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
       ),
       body: orgData.when(
         data: (orgData) =>  SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,7 +82,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                   child: Container(
                     width: 150,
                     height: 150,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         shape: BoxShape.rectangle, color: Colors.blueGrey),
                   ),
                 ),
@@ -106,10 +104,10 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                   'Activities Type',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                Wrap(
+                const Wrap(
                   runSpacing: 20.0,
                   spacing: 20.0,
-                  children: const [
+                  children: [
                     ActivityTypeCard(
                       type: 'Healthcare',
                       icon: Icons.medical_services_outlined,
@@ -136,7 +134,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Address'),
+                          const Text('Address'),
                           Flexible(
                             child: RichText(
                               text: TextSpan(
@@ -151,7 +149,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Homepage'),
+                          const Text('Homepage'),
                           Flexible(
                             child: RichText(
                               text: TextSpan(
@@ -166,7 +164,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Email Address'),
+                          const Text('Email Address'),
                           Flexible(
                             child: RichText(
                               text: TextSpan(
@@ -181,7 +179,7 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Telephone Number'),
+                          const Text('Telephone Number'),
                           Flexible(
                             child: RichText(
                               text: TextSpan(

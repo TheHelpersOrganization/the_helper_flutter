@@ -102,8 +102,8 @@ class CustomScrollList extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Icon(
               Icons.person_outline_rounded,
             ),
@@ -171,8 +171,8 @@ class CustomScrollList extends ConsumerWidget {
   Widget _buildActivityTypeFilter() {
     return Column(
       children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Icon(
               Icons.work_outline_rounded,
             ),

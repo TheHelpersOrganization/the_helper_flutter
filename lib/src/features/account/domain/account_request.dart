@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'dart:convert';
 
 import '../../../common/domain/file_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,8 +15,9 @@ class AccountRequestModel with _$AccountRequestModel {
     int? performedBy,
     @Default(true) bool isVerified,
     String? note,
+    // List<String>? adminNote,
     required DateTime createdAt,
-    required List<FileInfoModel> files,
+    @Default([]) List<FileInfoModel> files,
   }) = _AccountRequestModel;
 
   factory AccountRequestModel.fromJson(Map<String, dynamic> json) =>

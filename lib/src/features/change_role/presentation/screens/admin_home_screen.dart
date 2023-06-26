@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/summary_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/admin_data_holder.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/admin_line_chart.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../common/screens/error_screen.dart';
 import '../../../authentication/application/auth_service.dart';
 import '../../../profile/data/profile_repository.dart';
 import '../controllers/admin_home_controller.dart';
-import '../widgets/adminDataHolder.dart';
+import '../widgets/admin_data_card.dart';
+import '../widgets/home_welcome_section.dart';
+import '../widgets/pending_request_data.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({
@@ -21,214 +24,156 @@ class AdminView extends ConsumerWidget {
     final email = ref.watch(authServiceProvider).value!.account.email;
     final userName = ref.watch(profileProvider);
     final adminData = ref.watch(adminHomeControllerProvider);
+    final requestData = ref.watch(adminRequestProvider);
 
     return userName.when(
         error: (_, __) => const ErrorScreen(),
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
-        data: (data) => Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(text: 'Welcome '),
-                          TextSpan(
-                              text: data.lastName ?? data.username ?? email)
-                        ],
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                    ),
+        data: (data) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: Column(
+                children: [
+                  // Hello section
+                  HomeWelcomeSection(
+                    volunteerName: data.lastName ?? data.username ?? email,
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  height: 180,
-                  color: Colors.blue,
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const Text('1000 Online'),
-                        IconButton(onPressed: () => 
-                        context.pushNamed(AppRoute.screenBuilderCanvas.name), 
-                        icon: const Icon(Icons.golf_course)),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: adminData.when(
+
+                  const SizedBox(height: 15),
+                  adminData.when(
                     loading: () => AdminDataHolder(
-                      itemCount: 3,
-                      itemWidth: context.mediaQuery.size.width * 0.9,
-                      itemHeight: 80,
+                      itemCount: 2,
+                      itemWidth: context.mediaQuery.size.width * 0.4,
+                      itemHeight: 100,
                     ),
-                    error: (er, st) => const ErrorScreen(),
-                    data: (data) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SummaryCard(
+                    error: (_, __) => const ErrorScreen(),
+                    data: (data) => Row(children: [
+                      Expanded(
+                        flex: 1,
+                        child: AdminDataCard(
+                          title: 'Accounts',
                           icon: Icons.account_circle_outlined,
-                          data: data.account.toString(),
-                          info: 'Accounts',
-                          path: 'account-manage',
+                          data: data.account,
+                          onTap: () => context.goNamed(AppRoute.accountManage.name),
                         ),
-                        SummaryCard(
-                          icon: Icons.work,
-                          data: data.organization.toString(),
-                          info: 'Organizations',
-                          path: 'organization-admin-manage',
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: AdminDataCard(
+                          title: 'Organization',
+                          icon: Icons.work_outline_outlined,
+                          data: data.organization,
+                          onTap: () {},
                         ),
-                        SummaryCard(
-                          icon: Icons.volunteer_activism,
-                          data: data.activity.toString(),
-                          info: 'Ongoing activities',
-                          path: 'activity-manage',
+                      ),
+                    ]),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        requestData.when(
+                          loading: () => AdminDataHolder(
+                            itemCount: 3,
+                            itemWidth: context.mediaQuery.size.width * 0.3,
+                            itemHeight: 100,
+                          ),
+                          error: (_, __) {
+                            return const Center(child: Text(
+                              'There\'s a problem while loading data',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),));
+                          },
+                          data: (data) => Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: PenddingRequestData(
+                                    name: 'User',
+                                    icon: Icons.verified_user,
+                                    count: data.account,
+                                    height: 100,
+                                    width: 100,
+                                    onTap: () => context.goNamed(AppRoute.accountRequestManage.name)),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: PenddingRequestData(
+                                    name: 'Organization',
+                                    icon: Icons.verified_user,
+                                    count: data.organization,
+                                    height: 100,
+                                    width: 100,
+                                    onTap: () {}),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: PenddingRequestData(
+                                    name: 'Report',
+                                    icon: Icons.verified_user,
+                                    count: data.report,
+                                    height: 100,
+                                    width: 100,
+                                    onTap: () => context.goNamed(AppRoute.reportManage.name)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Text('Pending request',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge
+                                  ?.copyWith(color: Colors.white)),
                         ),
                       ],
                     ),
                   ),
-                  )
-                ),
-              ],
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('Activities data',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  const Expanded(
+                      child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AdminLineChart(),
+                  )),
+                ],
+              ),
             ));
   }
 }
-// class AdminView extends ConsumerWidget {
-//   const AdminView({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return SingleChildScrollView(
-//       child: Column(
-//         children: <Widget>[
-//           Container(
-//             padding: const EdgeInsets.only(top: 10.0),
-//             child: Center(
-//               child: Text(
-//                 'Welcome Admin Name',
-//                 style: Theme.of(context).textTheme.headlineSmall,
-//               ),
-//             ),
-//           ),
-//           const SizedBox(
-//             height: 15,
-//           ),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             children: [
-//               ElevatedButton(
-//                 onPressed: () => context.goNamed('organization-manage'),
-//                 style: ButtonStyle(
-//                   shape: MaterialStateProperty.all(
-//                     RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(18.0),
-//                       // side: const BorderSide(color: Colors.red)
-//                     )
-//                   ),
-//                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-//                   fixedSize: MaterialStateProperty.all(const Size(120, 120)),
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     Icon(Icons.work),
-//                     Text('Organization'),
-//                   ],
-//                 ),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () => context.goNamed('account-manage'),
-//                 style: ButtonStyle(
-//                   shape: MaterialStateProperty.all(
-//                     RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(18.0),
-//                       // side: const BorderSide(color: Colors.red)
-//                     )
-//                   ),
-//                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-//                   fixedSize: MaterialStateProperty.all(const Size(120, 120)),
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     Icon(Icons.account_circle_outlined),
-//                     Text('Accounts'),
-//                   ],
-//                 ),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () => context.goNamed('activity-manage'),
-//                 style: ButtonStyle(
-//                   shape: MaterialStateProperty.all(
-//                     RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(18.0),
-//                       // side: const BorderSide(color: Colors.red)
-//                     )
-//                   ),
-//                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
-//                   fixedSize: MaterialStateProperty.all(const Size(120, 120)),
-//                 ),
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     Icon(Icons.volunteer_activism),
-//                     Text('Activities'),
-//                   ],
-//                 ),
-//               )
-//             ],
-//           ),
-//           const SizedBox(
-//             height: 15,
-//           ),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: [
-//               Text(
-//                 'Summary',
-//                 style: Theme.of(context).textTheme.titleMedium,
-//               ),
-//             ],
-//           ),
-//           const SizedBox(
-//             height: 15,
-//           ),
-//           Container(
-//             height: 250.0,
-//             width: 250.0,
-//             color: Colors.blueGrey,
-//           ),
-//           const SizedBox(
-//             height: 20,
-//           ),
-//           SizedBox(
-//               height: 100.0,
-//               child: ListView.builder(
-//                 physics: const ClampingScrollPhysics(),
-//                 shrinkWrap: true,
-//                 scrollDirection: Axis.horizontal,
-//                 itemCount: 3,
-//                 itemBuilder: (BuildContext context, int index) =>
-//                     const SummaryCard(
-//                   title: 'Something',
-//                   total: 120,
-//                   info: 'Something',
-//                 ),
-//               )),
-//         ],
-//       ),
-//     );
-//   }
-// }

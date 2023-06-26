@@ -38,7 +38,7 @@ class ShiftVolunteerScreen extends ConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Shift $shiftId Manage'),
-        actions: [],
+        actions: const [],
       ),
       body: DefaultTabController(
         length: tabs.length,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/file/domain/file_model.dart';
 
 class ActivityTypeCard extends ConsumerWidget {
   const ActivityTypeCard({

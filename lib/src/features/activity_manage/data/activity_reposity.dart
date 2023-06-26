@@ -3,8 +3,6 @@ import 'package:dio/dio.dart';
 
 import 'package:the_helper/src/features/activity_manage/domain/activity.dart';
 import 'package:the_helper/src/utils/dio.dart';
-import 'package:the_helper/src/utils/domain_provider.dart';
-import 'package:the_helper/src/utils/in_memory_store.dart';
 
 List<ActivityModel> accLst = [
   ActivityModel(

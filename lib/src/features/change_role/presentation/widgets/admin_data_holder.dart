@@ -15,17 +15,14 @@ class AdminDataHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         for(int i = 0; i < itemCount; i++)
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: SkeletonAvatar(
-            style: SkeletonAvatarStyle(
-              width: itemWidth,
-              height: itemHeight,
-            ),
+        SkeletonAvatar(
+          style: SkeletonAvatarStyle(
+            width: itemWidth,
+            height: itemHeight,
           ),
         ),
       ],

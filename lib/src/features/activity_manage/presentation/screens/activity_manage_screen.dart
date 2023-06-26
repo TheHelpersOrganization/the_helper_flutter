@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 //Widgets
-import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/activity_manage/presentation/widgets/activity_list.dart';
 
 //Screens
-import 'package:the_helper/src/features/activity_manage/domain/activity.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Ongoing'),

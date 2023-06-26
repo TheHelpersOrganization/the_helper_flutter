@@ -40,6 +40,18 @@ class OrganizationService {
         .data['data'];
     return res.map((e) => Organization.fromJson(e)).toList().length;
   }
+
+  Future<int> getRequestCount({
+    OrganizationQuery? query,
+  }) async {
+    // final List<dynamic> res = (await client.get(
+    //   '/organizations',
+    //   queryParameters: query?.toJson(),
+    // ))
+    //     .data['data'];
+    // return res.map((e) => Organization.fromJson(e)).toList().length;
+    return 5;
+  }
 }
 
 @riverpod

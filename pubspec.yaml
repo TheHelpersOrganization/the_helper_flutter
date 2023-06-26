@@ -68,6 +68,7 @@ dependencies:
   fuzzywuzzy: ^0.2.0
   after_layout:
   flutter_local_notifications:
+  fl_chart: ^0.63.0
 
 dev_dependencies:
   flutter_test:

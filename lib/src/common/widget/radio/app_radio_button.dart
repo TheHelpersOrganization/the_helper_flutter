@@ -113,6 +113,7 @@ class AppRadioButtonGroup<T> extends StatefulWidget {
   /// Radius for shape radio button
   final double shapeRadius;
 
+  @override
   _AppRadioButtonGroupState<T> createState() => _AppRadioButtonGroupState<T>();
 }
 
@@ -130,10 +131,11 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
     super.initState();
     if (widget.defaultSelected != null) {
       if (widget.buttonValues.contains(widget.defaultSelected)) {
-        int index = widget.buttonValues.indexOf(widget.defaultSelected!);
+        int index = widget.buttonValues.indexOf(widget.defaultSelected as T);
         _currentSelectedLabel = widget.buttonLabels[index];
-      } else
+      } else {
         throw Exception("Default Value not found in button value list");
+      }
     }
   }
 
@@ -150,25 +152,21 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
               : widget.unSelectedColor,
           elevation: widget.elevation,
           shape: widget.enableShape
-              ? widget.customShape == null
-                  ? RoundedRectangleBorder(
+              ? widget.customShape ?? RoundedRectangleBorder(
                       borderRadius:
                           BorderRadius.all(Radius.circular(widget.shapeRadius)),
                     )
-                  : widget.customShape
               : null,
-          child: Container(
+          child: SizedBox(
             height: widget.height,
             child: MaterialButton(
               shape: widget.enableShape
-                  ? widget.customShape == null
-                      ? OutlineInputBorder(
+                  ? widget.customShape ?? OutlineInputBorder(
                           borderSide:
                               BorderSide(color: borderColor(index), width: 1),
                           borderRadius:
                               BorderRadius.all(Radius.circular(widget.radius)),
                         )
-                      : widget.customShape
                   : OutlineInputBorder(
                       borderSide:
                           BorderSide(color: borderColor(index), width: 1),
@@ -209,27 +207,23 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
             : widget.unSelectedColor,
         elevation: widget.elevation,
         shape: widget.enableShape
-            ? widget.customShape == null
-                ? RoundedRectangleBorder(
+            ? widget.customShape ?? RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.all(Radius.circular(widget.shapeRadius)),
                   )
-                : widget.customShape
             : null,
         child: Container(
           height: widget.height,
           width: widget.autoWidth ? null : widget.width,
-          constraints: widget.autoWidth ? null : BoxConstraints(maxWidth: 250),
+          constraints: widget.autoWidth ? null : const BoxConstraints(maxWidth: 250),
           child: MaterialButton(
             shape: widget.enableShape
-                ? widget.customShape == null
-                    ? OutlineInputBorder(
+                ? widget.customShape ?? OutlineInputBorder(
                         borderSide:
                             BorderSide(color: borderColor(index), width: 1),
                         borderRadius:
                             BorderRadius.all(Radius.circular(widget.radius)),
                       )
-                    : widget.customShape
                 : OutlineInputBorder(
                     borderSide: BorderSide(color: borderColor(index), width: 1),
                     borderRadius: BorderRadius.zero,
@@ -263,8 +257,8 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
   }
 
   _buildRadioButtons() {
-    if (widget.horizontal)
-      return Container(
+    if (widget.horizontal) {
+      return SizedBox(
         height: widget.height * (widget.buttonLabels.length * 1.5) +
             widget.padding * 2 * widget.buttonLabels.length,
         child: Center(
@@ -276,7 +270,8 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
           ),
         ),
       );
-    if (!widget.horizontal && widget.enableButtonWrap)
+    }
+    if (!widget.horizontal && widget.enableButtonWrap) {
       return Container(
         child: Center(
           child: Wrap(
@@ -287,8 +282,9 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
           ),
         ),
       );
-    if (!widget.horizontal && !widget.enableButtonWrap)
-      return Container(
+    }
+    if (!widget.horizontal && !widget.enableButtonWrap) {
+      return SizedBox(
         height: widget.height + widget.padding * 2,
         child: Center(
           child: AppListViewSpacing(
@@ -299,5 +295,6 @@ class _AppRadioButtonGroupState<T> extends State<AppRadioButtonGroup<T>> {
           ),
         ),
       );
+    }
   }
 }

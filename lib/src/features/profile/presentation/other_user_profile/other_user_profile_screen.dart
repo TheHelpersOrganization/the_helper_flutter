@@ -11,6 +11,7 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_det
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/features/report/presentation/screen/submit_report_screen.dart';
 
 import '../profile/profile_organization_controller.dart';
 import './profile_verified_status.dart';
@@ -40,6 +41,22 @@ class OtherUserProfileScreen extends ConsumerWidget {
                 context.pop();
               },
             ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return SubmitReportScreen(
+                        id: profile.id!,
+                        name: profile.username.toString(),
+                        entityType: 'user',
+                        avatarId: profile.avatarId,
+                        subText: profile.email,
+                      );
+                    }));
+                  },
+                  icon: const Icon(Icons.report)),
+            ],
             centerTitle: true,
             title: Text(
               "${profile.username.toString().toUpperCase()}'s Profile",
