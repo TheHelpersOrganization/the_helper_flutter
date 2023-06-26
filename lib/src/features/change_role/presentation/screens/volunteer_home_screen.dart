@@ -46,7 +46,7 @@ class VolunteerView extends ConsumerWidget {
         ? '${upcomingShift?.startTime.formatHourSecond()} Today'
         : upcomingShift?.startTime.isTomorrow == true
             ? '${upcomingShift?.startTime.formatHourSecond()} Tomorrow'
-            : upcomingShift?.startTime.formatDayMonthYearBulletHourSecond() ??
+            : upcomingShift?.startTime.formatDayMonthYearBulletHourMinute() ??
                 '';
 
     return volunteerName.when(

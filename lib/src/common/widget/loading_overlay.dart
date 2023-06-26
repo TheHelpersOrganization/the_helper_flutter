@@ -24,6 +24,24 @@ class LoadingOverlay extends StatefulWidget {
     this.indicator,
   });
 
+  const LoadingOverlay.custom({
+    super.key,
+    required this.isLoading,
+    required this.child,
+    this.opacity = 0.7,
+    this.color,
+    required this.indicator,
+  }) : loadingOverlayType = LoadingOverlayType.custom;
+
+  const LoadingOverlay.customDarken({
+    super.key,
+    required this.isLoading,
+    required this.child,
+    this.opacity = 0.7,
+    required this.indicator,
+  })  : loadingOverlayType = LoadingOverlayType.custom,
+        color = Colors.black87;
+
   @override
   LoadingOverlayState createState() => LoadingOverlayState();
 }

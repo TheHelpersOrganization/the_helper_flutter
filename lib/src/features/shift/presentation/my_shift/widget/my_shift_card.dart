@@ -173,7 +173,7 @@ class MyShiftCard extends ConsumerWidget {
                   const SizedBox(
                     width: 8,
                   ),
-                  Text(startTime.formatDayMonthYearBulletHourSecond()),
+                  Text(startTime.formatDayMonthYearBulletHourMinute()),
                 ],
               ),
               const SizedBox(
