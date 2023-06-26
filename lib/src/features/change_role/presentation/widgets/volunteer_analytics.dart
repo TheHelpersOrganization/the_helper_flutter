@@ -8,10 +8,10 @@ class VolunteerAnalytics extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Flexible(
+        Flexible(
           flex: 3,
           child: VolunteerAnalyticsMainCard(),
         ),
@@ -19,7 +19,7 @@ class VolunteerAnalytics extends ConsumerWidget {
           flex: 2,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               VolunteerAnalyticsSecondaryCard(
                 titleText: '30',
                 metaText: '+3h',

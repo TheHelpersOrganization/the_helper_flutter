@@ -7,7 +7,7 @@ import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:the_helper/src/features/report/domain/report.dart';
+import 'package:the_helper/src/features/report/domain/admin_report.dart';
 
 import '../controller/report_manage_screen_controller.dart';
 import 'custom_list_item.dart';
@@ -71,7 +71,7 @@ class CustomScrollList extends ConsumerWidget {
               height: 24,
             ),
           Expanded(
-              child: PagedListView<int, ReportModel>(
+              child: PagedListView<int, AdminReportModel>(
             pagingController: customController,
             builderDelegate:
                 PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
@@ -111,8 +111,8 @@ class CustomScrollList extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Icon(
               Icons.person_outline_rounded,
             ),
@@ -180,8 +180,8 @@ class CustomScrollList extends ConsumerWidget {
   Widget _buildActivityTypeFilter() {
     return Column(
       children: [
-        Row(
-          children: const [
+        const Row(
+          children: [
             Icon(
               Icons.work_outline_rounded,
             ),

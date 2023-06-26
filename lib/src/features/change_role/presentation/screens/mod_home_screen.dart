@@ -33,9 +33,9 @@ class ModView extends ConsumerWidget {
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
                   fixedSize: MaterialStateProperty.all(const Size(100, 100)),
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.work),
                     Text('Organization'),
                   ],
@@ -47,9 +47,9 @@ class ModView extends ConsumerWidget {
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
                   fixedSize: MaterialStateProperty.all(const Size(100, 100)),
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.account_circle_outlined),
                     Text('Members'),
                   ],
@@ -61,9 +61,9 @@ class ModView extends ConsumerWidget {
                   padding: MaterialStateProperty.all(const EdgeInsets.all(10)),
                   fixedSize: MaterialStateProperty.all(const Size(100, 100)),
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(Icons.newspaper),
                     Text('News'),
                   ],

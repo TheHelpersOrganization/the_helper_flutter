@@ -113,6 +113,7 @@ class AppCheckBoxGroup<T> extends StatefulWidget {
   /// Radius for shape radio button
   final double shapeRadius;
 
+  @override
   _AppCheckBoxGroupState createState() => _AppCheckBoxGroupState();
 }
 
@@ -154,7 +155,7 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
                         BorderRadius.all(Radius.circular(widget.shapeRadius)),
                   )
               : null,
-          child: Container(
+          child: SizedBox(
             height: widget.height,
             child: MaterialButton(
               shape: widget.enableShape
@@ -262,8 +263,8 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
   }
 
   _buildCheckBoxButtons() {
-    if (widget.horizontal)
-      return Container(
+    if (widget.horizontal) {
+      return SizedBox(
         height: widget.height * (widget.buttonLables.length * 1.5) +
             widget.padding * 2 * widget.buttonLables.length,
         child: Center(
@@ -275,7 +276,8 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
           ),
         ),
       );
-    if (!widget.horizontal && widget.enableButtonWrap)
+    }
+    if (!widget.horizontal && widget.enableButtonWrap) {
       return Container(
         child: Center(
           child: Wrap(
@@ -286,8 +288,9 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
           ),
         ),
       );
-    if (!widget.horizontal && !widget.enableButtonWrap)
-      return Container(
+    }
+    if (!widget.horizontal && !widget.enableButtonWrap) {
+      return SizedBox(
         height: widget.height + widget.padding * 2,
         child: Center(
           child: AppListViewSpacing(
@@ -298,5 +301,6 @@ class _AppCheckBoxGroupState extends State<AppCheckBoxGroup> {
           ),
         ),
       );
+    }
   }
 }

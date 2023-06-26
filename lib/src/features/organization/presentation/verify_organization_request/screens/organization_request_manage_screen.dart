@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
@@ -8,7 +7,6 @@ import 'package:the_helper/src/features/organization/presentation/verify_organiz
 import 'package:the_helper/src/features/organization/presentation/verify_organization_request/widgets/custom_list.dart';
 
 //Screens
-import 'package:the_helper/src/features/organization/domain/organization.dart';
 
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Pendding'),

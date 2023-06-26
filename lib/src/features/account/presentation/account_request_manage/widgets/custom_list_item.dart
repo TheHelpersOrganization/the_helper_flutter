@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/account/domain/account_request.dart';
-import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/popup_menu_button.dart';
 
 import '../screens/account_request_detail_screen.dart';
 
@@ -21,7 +18,7 @@ class AccountRequestListItem extends ConsumerWidget {
     var date =
         "${data.createdAt.day}/${data.createdAt.month}/${data.createdAt.year}";
     var cardTitle = "AccountID: #${data.accountId}";
-    var fileNum = data.files?.length ?? 0;
+    var fileNum = data.files.length ?? 0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),

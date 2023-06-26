@@ -11,6 +11,7 @@ class AppListViewSpacing extends StatelessWidget {
     this.spacing = 0.0,
     this.scrollDirection = Axis.vertical});
 
+  @override
   Widget build(BuildContext context) {
     return ListView(
       scrollDirection: scrollDirection,

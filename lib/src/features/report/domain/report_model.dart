@@ -1,25 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../common/domain/file_info.dart';
-
-part 'report.freezed.dart';
-part 'report.g.dart';
+part 'report_model.freezed.dart';
+part 'report_model.g.dart';
 
 @freezed
 class ReportModel with _$ReportModel {
   factory ReportModel({
     int? id,
-    required int senderId,
-    required String senderName,
+    required String title,
     required int accusedId,
-    required String accusedName,
-    int? accusedAvaId,
-    required String type,
+    required String entityType,
     required String reportType,
-    String? note,
-    required DateTime createdAt,
-    required List<FileInfoModel> files,
+    String? description,
+    List<int>? files,
   }) = _ReportModel;
 
   factory ReportModel.fromJson(Map<String, dynamic> json) =>

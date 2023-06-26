@@ -10,7 +10,7 @@ class NoteDialogWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController _textFieldController = TextEditingController();
+    TextEditingController textFieldController = TextEditingController();
     return AlertDialog(
       title: Row(
         children: [
@@ -34,7 +34,7 @@ class NoteDialogWidget extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
-            controller: _textFieldController,
+            controller: textFieldController,
             keyboardType: TextInputType.multiline,
             decoration: const InputDecoration(
               isDense: true,

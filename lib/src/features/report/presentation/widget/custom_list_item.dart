@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/report/domain/report.dart';
+import 'package:the_helper/src/features/report/domain/admin_report.dart';
 import 'package:the_helper/src/features/report/presentation/screen/report_detail_screen.dart';
 
-import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/popup_menu_button.dart';
 
 
 class CustomListItem extends ConsumerWidget {
-  final ReportModel data;
+  final AdminReportModel data;
 
   const CustomListItem({
     super.key,

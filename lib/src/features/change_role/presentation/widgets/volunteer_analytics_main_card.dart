@@ -78,10 +78,10 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            Wrap(
+            const Wrap(
               runSpacing: 4,
               spacing: 4,
-              children: const [
+              children: [
                 Chip(
                   avatar: Icon(Icons.medical_services_outlined),
                   label: Text('Healthcare'),

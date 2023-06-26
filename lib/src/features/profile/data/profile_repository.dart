@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../../../common/exception/backend_exception.dart';
 import '../../../utils/domain_provider.dart';
 import '../../account/domain/account_verification.dart';
 import '../domain/profile.dart';

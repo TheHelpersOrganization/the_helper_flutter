@@ -1,18 +1,16 @@
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 
-import 'package:the_helper/src/features/report/domain/report.dart';
-import 'package:the_helper/src/utils/async_value_ui.dart';
+import 'package:the_helper/src/features/report/domain/admin_report.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
 import '../widget/attached_files_list.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
-  final ReportModel reportData;
+  final AdminReportModel reportData;
 
   const ReportDetailScreen({super.key, required this.reportData});
 

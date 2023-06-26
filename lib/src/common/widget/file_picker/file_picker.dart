@@ -39,10 +39,10 @@ class FilePickerWidget extends StatelessWidget {
           }
           onPicked(result);
         },
-        child: Padding(
-          padding: const EdgeInsets.all(32),
+        child: const Padding(
+          padding: EdgeInsets.all(32),
           child: Row(
-            children: const [
+            children: [
               Expanded(
                 flex: 1,
                 child: Icon(

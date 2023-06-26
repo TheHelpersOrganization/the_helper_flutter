@@ -29,7 +29,7 @@ class VolunteerMenu extends ConsumerWidget {
                   .toList(),
             ),
           ),
-          Text('Menu'),
+          const Text('Menu'),
           Padding(
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Column(
@@ -41,7 +41,7 @@ class VolunteerMenu extends ConsumerWidget {
                   .toList(),
             ),
           ),
-          Text('Account'),
+          const Text('Account'),
           Padding(
             padding: const EdgeInsets.only(top: 5, bottom: 5),
             child: Column(

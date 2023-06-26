@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
-import 'package:the_helper/src/features/report/domain/report.dart';
+import 'package:the_helper/src/features/report/domain/admin_report.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
 
 import '../../../../utils/async_value.dart';
@@ -47,11 +47,11 @@ class TabStatus extends _$TabStatus {
 @riverpod
 class ScrollPagingController extends _$ScrollPagingController {
   @override
-  PagingController<int, ReportModel> build() {
+  PagingController<int, AdminReportModel> build() {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabStatus = ref.watch(tabStatusProvider);
     final controller =
-        PagingController<int, ReportModel>(firstPageKey: 0);
+        PagingController<int, AdminReportModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) {
       fetchPage(
         pageKey: pageKey,
@@ -68,7 +68,7 @@ class ScrollPagingController extends _$ScrollPagingController {
     required String tabStatus,
   }) async {
     final accountRepository = ref.watch(reportRepositoryProvider);
-    final items = await guardAsyncValue<List<ReportModel>>(
+    final items = await guardAsyncValue<List<AdminReportModel>>(
         () => accountRepository.getAll(
               query: ReportQuery(
                 limit: 5,
