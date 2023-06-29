@@ -5,7 +5,6 @@ import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_type.dart';
 
 import '../../../file/data/file_repository.dart';
-import '../../domain/report_model.dart';
 
 part 'submit_report_screen_controller.g.dart';
 
@@ -34,15 +33,15 @@ class SubmitReportController extends _$SubmitReportController {
             .toList() ??
         [];
     final fileModels = await Future.wait(fileFutures);
-    state = await AsyncValue.guard(
-        () => ref.watch(reportRepositoryProvider).submitReport(ReportModel(
-              title: title,
-              accusedId: accusedId,
-              entityType: entityType,
-              reportType: reportType,
-              description: description,
-              files: fileModels.map((e) => e.id).toList(),
-            )));
+    // state = await AsyncValue.guard(
+    //     () => ref.watch(reportRepositoryProvider).submitReport(ReportModel(
+    //           title: title,
+    //           accusedId: accusedId,
+    //           entityType: entityType,
+    //           reportType: reportType,
+    //           description: description,
+    //           files: fileModels.map((e) => e.id).toList(),
+    //         )));
   }
 }
 

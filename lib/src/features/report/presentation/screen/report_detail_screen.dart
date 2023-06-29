@@ -79,7 +79,8 @@ class ReportDetailScreen extends ConsumerWidget {
             //   ),
             // ),
             Text(
-              reportData.accusedName,
+              // reportData.accusedName,
+              'sdfád',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 10),
@@ -99,7 +100,8 @@ class ReportDetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    reportData.reportType,
+                    // reportData.reportType,
+                    'ádfaèad',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.blue),
                   ),
                   TextButton.icon(
@@ -133,7 +135,8 @@ class ReportDetailScreen extends ConsumerWidget {
                     height: 10,
                   ),
                   Text(
-                    reportData.note
+                    // reportData.note
+                    null
                     ?? 'There \'s no report\'s note',
                     style: Theme.of(context)
                     .textTheme.bodyMedium,
@@ -156,7 +159,7 @@ class ReportDetailScreen extends ConsumerWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  AttachedFilesList(files: reportData.files),
+                  // AttachedFilesList(files: reportData.files),
                 ],
               ),
             ),

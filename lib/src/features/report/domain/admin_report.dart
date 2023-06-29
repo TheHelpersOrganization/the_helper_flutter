@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../common/domain/file_info.dart';
+import 'account_data.dart';
+import 'activity_data.dart';
+import 'organization_data.dart';
+import 'report_message.dart';
 
 part 'admin_report.freezed.dart';
 part 'admin_report.g.dart';
@@ -10,16 +13,18 @@ part 'admin_report.g.dart';
 class AdminReportModel with _$AdminReportModel {
   factory AdminReportModel({
     int? id,
-    required int senderId,
-    required String senderName,
-    required int accusedId,
-    required String accusedName,
-    int? accusedAvaId,
     required String type,
-    required String reportType,
-    String? note,
+    required String status,
+    required String title,
+    required int reporterId,
+    AccountData? reporter,
+    int? reviewerId,
     required DateTime createdAt,
-    required List<FileInfoModel> files,
+    required DateTime updatedAt,
+    List<ReportMessage>? messages,
+    AccountData? reportedAccount,
+    ActivityData? reportedActivity,
+    OrganizationData? reportedOrganization
   }) = _AdminReportModel;
 
   factory AdminReportModel.fromJson(Map<String, dynamic> json) =>

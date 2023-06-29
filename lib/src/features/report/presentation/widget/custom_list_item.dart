@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/admin_report.dart';
 import 'package:the_helper/src/features/report/presentation/screen/report_detail_screen.dart';
-
-
 
 class CustomListItem extends ConsumerWidget {
   final AdminReportModel data;
@@ -16,8 +15,8 @@ class CustomListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var date =
-        "${data.createdAt.day}/${data.createdAt.month}/${data.createdAt.year}";
+    final date = DateFormat("mm/dd/y").format(data.createdAt);
+    final avatarId = data;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -28,9 +27,7 @@ class CustomListItem extends ConsumerWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return ReportDetailScreen(
-                    reportData: data
-                  );
+                  return ReportDetailScreen(reportData: data);
                 },
               ),
             );
@@ -59,8 +56,10 @@ class CustomListItem extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              data.accusedName,
-                              style: context.theme.textTheme.labelLarge?.copyWith(
+                              'asdfasdf',
+                              // data.accusedName,
+                              style:
+                                  context.theme.textTheme.labelLarge?.copyWith(
                                 fontSize: 18,
                               ),
                             ),
@@ -70,7 +69,7 @@ class CustomListItem extends ConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-          
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -83,7 +82,8 @@ class CustomListItem extends ConsumerWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            'Reported for being: ${data.reportType}',
+                            // 'Reported for being: ${data.reportType}',
+                            'fasdfascv',
                           ),
                         ),
                         const SizedBox(

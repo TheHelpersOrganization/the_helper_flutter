@@ -12,8 +12,7 @@ import '../../../../utils/async_value.dart';
 
 part 'report_manage_screen_controller.g.dart';
 
-class ReportManageScreenController
-    extends AutoDisposeAsyncNotifier<void> {
+class ReportManageScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
   build() {}
 }
@@ -26,11 +25,11 @@ final firstLoadPagingController = StateProvider((ref) => true);
 class TabStatus extends _$TabStatus {
   @override
   String build() {
-    return 'user';
+    return 'account';
   }
 
   void changeStatus(int index) {
-    switch(index) {
+    switch (index) {
       case 1:
         state = 'organization';
         break;
@@ -38,7 +37,7 @@ class TabStatus extends _$TabStatus {
         state = 'activity';
         break;
       default:
-        state = 'user';
+        state = 'account';
         break;
     }
   }
@@ -50,8 +49,7 @@ class ScrollPagingController extends _$ScrollPagingController {
   PagingController<int, AdminReportModel> build() {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabStatus = ref.watch(tabStatusProvider);
-    final controller =
-        PagingController<int, AdminReportModel>(firstPageKey: 0);
+    final controller = PagingController<int, AdminReportModel>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) {
       fetchPage(
         pageKey: pageKey,
@@ -78,7 +76,6 @@ class ScrollPagingController extends _$ScrollPagingController {
             ));
     items.whenData((value) {
       final isLastPage = value.length < 100;
-      print(value.length);
       if (isLastPage) {
         state.appendLastPage(value);
       } else {
@@ -96,7 +93,7 @@ class ScrollPagingController extends _$ScrollPagingController {
   }
 }
 
-final reportManageControllerProvider = AutoDisposeAsyncNotifierProvider<
-    ReportManageScreenController, void>(
+final reportManageControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ReportManageScreenController, void>(
   () => ReportManageScreenController(),
 );

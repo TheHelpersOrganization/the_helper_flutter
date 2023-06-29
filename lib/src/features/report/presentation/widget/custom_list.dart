@@ -75,13 +75,6 @@ class CustomScrollList extends ConsumerWidget {
             pagingController: customController,
             builderDelegate:
                 PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
-              // if (tabIndex == 'user') {
-              //   return UserReportListItem(data: item);
-              // } else if (tabIndex == 'organization') {
-              //   return OrganizationReportListItem(data: item);
-              // } else {
-              //   return ActivityReportListItem(data: item);
-              // }
               return CustomListItem(data: item);
             }),
           )),
