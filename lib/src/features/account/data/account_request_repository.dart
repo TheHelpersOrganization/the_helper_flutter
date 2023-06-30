@@ -1,11 +1,9 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:the_helper/src/common/domain/file_info.dart';
 
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/domain/account_request_query.dart';
-import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'account_request_repository.g.dart';

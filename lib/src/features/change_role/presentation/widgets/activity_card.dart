@@ -56,9 +56,9 @@ class ActivityCard extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const[
+                          children: [
                             Expanded(child: Text('Here put the stack')),
                             Expanded(child: Text('5/20 slots')),
                           ],

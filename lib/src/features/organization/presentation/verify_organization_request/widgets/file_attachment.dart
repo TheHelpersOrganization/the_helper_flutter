@@ -33,7 +33,7 @@ class FileAttachment extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(data.name),
-                    Row(
+                    const Row(
                       children: [
                         Text('2.5 MB'),
                         Text('ZIP'),

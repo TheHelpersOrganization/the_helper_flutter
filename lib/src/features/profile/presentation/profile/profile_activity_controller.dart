@@ -38,7 +38,7 @@ Future<List<Activity>> activityController(
   required int size,
 }) async {
   final keepAliveLink = ref.keepAlive();
-  Timer(Duration(minutes: 5), () {
+  Timer(const Duration(minutes: 5), () {
     keepAliveLink.close();
   });
   final ActivityRepository activityRepository =

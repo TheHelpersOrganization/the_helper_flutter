@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
-import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/popup_menu_button.dart';
 
 class CustomListItem extends ConsumerWidget {
   final Organization data;
@@ -31,10 +28,10 @@ class CustomListItem extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: CircleAvatar(
