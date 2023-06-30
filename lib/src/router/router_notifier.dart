@@ -5,7 +5,7 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/router/router.dart';
 
 // Need to implement Listenable so that GoRouter can listen
-class RouterNotifier extends AutoDisposeNotifier<bool> implements Listenable {
+class RouterNotifier extends Notifier<bool> implements Listenable {
   bool _isAuth = false;
   VoidCallback? _routerListener;
 
@@ -51,7 +51,6 @@ class RouterNotifier extends AutoDisposeNotifier<bool> implements Listenable {
   }
 }
 
-final routerNotifierProvider =
-    AutoDisposeNotifierProvider<RouterNotifier, bool>(() {
+final routerNotifierProvider = NotifierProvider<RouterNotifier, bool>(() {
   return RouterNotifier();
 });

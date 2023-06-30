@@ -9,7 +9,7 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
-import 'package:the_helper/src/features/notification/data/notification_repository.dart';
+import 'package:the_helper/src/features/notification/application/notification_service.dart';
 import 'package:the_helper/src/features/notification/domain/delete_notifications.dart';
 import 'package:the_helper/src/features/notification/domain/mark_notifications_as_read.dart';
 import 'package:the_helper/src/features/notification/domain/notification_model.dart';

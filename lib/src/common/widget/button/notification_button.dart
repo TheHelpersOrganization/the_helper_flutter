@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/features/notification/data/notification_repository.dart';
+import 'package:the_helper/src/features/notification/application/notification_service.dart';
 import 'package:the_helper/src/router/router.dart';
 
 class NotificationButton extends ConsumerWidget {
