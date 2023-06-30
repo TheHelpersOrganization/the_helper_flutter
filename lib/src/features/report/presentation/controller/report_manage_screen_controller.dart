@@ -72,6 +72,10 @@ class ScrollPagingController extends _$ScrollPagingController {
                 limit: 5,
                 offset: pageKey,
                 type: tabStatus,
+                include: [
+                  "reporter",
+                  "message"
+                ]
               ),
             ));
     items.whenData((value) {

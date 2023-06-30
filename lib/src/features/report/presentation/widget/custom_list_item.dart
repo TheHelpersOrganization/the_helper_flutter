@@ -5,6 +5,8 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/admin_report.dart';
 import 'package:the_helper/src/features/report/presentation/screen/report_detail_screen.dart';
 
+import '../../../../utils/domain_provider.dart';
+
 class CustomListItem extends ConsumerWidget {
   final AdminReportModel data;
 
@@ -16,7 +18,10 @@ class CustomListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat("mm/dd/y").format(data.createdAt);
-    final avatarId = data;
+    final avatarId = 
+    data.reportedAccount?.avatarId 
+    ?? data.reportedActivity?.thumbnail
+    ?? data.reportedOrganization?.logo;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
@@ -36,13 +41,14 @@ class CustomListItem extends ConsumerWidget {
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 10),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
                   child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Text('A'),
+                    backgroundImage: avatarId == null
+                    ? Image.asset('assets/images/logo.png').image
+                    : NetworkImage(getImageUrl(avatarId)),
                   ),
                 ),
                 Expanded(
@@ -54,15 +60,18 @@ class CustomListItem extends ConsumerWidget {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'asdfasdf',
-                              // data.accusedName,
-                              style:
-                                  context.theme.textTheme.labelLarge?.copyWith(
-                                fontSize: 18,
+                          children: [                            
+                            Expanded(
+                              child: Text(
+                                data.title,
+                                style:
+                                    context.theme.textTheme.labelLarge?.copyWith(
+                                  fontSize: 18,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            const SizedBox(width: 15,),
                             Text(date),
                           ],
                         ),
@@ -81,9 +90,21 @@ class CustomListItem extends ConsumerWidget {
                         // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            // 'Reported for being: ${data.reportType}',
-                            'fasdfascv',
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Status:  ',
+                                  style:
+                                      context.theme.textTheme.labelSmall?.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: data.status,
+                                )
+                              ]
+                            )
                           ),
                         ),
                         const SizedBox(
@@ -93,7 +114,6 @@ class CustomListItem extends ConsumerWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
               ],
             ),
           ),

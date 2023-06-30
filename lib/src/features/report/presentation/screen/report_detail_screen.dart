@@ -7,7 +7,9 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/admin_report.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
+import '../../../../utils/domain_provider.dart';
 import '../widget/attached_files_list.dart';
+import '../widget/avatar_watcher.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
   final AdminReportModel reportData;
@@ -19,7 +21,18 @@ class ReportDetailScreen extends ConsumerWidget {
     // final profile =
     //     ref.watch(accountProfileServiceProvider(id: requestData.accountId!));
     // final customTileExpanded = ref.watch(expansionTitleControllerProvider);
-    var dateData = DateFormat("hh:mm - MMM d, y").format(reportData.createdAt);
+    var dateData = DateFormat("dd-mm-y HH:mm").format(reportData.createdAt);
+
+    final reportedName = reportData.reportedAccount?.username
+    ?? reportData.reportedAccount?.email
+    ?? reportData.reportedOrganization?.name
+    ?? reportData.reportedOrganization?.email
+    ?? reportData.reportedActivity?.name;
+
+    final avatarId = reportData.reportedAccount?.avatarId 
+    ?? reportData.reportedActivity?.thumbnail
+    ?? reportData.reportedOrganization?.logo;
+
     // ref.listen<AsyncValue>(
     //   accountRequestDetailControllerProvider,
     //   (_, state) {
@@ -58,32 +71,36 @@ class ReportDetailScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            // Container(
-            //   height: 300,
-            //   decoration: BoxDecoration(
-            //     border: Border.all(
-            //       width: 8,
-            //       color: Theme.of(context).primaryColor,
-            //     ),
-            //     shape: BoxShape.circle,
-            //     image: DecorationImage(
-            //       image: data.avatarId == null
-            //           ? Image.asset(
-            //               'assets/images/organization_placeholder.jpg',
-            //             ).image
-            //           : ImageX.backend(
-            //               data.avatarId!,
-            //             ).image,
-            //       fit: BoxFit.fitHeight,
-            //     ),
-            //   ),
-            // ),
-            Text(
-              // reportData.accusedName,
-              'sdfád',
-              style: Theme.of(context).textTheme.headlineSmall,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: AvatarWatcherWidget(avatarId: avatarId),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          reportData.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          reportedName!,
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
             Row(
               children: [
                 const Padding(
@@ -100,8 +117,7 @@ class ReportDetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    // reportData.reportType,
-                    'ádfaèad',
+                    reportData.type,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.blue),
                   ),
                   TextButton.icon(
@@ -120,6 +136,13 @@ class ReportDetailScreen extends ConsumerWidget {
                   )
                 ]
               ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border.all()
+              ),
+              child: Text('data'),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
