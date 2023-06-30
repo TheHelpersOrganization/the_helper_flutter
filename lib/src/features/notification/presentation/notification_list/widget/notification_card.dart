@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
+import 'package:the_helper/src/features/notification/data/notification_repository.dart';
+import 'package:the_helper/src/features/notification/domain/mark_notifications_as_read.dart';
 import 'package:the_helper/src/features/notification/domain/notification_model.dart';
 import 'package:the_helper/src/features/notification/presentation/notification_list/controller/notification_list_controller.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -18,6 +20,7 @@ class NotificationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final notificationId = notification.id;
     final selectedNotificationIds = ref.watch(selectedNotificationIdsProvider);
     final isSelected = selectedNotificationIds.contains(notification.id);
 
@@ -59,6 +62,16 @@ class NotificationCard extends ConsumerWidget {
         ],
       ),
       onTap: () {
+        if (!notification.read) {
+          ref
+              .read(notificationListPagedNotifierProvider.notifier)
+              .markAsRead(notificationId);
+          ref.read(notificationRepositoryProvider).markNotificationsAsRead(
+                data: MarkNotificationsAsRead(id: [notificationId]),
+              );
+          ref.read(notificationCountProvider.notifier).subtract();
+        }
+
         context.goNamed(AppRoute.notification.name, pathParameters: {
           'notificationId': notification.id.toString(),
         });

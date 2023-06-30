@@ -59,6 +59,17 @@ class NotificationListPagedNotifier
           },
           nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
         );
+
+  void markAsRead(int notificationId) {
+    final index = state.records
+        ?.indexWhere((notification) => notification.id == notificationId);
+    if (index == null || index < 0) {
+      return;
+    }
+    final records = state.records!;
+    records[index] = records[index].copyWith(read: true);
+    state = state.copyWith(records: records);
+  }
 }
 
 final notificationListPagedNotifierProvider = StateNotifierProvider.autoDispose<
