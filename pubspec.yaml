@@ -77,6 +77,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^0.3.0
   change_app_package_name: ^1.1.0
+  flutter_launcher_icons: "^0.13.1"
 
   flutter_lints: ^2.0.1
   build_runner:
@@ -129,3 +130,9 @@ flutter:
 flutter_native_splash:
   color: "#42a5f5"
   image: assets/images/logo.png
+
+flutter_launcher_icons:
+  android: true
+  web: 
+    generate: true
+  image_path: "assets/images/rounded_logo.png"

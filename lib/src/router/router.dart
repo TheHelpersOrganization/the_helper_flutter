@@ -637,7 +637,7 @@ enum AppRoute {
     name: 'shifts',
   ),
   shift(
-    path: ':shiftId',
+    path: 'shift/:shiftId',
     name: 'shift',
   ),
 
@@ -678,7 +678,7 @@ enum AppRoute {
   final String name;
 }
 
-final routerProvider = Provider.autoDispose<GoRouter>((ref) {
+final routerProvider = Provider<GoRouter>((ref) {
   final notifier = ref.watch(routerNotifierProvider.notifier);
 
   return GoRouter(

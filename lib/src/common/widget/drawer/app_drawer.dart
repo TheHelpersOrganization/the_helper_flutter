@@ -27,20 +27,22 @@ class AppDrawer extends ConsumerWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => Drawer(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        child: Column(
-          children: [
-            const AppDrawerHeader(),
-            const Divider(
-              height: 0,
-            ),
-            Expanded(
-              child: _buildDrawerItem(context, ref),
-            ),
-          ],
+  Widget build(BuildContext context, WidgetRef ref) => SafeArea(
+        child: Drawer(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          child: Column(
+            children: [
+              const AppDrawerHeader(),
+              const Divider(
+                height: 0,
+              ),
+              Expanded(
+                child: _buildDrawerItem(context, ref),
+              ),
+            ],
+          ),
         ),
       );
 

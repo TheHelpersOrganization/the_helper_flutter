@@ -4,6 +4,8 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
+import 'package:the_helper/src/features/notification/application/notification_service.dart';
+import 'package:the_helper/src/features/notification/domain/notification_model.dart';
 import 'package:the_helper/src/features/notification/presentation/notification/controller/notification_controller.dart';
 import 'package:the_helper/src/utils/image.dart';
 
@@ -15,9 +17,77 @@ class NotificationScreen extends ConsumerWidget {
     required this.notificationId,
   });
 
+  Widget getNotificationTarget(
+    BuildContext context,
+    NotificationModel notification,
+    NotificationService? notificationService,
+  ) {
+    Widget? leading = CircleAvatar(
+      backgroundImage: getLogoProvider(),
+    );
+    String title;
+    VoidCallback? onTap = notificationService == null
+        ? null
+        : () {
+            notificationService.navigateOnNotificationClicked(
+              notification,
+              push: true,
+            );
+          };
+    switch (notification.type) {
+      case NotificationType.activity:
+        title = notification.activity!.name!;
+        leading = CircleAvatar(
+          backgroundImage: getBackendImageOrLogoProvider(
+            notification.activity!.thumbnail,
+          ),
+        );
+        break;
+      case NotificationType.shift:
+        title = notification.shift!.name;
+        leading = CircleAvatar(
+          backgroundImage: getBackendImageOrLogoProvider(
+            notification.activity!.thumbnail,
+          ),
+        );
+        break;
+      case NotificationType.organization:
+        title = notification.organization!.name;
+        leading = CircleAvatar(
+          backgroundImage: getBackendImageOrLogoProvider(
+            notification.organization!.logo,
+          ),
+        );
+        break;
+
+      case NotificationType.report:
+        title = notification.report!.title;
+        break;
+      case NotificationType.system:
+        title = 'System';
+        break;
+      case NotificationType.other:
+        title = 'Other';
+    }
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: leading,
+      title: Text(title),
+      subtitle: Text(
+        notification.createdAt!.formatWeekDayDayMonthYearBulletHourMinute(),
+        style: context.theme.textTheme.bodyMedium?.copyWith(
+          color: context.theme.colorScheme.secondary,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationState = ref.watch(notificationProvider(notificationId));
+    final notificationService =
+        ref.watch(notificationServiceProvider).valueOrNull;
 
     return Scaffold(
       appBar: notificationState.isLoading
@@ -50,21 +120,10 @@ class NotificationScreen extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
-                      backgroundImage: getLogoProvider(),
-                    ),
-                    title: const Text(
-                      'System',
-                    ),
-                    subtitle: Text(
-                      notification.createdAt!
-                          .formatWeekDayDayMonthYearBulletHourMinute(),
-                      style: context.theme.textTheme.bodyMedium?.copyWith(
-                        color: context.theme.colorScheme.secondary,
-                      ),
-                    ),
+                  getNotificationTarget(
+                    context,
+                    notification,
+                    notificationService,
                   ),
                   const SizedBox(height: 24),
                   Text(notification.description),
