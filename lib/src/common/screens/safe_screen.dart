@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/screens/splash_screen.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/utils/app_service_provider.dart';
 
 class SafeScreen extends ConsumerWidget {
   final Widget child;
@@ -11,11 +11,14 @@ class SafeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authServiceProvider);
+    final appService = ref.watch(appServiceProvider);
 
-    return auth.when(
+    return appService.when(
       data: (data) => child,
-      error: (_, __) => const ErrorScreen(),
+      error: (_, __) {
+        print(_);
+        return const ErrorScreen();
+      },
       loading: () => const SplashScreen(
         enableIndicator: true,
       ),

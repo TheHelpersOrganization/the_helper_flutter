@@ -9,6 +9,7 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/features/notification/data/notification_repository.dart';
 import 'package:the_helper/src/features/notification/domain/delete_notifications.dart';
 import 'package:the_helper/src/features/notification/domain/mark_notifications_as_read.dart';
 import 'package:the_helper/src/features/notification/domain/notification_model.dart';
@@ -129,26 +130,37 @@ class NotificationListScreen extends ConsumerWidget {
                                 return;
                               }
                               context.navigator.pop();
+                              List<int> ids = hasSelectedNotifications
+                                  ? selectedNotificationIds.toList()
+                                  : notifications!.map((e) => e.id).toList();
+                              int unreadCount = 0;
+                              for (final notification in notifications!) {
+                                if (ids.contains(notification.id) &&
+                                    !notification.read) {
+                                  unreadCount++;
+                                }
+                              }
                               ref
                                   .read(
                                       markNotificationsAsReadControllerProvider
                                           .notifier)
                                   .markNotificationsAsRead(
                                     data: MarkNotificationsAsRead(
-                                      id: hasSelectedNotifications
-                                          ? selectedNotificationIds.toList()
-                                          : notifications!
-                                              .map((e) => e.id)
-                                              .toList(),
+                                      id: ids,
                                     ),
                                     onSuccess: () {
                                       ref.invalidate(
                                         notificationListPagedNotifierProvider,
                                       );
+                                      ref.invalidate(notificationCountProvider);
                                       ref
                                           .read(selectedNotificationIdsProvider
                                               .notifier)
                                           .state = {};
+                                      ref
+                                          .read(notificationCountProvider
+                                              .notifier)
+                                          .subtract(unreadCount);
                                     },
                                   );
                             },
@@ -193,25 +205,36 @@ class NotificationListScreen extends ConsumerWidget {
                                 return;
                               }
                               context.navigator.pop();
+                              List<int> ids = hasSelectedNotifications
+                                  ? selectedNotificationIds.toList()
+                                  : notifications!.map((e) => e.id).toList();
+                              int unreadCount = 0;
+                              for (final notification in notifications!) {
+                                if (ids.contains(notification.id) &&
+                                    !notification.read) {
+                                  unreadCount++;
+                                }
+                              }
                               ref
                                   .read(deleteNotificationsControllerProvider
                                       .notifier)
                                   .deleteNotifications(
                                     data: DeleteNotifications(
-                                      id: hasSelectedNotifications
-                                          ? selectedNotificationIds.toList()
-                                          : notifications!
-                                              .map((e) => e.id)
-                                              .toList(),
+                                      id: ids,
                                     ),
                                     onSuccess: () {
                                       ref.invalidate(
                                         notificationListPagedNotifierProvider,
                                       );
+                                      ref.invalidate(notificationCountProvider);
                                       ref
                                           .read(selectedNotificationIdsProvider
                                               .notifier)
                                           .state = {};
+                                      ref
+                                          .read(notificationCountProvider
+                                              .notifier)
+                                          .subtract(unreadCount);
                                     },
                                   );
                             },
