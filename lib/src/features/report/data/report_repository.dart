@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/features/report/domain/admin_report.dart';
+import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../../../common/domain/file_info.dart';
@@ -16,7 +16,7 @@ class ReportRepository {
     required this.client,
   });
 
-  Future<List<AdminReportModel>> getAll({
+  Future<List<ReportModel>> getAll({
     ReportQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(
@@ -24,25 +24,25 @@ class ReportRepository {
       queryParameters: query?.toJson(),
     ))
         .data['data'];
-    return res.map((e) => AdminReportModel.fromJson(e)).toList();
+    return res.map((e) => ReportModel.fromJson(e)).toList();
   }
 
-  Future<AdminReportModel> submitReport(ReportRequest report) async {
+  Future<ReportModel> submitReport(ReportRequest report) async {
     final res = await client.post(
       '/reports',
       data: report.toJson(),
     );
-    return AdminReportModel.fromJson(res.data['data']);
+    return ReportModel.fromJson(res.data['data']);
   }
 
-  Future<AdminReportModel> getById({
+  Future<ReportModel> getById({
     required int id,
     ReportQuery? query,
   }) async {
     final res =
         (await client.get('/reports/$id', queryParameters: query?.toJson()))
             .data['data'];
-    return AdminReportModel.fromJson(res);
+    return ReportModel.fromJson(res);
   }
 }
 

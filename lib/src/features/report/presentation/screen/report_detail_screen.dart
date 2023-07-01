@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
 
-import 'package:the_helper/src/features/report/domain/admin_report.dart';
+import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/presentation/controller/report_detail_controller.dart';
 import 'package:the_helper/src/features/report/presentation/screen/report_reply_screen.dart';
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';

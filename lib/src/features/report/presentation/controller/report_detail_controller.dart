@@ -1,32 +1,27 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
-import 'package:the_helper/src/features/report/domain/admin_report.dart';
+import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
 
 part 'report_detail_controller.g.dart';
 
-
 @riverpod
 class ReportDetailController extends _$ReportDetailController {
   @override
-  FutureOr<AdminReportModel> build({
-    required int id
-  }) async {
+  FutureOr<ReportModel> build({required int id}) async {
     return _fetchReportDetail(id: id);
   }
 
-  Future<AdminReportModel> _fetchReportDetail({
+  Future<ReportModel> _fetchReportDetail({
     required int id,
   }) async {
     final repository = ref.watch(reportRepositoryProvider);
     final data = await repository.getById(
-      id: id,
-      query: ReportQuery(
-        include: [
+        id: id,
+        query: ReportQuery(include: [
           ReportQueryInclude.message,
           ReportQueryInclude.reporter
-        ]
-      ));
+        ]));
     return data;
   }
 
