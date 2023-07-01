@@ -46,9 +46,7 @@ class TabStatus extends _$TabStatus {
 @riverpod
 class ScrollPagingController extends _$ScrollPagingController {
   @override
-  PagingController<int, ReportModel> build(
-    int id,
-  ) {
+  PagingController<int, ReportModel> build() {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabStatus = ref.watch(tabStatusProvider);
     final controller = PagingController<int, ReportModel>(firstPageKey: 0);
@@ -57,7 +55,6 @@ class ScrollPagingController extends _$ScrollPagingController {
         pageKey: pageKey,
         searchPattern: searchPattern,
         tabStatus: tabStatus,
-        id: id,
       );
     });
     return controller;
@@ -67,15 +64,13 @@ class ScrollPagingController extends _$ScrollPagingController {
     required int pageKey,
     String? searchPattern,
     required String tabStatus,
-    required int id,
   }) async {
-    final accountRepository = ref.watch(reportRepositoryProvider);
+    final repo = ref.watch(reportRepositoryProvider);
     final items =
-        await guardAsyncValue<List<ReportModel>>(() => accountRepository.getAll(
+        await guardAsyncValue<List<ReportModel>>(() => repo.getMy(
               query: ReportQuery(
                   limit: 5,
                   offset: pageKey,
-                  reporterId: id,
                   type: tabStatus,
                   include: ["reporter", "message"]),
             ));

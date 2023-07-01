@@ -13,17 +13,15 @@ import '../controller/report_history_screen_controller.dart';
 import 'custom_list_item.dart';
 
 class CustomScrollList extends ConsumerWidget {
-  final int id;
   const CustomScrollList({
     super.key,
-    required this.id,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabIndex = ref.watch(tabStatusProvider);
-    final customController = ref.watch(scrollPagingControllerProvider(id));
+    final customController = ref.watch(scrollPagingControllerProvider);
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Column(
@@ -39,13 +37,13 @@ class CustomScrollList extends ConsumerWidget {
               }
               // ref.read(hasUsedSearchProvider.notifier).state = true;
               ref
-                  .read(scrollPagingControllerProvider(id).notifier)
+                  .read(scrollPagingControllerProvider.notifier)
                   .refreshOnSearch();
             },
             onClear: () {
               ref.read(searchPatternProvider.notifier).state = null;
               ref
-                  .read(scrollPagingControllerProvider(id).notifier)
+                  .read(scrollPagingControllerProvider.notifier)
                   .refreshOnSearch();
             },
             filter: _buildFilter(context),

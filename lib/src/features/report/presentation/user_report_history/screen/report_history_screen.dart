@@ -17,10 +17,8 @@ const List<Tab> tabs = <Tab>[
 ];
 
 class ReportHistoryScreen extends ConsumerWidget {
-  final int id;
   const ReportHistoryScreen({
     super.key,
-    required this.id,
   });
   
 
@@ -51,9 +49,7 @@ class ReportHistoryScreen extends ConsumerWidget {
           ),
           body: TabBarView(
             children: tabs.map((tab) {
-              return CustomScrollList(
-                id: id,
-              );
+              return const CustomScrollList();
             }).toList(),
           ),
         );

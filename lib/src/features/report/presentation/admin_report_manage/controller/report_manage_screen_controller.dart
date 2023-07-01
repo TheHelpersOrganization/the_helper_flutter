@@ -65,9 +65,9 @@ class ScrollPagingController extends _$ScrollPagingController {
     String? searchPattern,
     required String tabStatus,
   }) async {
-    final accountRepository = ref.watch(reportRepositoryProvider);
+    final repo = ref.watch(reportRepositoryProvider);
     final items =
-        await guardAsyncValue<List<ReportModel>>(() => accountRepository.getAll(
+        await guardAsyncValue<List<ReportModel>>(() => repo.getAll(
               query: ReportQuery(
                   limit: 5,
                   offset: pageKey,

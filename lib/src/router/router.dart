@@ -304,6 +304,22 @@ final routes = [
               ),
             ]
           ),
+          GoRoute(
+            path: AppRoute.reportHistory.path,
+            name: AppRoute.reportHistory.name,
+            builder: (context, state) => const ReportHistoryScreen(),
+            routes: [
+              GoRoute(
+                path: AppRoute.reportDetail.path,
+                name: AppRoute.reportDetail.name,
+                builder: (_, state) => ReportDetailScreen(
+                  id: int.parse(
+                    state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                  ),
+                ),
+              ),
+            ]
+          ),
           // GoRoute(
           //   path: AppRoute.screenBuilderCanvas.path,
           //   name: AppRoute.screenBuilderCanvas.name,
@@ -503,12 +519,16 @@ enum AppRoute {
 
   // Todo: report crud
   reportManage(
-    path: '/report',
+    path: '/report-manage',
     name: 'report-manage',
   ),
   reportDetail(
     path: ':reportId',
     name: 'report'
+  ),
+  reportHistory(
+    path: '/report',
+    name: 'report-history'
   ),
   settings(
     path: '/settings',
