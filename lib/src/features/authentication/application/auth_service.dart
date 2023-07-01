@@ -21,6 +21,7 @@ class AuthService extends AsyncNotifier<AccountToken?> {
   Future<void> signIn(String email, String password) async {
     final authRepository = ref.read(authRepositoryProvider);
     final res = await authRepository.signIn(email, password);
+    _onAfterSignIn(res);
     state = AsyncValue.data(res);
   }
 
