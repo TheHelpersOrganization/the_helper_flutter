@@ -5,7 +5,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:the_helper/src/features/authentication/data/auth_repository.dart';
 import 'package:the_helper/src/features/authentication/domain/account_token.dart';
 import 'package:the_helper/src/features/authentication/domain/token.dart';
-import 'package:the_helper/src/utils/firebase_provider.dart';
 
 class AuthService extends AsyncNotifier<AccountToken?> {
   final List<void Function(AccountToken? token)> _onAfterSignInCallbacks = [];
@@ -15,13 +14,6 @@ class AuthService extends AsyncNotifier<AccountToken?> {
   FutureOr<AccountToken?> build() async {
     final authRepository = ref.read(authRepositoryProvider);
     final accountToken = await authRepository.autoSignIn();
-    if (accountToken != null) {
-      final firebaseMessaging =
-          await ref.read(firebaseMessagingProvider.future);
-      await firebaseMessaging.subscribeToTopic(
-        'notification-account-${accountToken.account.id}',
-      );
-    }
     _onAfterSignIn(accountToken);
     return accountToken;
   }
@@ -29,13 +21,6 @@ class AuthService extends AsyncNotifier<AccountToken?> {
   Future<void> signIn(String email, String password) async {
     final authRepository = ref.read(authRepositoryProvider);
     final res = await authRepository.signIn(email, password);
-    if (res != null) {
-      final firebaseMessaging =
-          await ref.read(firebaseMessagingProvider.future);
-      await firebaseMessaging.subscribeToTopic(
-        'notification-${res.account.id}',
-      );
-    }
     state = AsyncValue.data(res);
   }
 
