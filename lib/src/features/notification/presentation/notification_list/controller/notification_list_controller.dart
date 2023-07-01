@@ -39,7 +39,12 @@ class NotificationListPagedNotifier
           load: (page, limit) {
             final notificationType = <NotificationType>[];
             if (isActivityNotificationSelected) {
-              notificationType.add(NotificationType.activity);
+              notificationType.addAll(
+                [
+                  NotificationType.activity,
+                  NotificationType.shift,
+                ],
+              );
             }
             if (isOrganizationNotificationSelected) {
               notificationType.add(NotificationType.organization);

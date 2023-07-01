@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
+import 'package:the_helper/src/features/notification/application/notification_service.dart';
 import 'package:the_helper/src/features/notification/data/notification_repository.dart';
 import 'package:the_helper/src/features/notification/domain/mark_notifications_as_read.dart';
 import 'package:the_helper/src/features/notification/domain/notification_model.dart';

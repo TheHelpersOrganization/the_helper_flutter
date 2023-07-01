@@ -11,6 +11,10 @@ class NotificationQuerySort {
   static const createdAtDesc = '-createdAt';
 }
 
+class NotificationQueryInclude {
+  static const data = 'data';
+}
+
 @freezed
 class NotificationQuery with _$NotificationQuery {
   @JsonSerializable(includeIfNull: false)
@@ -22,6 +26,7 @@ class NotificationQuery with _$NotificationQuery {
     int? limit,
     int? offset,
     @CommaSeparatedStringsConverter() List<String>? sort,
+    String? include,
   }) = _NotificationQuery;
 
   factory NotificationQuery.fromJson(Map<String, dynamic> json) =>
