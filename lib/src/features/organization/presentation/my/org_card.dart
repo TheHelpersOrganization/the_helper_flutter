@@ -50,7 +50,7 @@ class OrgCard extends ConsumerWidget {
           context.pushNamed(
             AppRoute.organization.name,
             pathParameters: {
-              'id': organization.id.toString(),
+              'orgId': organization.id.toString(),
             },
           );
         },
@@ -169,7 +169,7 @@ class OrgCard extends ConsumerWidget {
                                   context.pushNamed(
                                     AppRoute.organization.name,
                                     pathParameters: {
-                                      'id': organization.id.toString(),
+                                      'orgId': organization.id.toString(),
                                     },
                                   );
                                 },

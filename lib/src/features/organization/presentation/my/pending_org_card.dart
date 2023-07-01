@@ -110,7 +110,7 @@ class _PendingOrgCardState extends ConsumerState<PendingOrgCard> {
                 context.pushNamed(
                   AppRoute.organization.name,
                   pathParameters: {
-                    'id': organization.id.toString(),
+                    'orgId': organization.id.toString(),
                   },
                 );
               },

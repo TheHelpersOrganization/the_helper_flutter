@@ -5,7 +5,8 @@ import 'package:the_helper/src/common/extension/image.dart';
 
 class AvatarWatcherWidget extends ConsumerWidget {
   final int? avatarId;
-  const AvatarWatcherWidget({super.key, this.avatarId});
+  final double? radius;
+  const AvatarWatcherWidget({super.key, this.avatarId, this.radius});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -13,13 +14,13 @@ class AvatarWatcherWidget extends ConsumerWidget {
       alignment: Alignment.center,
       children: [
         CircleAvatar(
-          radius: context.mediaQuery.size.width * 0.05,
+          radius: radius ?? context.mediaQuery.size.width * 0.05,
           backgroundColor: Colors.white,
           backgroundImage: avatarId == null
-          ? null
-          : ImageX.backend(
-            avatarId!,
-          ).image,
+              ? null
+              : ImageX.backend(
+                  avatarId!,
+                ).image,
         )
       ],
     );
