@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/admin_report.dart';
 import 'package:the_helper/src/features/report/presentation/screen/report_detail_screen.dart';
+import 'package:the_helper/src/router/router.dart';
 
 import '../../../../utils/domain_provider.dart';
 
@@ -28,15 +30,12 @@ class CustomListItem extends ConsumerWidget {
       child: Card(
         elevation: 1,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return ReportDetailScreen(reportData: data);
-                },
-              ),
-            );
-          },
+          onTap: () => context.pushNamed(
+            AppRoute.reportDetail.name,
+            pathParameters: {
+              'reportId': data.id.toString(),
+            }
+          ),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(

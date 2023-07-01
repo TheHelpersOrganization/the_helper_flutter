@@ -7,8 +7,8 @@ part 'report_message.freezed.dart';
 part 'report_message.g.dart';
 
 @freezed
-class ReportMessage with _$ReportMessage {
-  factory ReportMessage({
+class ReportMessageModel with _$ReportMessageModel {
+  factory ReportMessageModel({
     int? id,
     required int senderId,
     required AccountData sender,
@@ -16,8 +16,8 @@ class ReportMessage with _$ReportMessage {
     List<FileInfoModel>? files,
     required DateTime createdAt,
     required DateTime updatedAt,
-  }) = _ReportMessage;
+  }) = _ReportMessageModel;
 
-  factory ReportMessage.fromJson(Map<String, dynamic> json) =>
-      _$ReportMessageFromJson(json);
+  factory ReportMessageModel.fromJson(Map<String, dynamic> json) =>
+      _$ReportMessageModelFromJson(json);
 }

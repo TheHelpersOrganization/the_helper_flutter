@@ -5,15 +5,9 @@ import 'package:the_helper/src/utils/dio.dart';
 
 import '../../../common/domain/file_info.dart';
 import '../domain/report_query.dart';
-import '../domain/report_type.dart';
+import '../domain/report_request.dart';
 
 part 'report_repository.g.dart';
-
-List<ReportType> rpType = [
-  ReportType(id: 1, name: 'name', entityType: 'entityType'),
-  ReportType(id: 2, name: 'asdf', entityType: 'entityType'),
-  ReportType(id: 3, name: '2dsdad', entityType: 'entityType')
-];
 
 class ReportRepository {
   final Dio client;
@@ -33,28 +27,22 @@ class ReportRepository {
     return res.map((e) => AdminReportModel.fromJson(e)).toList();
   }
 
-  Future<AdminReportModel> submitReport(AdminReportModel report) async {
-    // final res = await client.post(
-    //   '/something',
-    //   data: report.toJson(),
-    // );
-    // return ReportModel.fromJson(res.data['data']);
-    return report;
+  Future<AdminReportModel> submitReport(ReportRequest report) async {
+    final res = await client.post(
+      '/reports',
+      data: report.toJson(),
+    );
+    return AdminReportModel.fromJson(res.data['data']);
   }
 
   Future<AdminReportModel> getById({
     required int id,
+    ReportQuery? query,
   }) async {
-    final res = (await client.get('/something')).data['data'];
+    final res =
+        (await client.get('/reports/$id', queryParameters: query?.toJson()))
+            .data['data'];
     return AdminReportModel.fromJson(res);
-  }
-
-  Future<List<ReportType>> getReportTypeList({
-    required String entityType,
-  }) async {
-    // final List<dynamic> res = (await client.get('/something')).data['data'];
-    // return res.map((e) => ReportType.fromJson(e)).toList();
-    return rpType;
   }
 }
 

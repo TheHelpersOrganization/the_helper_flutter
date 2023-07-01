@@ -46,6 +46,7 @@ import '../features/account/presentation/account_admin_manage/screens/account_ma
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
 import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
+import '../features/report/presentation/screen/report_detail_screen.dart';
 import '../features/report/presentation/screen/report_manage_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -290,6 +291,17 @@ final routes = [
             path: AppRoute.reportManage.path,
             name: AppRoute.reportManage.name,
             builder: (context, state) => const ReportManageScreen(),
+            routes: [
+              GoRoute(
+                path: AppRoute.reportDetail.path,
+                name: AppRoute.reportDetail.name,
+                builder: (_, state) => ReportDetailScreen(
+                  id: int.parse(
+                    state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                  ),
+                ),
+              ),
+            ]
           ),
           // GoRoute(
           //   path: AppRoute.screenBuilderCanvas.path,
@@ -491,7 +503,11 @@ enum AppRoute {
   // Todo: report crud
   reportManage(
     path: '/report',
-    name: 'report',
+    name: 'report-manage',
+  ),
+  reportDetail(
+    path: ':reportId',
+    name: 'report'
   ),
   settings(
     path: '/settings',

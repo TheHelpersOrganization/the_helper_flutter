@@ -6,6 +6,18 @@ import '../../../common/converter/comma_separated_strings_converter.dart';
 part 'report_query.freezed.dart';
 part 'report_query.g.dart';
 
+class ReportQuerySort {
+  static const startTimeAsc = 'startTime';
+  static const startTimeDesc = '-startTime';
+  static const endTimeAsc = 'endTime';
+  static const endTimeDesc = '-endTime';
+}
+
+class ReportQueryInclude {
+  static const reporter = 'reporter';
+  static const message = 'message';
+}
+
 @freezed
 class ReportQuery with _$ReportQuery {
   @JsonSerializable(includeIfNull: false)
@@ -16,8 +28,8 @@ class ReportQuery with _$ReportQuery {
     int? reporterId,
     String? name,
     String? type,
-    String? sort,
     @CommaSeparatedStringsConverter() List<String>? include,
+    @CommaSeparatedStringsConverter() List<String>? sort,
     int? limit,
     int? offset,
   }) = _ReportQuery;

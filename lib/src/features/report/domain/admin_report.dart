@@ -21,7 +21,7 @@ class AdminReportModel with _$AdminReportModel {
     int? reviewerId,
     required DateTime createdAt,
     required DateTime updatedAt,
-    List<ReportMessage>? messages,
+    required List<ReportMessageModel> messages,
     AccountData? reportedAccount,
     ActivityData? reportedActivity,
     OrganizationData? reportedOrganization
