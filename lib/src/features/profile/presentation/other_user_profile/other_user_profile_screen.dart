@@ -11,8 +11,8 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_det
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
-import 'package:the_helper/src/features/report/presentation/screen/submit_report_screen.dart';
 
+import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
 import './profile_verified_status.dart';
 

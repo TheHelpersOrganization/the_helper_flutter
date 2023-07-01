@@ -23,7 +23,7 @@ class ReportMessageWidget extends ConsumerWidget {
         border: Border(top: BorderSide(color: Theme.of(context).dividerColor))
       ),
       child: ExpansionTile(
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
         shape: const Border(),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,

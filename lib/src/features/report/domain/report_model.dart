@@ -21,7 +21,7 @@ class ReportModel with _$ReportModel {
       int? reviewerId,
       required DateTime createdAt,
       required DateTime updatedAt,
-      required List<ReportMessageModel> messages,
+      List<ReportMessageModel>? messages,
       AccountData? reportedAccount,
       ActivityData? reportedActivity,
       OrganizationData? reportedOrganization}) = _ReportModel;

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
+
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/widget/button/primary_button.dart';
-import 'package:the_helper/src/features/report/domain/report_request.dart';
-import 'package:the_helper/src/features/report/presentation/controller/submit_report_screen_controller.dart';
 
-import '../../../../common/widget/file_picker/form_multiple_file_picker_field.dart';
-import '../widget/avatar_watcher.dart';
+import 'package:the_helper/src/common/widget/button/primary_button.dart';
+
+
+import '../../../../../common/widget/file_picker/form_multiple_file_picker_field.dart';
+import '../controller/reply_report_message_controller.dart';
+import '../controller/report_detail_controller.dart';
+
 
 class ReportReplyScreen extends ConsumerWidget {
   final int id;
@@ -27,17 +28,17 @@ class ReportReplyScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.pop();
-            },
-          ),
-          title: const Text('Report'),
-          centerTitle: true,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.pop();
+          },
         ),
-        body: SingleChildScrollView(
+        title: const Text('Report'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: FormBuilder(
           key: _formKey,
@@ -48,9 +49,7 @@ class ReportReplyScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Text(
                   "Re: $title",
-                  style: Theme.of(context)
-                        .textTheme
-                        .titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               // report type dropdown
@@ -106,17 +105,16 @@ class ReportReplyScreen extends ConsumerWidget {
                         _formKey.currentState!.save();
                         var data = _formKey.currentState!.value;
 
-                        // await ref
-                        //     .watch(submitReportControllerProvider.notifier)
-                        //     .sendReport(
-                        //         title: data['title'],
-                        //         accusedId: id,
-                        //         entityType: entityType,
-                        //         reportType: data['reportType'].name,
-                        //         description: data['description'],
-                        //         files: data['files']);
+                        await ref
+                            .watch(
+                                replyReportMessageControllerProvider.notifier)
+                            .sendMessage(
+                                id: id,
+                                content: data['content'],
+                                files: data['files']);
 
                         if (context.mounted) {
+                          ref.invalidate(reportDetailControllerProvider);
                           context.pop();
                         }
                       },

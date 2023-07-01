@@ -3,18 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/report/data/report_repository.dart';
+import 'package:the_helper/src/features/report/presentation/report_detail/screen/report_reply_screen.dart';
 
-import 'package:the_helper/src/features/report/domain/report_model.dart';
-import 'package:the_helper/src/features/report/presentation/controller/report_detail_controller.dart';
-import 'package:the_helper/src/features/report/presentation/screen/report_reply_screen.dart';
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 
-import '../../../../common/widget/button/primary_button.dart';
-import '../../../../common/widget/error_widget.dart';
-import '../../../../utils/domain_provider.dart';
-import '../widget/attached_files_list.dart';
-import '../widget/avatar_watcher.dart';
+import '../../../../../common/widget/button/primary_button.dart';
+import '../../../../../common/widget/error_widget.dart';
+
+import '../../widget/avatar_watcher.dart';
+import '../controller/report_detail_controller.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
   final int id;
@@ -26,17 +24,12 @@ class ReportDetailScreen extends ConsumerWidget {
     final detail = ref.watch(reportDetailControllerProvider(id: id));
     // final customTileExpanded = ref.watch(expansionTitleControllerProvider);
 
-    // ref.listen<AsyncValue>(
-    //   accountRequestDetailControllerProvider,
-    //   (_, state) {
-    //     state.showSnackbarOnError(context);
-    //     if(state.value != null){
-    //       state.showSnackbarOnSuccess(
-    //       context,
-    //       content: const Text('Verified account'),
-    //     );}
-    //   },
-    // );
+    ref.listen<AsyncValue>(
+      reportDetailControllerProvider(id: id),
+      (_, state) {
+        state.showSnackbarOnError(context);
+      },
+    );
 
     return Scaffold(
         appBar: AppBar(
@@ -50,9 +43,7 @@ class ReportDetailScreen extends ConsumerWidget {
           centerTitle: true,
         ),
         body: detail.when(
-            error: (er, st) {
-              print(er);
-              print(st);
+            error: (_, __) {
               return CustomErrorWidget(
                 onRetry: () {
                   ref.invalidate(reportDetailControllerProvider);
@@ -138,7 +129,7 @@ class ReportDetailScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    for (var i in data.messages) ReportMessageWidget(data: i),
+                    for (var i in data.messages!) ReportMessageWidget(data: i),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -149,7 +140,16 @@ class ReportDetailScreen extends ConsumerWidget {
                             child: PrimaryButton(
                               // isLoading: state.isLoading,
                               loadingText: "Processing...",
-                              onPressed: () {},
+                              onPressed: () async {
+                                await ref
+                                    .watch(reportDetailControllerProvider(
+                                            id: data.id!)
+                                        .notifier)
+                                    .rejectReport();
+                                if (context.mounted) {
+                                  context.pop();
+                                }
+                              },
                               style: ButtonStyle(
                                   padding: MaterialStateProperty.all(
                                       const EdgeInsets.symmetric(vertical: 25)),
@@ -193,13 +193,14 @@ class ReportDetailScreen extends ConsumerWidget {
                               // isLoading: profile.isLoading,
                               loadingText: "Processing...",
                               onPressed: () async {
-                                // await ref
-                                //     .watch(accountRequestDetailControllerProvider
-                                //         .notifier)
-                                //     .verifyAccount(id: data.accountId!);
-                                // if (context.mounted) {
-                                //   context.pop();
-                                // }
+                                await ref
+                                    .watch(reportDetailControllerProvider(
+                                            id: data.id!)
+                                        .notifier)
+                                    .approveReport();
+                                if (context.mounted) {
+                                  context.pop();
+                                }
                               },
                               style: ButtonStyle(
                                   padding: MaterialStateProperty.all(

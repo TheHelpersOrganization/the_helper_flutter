@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
-import 'package:the_helper/src/features/report/presentation/screen/report_detail_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 
-import '../../../../utils/domain_provider.dart';
+import '../../../../../utils/domain_provider.dart';
+
+
 
 class CustomListItem extends ConsumerWidget {
   final ReportModel data;

@@ -8,11 +8,11 @@ import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
 
-import '../../../../utils/async_value.dart';
+import '../../../../../utils/async_value.dart';
 
-part 'report_manage_screen_controller.g.dart';
+part 'report_history_screen_controller.g.dart';
 
-class ReportManageScreenController extends AutoDisposeAsyncNotifier<void> {
+class ReportHistoryScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
   build() {}
 }
@@ -46,7 +46,9 @@ class TabStatus extends _$TabStatus {
 @riverpod
 class ScrollPagingController extends _$ScrollPagingController {
   @override
-  PagingController<int, ReportModel> build() {
+  PagingController<int, ReportModel> build(
+    int id,
+  ) {
     final searchPattern = ref.watch(searchPatternProvider);
     final tabStatus = ref.watch(tabStatusProvider);
     final controller = PagingController<int, ReportModel>(firstPageKey: 0);
@@ -55,6 +57,7 @@ class ScrollPagingController extends _$ScrollPagingController {
         pageKey: pageKey,
         searchPattern: searchPattern,
         tabStatus: tabStatus,
+        id: id,
       );
     });
     return controller;
@@ -64,6 +67,7 @@ class ScrollPagingController extends _$ScrollPagingController {
     required int pageKey,
     String? searchPattern,
     required String tabStatus,
+    required int id,
   }) async {
     final accountRepository = ref.watch(reportRepositoryProvider);
     final items =
@@ -71,6 +75,7 @@ class ScrollPagingController extends _$ScrollPagingController {
               query: ReportQuery(
                   limit: 5,
                   offset: pageKey,
+                  reporterId: id,
                   type: tabStatus,
                   include: ["reporter", "message"]),
             ));
@@ -93,7 +98,7 @@ class ScrollPagingController extends _$ScrollPagingController {
   }
 }
 
-final reportManageControllerProvider =
-    AutoDisposeAsyncNotifierProvider<ReportManageScreenController, void>(
-  () => ReportManageScreenController(),
+final reportHistoryControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ReportHistoryScreenController, void>(
+  () => ReportHistoryScreenController(),
 );

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
-import '../controller/report_manage_screen_controller.dart';
+import '../controller/report_history_screen_controller.dart';
 import '../widget/custom_list.dart';
 
 
@@ -16,11 +16,12 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Activity'),
 ];
 
-class ReportManageScreen extends ConsumerWidget {
-  // final String? role;
-  const ReportManageScreen({
-    Key? key,
-  }) : super(key: key);
+class ReportHistoryScreen extends ConsumerWidget {
+  final int id;
+  const ReportHistoryScreen({
+    super.key,
+    required this.id,
+  });
   
 
   @override
@@ -39,7 +40,7 @@ class ReportManageScreen extends ConsumerWidget {
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.black),
             backgroundColor: Colors.transparent,
-            title: const Text('Verify request manage',
+            title: const Text('Report history',
                 style: TextStyle(color: Colors.black)),
             centerTitle: true,
             elevation: 0.0,
@@ -50,7 +51,9 @@ class ReportManageScreen extends ConsumerWidget {
           ),
           body: TabBarView(
             children: tabs.map((tab) {
-              return const CustomScrollList();
+              return CustomScrollList(
+                id: id,
+              );
             }).toList(),
           ),
         );

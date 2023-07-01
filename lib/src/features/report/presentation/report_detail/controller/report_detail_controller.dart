@@ -9,12 +9,10 @@ part 'report_detail_controller.g.dart';
 class ReportDetailController extends _$ReportDetailController {
   @override
   FutureOr<ReportModel> build({required int id}) async {
-    return _fetchReportDetail(id: id);
+    return _fetchReportDetail();
   }
 
-  Future<ReportModel> _fetchReportDetail({
-    required int id,
-  }) async {
+  Future<ReportModel> _fetchReportDetail() async {
     final repository = ref.watch(reportRepositoryProvider);
     final data = await repository.getById(
         id: id,
@@ -25,12 +23,15 @@ class ReportDetailController extends _$ReportDetailController {
     return data;
   }
 
-  // Future<void> updateProfile(Profile profile, {ProfileQuery? query}) async {
-  //   state = const AsyncValue.loading();
-  //   state = await AsyncValue.guard(() async {
-  //     final profileRepository = ref.read(profileRepositoryProvider);
-  //     await profileRepository.updateProfile(profile);
-  //     return _fetchProfile();
-  //   });
-  // }
+  Future<void> approveReport() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.watch(reportRepositoryProvider).approveReport(id: id));
+  }
+
+  Future<void> rejectReport() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.watch(reportRepositoryProvider).rejectReport(id: id));
+  }
 }
