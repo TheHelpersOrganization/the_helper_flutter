@@ -7,7 +7,8 @@ import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import 'package:the_helper/src/features/report/domain/admin_report.dart';
+import 'package:the_helper/src/features/report/domain/report_model.dart';
+
 
 import '../controller/report_manage_screen_controller.dart';
 import 'custom_list_item.dart';
@@ -71,17 +72,10 @@ class CustomScrollList extends ConsumerWidget {
               height: 24,
             ),
           Expanded(
-              child: PagedListView<int, AdminReportModel>(
+              child: PagedListView<int, ReportModel>(
             pagingController: customController,
             builderDelegate:
                 PagedChildBuilderDelegate(itemBuilder: (context, item, index) {
-              // if (tabIndex == 'user') {
-              //   return UserReportListItem(data: item);
-              // } else if (tabIndex == 'organization') {
-              //   return OrganizationReportListItem(data: item);
-              // } else {
-              //   return ActivityReportListItem(data: item);
-              // }
               return CustomListItem(data: item);
             }),
           )),

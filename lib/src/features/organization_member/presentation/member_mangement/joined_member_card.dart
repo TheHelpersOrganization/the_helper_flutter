@@ -97,7 +97,7 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
                   context.pushNamed(
                     AppRoute.otherProfile.name,
                     pathParameters: {
-                      'userId': member.id.toString(),
+                      'userId': member.accountId.toString(),
                     },
                   );
                 },

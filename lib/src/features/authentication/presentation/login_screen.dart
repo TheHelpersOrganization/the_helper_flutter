@@ -139,6 +139,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: PrimaryButton(
+                            isLoading: false,
+                            loadingText: "Logging in...",
+                            onPressed: () {
+                              ref.read(loginControllerProvider.notifier).signIn(
+                                    "hquan310@gmail.com",
+                                    "123456",
+                                  );
+                            },
+                            child: const Text('Tester login...'),
+                          ),
+                        ),
                       ],
                     ),
                   ),
