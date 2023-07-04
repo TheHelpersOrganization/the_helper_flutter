@@ -16,17 +16,34 @@ class CheckOutDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
       title: const Text('Check-out'),
-      content: Text.rich(
-        TextSpan(
-          text: 'Do you want check-out shift ',
-          children: [
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text.rich(
             TextSpan(
-              text: shift.name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              text: 'Do you want check-out shift ',
+              children: [
+                TextSpan(
+                  text: shift.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const TextSpan(text: '?'),
+              ],
             ),
-            const TextSpan(text: '?'),
-          ],
-        ),
+          ),
+          if (shift.endTime.isAfter(DateTime.now())) ...[
+            const SizedBox(height: 12),
+            const Text(
+              'Shift has not ended yet.',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+            ),
+            const Text(
+              'You will be able to check-out only once.',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+            ),
+          ]
+        ],
       ),
       actions: [
         TextButton(

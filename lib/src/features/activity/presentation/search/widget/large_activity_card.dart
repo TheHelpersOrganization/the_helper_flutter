@@ -29,7 +29,7 @@ class LargeActivityCard extends ConsumerWidget {
       width: width ?? context.mediaQuery.size.width * 0.7,
       height: height ?? 380,
       child: Card(
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: () {
             context.goNamed(AppRoute.activity.name, pathParameters: {
@@ -37,6 +37,8 @@ class LargeActivityCard extends ConsumerWidget {
             });
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
                 children: [
@@ -76,6 +78,8 @@ class LargeActivityCard extends ConsumerWidget {
                         style: context.theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
