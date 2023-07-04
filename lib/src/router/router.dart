@@ -309,15 +309,15 @@ final routes = [
             name: AppRoute.reportHistory.name,
             builder: (context, state) => const ReportHistoryScreen(),
             routes: [
-              GoRoute(
-                path: AppRoute.reportDetail.path,
-                name: AppRoute.reportDetail.name,
-                builder: (_, state) => ReportDetailScreen(
-                  id: int.parse(
-                    state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
-                  ),
-                ),
-              ),
+              // GoRoute(
+              //   path: AppRoute.reportDetail.path,
+              //   name: AppRoute.reportDetail.name,
+              //   builder: (_, state) => ReportDetailScreen(
+              //     id: int.parse(
+              //       state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+              //     ),
+              //   ),
+              // ),
             ]
           ),
           // GoRoute(
@@ -524,7 +524,7 @@ enum AppRoute {
   ),
   reportDetail(
     path: ':reportId',
-    name: 'report'
+    name: 'report-detaail'
   ),
   reportHistory(
     path: '/report',
