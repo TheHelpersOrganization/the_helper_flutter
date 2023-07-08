@@ -24,7 +24,8 @@ class BottomSheetHeading extends StatelessWidget {
           ),
           trailing: FilledButton.tonal(
             onPressed: () {
-              context.goNamed(AppRoute.shift.name, pathParameters: {
+              context.pop();
+              context.pushNamed(AppRoute.shift.name, pathParameters: {
                 'activityId': shift.activityId.toString(),
                 'shiftId': shift.id.toString(),
               });
