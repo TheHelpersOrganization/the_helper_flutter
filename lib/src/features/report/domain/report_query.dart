@@ -1,16 +1,18 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/common/converter/comma_separated_datetimes_converter.dart';
+import 'package:the_helper/src/features/report/domain/report_status.dart';
 
 import '../../../common/converter/comma_separated_strings_converter.dart';
+import 'report_type.dart';
 
 part 'report_query.freezed.dart';
 part 'report_query.g.dart';
 
 class ReportQuerySort {
-  static const startTimeAsc = 'startTime';
-  static const startTimeDesc = '-startTime';
-  static const endTimeAsc = 'endTime';
-  static const endTimeDesc = '-endTime';
+  static const createdTimeAsc = 'createdAt';
+  static const createdTimeDesc = '-createdAt';
+  static const updatedTimeAsc = 'updatedAt';
+  static const updatedTimeDesc = '-updatedAt';
 }
 
 class ReportQueryInclude {
@@ -27,9 +29,10 @@ class ReportQuery with _$ReportQuery {
     bool? isReviewer,
     int? reporterId,
     String? name,
-    String? type,
+    ReportType? type,
+    ReportStatus? status,
     @CommaSeparatedStringsConverter() List<String>? include,
-    @CommaSeparatedStringsConverter() List<String>? sort,
+    @Default([ReportQuerySort.updatedTimeDesc]) @CommaSeparatedStringsConverter() List<String>? sort,
     int? limit,
     int? offset,
   }) = _ReportQuery;

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:the_helper/src/features/location/domain/location.dart';
 
 import '../../contact/domain/contact.dart';
 import 'package:the_helper/src/features/file/domain/file_model.dart';
@@ -18,8 +19,8 @@ class OrganizationRequestModel with _$OrganizationRequestModel {
     required String website,
     int? logo,
     int? banner,
-    List<String>? locations,
-    List<FileModel>? files,
+    List<Location>? locations,
+    List<int>? files,
     List<Contact>? contacts,
   }) = _OrganizationModel;
 

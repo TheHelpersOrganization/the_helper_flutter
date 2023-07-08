@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
+import 'package:the_helper/src/features/organization/domain/organization_request_model.dart';
 
 import '../../../contact/domain/contact.dart';
 import '../../../location/domain/location.dart';
@@ -55,7 +56,7 @@ class CreateOrganizationController
 
     try {
       final org = await ref.read(modOrganizationRepositoryProvider).create(
-            Organization(
+            OrganizationRequestModel(
               name: name,
               email: email,
               phoneNumber: phoneNumber,

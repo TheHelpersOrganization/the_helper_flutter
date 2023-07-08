@@ -4,96 +4,49 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
 
 import '../../../../../utils/async_value.dart';
-
-part 'report_manage_screen_controller.g.dart';
+import '../../../domain/report_status.dart';
 
 class ReportManageScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
   build() {}
 }
 
+final isSearchingProvider = StateProvider.autoDispose<bool>((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-final needReloadProvider = StateProvider.autoDispose((ref) => false);
-final firstLoadPagingController = StateProvider((ref) => true);
 
-@riverpod
-class TabStatus extends _$TabStatus {
-  @override
-  String build() {
-    return 'account';
-  }
 
-  void changeStatus(int index) {
-    switch (index) {
-      case 1:
-        state = 'organization';
-        break;
-      case 2:
-        state = 'activity';
-        break;
-      default:
-        state = 'account';
-        break;
-    }
-  }
-}
+class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
+  final ReportRepository requestRepository;
+  final ReportStatus tabStatus;
+  final String? searchPattern;
 
-@riverpod
-class ScrollPagingController extends _$ScrollPagingController {
-  @override
-  PagingController<int, ReportModel> build() {
-    final searchPattern = ref.watch(searchPatternProvider);
-    final tabStatus = ref.watch(tabStatusProvider);
-    final controller = PagingController<int, ReportModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) {
-      fetchPage(
-        pageKey: pageKey,
-        searchPattern: searchPattern,
-        tabStatus: tabStatus,
-      );
-    });
-    return controller;
-  }
-
-  Future<void> fetchPage({
-    required int pageKey,
-    String? searchPattern,
-    required String tabStatus,
-  }) async {
-    final repo = ref.watch(reportRepositoryProvider);
-    final items =
-        await guardAsyncValue<List<ReportModel>>(() => repo.getAll(
+  ScrollPagingControlNotifier({
+    required this.requestRepository,
+    required this.tabStatus,
+    this.searchPattern,
+  }) : super(
+          load: (page, limit) {
+            return requestRepository.getAll(
               query: ReportQuery(
-                  limit: 5,
-                  offset: pageKey,
-                  type: tabStatus,
-                  include: ["reporter", "message"]),
-            ));
-    items.whenData((value) {
-      final isLastPage = value.length < 100;
-      if (isLastPage) {
-        state.appendLastPage(value);
-      } else {
-        state.appendPage(value, pageKey + 1);
-      }
-    });
-  }
-
-  void refreshOnSearch() {
-    state.notifyPageRequestListeners(0);
-  }
-
-  void reloadPage() {
-    state.refresh();
-  }
+                limit: limit,
+                offset: page * limit,
+                status: tabStatus,
+              ),
+            );
+          },
+          nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
+        );
 }
 
-final reportManageControllerProvider =
-    AutoDisposeAsyncNotifierProvider<ReportManageScreenController, void>(
-  () => ReportManageScreenController(),
-);
+final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
+    .family<ScrollPagingControlNotifier, PagedState<int, ReportModel>, ReportStatus>(
+        (ref, index) => ScrollPagingControlNotifier(
+            requestRepository: ref.watch(reportRepositoryProvider),
+            tabStatus: index,
+            searchPattern: ref.watch(searchPatternProvider)));

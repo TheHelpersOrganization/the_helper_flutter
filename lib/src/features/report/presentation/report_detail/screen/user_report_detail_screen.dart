@@ -15,10 +15,10 @@ import '../../../../../common/widget/error_widget.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
-class ReportDetailScreen extends ConsumerWidget {
+class UserReportDetailScreen extends ConsumerWidget {
   final int id;
 
-  const ReportDetailScreen({super.key, required this.id});
+  const UserReportDetailScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -157,7 +157,7 @@ class ReportDetailScreen extends ConsumerWidget {
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
                                           Theme.of(context).colorScheme.error)),
-                              child: const Text('Reject'),
+                              child: const Text('Cancel'),
                             ),
                           ),
                           SizedBox(
@@ -186,33 +186,6 @@ class ReportDetailScreen extends ConsumerWidget {
                               child: const Text('Reply'),
                             ),
                           ) : const SizedBox(),
-                          SizedBox(
-                            width: context.mediaQuery.size.width * 0.06,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              // isLoading: profile.isLoading,
-                              loadingText: "Processing...",
-                              onPressed: () async {
-                                await ref
-                                    .watch(reportDetailControllerProvider(
-                                            id: data.id!)
-                                        .notifier)
-                                    .approveReport();
-                                if (context.mounted) {
-                                  context.pop();
-                                }
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      Theme.of(context).colorScheme.primary)),
-                              child: const Text('Accept'),
-                            ),
-                          ),
                         ],
                       ),
                     ),

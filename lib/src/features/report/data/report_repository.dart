@@ -3,7 +3,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../../../common/domain/file_info.dart';
 import '../domain/report_query.dart';
 import '../domain/report_request.dart';
 import '../domain/request_message.dart';
@@ -80,6 +79,15 @@ class ReportRepository {
     }) async {
     final res = await client.post(
       '/reports/$id/reject',
+    );
+    return ReportModel.fromJson(res.data['data']);
+  }
+
+  Future<ReportModel> cancelReport({
+    required int id,
+    }) async {
+    final res = await client.post(
+      '/reports/$id/cancel',
     );
     return ReportModel.fromJson(res.data['data']);
   }

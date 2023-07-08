@@ -12,10 +12,12 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 
 class BannedAccountListItem extends ConsumerStatefulWidget {
   final AccountModel data;
+  final int tabIndex;
 
   const BannedAccountListItem({
     super.key,
     required this.data,
+    required this.tabIndex,
   });
 
   @override
@@ -53,10 +55,10 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
             final res = await ref
                 .watch(accountManageControllerProvider.notifier)
                 .unban(account.id!);
-            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
               context.pop();
             }
+            ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));
           }),
     );
   }
@@ -90,11 +92,10 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
             final res = await ref
                 .watch(accountManageControllerProvider.notifier)
                 .delete(account.id!);
-            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
-              print(res);
               context.pop();
             }
+            ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));
           }),
     );
   }

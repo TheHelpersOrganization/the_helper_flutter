@@ -11,12 +11,13 @@ import 'package:the_helper/src/features/report/presentation/submit_report/contro
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/widget/file_picker/form_multiple_file_picker_field.dart';
+import '../../../domain/report_type.dart';
 import '../../widget/avatar_watcher.dart';
 
 class SubmitReportScreen extends ConsumerWidget {
   final int id;
   final String name;
-  final String entityType;
+  final ReportType entityType;
   final int? avatarId;
   final String? subText;
 
@@ -171,7 +172,7 @@ class SubmitReportScreen extends ConsumerWidget {
                             .sendReport(
                                 title: data['title'],
                                 id: id,
-                                type: "account",
+                                type: entityType,
                                 content: data['content'],
                                 files: data['files']);
 

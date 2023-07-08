@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/report/domain/report_status.dart';
 
 
 
+import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
 import '../controller/report_manage_screen_controller.dart';
 import '../widget/custom_list.dart';
 
@@ -19,44 +21,65 @@ const List<Tab> tabs = <Tab>[
 ];
 
 class ReportManageScreen extends ConsumerWidget {
-  // final String? role;
-  const ReportManageScreen({
-    Key? key,
-  }) : super(key: key);
-  
+  const ReportManageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DefaultTabController(
-      length: tabs.length,
-      child: Builder(builder: (BuildContext context) {
-        final TabController tabController = DefaultTabController.of(context);
-        tabController.addListener(() {
-          if (tabController.indexIsChanging) {
-            ref.read(tabStatusProvider.notifier).changeStatus(tabController.index);
-          }
-        });
-        return Scaffold(
-          drawer: const AppDrawer(),
-          appBar: AppBar(
-            iconTheme: const IconThemeData(color: Colors.black),
-            backgroundColor: Colors.transparent,
-            title: const Text('Report history',
-                style: TextStyle(color: Colors.black)),
-            centerTitle: true,
-            elevation: 0.0,
-            bottom: TabBar(
+    final isSearching = ref.watch(isSearchingProvider);
+
+    return Scaffold(
+      drawer: const AppDrawer(),
+      body: DefaultTabController(
+        length: tabs.length,
+        child: NestedScrollView(
+          headerSliverBuilder: (_, __) => [
+            SliverAppBar(
+              centerTitle: true,
+              title: const Text(
+                'Accounts manage',
+              ),
+              floating: true,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    ref.read(isSearchingProvider.notifier).state = !isSearching;
+                  },
+                ),
+              ],
+            ),
+            if (isSearching)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: DebounceSearchBar(
+                    hintText: 'Search accounts request',
+                    debounceDuration: const Duration(seconds: 1),
+                    small: true,
+                    onDebounce: (value) {
+                      ref.read(searchPatternProvider.notifier).state =
+                          value.trim().isNotEmpty ? value.trim() : null;
+                    },
+                    onClear: () {
+                      ref.read(searchPatternProvider.notifier).state = null;
+                    },
+                  ),
+                ),
+              ),
+            SliverToBoxAdapter(
+                child: TabBar(
               labelColor: Theme.of(context).colorScheme.onSurface,
               tabs: tabs,
-            ),
-          ),
-          body: TabBarView(
-            children: tabs.map((tab) {
-              return const CustomScrollList();
-            }).toList(),
-          ),
-        );
-      }),
+            )),
+          ],
+          body: const TabBarView(
+            children: [
+              CustomScrollList(tabIndex: ReportStatus.pending),
+              CustomScrollList(tabIndex: ReportStatus.completed),
+              CustomScrollList(tabIndex: ReportStatus.rejected),
+            ]),
+        ),
+      ),
     );
   }
 }
