@@ -53,7 +53,6 @@ part 'dio.g.dart';
 
 @Riverpod(keepAlive: true)
 Dio dio(DioRef ref) {
-  print('aa');
   final baseUrl = ref.read(baseUrlProvider);
   final authServiceState = ref.watch(authServiceProvider);
   final authService = ref.watch(authServiceProvider.notifier);
@@ -80,23 +79,17 @@ Dio dio(DioRef ref) {
     return handler.next(options);
   }));
   client.interceptors.add(InterceptorsWrapper(onError: (err, handler) {
-    print('bb');
-    print(err);
     if (err.response?.data?['error'] != null) {
       try {
         final backendExceptionData = BackendExceptionData.fromMap(
             err.response!.data?['error'] as Map<String, dynamic>);
-        print('cc');
         final backendException = BackendException(
             error: backendExceptionData, requestOptions: err.requestOptions);
-        print('dd');
         return handler.reject(backendException);
       } catch (ex) {
-        print('ee');
         return handler.next(err);
       }
     }
-    print('ff');
     return handler.next(err);
   }));
   return client;

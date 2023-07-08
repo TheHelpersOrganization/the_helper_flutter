@@ -11,6 +11,7 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_det
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/features/report/domain/report_type.dart';
 
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
@@ -49,7 +50,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
                       return SubmitReportScreen(
                         id: profile.id!,
                         name: profile.username.toString(),
-                        entityType: 'user',
+                        entityType: ReportType.account,
                         avatarId: profile.avatarId,
                         subText: profile.email,
                       );

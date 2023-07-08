@@ -28,6 +28,7 @@ class ProfileOverviewTab extends StatelessWidget {
               ),
               ...skills
                   .map(
+                    
                     (skill) => Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Row(

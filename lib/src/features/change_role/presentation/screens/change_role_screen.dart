@@ -91,7 +91,6 @@ class RoleChoice extends ConsumerWidget {
     final currentOrganization = ref.watch(currentOrganizationProvider);
     final currentRole = ref.watch(setRoleControllerProvider);
     // Watch owned organizations so that dialog does not have to reload them
-    final organizations = ref.watch(getOwnedOrganizationsProvider);
 
     ref.listen<AsyncValue>(
       setRoleControllerProvider,

@@ -6,6 +6,7 @@ import 'package:the_helper/src/features/report/domain/report_request.dart';
 import 'package:the_helper/src/features/report/domain/request_message.dart';
 
 import '../../../../file/data/file_repository.dart';
+import '../../../domain/report_type.dart';
 
 part 'submit_report_screen_controller.g.dart';
 
@@ -17,7 +18,7 @@ class SubmitReportController extends _$SubmitReportController {
   Future<void> sendReport({
     required String title,
     required int id,
-    required String type,
+    required ReportType type,
     required String content,
     List<PlatformFile>? files,
   }) async {

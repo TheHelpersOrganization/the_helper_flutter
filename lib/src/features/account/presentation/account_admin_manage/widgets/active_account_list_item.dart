@@ -12,10 +12,12 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 
 class ActiveAccountListItem extends ConsumerStatefulWidget {
   final AccountModel data;
+  final int tabIndex;
 
   const ActiveAccountListItem({
     super.key,
     required this.data,
+    required this.tabIndex,
   });
 
   @override
@@ -53,11 +55,12 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
             final res = await ref
                 .watch(accountManageControllerProvider.notifier)
                 .ban(account.id!);
-            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
+            
             if (context.mounted) {
               print(res);
               context.pop();
             }
+            ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));
           }),
     );
   }
@@ -91,11 +94,11 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
             final res = await ref
                 .watch(accountManageControllerProvider.notifier)
                 .delete(account.id!);
-            ref.read(scrollPagingControllerProvider.notifier).reloadPage();
             if (context.mounted) {
               print(res);
               context.pop();
             }
+            ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));
           }),
     );
   }

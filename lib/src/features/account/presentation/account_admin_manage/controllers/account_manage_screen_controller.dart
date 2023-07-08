@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+
 import 'package:the_helper/src/features/account/data/account_repository.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
 
 import '../../../../../utils/async_value.dart';
 import '../../../domain/account_query.dart';
-
-part 'account_manage_screen_controller.g.dart';
 
 class AccountManageScreenController extends AutoDisposeAsyncNotifier<void> {
   @override
@@ -40,64 +38,41 @@ class AccountManageScreenController extends AutoDisposeAsyncNotifier<void> {
   }
 }
 
+final isSearchingProvider = StateProvider.autoDispose<bool>((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-final needReloadProvider = StateProvider.autoDispose((ref) => false);
-final tabStatusProvider = StateProvider.autoDispose<int>((ref) => 0);
-final firstLoadPagingController = StateProvider((ref) => true);
-
-@riverpod
-class ScrollPagingController extends _$ScrollPagingController {
-  @override
-  PagingController<int, AccountModel> build() {
-    final searchPattern = ref.watch(searchPatternProvider);
-    final tabStatus = ref.watch(tabStatusProvider);
-    final controller = PagingController<int, AccountModel>(firstPageKey: 0);
-    controller.addPageRequestListener((pageKey) {
-      fetchPage(
-        pageKey: pageKey,
-        searchPattern: searchPattern,
-        tabStatus: tabStatus,
-      );
-    });
-    return controller;
-  }
-
-  Future<void> fetchPage({
-    required int pageKey,
-    String? searchPattern,
-    required int tabStatus,
-  }) async {
-    final accountRepository = ref.watch(accountRepositoryProvider);
-    final items = await guardAsyncValue<List<AccountModel>>(
-        () => accountRepository.getAll(
-              query: AccountQuery(
-                limit: 10,
-                offset: pageKey,
-                email: searchPattern,
-                isBanned: tabStatus != 0,
-              ),
-            ));
-    items.whenData((value) {
-      final isLastPage = value.length < 100;
-      print(value.length);
-      if (isLastPage) {
-        state.appendLastPage(value);
-      } else {
-        state.appendPage(value, pageKey + 1);
-      }
-    });
-  }
-
-  void refreshOnSearch() {
-    state.notifyPageRequestListeners(0);
-  }
-
-  void reloadPage() {
-    state.refresh();
-  }
-}
 
 final accountManageControllerProvider =
     AutoDisposeAsyncNotifierProvider<AccountManageScreenController, void>(
   () => AccountManageScreenController(),
 );
+
+class ScrollPagingControlNotifier extends PagedNotifier<int, AccountModel> {
+  final AccountRepository accountRepository;
+  final int tabStatus;
+  final String? searchPattern;
+
+  ScrollPagingControlNotifier({
+    required this.accountRepository,
+    required this.tabStatus,
+    this.searchPattern,
+  }) : super(
+          load: (page, limit) {
+            return accountRepository.getAll(
+              query: AccountQuery(
+                limit: limit,
+                offset: page * limit,
+                email: searchPattern,
+                isBanned: tabStatus != 0,
+              ),
+            );
+          },
+          nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
+        );
+}
+
+final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
+    .family<ScrollPagingControlNotifier, PagedState<int, AccountModel>, int>(
+        (ref, index) => ScrollPagingControlNotifier(
+            accountRepository: ref.watch(accountRepositoryProvider),
+            tabStatus: index,
+            searchPattern: ref.watch(searchPatternProvider)));

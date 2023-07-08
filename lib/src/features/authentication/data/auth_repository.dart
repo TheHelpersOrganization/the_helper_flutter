@@ -39,6 +39,7 @@ class AuthRepository {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
+
   // Future<AccountToken?> register(String email, String password) async {
   //   try {
   //     final response = await client.post(

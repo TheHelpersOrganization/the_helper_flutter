@@ -34,4 +34,10 @@ class ReportDetailController extends _$ReportDetailController {
     state = await AsyncValue.guard(
         () => ref.watch(reportRepositoryProvider).rejectReport(id: id));
   }
+
+  Future<void> cancelReport() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.watch(reportRepositoryProvider).cancelReport(id: id));
+  }
 }

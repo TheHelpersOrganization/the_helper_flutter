@@ -8,8 +8,6 @@ import 'package:the_helper/src/router/router.dart';
 
 import '../../../../../utils/domain_provider.dart';
 
-
-
 class CustomListItem extends ConsumerWidget {
   final ReportModel data;
 
@@ -99,7 +97,7 @@ class CustomListItem extends ConsumerWidget {
                               ),
                             ),
                             TextSpan(
-                              text: data.status,
+                              text: data.status.name.toString(),
                             )
                           ])),
                         ),
