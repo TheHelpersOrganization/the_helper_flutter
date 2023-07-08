@@ -34,14 +34,14 @@ final pagingControllerProvider = Provider.autoDispose(
         final items = await activityService.getActivities(
           query: ActivityQuery(
             limit: 5,
-            offset: pageKey,
+            offset: pageKey * 5,
             name: searchPattern,
           ),
           include: ActivityInclude(
             organization: true,
           ),
         );
-        final isLastPage = items.length < 100;
+        final isLastPage = items.length < 5;
         if (isLastPage) {
           controller.appendLastPage(items);
         } else {

@@ -28,7 +28,7 @@ class ActivityCardFooter extends StatelessWidget {
         Expanded(
           child: AvatarStack(
             height: 36,
-            avatars: (avatarIds + avatarIds)
+            avatars: avatarIds
                 .map((avatarId) => avatarId == null
                     ? Image.asset('assets/images/logo.png').image
                     : Image.network(getImageUrl(avatarId)).image)

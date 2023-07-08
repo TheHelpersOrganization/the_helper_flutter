@@ -331,7 +331,7 @@ final routes = [
       accountRoutes,
       profileRoutes,
       organizationRoutes,
-      activityRoutes,
+      ...activityRoutes,
     ],
   ),
 ];
@@ -412,34 +412,29 @@ final shiftRoutes = [
   ),
 ];
 
-final activityRoutes = GoRoute(
-  path: AppRoute.activityManage.path,
-  name: AppRoute.activityManage.name,
-  builder: (_, __) => const DevelopingScreen(),
-  routes: [
-    GoRoute(
-      path: AppRoute.activitySearch.path,
-      name: AppRoute.activitySearch.name,
-      builder: (_, __) => const ActivitySearchScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.activityMy.path,
-      name: AppRoute.activityMy.name,
-      builder: (_, __) => const MyShiftScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.activity.path,
-      name: AppRoute.activity.name,
-      builder: (_, state) {
-        final activityId = int.parse(state.pathParameters['activityId']!);
-        return ActivityDetailScreen(
-          activityId: activityId,
-        );
-      },
-      routes: shiftRoutes,
-    ),
-  ],
-);
+final activityRoutes = [
+  GoRoute(
+    path: AppRoute.activitySearch.path,
+    name: AppRoute.activitySearch.name,
+    builder: (_, __) => const ActivitySearchScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.activityMy.path,
+    name: AppRoute.activityMy.name,
+    builder: (_, __) => const MyShiftScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.activity.path,
+    name: AppRoute.activity.name,
+    builder: (_, state) {
+      final activityId = int.parse(state.pathParameters['activityId']!);
+      return ActivityDetailScreen(
+        activityId: activityId,
+      );
+    },
+    routes: shiftRoutes,
+  ),
+];
 
 final accountRoutes = GoRoute(
   path: AppRoute.account.path,
@@ -599,15 +594,15 @@ enum AppRoute {
     name: 'activity-manage',
   ),
   activitySearch(
-    path: 'search',
+    path: '/activity/search',
     name: 'activity-search',
   ),
   activityMy(
-    path: 'my',
+    path: '/activity/my',
     name: 'activity-my',
   ),
   activity(
-    path: ':activityId',
+    path: '/activity/:activityId',
     name: 'activity',
   ),
 
