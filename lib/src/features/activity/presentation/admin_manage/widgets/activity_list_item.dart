@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/activity_manage/domain/activity.dart';
+import 'package:the_helper/src/features/activity/domain/activity.dart';
 
 class ActivityListItem extends ConsumerWidget {
-  final ActivityModel data;
+  final Activity data;
 
   const ActivityListItem({
     super.key,
@@ -12,7 +12,7 @@ class ActivityListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var date = "${data.startTime.year}/${data.startTime.month}/${data.startTime.day} - ${data.endTime.year}/${data.endTime.month}/${data.endTime.day}";
+    var date = "${data.startTime?.year}/${data.startTime?.month}/${data.startTime?.day} - ${data.endTime?.year}/${data.endTime?.month}/${data.endTime?.day}";
     return Padding(
         padding: const EdgeInsets.all(5),
         child: InkWell(
@@ -35,8 +35,8 @@ class ActivityListItem extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(date),
-                    Text(data.name),
-                    Text(data.shortDescription),
+                    Text(data.name ?? 'None'),
+                    Text(data.description ?? ''),
                   ],
                 ),
               ),

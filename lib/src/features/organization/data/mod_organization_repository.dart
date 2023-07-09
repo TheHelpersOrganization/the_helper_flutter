@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../utils/dio.dart';
 import '../domain/organization.dart';
 import '../domain/organization_query.dart';
+import '../domain/organization_request_model.dart';
 
 part 'mod_organization_repository.g.dart';
 
@@ -31,7 +32,9 @@ class ModOrganizationRepository {
     return Organization.fromJson(res.data['data']);
   }
 
-  Future<Organization> create(Organization organization) async {
+  
+
+  Future<Organization> create(OrganizationRequestModel organization) async {
     final res =
         await client.post('/organizations', data: organization.toJson());
     return Organization.fromJson(res.data['data']);

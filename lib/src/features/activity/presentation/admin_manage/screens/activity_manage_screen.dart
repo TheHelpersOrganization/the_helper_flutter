@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 
 //Widgets
-import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/organization/domain/organization_status.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/controllers/organization_manage_screen_controller.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_list.dart';
+import 'package:the_helper/src/features/activity/presentation/admin_manage/widgets/activity_list.dart';
 
+import '../../../../../common/widget/drawer/app_drawer.dart';
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
+import '../controllers/activity_manage_screen_controller.dart';
 
 //Screens
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Pending'),
-  Tab(text: 'Cancel'),
-  Tab(text: 'Approved'),
-  Tab(text: 'Reject'),
+  Tab(text: 'Ongoing'),
+  Tab(text: 'Pendding'),
+  Tab(text: 'Completed'),
+  Tab(text: 'Cancelled'),
 ];
 
-class OrganizationAdminManageScreen extends ConsumerWidget {
-  const OrganizationAdminManageScreen({super.key});
+class AdminActivityManageScreen extends ConsumerWidget {
+  const AdminActivityManageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,7 +35,7 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
             SliverAppBar(
               centerTitle: true,
               title: const Text(
-                'Organizations manage',
+                'Activity manage',
               ),
               floating: true,
               actions: [
@@ -51,7 +52,7 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: DebounceSearchBar(
-                    hintText: 'Search organizations',
+                    hintText: 'Search accounts',
                     debounceDuration: const Duration(seconds: 1),
                     small: true,
                     onDebounce: (value) {
@@ -72,10 +73,10 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
           ],
           body: const TabBarView(
             children: [
-              CustomScrollList(tabIndex: OrganizationStatus.pending),
-              CustomScrollList(tabIndex: OrganizationStatus.cancelled),
-              CustomScrollList(tabIndex: OrganizationStatus.approved),
-              CustomScrollList(tabIndex: OrganizationStatus.rejected),
+              CustomScrollList(tabIndex: [ActivityStatus.ongoing]),
+              CustomScrollList(tabIndex: [ActivityStatus.pending]),
+              CustomScrollList(tabIndex: [ActivityStatus.completed]),
+              CustomScrollList(tabIndex: [ActivityStatus.cancelled]),
             ]),
         ),
       ),

@@ -33,9 +33,9 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.work_outline,
   ),
   DrawerItemModel(
-    route: AppRoute.news,
-    title: 'News',
-    icon: Icons.newspaper_outlined,
+    route: AppRoute.reportHistory,
+    title: 'Report history',
+    icon: Icons.timelapse,
   ),
   DrawerItemModel(
     route: AppRoute.chats,

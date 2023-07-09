@@ -21,7 +21,7 @@ import 'package:the_helper/src/features/change_role/presentation/screens/change_
 import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_detail/organization_detail_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
@@ -49,6 +49,7 @@ import '../features/profile/presentation/other_user_profile/other_user_profile_s
 import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
 import '../features/report/presentation/admin_report_manage/screen/report_manage_screen.dart';
 import '../features/report/presentation/report_detail/screen/report_detail_screen.dart';
+import '../features/report/presentation/report_detail/screen/user_report_detail_screen.dart';
 import '../features/report/presentation/user_report_history/screen/report_history_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -304,16 +305,17 @@ final routes = [
               path: AppRoute.reportHistory.path,
               name: AppRoute.reportHistory.name,
               builder: (context, state) => const ReportHistoryScreen(),
-              routes: const [
-                // GoRoute(
-                //   path: AppRoute.reportDetail.path,
-                //   name: AppRoute.reportDetail.name,
-                //   builder: (_, state) => ReportDetailScreen(
-                //     id: int.parse(
-                //       state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
-                //     ),
-                //   ),
-                // ),
+              routes: [
+                GoRoute(
+                  path: AppRoute.reportHistoryDetail.path,
+                  name: AppRoute.reportHistoryDetail.name,
+                  builder: (_, state) => UserReportDetailScreen(
+                    id: int.parse(
+                      state.pathParameters[
+                          AppRoute.reportDetail.path.substring(1)]!,
+                    ),
+                  ),
+                ),
               ]),
           // GoRoute(
           //   path: AppRoute.screenBuilderCanvas.path,
@@ -519,7 +521,8 @@ enum AppRoute {
     name: 'report-manage',
   ),
   reportDetail(path: ':reportId', name: 'report-detaail'),
-  reportHistory(path: '/report', name: 'report-history'),
+  reportHistory(path: '/report-history', name: 'report-history'),
+  reportHistoryDetail(path: ':reportId', name: 'report-history-detail'),
   settings(
     path: '/settings',
     name: 'setting',

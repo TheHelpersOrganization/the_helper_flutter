@@ -8,48 +8,12 @@ import '../domain/organization_query.dart';
 
 part 'admin_organization_repository.g.dart';
 
-List<Organization> lst = [
-  Organization(
-    name: 'Something',
-    email: 'dd@email',
-    phoneNumber: '231223412123',
-    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
-    website: 'website.com'
-  ),
-  Organization(
-    name: 'Something',
-    email: 'dd@email',
-    phoneNumber: '231223412123',
-    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
-    website: 'website.com'
-  ),
-  Organization(
-    name: 'Something',
-    email: 'dd@email',
-    phoneNumber: '231223412123',
-    description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
-    website: 'website.com'
-  ),
-];
-
-List<Organization> lst2 = [
-  Organization(
-      name: 'Anything',
-      email: 'ddfasdfd@email',
-      phoneNumber: '23122223',
-      description: 'some tline that to sldfjosngjawoeifaos saldjoifoa sd s',
-      website: 'ite.com')
-];
-
 class AdminOrganizationRepository {
   final Dio client;
 
   AdminOrganizationRepository({required this.client});
 
-  Future<List<Organization>> get({
-    int limit = 100,
-    int offset = 0,
-    int? status,
+  Future<List<Organization>> getAll({
     OrganizationQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(

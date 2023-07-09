@@ -31,7 +31,7 @@ class CustomListItem extends ConsumerWidget {
         elevation: 1,
         child: InkWell(
           onTap: () =>
-              context.pushNamed(AppRoute.reportDetail.name, pathParameters: {
+              context.pushNamed(AppRoute.reportHistoryDetail.name, pathParameters: {
             'reportId': data.id.toString(),
           }),
           child: Padding(
@@ -99,7 +99,7 @@ class CustomListItem extends ConsumerWidget {
                               ),
                             ),
                             TextSpan(
-                              text: data.status,
+                              text: data.status.name.toString(),
                             )
                           ])),
                         ),
