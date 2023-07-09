@@ -39,6 +39,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
+import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
@@ -47,8 +48,8 @@ import '../features/organization/presentation/admin_manage/screens/organization_
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
 import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
 import '../features/report/presentation/admin_report_manage/screen/report_manage_screen.dart';
-import '../features/report/presentation/user_report_history/screen/report_history_screen.dart';
 import '../features/report/presentation/report_detail/screen/report_detail_screen.dart';
+import '../features/report/presentation/user_report_history/screen/report_history_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -254,11 +255,6 @@ final routes = [
             builder: (_, __) => const DevelopingScreen(),
           ),
           GoRoute(
-            path: AppRoute.chat.path,
-            name: AppRoute.chat.name,
-            builder: (_, __) => const DevelopingScreen(),
-          ),
-          GoRoute(
             path: AppRoute.menu.path,
             name: AppRoute.menu.name,
             builder: (_, __) => const MenuScreen(),
@@ -289,37 +285,36 @@ final routes = [
             builder: (context, state) => const AccountRequestManageScreen(),
           ),
           GoRoute(
-            path: AppRoute.reportManage.path,
-            name: AppRoute.reportManage.name,
-            builder: (context, state) => const ReportManageScreen(),
-            routes: [
-              GoRoute(
-                path: AppRoute.reportDetail.path,
-                name: AppRoute.reportDetail.name,
-                builder: (_, state) => ReportDetailScreen(
-                  id: int.parse(
-                    state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+              path: AppRoute.reportManage.path,
+              name: AppRoute.reportManage.name,
+              builder: (context, state) => const ReportManageScreen(),
+              routes: [
+                GoRoute(
+                  path: AppRoute.reportDetail.path,
+                  name: AppRoute.reportDetail.name,
+                  builder: (_, state) => ReportDetailScreen(
+                    id: int.parse(
+                      state.pathParameters[
+                          AppRoute.reportDetail.path.substring(1)]!,
+                    ),
                   ),
                 ),
-              ),
-            ]
-          ),
+              ]),
           GoRoute(
-            path: AppRoute.reportHistory.path,
-            name: AppRoute.reportHistory.name,
-            builder: (context, state) => const ReportHistoryScreen(),
-            routes: [
-              // GoRoute(
-              //   path: AppRoute.reportDetail.path,
-              //   name: AppRoute.reportDetail.name,
-              //   builder: (_, state) => ReportDetailScreen(
-              //     id: int.parse(
-              //       state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
-              //     ),
-              //   ),
-              // ),
-            ]
-          ),
+              path: AppRoute.reportHistory.path,
+              name: AppRoute.reportHistory.name,
+              builder: (context, state) => const ReportHistoryScreen(),
+              routes: const [
+                // GoRoute(
+                //   path: AppRoute.reportDetail.path,
+                //   name: AppRoute.reportDetail.name,
+                //   builder: (_, state) => ReportDetailScreen(
+                //     id: int.parse(
+                //       state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                //     ),
+                //   ),
+                // ),
+              ]),
           // GoRoute(
           //   path: AppRoute.screenBuilderCanvas.path,
           //   name: AppRoute.screenBuilderCanvas.name,
@@ -331,6 +326,7 @@ final routes = [
       profileRoutes,
       organizationRoutes,
       ...activityRoutes,
+      chatRoutes,
     ],
   ),
 ];
@@ -496,8 +492,13 @@ enum AppRoute {
     path: '/news',
     name: 'news',
   ),
-  chat(
+
+  chats(
     path: '/chat',
+    name: 'chats',
+  ),
+  chat(
+    path: ':chatId',
     name: 'chat',
   ),
 
@@ -517,14 +518,8 @@ enum AppRoute {
     path: '/report-manage',
     name: 'report-manage',
   ),
-  reportDetail(
-    path: ':reportId',
-    name: 'report-detaail'
-  ),
-  reportHistory(
-    path: '/report',
-    name: 'report-history'
-  ),
+  reportDetail(path: ':reportId', name: 'report-detaail'),
+  reportHistory(path: '/report', name: 'report-history'),
   settings(
     path: '/settings',
     name: 'setting',

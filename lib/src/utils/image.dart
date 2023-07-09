@@ -11,6 +11,24 @@ ImageProvider getBackendImageOrLogoProvider(int? imageId) {
   );
 }
 
+CircleAvatar getBackendCircleAvatarOrCharacter(int? imageId, String? name,
+    {double? radius}) {
+  if (imageId == null) {
+    return CircleAvatar(
+      radius: radius,
+      child: name == null || name.isEmpty
+          ? null
+          : Text(name.characters.first.toUpperCase()),
+    );
+  }
+  return CircleAvatar(
+    radius: radius,
+    backgroundImage: CachedNetworkImageProvider(
+      getImageUrl(imageId),
+    ),
+  );
+}
+
 ImageProvider getLogoProvider() {
   return Image.asset('assets/images/logo.png').image;
 }
