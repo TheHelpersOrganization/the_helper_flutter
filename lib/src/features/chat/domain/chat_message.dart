@@ -16,3 +16,15 @@ class ChatMessage with _$ChatMessage {
   factory ChatMessage.fromJson(Map<String, dynamic> json) =>
       _$ChatMessageFromJson(json);
 }
+
+@freezed
+class CreateChatMessage with _$CreateChatMessage {
+  @JsonSerializable(includeIfNull: false)
+  factory CreateChatMessage({
+    required int chatId,
+    required String message,
+  }) = _CreateChatMessage;
+
+  factory CreateChatMessage.fromJson(Map<String, dynamic> json) =>
+      _$CreateChatMessageFromJson(json);
+}

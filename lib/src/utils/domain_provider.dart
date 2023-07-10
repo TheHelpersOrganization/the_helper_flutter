@@ -7,6 +7,11 @@ String baseUrl(ref) {
   return domain;
 }
 
+@riverpod
+String baseWsUrl(ref) {
+  return 'ws://$baseDomain:$basePort';
+}
+
 String getImageUrl(int id) => '$domain/files/public/image/i/$id';
 
 const String baseDomain = 'thehelpers.me';

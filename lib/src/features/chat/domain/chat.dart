@@ -11,7 +11,9 @@ class Chat with _$Chat {
   factory Chat({
     required int id,
     required int createdBy,
+    required bool isBlocked,
     int? blockedBy,
+    required bool isGroup,
     List<int>? participantIds,
     List<Profile>? participants,
     List<ChatMessage>? messages,
