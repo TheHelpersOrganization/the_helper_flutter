@@ -13,6 +13,14 @@ steps:
     channel: 'stable'
     version: 'latest'
 - task: FlutterCommand@0
+  name: InstallDependencies
+  displayName: Install dependencies
+  inputs:
+    projectDirectory: '.'
+    arguments: 'pub get'
+- task: FlutterCommand@0
+  name: ExecuteBuildRunner
+  displayName: Execute build runner
   inputs:
     projectDirectory: '.'
     arguments: 'pub run build_runner build --delete-conflicting-outputs'
