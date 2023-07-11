@@ -7,8 +7,6 @@ pool:
 variables:
   tag: '$(Build.BuildId)'
 
-name: BuildDockerImageAndDeployToVM
-
 steps:
 - task: SSH@0
   name: 'TestVMConnection'
@@ -39,7 +37,7 @@ steps:
     sshEndpoint: 'TheHelpersBackend'
     runOptions: 'inline'
     inline: |
-      docker ps -q --filter "name=frontend" | grep -q . && docker stop frontend && docker rm -fv frontend
+      docker ps -a -q --filter "name=frontend" | grep -q . && docker stop frontend && docker rm -fv frontend
       docker pull cyberproton/the-helpers-flutter:latest
       docker run --name frontend --env-file=.env -p 80:8000 -tid cyberproton/the-helpers-flutter
     readyTimeout: '20000'

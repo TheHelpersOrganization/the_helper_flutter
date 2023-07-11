@@ -36,7 +36,9 @@ class AuthRepository {
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
     } on DioException catch (ex) {
-      return Future.error(BackendException.fromMap(ex.response?.data));
+      final err = BackendException.fromMap(ex.response?.data);
+      print('Cannot sign in: $err');
+      return Future.error(err);
     }
   }
 
