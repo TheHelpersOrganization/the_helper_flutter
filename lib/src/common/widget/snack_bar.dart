@@ -13,6 +13,8 @@ SnackBar errorSnackBarFromException(Object error) {
   if (error is BackendException) {
     message = error.error.message;
   }
+  // Print all error now
+  message = error.toString();
   return SnackBar(
     content: Row(
       children: [

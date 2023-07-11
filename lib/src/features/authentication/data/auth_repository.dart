@@ -37,7 +37,6 @@ class AuthRepository {
       return accountToken;
     } on DioException catch (ex) {
       final err = BackendException.fromMap(ex.response?.data);
-      print('Cannot sign in: $err');
       return Future.error(err);
     }
   }

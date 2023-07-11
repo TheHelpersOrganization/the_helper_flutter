@@ -39,5 +39,5 @@ steps:
     inline: |
       docker ps -a -q --filter "name=frontend" | grep -q . && docker stop frontend && docker rm -fv frontend
       docker pull cyberproton/the-helpers-flutter:latest
-      docker run --name frontend --env-file=.env -p 80:8000 -tid cyberproton/the-helpers-flutter
+      docker run --name frontend --env-file=.env -p 80:80 -tid cyberproton/the-helpers-flutter
     readyTimeout: '20000'

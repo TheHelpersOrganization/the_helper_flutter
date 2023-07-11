@@ -22,6 +22,6 @@ FROM python:3-alpine as production
 COPY --from=builder /home/app/build/web ./
 
 # Expose server
-EXPOSE 8000
+EXPOSE 80
 
-CMD [ "python", "-m", "http.server", "8000" ]
+CMD [ "python", "-m", "http.server", "80" ]
