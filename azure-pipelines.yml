@@ -4,4 +4,17 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps: []
+steps:
+- task: FlutterInstall@0
+  name: InstallFlutter
+  displayName: Install flutter
+  inputs:
+    mode: 'auto'
+    channel: 'stable'
+    version: 'latest'
+- task: FlutterBuild@0
+  name: BuildFlutter
+  displayName: Build flutter
+  inputs:
+    target: 'web'
+    projectDirectory: '.'
