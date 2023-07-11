@@ -1,8 +1,7 @@
 # Prepare web release
 FROM plugfox/flutter:stable-web AS builder
 
-# USER root
-WORKDIR /usr/src/app
+WORKDIR /home/app
 
 COPY . .
 
@@ -20,7 +19,7 @@ RUN flutter build web --release --no-source-maps \
 
 FROM python:3-alpine as production
 
-COPY --from=builder /usr/src/app/build/web ./
+COPY --from=builder /home/app/build/web ./
 
 # Expose server
 EXPOSE 8000
