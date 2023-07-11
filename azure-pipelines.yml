@@ -12,6 +12,10 @@ steps:
     mode: 'auto'
     channel: 'stable'
     version: 'latest'
+- task: FlutterCommand@0
+  inputs:
+    projectDirectory: '.'
+    arguments: 'pub run build_runner build --delete-conflicting-outputs'
 - task: FlutterBuild@0
   name: BuildFlutter
   displayName: Build flutter
