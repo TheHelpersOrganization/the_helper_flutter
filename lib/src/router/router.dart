@@ -42,6 +42,7 @@ import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
+import '../common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
@@ -316,97 +317,7 @@ final routes = [
       //   path: AppRoute.screenBuilderCanvas.path,
       //   name: AppRoute.screenBuilderCanvas.name,
       //   builder: (context, state) => const ScreenBuilderCanvas(),
-      // ),
-      // ShellRoute(
-      //   navigatorKey: shellNavigatorKey,
-      //   builder: (_, __, child) {
-      //     return CustomBottomNavigator(child: child);
-      //   },
-      //   routes: [
-          
-          
-      //   ],
-      // ),
-      GoRoute(
-        path: AppRoute.home.path,
-        name: AppRoute.home.name,
-        builder: (_, __) => const HomeScreen(),
-        routes: [
-          notificationRoutes,
-        ],
-      ),
-      GoRoute(
-        path: AppRoute.news.path,
-        name: AppRoute.news.name,
-        builder: (_, __) => const DevelopingScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.chat.path,
-        name: AppRoute.chat.name,
-        builder: (_, __) => const DevelopingScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.menu.path,
-        name: AppRoute.menu.name,
-        builder: (_, __) => const MenuScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.settings.path,
-        name: AppRoute.settings.name,
-        builder: (_, __) => const MenuScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.myOrganization.path,
-        name: AppRoute.myOrganization.name,
-        builder: (context, state) => const MyOrganizationScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.accountManage.path,
-        name: AppRoute.accountManage.name,
-        builder: (context, state) => const AccountManageScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.organizationAdminManage.path,
-        name: AppRoute.organizationAdminManage.name,
-        builder: (context, state) => const OrganizationAdminManageScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.accountRequestManage.path,
-        name: AppRoute.accountRequestManage.name,
-        builder: (context, state) => const AccountRequestManageScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.reportManage.path,
-        name: AppRoute.reportManage.name,
-        builder: (context, state) => const ReportManageScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoute.reportDetail.path,
-            name: AppRoute.reportDetail.name,
-            builder: (_, state) => ReportDetailScreen(
-              id: int.parse(
-                state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
-              ),
-            ),
-          ),
-        ]
-      ),
-      GoRoute(
-        path: AppRoute.reportHistory.path,
-        name: AppRoute.reportHistory.name,
-        builder: (context, state) => const ReportHistoryScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoute.reportHistoryDetail.path,
-            name: AppRoute.reportHistoryDetail.name,
-            builder: (_, state) => UserReportDetailScreen(
-              id: int.parse(
-                state.pathParameters[AppRoute.reportDetail.path.substring(1)]!,
-              ),
-            ),
-          ),
-        ]
-      ),
+      // ),      
       accountRoutes,
       profileRoutes,
       organizationRoutes,
