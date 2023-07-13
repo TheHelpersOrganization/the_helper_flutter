@@ -125,7 +125,7 @@ class ReportDetailScreen extends ConsumerWidget {
                                       Theme.of(context).colorScheme.primary)),
                               icon: const Icon(Icons.visibility_outlined),
                               label: Text(
-                                'Go to ${data.type}',
+                                'Go to ${data.type.name}',
                               ))
                         ],
                       ),

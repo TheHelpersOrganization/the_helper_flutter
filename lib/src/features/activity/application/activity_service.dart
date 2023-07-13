@@ -152,6 +152,11 @@ class ActivityService {
 
     return activity.copyWith(skills: skills, organization: org);
   }
+
+  Future<List<Activity>> getMyCompletedActivities() async {
+    final activity = await activityRepository.getMyCompletedActivities();
+    return activity;
+  }
 }
 
 @riverpod

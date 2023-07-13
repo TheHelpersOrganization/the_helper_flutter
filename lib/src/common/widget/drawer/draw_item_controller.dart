@@ -87,6 +87,7 @@ final List<DrawerItemModel> moderator = [
       context.pop();
       showDialog(
         context: context,
+        useRootNavigator: false,
         builder: (context) => const SwitchOrganizationDialog(),
       );
     },

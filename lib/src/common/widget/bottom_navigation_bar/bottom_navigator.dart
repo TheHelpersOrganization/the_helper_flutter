@@ -32,19 +32,7 @@ class CustomBottomNavigator extends ConsumerWidget {
 
     return Scaffold(
         body: child,
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: featuresLst
-              .map<BottomNavigationBarItem>((item) => (NavBarTabItem(
-                    icon: Icon(item.icon),
-                    label: item.label,
-                    initialLocation: item.path,
-                  )))
-              .toList(),
-          currentIndex: currentIndex,
-          onTap: (index) =>
-              _onItemTapped(context, index, currentIndex, featuresLst),
-        ));
+        );
   }
 
   int _locationToTabIndex(String location, List<FeaturePath> tabs) {

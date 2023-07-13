@@ -48,6 +48,17 @@ class ActivityRepository {
     return Activity.fromJson(res.data['data']);
   }
 
+  Future<List<Activity>> getMyCompletedActivities() async {
+    final List<dynamic> res = (await client.get(
+      '/activities',
+      queryParameters: {
+        'status': 'completed',
+        'joinStatus': 'approved',
+      },
+    )).data['data'];
+    return res.map((e) => Activity.fromJson(e)).toList();
+  }
+
   Future<Activity?> updateActivity({
     required int activityId,
     required UpdateActivity activity,
