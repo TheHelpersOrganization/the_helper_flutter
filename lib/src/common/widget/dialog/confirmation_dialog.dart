@@ -50,22 +50,22 @@ class ConfirmationDialog extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         );
+      } else {
+        content = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            content!,
+            const SizedBox(
+              height: 8,
+            ),
+            const Text(
+              'This action can not be undone.',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        );
       }
-    } else {
-      content = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          content!,
-          const SizedBox(
-            height: 8,
-          ),
-          const Text(
-            'This action can not be undone.',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ],
-      );
     }
 
     return AlertDialog(

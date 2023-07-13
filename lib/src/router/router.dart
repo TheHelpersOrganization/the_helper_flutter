@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
-import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
@@ -39,6 +38,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
+import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
@@ -47,15 +47,16 @@ import '../features/organization/presentation/admin_manage/screens/organization_
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
 import '../features/profile/presentation/profile_verified_request/profile_verified_request_screen.dart';
 import '../features/report/presentation/admin_report_manage/screen/report_manage_screen.dart';
+import '../features/report/presentation/report_detail/screen/report_detail_screen.dart';
 import '../features/report/presentation/report_detail/screen/user_report_detail_screen.dart';
 import '../features/report/presentation/user_report_history/screen/report_history_screen.dart';
-import '../features/report/presentation/report_detail/screen/report_detail_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routes = [
   ShellRoute(
+    navigatorKey: shellNavigatorKey,
     builder: (_, __, child) {
       return SafeScreen(child: child);
     },
@@ -235,6 +236,87 @@ final routes = [
         name: AppRoute.organizationActivityCreation.name,
         builder: (_, __) => const ModActivityCreationScreen(),
       ),
+
+      GoRoute(
+        path: AppRoute.home.path,
+        name: AppRoute.home.name,
+        builder: (_, __) => const HomeScreen(),
+        routes: [
+          notificationRoutes,
+        ],
+      ),
+      GoRoute(
+        path: AppRoute.news.path,
+        name: AppRoute.news.name,
+        builder: (_, __) => const DevelopingScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.menu.path,
+        name: AppRoute.menu.name,
+        builder: (_, __) => const MenuScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.settings.path,
+        name: AppRoute.settings.name,
+        builder: (_, __) => const MenuScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.myOrganization.path,
+        name: AppRoute.myOrganization.name,
+        builder: (context, state) => const MyOrganizationScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.accountManage.path,
+        name: AppRoute.accountManage.name,
+        builder: (context, state) => const AccountManageScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.organizationAdminManage.path,
+        name: AppRoute.organizationAdminManage.name,
+        builder: (context, state) => const OrganizationAdminManageScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.accountRequestManage.path,
+        name: AppRoute.accountRequestManage.name,
+        builder: (context, state) => const AccountRequestManageScreen(),
+      ),
+      GoRoute(
+          path: AppRoute.reportManage.path,
+          name: AppRoute.reportManage.name,
+          builder: (context, state) => const ReportManageScreen(),
+          routes: [
+            GoRoute(
+              path: AppRoute.reportDetail.path,
+              name: AppRoute.reportDetail.name,
+              builder: (_, state) => ReportDetailScreen(
+                id: int.parse(
+                  state
+                      .pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                ),
+              ),
+            ),
+          ]),
+      GoRoute(
+          path: AppRoute.reportHistory.path,
+          name: AppRoute.reportHistory.name,
+          builder: (context, state) => const ReportHistoryScreen(),
+          routes: [
+            GoRoute(
+              path: AppRoute.reportHistoryDetail.path,
+              name: AppRoute.reportHistoryDetail.name,
+              builder: (_, state) => UserReportDetailScreen(
+                id: int.parse(
+                  state
+                      .pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                ),
+              ),
+            ),
+          ]),
+      // GoRoute(
+      //   path: AppRoute.screenBuilderCanvas.path,
+      //   name: AppRoute.screenBuilderCanvas.name,
+      //   builder: (context, state) => const ScreenBuilderCanvas(),
+      // ),
       // ShellRoute(
       //   navigatorKey: shellNavigatorKey,
       //   builder: (_, __, child) {
@@ -329,6 +411,7 @@ final routes = [
       profileRoutes,
       organizationRoutes,
       ...activityRoutes,
+      chatRoutes,
     ],
   ),
 ];
@@ -494,8 +577,13 @@ enum AppRoute {
     path: '/news',
     name: 'news',
   ),
-  chat(
+
+  chats(
     path: '/chat',
+    name: 'chats',
+  ),
+  chat(
+    path: ':chatId',
     name: 'chat',
   ),
 
@@ -515,18 +603,9 @@ enum AppRoute {
     path: '/report-manage',
     name: 'report-manage',
   ),
-  reportDetail(
-    path: ':reportId',
-    name: 'report-detaail'
-  ),
-  reportHistory(
-    path: '/report-history',
-    name: 'report-history'
-  ),
-  reportHistoryDetail(
-    path: ':reportId',
-    name: 'report-history-detail'
-  ),
+  reportDetail(path: ':reportId', name: 'report-detaail'),
+  reportHistory(path: '/report-history', name: 'report-history'),
+  reportHistoryDetail(path: ':reportId', name: 'report-history-detail'),
   settings(
     path: '/settings',
     name: 'setting',

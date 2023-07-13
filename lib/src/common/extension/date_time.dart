@@ -13,6 +13,10 @@ extension DateTimeX on DateTime {
     return DateFormat('dd-MM-yyyy').format(toLocal());
   }
 
+  String formatDayMonth() {
+    return DateFormat('dd MMM').format(toLocal());
+  }
+
   String formatHourSecond() {
     return DateFormat('HH:mm').format(toLocal());
   }
