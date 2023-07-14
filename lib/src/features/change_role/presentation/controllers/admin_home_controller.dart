@@ -4,7 +4,7 @@ import 'package:the_helper/src/features/account/application/account_service.dart
 import '../../../activity/application/activity_service.dart';
 import '../../../activity/domain/activity_include.dart';
 import '../../../activity/domain/activity_query.dart';
-import '../../../organization/application/organization_service.dart';
+import '../../../organization/application/admin_organization_service.dart';
 import '../../../report/application/report_service.dart';
 
 class AdminHomeDataManage {
@@ -51,13 +51,13 @@ final upcomingActivitiesCountProvider = FutureProvider.autoDispose<int>(
 );
 
 final organizationCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(organizationServiceProvider).getCount());
+    (ref) => ref.watch(adminOrganizationServiceProvider).getCount());
 
 final accountRequestCountProvider = FutureProvider.autoDispose<int>(
     (ref) => ref.watch(accountServiceProvider).getRequestCount());
 
 final organizationRequestCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(organizationServiceProvider).getRequestCount());
+    (ref) => ref.watch(adminOrganizationServiceProvider).getRequestCount());
 
 final reportCountProvider = FutureProvider.autoDispose<int>(
     (ref) => ref.watch(reportServiceProvider).getCount());

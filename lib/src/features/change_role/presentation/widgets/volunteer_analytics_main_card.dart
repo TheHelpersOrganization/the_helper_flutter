@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/skill/domain/skill_icon_dir.dart';
 
 import '../../../skill/domain/skill.dart';
+import 'skill_list_item.dart';
 
 class VolunteerAnalyticsMainCard extends StatelessWidget {
   final List<Skill> skillList;
@@ -19,7 +20,7 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
 
     List<Skill> sortedList = List.from(skillList);
     sortedList.sort((b, a) => (a.hours ?? 0.0).compareTo(b.hours ?? 0.0));
-    final topSkills = sortedList.sublist(0, min(3, sortedList.length));
+    final topSkills = sortedList.sublist(0, min(4, sortedList.length));
     return Card(
       color: context.theme.primaryColor,
       margin: const EdgeInsets.only(right: 4),
@@ -52,55 +53,30 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
                 indent: 0,
               ),
             ),
-            // for(var i in skillList)
-            // Row(
-            //   children: [
-            //     Chip(
-            //       avatar: Icon(skillIcons[i.name]),
-            //       label: Text(i.name),
-            //       elevation: 1,
-            //     ),
-            //     Text(
-            //       (i.hours ?? 0).toString(),
-            //       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            //         color: onPrimaryColor,
-            //         fontWeight: FontWeight.w500,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            Row(
-              children: [
-                Chip(
-                  avatar: Icon(Icons.medical_services_outlined),
-                  label: Text('Healthcare'),
-                  elevation: 1,
-                ),
-                Text(
-                  '15 H',
+            Expanded(
+              child: topSkills.isEmpty
+              ? Center(
+                child: Text(
+                  'You don\'t have any skill to show yet.',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: onPrimaryColor,
-                    fontWeight: FontWeight.w500,
+                    // fontWeight: FontWeight.w500,
                   ),
-                ),
-              ],
-            ),
-            Row(
+                )
+              )
+              : Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Chip(
-                  avatar: Icon(Icons.medical_services_outlined),
-                  label: Text('Healthcare'),
-                  elevation: 1,
+                for(var i in topSkills)
+                SkillListItem(
+                  name: i.name, 
+                  icon: skillIcons[i.name]!, 
+                  hour: i.hours!, 
+                  color: onPrimaryColor
                 ),
-                Text(
-                  '15',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: onPrimaryColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            )
+            ],
+            )),
+            
           ],
         ),
       ),

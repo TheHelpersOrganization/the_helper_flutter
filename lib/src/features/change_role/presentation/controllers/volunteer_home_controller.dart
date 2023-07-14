@@ -64,33 +64,6 @@ final volunteerShiftProvider = FutureProvider.autoDispose<List<Shift>>(
       ),
 );
 
-final pagingControllerProvider = Provider.autoDispose(
-  (ref) {
-    final activityService = ref.watch(activityServiceProvider);
-    final controller = PagingController<int, Activity>(firstPageKey: 0);
-
-    controller.addPageRequestListener((pageKey) async {
-      try {
-        final items = await activityService.getActivities(
-          query: ActivityQuery(
-            limit: 5,
-            offset: pageKey,
-          ),
-        );
-        final isLastPage = items.length < 100;
-        if (isLastPage) {
-          controller.appendLastPage(items);
-        } else {
-          controller.appendPage(items, pageKey + 1);
-        }
-      } catch (err) {
-        controller.error = err;
-      }
-    });
-    return controller;
-  },
-);
-
 final volunteerStatusProvider =
     FutureProvider.autoDispose<VolunteerStatusData>((ref) async {
   final List<Activity> activities =

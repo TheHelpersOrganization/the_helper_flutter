@@ -9,7 +9,6 @@ import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/alert.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/volunteer_home_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/home_welcome_section.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_analytics.dart';
@@ -158,34 +157,37 @@ class VolunteerView extends ConsumerWidget {
                 const SizedBox(
                   height: 24,
                 ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child:VolunteerAnalyticsMainCard(
-                        skillList: data.skills
-                      ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: volunteerData.when(
-                      data: (data) => VolunteerAnalytics(
-                        skillList: data.skillList,
-                        totalActivity: data.totalActivity,
-                        increasedActivity: data.increasedActivity,
-                        totalHour: data.totalHour,
-                        increasedHour: data.increasedHour,
-                      ),
-                      loading: () => VolunteerDataHolder(
-                        itemCount: 2,
-                        itemWidth: context.mediaQuery.size.width * 0.38,
-                        itemHeight: 380,
-                      ),
-                      error: (_, __) => const ErrorScreen(),
+              SizedBox(
+                height: 250,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child:VolunteerAnalyticsMainCard(
+                          skillList: data.skills
+                        ),
                     ),
-                  ),
-                ],
+                    Flexible(
+                      flex: 2,
+                      child: volunteerData.when(
+                        data: (data) => VolunteerAnalytics(
+                          skillList: data.skillList,
+                          totalActivity: data.totalActivity,
+                          increasedActivity: data.increasedActivity,
+                          totalHour: data.totalHour,
+                          increasedHour: data.increasedHour,
+                        ),
+                        loading: () => VolunteerDataHolder(
+                          itemCount: 2,
+                          itemWidth: context.mediaQuery.size.width * 0.38,
+                          itemHeight: 90,
+                        ),
+                        error: (_, __) => const ErrorScreen(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 48,

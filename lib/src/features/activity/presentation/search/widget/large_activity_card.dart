@@ -107,9 +107,7 @@ class LargeActivityCard extends ConsumerWidget {
                     ActivityCardFooter(
                       joinedParticipants: activity.joinedParticipants!,
                       maxParticipants: activity.maxParticipants,
-                      avatarIds: activity.volunteers!
-                          .map((e) => e.profile!.avatarId)
-                          .toList(),
+                      volunteers: activity.volunteers,
                     ),
                   ],
                 ),
