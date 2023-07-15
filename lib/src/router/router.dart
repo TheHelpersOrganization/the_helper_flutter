@@ -312,12 +312,7 @@ final routes = [
                 ),
               ),
             ),
-          ]),
-      // GoRoute(
-      //   path: AppRoute.screenBuilderCanvas.path,
-      //   name: AppRoute.screenBuilderCanvas.name,
-      //   builder: (context, state) => const ScreenBuilderCanvas(),
-      // ),      
+          ]),    
       accountRoutes,
       profileRoutes,
       organizationRoutes,
@@ -362,7 +357,7 @@ final profileRoutes = GoRoute(
 final organizationRoutes = GoRoute(
   path: AppRoute.organizationManage.path,
   name: AppRoute.organizationManage.name,
-  builder: (_, __) => const OrganizationManageScreen(),
+  builder: (_, __) => const DevelopingScreen(),
   routes: [
     GoRoute(
       path: AppRoute.organizationSearch.path,

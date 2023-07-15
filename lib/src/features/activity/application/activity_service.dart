@@ -13,6 +13,9 @@ import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
+import '../domain/activity_log.dart';
+import '../domain/activity_log_query.dart';
+
 part 'activity_service.g.dart';
 
 class ActivityService {
@@ -103,38 +106,19 @@ class ActivityService {
 
   Future<int> getCount({
     ActivityQuery? query,
-    ActivityInclude? include,
   }) async {
     List<Activity> activities =
         await activityRepository.getActivities(query: query);
 
-    if (include?.organization == true) {
-      List<Organization> organizations = await Future.wait(
-        activities.map(
-          (e) async => await organizationRepository.getById(e.organizationId!),
-        ),
-      );
-      activities = activities
-          .mapIndexed((i, a) => a.copyWith(organization: organizations[i]))
-          .toList();
-    }
-
-    if (include?.volunteers == true) {
-      List<List<ActivityVolunteer>> activityVolunteers = await Future.wait(
-        activities.map(
-          (e) async => await activityVolunteerService.getActivityVolunteers(
-            activityId: e.id!,
-          ),
-        ),
-      );
-      activities = activities
-          .mapIndexed((index, element) => element.copyWith(
-                volunteers: activityVolunteers[index],
-              ))
-          .toList();
-    }
-
     return activities.length;
+  }
+
+  Future<ActivityLog> getLog({
+    ActivityLogQuery? query,
+  }) async {
+    ActivityLog log = await activityRepository.getLog(query: query);
+
+    return log;
   }
 
   Future<Activity> getActivity({required int activityId}) async {
