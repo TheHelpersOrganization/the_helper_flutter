@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:the_helper/src/features/activity/domain/activity_count.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log.dart';
 
 class AdminLineChart extends StatelessWidget {
+  final ActivityLog data;
   const AdminLineChart({
     super.key,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
-    const List<Color> gradientColors = [
-      Color.fromARGB(100, 9, 68, 121),
-      Color.fromARGB(100, 0, 212, 255),
+    var dateNow = DateTime.now();
+    List<ActivityCount> activityCount =
+        data.monthly.filter((e) => e.year == dateNow.year).toList();
+
+    List<LineChartBarData> lineData = [
+      // Activity
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.blue,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: activityCount
+            .map((e) => FlSpot((e.month-1) as double, e.count as double))
+            .toList(),
+      ),
     ];
 
     return LineChart(LineChartData(
         minX: 0,
         maxX: 11,
         minY: 0,
-        maxY: 5,
+        maxY: 100,
         titlesData: LineTitles.getTitleData(),
         borderData: FlBorderData(
             show: true,
@@ -34,64 +54,46 @@ class AdminLineChart extends StatelessWidget {
         gridData: const FlGridData(
           show: false,
         ),
-        lineBarsData: [
-          LineChartBarData(
-              spots: [
-                const FlSpot(0, 3),
-                const FlSpot(1, 2),
-                const FlSpot(2, 2.5),
-                const FlSpot(3, 2),
-                const FlSpot(4, 1.5),
-                const FlSpot(5, 2),
-                const FlSpot(6, 3),
-                const FlSpot(7, 2),
-              ],
-              dotData: const FlDotData(show: false),
-              isCurved: true,
-              gradient:
-                  LinearGradient(colors: gradientColors.map((e) => e).toList()),
-              barWidth: 3,
-              belowBarData: BarAreaData(
-                  show: true,
-                  gradient: LinearGradient(
-                      colors: gradientColors
-                          .map((e) => e.withOpacity(0.3))
-                          .toList())))
-        ]));
+        lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(
+            tooltipBgColor: Colors.white10.withOpacity(0.8),
+          )
+        ),
+        lineBarsData: lineData));
   }
 }
 
 class LineTitles {
   static getTitleData() => const FlTitlesData(
-    show: true,
-    rightTitles: AxisTitles(
-      sideTitles: SideTitles(showTitles: false),
-    ),
-    topTitles: AxisTitles(
-      sideTitles: SideTitles(showTitles: false),
-    ),
-    bottomTitles: AxisTitles(
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 30,
-        interval: 1,
-        getTitlesWidget: bottomTitleWidgets,
-      ),
-    ),
-    leftTitles: AxisTitles(
-      sideTitles: SideTitles(
-        showTitles: false,
-        interval: 1,
-        getTitlesWidget: leftTitleWidgets,
-        reservedSize: 42,
-      ),
-    ),
-  );
+        show: true,
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1,
+            getTitlesWidget: bottomTitleWidgets,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: false,
+            interval: 1,
+            getTitlesWidget: leftTitleWidgets,
+            reservedSize: 42,
+          ),
+        ),
+      );
 
   static Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 10,
     );
     Widget text;
     switch (value.toInt()) {

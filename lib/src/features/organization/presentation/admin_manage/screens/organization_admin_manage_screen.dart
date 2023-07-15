@@ -72,9 +72,9 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
           ],
           body: const TabBarView(
             children: [
+              CustomScrollList(tabIndex: OrganizationStatus.verified),
               CustomScrollList(tabIndex: OrganizationStatus.pending),
               CustomScrollList(tabIndex: OrganizationStatus.cancelled),
-              CustomScrollList(tabIndex: OrganizationStatus.approved),
               CustomScrollList(tabIndex: OrganizationStatus.rejected),
             ]),
         ),

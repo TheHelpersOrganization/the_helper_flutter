@@ -8,6 +8,7 @@ import 'package:the_helper/src/features/report/domain/report_type.dart';
 
 import '../../../../../common/extension/image.dart';
 import '../../../../report/presentation/submit_report/screen/submit_report_screen.dart';
+import '../../../data/organization_repository.dart';
 import '../../../domain/organization.dart';
 import '../../organization_search/organization_join_controller.dart';
 import '../../organization_search/organization_leave_controller.dart';
@@ -187,10 +188,12 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                       context.pop();
                       if (res != null) {
                         _showLeaveSuccessDialog();
+                        ref.invalidate(
+                            getOrganizationProvider(widget.organization.id!));
                       }
                     }
                   },
-                  child: const Text('Join'),
+                  child: const Text('Leave'),
                 ),
               )
             ],
@@ -270,6 +273,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
 
   void _showLeaveSuccessDialog() {
     showDialog(
+      useRootNavigator: false,
       context: context,
       builder: (context) => AlertDialog(
         contentPadding: const EdgeInsets.symmetric(
@@ -293,7 +297,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                 Expanded(
                   child: RichText(
                     text: TextSpan(
-                      text: 'Your request to leave ',
+                      text: 'Leave ',
                       children: [
                         TextSpan(
                           text: widget.organization.name,
@@ -303,7 +307,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                           ),
                         ),
                         const TextSpan(
-                          text: ' has been received',
+                          text: ' success',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -379,6 +383,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
 
   void _showLeaveLoadingDialog() {
     showDialog(
+      useRootNavigator: false,
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
@@ -422,6 +427,21 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
     );
   }
 
+  Future<void> _openReport(
+    // BuildContext context,
+    Organization data,
+  ) async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return SubmitReportScreen(
+        id: data.id!,
+        name: data.name.toString(),
+        entityType: ReportType.organization,
+        avatarId: data.logo,
+        subText: data.email,
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = widget.organization;
@@ -438,21 +458,19 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              height: bannerHeight,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: ImageX.backend(data.banner!).image,
-                  fit: BoxFit.cover
-                ),
-              )
-            ),
+                height: bannerHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: ImageX.backend(data.banner!).image,
+                      fit: BoxFit.cover),
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: topP/2,
-                  width: topP/2,
+                  height: topP / 2,
+                  width: topP / 2,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -462,64 +480,64 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                         : () {
                             showJoinDialog();
                           },
-                    child:
-                        data.hasJoined ? const Text('Joined') : const Text('Join'),
+                    child: data.hasJoined
+                        ? const Text('Joined')
+                        : const Text('Join'),
                   ),
                 ),
-                const SizedBox(width: 8,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: PopupMenuButton(
-                    icon: const Icon(Icons.menu),
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                        child: const Row(
-                          children: [
-                            Icon(Icons.report),
-                            SizedBox(width: 8),
-                            Text(
-                              'Report this organization',
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
-                                return SubmitReportScreen(
-                                  id: data.id!,
-                                  name: data.name.toString(),
-                                  entityType: ReportType.organization,
-                                  avatarId: data.logo,
-                                  subText: data.email,
-                                );
-                              }));
-                  },
-                      ),
-                       PopupMenuItem(
-                        enabled: data.hasJoined,
-                        child:  
-                        data.hasJoined
-                        ? const Row(
-                          children: [
-                            Icon(Icons.group_off),
-                            SizedBox(width: 8),
-                            Text(
-                              'Leave this organization',
-                            ),
-                          ],
-                        ): null,
-                        onTap: (){
-
-                        },
-                      ),
-                    ],
-                  )
+                const SizedBox(
+                  width: 8,
                 ),
-                
-                const SizedBox(width: 8,),
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: PopupMenuButton(
+                      icon: const Icon(Icons.menu),
+                      onSelected: (result) {
+                        switch (result) {
+                          case 0:
+                            _openReport(data);
+                            break;
+                          case 1:
+                            showLeaveDialog();
+                            break;
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        const PopupMenuItem(
+                          value: 0,
+                          child: Row(
+                            children: [
+                              Icon(Icons.report),
+                              SizedBox(width: 8),
+                              Text(
+                                'Report this organization',
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (data.hasJoined)
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Row(
+                              children: [
+                                Icon(Icons.group_off),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Leave this organization',
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    )),
+                const SizedBox(
+                  width: 8,
+                ),
               ],
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             // name
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -551,15 +569,14 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                       children: [
                         Text(
                           (data.numberOfMembers ?? 0).toString(),
-                          style: Theme.of(context).textTheme.bodyLarge
-                          ?.copyWith(
-                            fontWeight: FontWeight.bold
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           " Members",
-                          style: Theme.of(context).textTheme.bodyLarge
-                          ,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         )
                       ],
                     ),

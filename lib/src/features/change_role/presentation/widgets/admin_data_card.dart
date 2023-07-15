@@ -53,8 +53,9 @@ class AdminDataCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style:
-                            const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                       Text(
                         data.toString(),

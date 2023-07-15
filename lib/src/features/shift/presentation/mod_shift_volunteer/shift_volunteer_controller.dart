@@ -83,7 +83,7 @@ class ShiftVolunteerController extends _$ShiftVolunteerController {
         st = 'approved';
         break;
       case 'Other':
-        st = 'rejected,removed,leaved';
+        st = 'rejected,removed,left';
         break;
       default:
         break;

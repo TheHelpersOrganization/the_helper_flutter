@@ -30,16 +30,24 @@ class AdminOrganizationRepository {
     return Organization.fromJson(res.data['data']);
   }
 
+  Future<Organization> ban(int id) async {
+    final res = await client.post('/admin/organizations/$id/disable');
+    return Organization.fromJson(res.data['data']);
+  }
+
+  Future<Organization> unban(int id) async {
+    final res = await client.post('/admin/organizations/$id/verify');
+    return Organization.fromJson(res.data['data']);
+  }
+
   Future<Organization> verify(int id) async {
     final res = await client.post('/admin/organizations/$id/verify');
     return Organization.fromJson(res.data['data']);
   }
 
-  Future<Organization> reject(int id, RejectOrganizationData data) async {
+  Future<Organization> reject(int id) async {
     final res = await client.post(
-      '/admin/organizations/$id/reject',
-      data: data,
-    );
+      '/admin/organizations/$id/reject',);
     return Organization.fromJson(res.data['data']);
   }
 }

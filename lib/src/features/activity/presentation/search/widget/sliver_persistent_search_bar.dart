@@ -10,34 +10,36 @@ class SliverPersistentSearchBar extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Consumer(
-      builder: (context, ref, _) => Container(
-        color: context.theme.colorScheme.background,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Expanded(
-                child: DebounceSearchBar(
-                  debounceDuration: const Duration(seconds: 1),
-                  onDebounce: (value) {
-                    ref.read(searchPatternProvider.notifier).state = value;
-                    ref.read(hasUsedSearchProvider.notifier).state = true;
-                  },
-                  onClear: () {
-                    ref.read(searchPatternProvider.notifier).state = '';
-                    ref.read(hasUsedSearchProvider.notifier).state = true;
-                  },
+    return Align(
+      child: Consumer(
+        builder: (context, ref, _) => Container(
+          color: context.theme.colorScheme.background,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: DebounceSearchBar(
+                    debounceDuration: const Duration(seconds: 1),
+                    onDebounce: (value) {
+                      ref.read(searchPatternProvider.notifier).state = value;
+                      ref.read(hasUsedSearchProvider.notifier).state = true;
+                    },
+                    onClear: () {
+                      ref.read(searchPatternProvider.notifier).state = '';
+                      ref.read(hasUsedSearchProvider.notifier).state = true;
+                    },
+                  ),
                 ),
-              ),
-              IconButton(
-                padding: const EdgeInsets.only(left: 12),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-                icon: const Icon(Icons.filter_list_outlined),
-              ),
-            ],
+                IconButton(
+                  padding: const EdgeInsets.only(left: 12),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  icon: const Icon(Icons.filter_list_outlined),
+                ),
+              ],
+            ),
           ),
         ),
       ),

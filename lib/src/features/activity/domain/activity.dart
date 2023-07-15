@@ -6,6 +6,8 @@ import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 
+import 'activity_status.dart';
+
 part 'activity.freezed.dart';
 part 'activity.g.dart';
 
@@ -15,7 +17,7 @@ class Activity with _$Activity {
   factory Activity({
     int? id,
     String? name,
-    String? status,
+    ActivityStatus? status,
     String? description,
     int? thumbnail,
     int? organizationId,

@@ -4,6 +4,8 @@ import 'package:the_helper/src/features/organization/data/mod_organization_repos
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/utils/flutter_secure_storage_provider.dart';
 
+part 'current_organization_repository.g.dart';
+
 const String _kOrganizationId = 'organization.current_organization.id';
 
 class CurrentOrganizationRepository {
@@ -42,9 +44,10 @@ class CurrentOrganizationRepository {
   }
 }
 
-final currentOrganizationRepositoryProvider = Provider.autoDispose(
-  (ref) => CurrentOrganizationRepository(
-    localStorage: ref.watch(secureStorageProvider),
-    modOrganizationRepository: ref.watch(modOrganizationRepositoryProvider),
-  ),
-);
+@riverpod
+CurrentOrganizationRepository currentOrganizationRepository(
+        CurrentOrganizationRepositoryRef ref) =>
+    CurrentOrganizationRepository(
+      localStorage: ref.watch(secureStorageProvider),
+      modOrganizationRepository: ref.watch(modOrganizationRepositoryProvider),
+    );

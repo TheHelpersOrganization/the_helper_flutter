@@ -1,6 +1,6 @@
 enum OrganizationStatus {
+  verified,
   pending,
   cancelled,
-  approved,
   rejected,
 }

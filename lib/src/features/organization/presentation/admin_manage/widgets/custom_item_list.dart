@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 
 class CustomListItem extends ConsumerWidget {
   final Organization data;
@@ -12,57 +16,72 @@ class CustomListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // var date =
-    //     "${data.time.hour}:${data.time.minute} ~ ${data.time.day}/${data.time.month}/${data.time.year}";
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-              border: Border.all(color: Colors.black)),
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Card(
+        elevation: 1,
+        child: InkWell(
+          onTap: () =>
+              context.goNamed(AppRoute.reportDetail.name, pathParameters: {
+            'reportId': data.id.toString(),
+          }),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        child: Text('A'),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(data.name),
-                      Text(data.email),
-                      RichText(
-                        text: const TextSpan(
-                            text:
-                                'Some location that the string is too long to fit in a card on flutter widget without break a new line'),
-                        softWrap: false,
-                      )
-                    ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: CircleAvatar(
+                    backgroundImage: data.logo == null
+                        ? Image.asset('assets/images/logo.png').image
+                        : NetworkImage(getImageUrl(data.logo!)),
                   ),
                 ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.chevron_right)),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data.name,
+                          style: context.theme.textTheme.labelLarge
+                              ?.copyWith(
+                            fontSize: 18,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          data.email,
+                          style: context.theme.textTheme.bodyMedium
+                              ?.copyWith(
+                            fontSize: 13,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: data.description,
+                          ),
+                          softWrap: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-        )
+        ),
       ),
     );
   }

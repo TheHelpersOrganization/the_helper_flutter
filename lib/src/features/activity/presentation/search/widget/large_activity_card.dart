@@ -25,6 +25,7 @@ class LargeActivityCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // print(activity);
     return SizedBox(
       width: width ?? context.mediaQuery.size.width * 0.7,
       height: height ?? 380,
@@ -107,9 +108,7 @@ class LargeActivityCard extends ConsumerWidget {
                     ActivityCardFooter(
                       joinedParticipants: activity.joinedParticipants!,
                       maxParticipants: activity.maxParticipants,
-                      avatarIds: activity.volunteers!
-                          .map((e) => e.profile!.avatarId)
-                          .toList(),
+                      volunteers: activity.volunteers,
                     ),
                   ],
                 ),
