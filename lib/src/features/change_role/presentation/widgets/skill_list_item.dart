@@ -22,22 +22,21 @@ class SkillListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         children: [
-          Chip(
-            avatar: Icon(icon),
-            label: Text(name),
-            elevation: 1,
-          ),
           Expanded(
-            child: Center(
-              child: Text(
-                '${f.format(hour)} h',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+            child: Chip(
+              avatar: Icon(icon),
+              label: Text(name),
+              elevation: 1,
             ),
           ),
+          Text(
+            '${f.format(hour)} h',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 5),
         ],
       ),
     );

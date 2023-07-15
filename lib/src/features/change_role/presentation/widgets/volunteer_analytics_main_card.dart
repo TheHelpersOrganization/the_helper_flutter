@@ -66,6 +66,7 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
               )
               : Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for(var i in topSkills)
                 SkillListItem(

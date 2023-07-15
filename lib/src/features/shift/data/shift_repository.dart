@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
@@ -7,6 +8,8 @@ import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/features/shift/domain/update_shift.dart';
 import 'package:the_helper/src/utils/dio.dart';
+
+part 'shift_repository.g.dart';
 
 class ShiftRepository {
   final Dio client;
@@ -142,11 +145,9 @@ class ShiftRepository {
   }
 }
 
-final shiftRepositoryProvider = Provider.autoDispose<ShiftRepository>(
-  (ref) {
-    final client = ref.watch(dioProvider);
-    return ShiftRepository(
-      client: client,
-    );
-  },
-);
+@riverpod
+ShiftRepository shiftRepository(ShiftRepositoryRef ref) {
+  return ShiftRepository(
+    client: ref.watch(dioProvider),
+  );
+}

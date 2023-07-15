@@ -25,6 +25,7 @@ class LargeActivityCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // print(activity);
     return SizedBox(
       width: width ?? context.mediaQuery.size.width * 0.7,
       height: height ?? 380,

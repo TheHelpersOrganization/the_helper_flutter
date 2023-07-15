@@ -15,7 +15,6 @@ class ModOrganizationService {
   });
 
   Future<int?> getCurrentOrganizationId() async {
-    print('addd');
     final orgId =
         await currentOrganizationRepository.getCurrentOrganizationId();
     return orgId;

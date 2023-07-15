@@ -71,7 +71,6 @@ class ActivityService {
   }) async {
     List<Activity> activities =
         await activityRepository.getActivities(query: query);
-
     if (include?.organization == true) {
       List<Organization> organizations = await Future.wait(
         activities.map(
@@ -91,6 +90,7 @@ class ActivityService {
           ),
         ),
       );
+
       activities = activities
           .mapIndexed((index, element) => element.copyWith(
                 volunteers: activityVolunteers[index],

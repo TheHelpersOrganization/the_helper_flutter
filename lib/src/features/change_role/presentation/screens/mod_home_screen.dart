@@ -28,26 +28,26 @@ class ModView extends ConsumerWidget {
     final profile = ref.watch(profileProvider);
     final ongoingActivites = ref.watch(ongoingActivitiesProvider);
     final upcomingActivitiesState = ref.watch(upcomingActivitiesProvider);
-    // final managerShifts = ref.watch(managerShiftProvider).valueOrNull;
-    // final ongoingShift = managerShifts?.firstWhereOrNull(
-    //   (shift) => shift.status == ShiftStatus.ongoing,
-    // );
-    // final upcomingShift = managerShifts
-    //     ?.where(
-    //       (shift) =>
-    //           shift.status == ShiftStatus.pending &&
-    //           shift.startTime.isBefore(
-    //             DateTime.now().add(const Duration(hours: 24)),
-    //           ),
-    //     )
-    //     .sortWithDate((instance) => instance.startTime)
-    //     .firstOrNull;
-    // final timeDisplay = upcomingShift?.startTime.isToday == true
-    //     ? '${upcomingShift?.startTime.formatHourSecond()} Today'
-    //     : upcomingShift?.startTime.isTomorrow == true
-    //         ? '${upcomingShift?.startTime.formatHourSecond()} Tomorrow'
-    //         : upcomingShift?.startTime.formatDayMonthYearBulletHourMinute() ??
-    //             '';
+    final managerShifts = ref.watch(managerShiftProvider).valueOrNull;
+    final ongoingShift = managerShifts?.firstWhereOrNull(
+      (shift) => shift.status == ShiftStatus.ongoing,
+    );
+    final upcomingShift = managerShifts
+        ?.where(
+          (shift) =>
+              shift.status == ShiftStatus.pending &&
+              shift.startTime.isBefore(
+                DateTime.now().add(const Duration(hours: 24)),
+              ),
+        )
+        .sortWithDate((instance) => instance.startTime)
+        .firstOrNull;
+    final timeDisplay = upcomingShift?.startTime.isToday == true
+        ? '${upcomingShift?.startTime.formatHourSecond()} Today'
+        : upcomingShift?.startTime.isTomorrow == true
+            ? '${upcomingShift?.startTime.formatHourSecond()} Tomorrow'
+            : upcomingShift?.startTime.formatDayMonthYearBulletHourMinute() ??
+                '';
 
     return profile.when(
       error: (_, __) => const ErrorScreen(),
@@ -62,98 +62,98 @@ class ModView extends ConsumerWidget {
               HomeWelcomeSection(
                 volunteerName: data.lastName ?? data.username ?? 'Back',
               ),
-              // if (ongoingShift != null)
-              //   Padding(
-              //     padding: const EdgeInsets.only(top: 14, bottom: 24),
-              //     child: Alert(
-              //       leading: const Icon(
-              //         Icons.info_outline,
-              //       ),
-              //       message: Text.rich(
-              //         TextSpan(
-              //           text: 'You have an ongoing shift ',
-              //           children: [
-              //             TextSpan(
-              //               text: ongoingShift.name,
-              //               style: const TextStyle(fontWeight: FontWeight.bold),
-              //             ),
-              //             const TextSpan(text: ' now'),
-              //           ],
-              //         ),
-              //         maxLines: 2,
-              //       ),
-              //       action: IconButton(
-              //         onPressed: () {
-              //           context.goNamed(AppRoute.shift.name, pathParameters: {
-              //             'activityId': ongoingShift.activityId.toString(),
-              //             'shiftId': ongoingShift.id.toString(),
-              //           });
-              //         },
-              //         icon: const Icon(Icons.navigate_next_outlined),
-              //       ),
-              //     ),
-              //   )
-              // else if (upcomingShift != null)
-              //   Padding(
-              //     padding: const EdgeInsets.only(top: 14, bottom: 24),
-              //     child: Alert(
-              //       leading: const Icon(
-              //         Icons.info_outline,
-              //       ),
-              //       message: Wrap(
-              //         spacing: 2,
-              //         children: [
-              //           Text.rich(
-              //             TextSpan(
-              //               text: 'Shift ',
-              //               children: [
-              //                 TextSpan(
-              //                   text: upcomingShift.name,
-              //                   style: const TextStyle(
-              //                     fontWeight: FontWeight.bold,
-              //                   ),
-              //                 )
-              //               ],
-              //             ),
-              //             maxLines: 1,
-              //             overflow: TextOverflow.ellipsis,
-              //           ),
-              //           Text.rich(
-              //             TextSpan(
-              //               text: 'is starting soon at ',
-              //               children: [
-              //                 const WidgetSpan(
-              //                   child: Icon(
-              //                     Icons.access_time_outlined,
-              //                     size: 16,
-              //                   ),
-              //                 ),
-              //                 TextSpan(
-              //                   text: ' $timeDisplay',
-              //                   style: const TextStyle(
-              //                     fontWeight: FontWeight.bold,
-              //                   ),
-              //                 )
-              //               ],
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //       action: IconButton(
-              //         onPressed: () {
-              //           context.goNamed(AppRoute.shift.name, pathParameters: {
-              //             'activityId': upcomingShift.activityId.toString(),
-              //             'shiftId': upcomingShift.id.toString(),
-              //           });
-              //         },
-              //         icon: const Icon(Icons.navigate_next_outlined),
-              //       ),
-              //     ),
-              //   )
-              // else
-              //   const SizedBox(
-              //     height: 24,
-              //   ),
+              if (ongoingShift != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14, bottom: 24),
+                  child: Alert(
+                    leading: const Icon(
+                      Icons.info_outline,
+                    ),
+                    message: Text.rich(
+                      TextSpan(
+                        text: 'You have an ongoing shift ',
+                        children: [
+                          TextSpan(
+                            text: ongoingShift.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const TextSpan(text: ' now'),
+                        ],
+                      ),
+                      maxLines: 2,
+                    ),
+                    action: IconButton(
+                      onPressed: () {
+                        context.goNamed(AppRoute.shift.name, pathParameters: {
+                          'activityId': ongoingShift.activityId.toString(),
+                          'shiftId': ongoingShift.id.toString(),
+                        });
+                      },
+                      icon: const Icon(Icons.navigate_next_outlined),
+                    ),
+                  ),
+                )
+              else if (upcomingShift != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 14, bottom: 24),
+                  child: Alert(
+                    leading: const Icon(
+                      Icons.info_outline,
+                    ),
+                    message: Wrap(
+                      spacing: 2,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                            text: 'Shift ',
+                            children: [
+                              TextSpan(
+                                text: upcomingShift.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text.rich(
+                          TextSpan(
+                            text: 'is starting soon at ',
+                            children: [
+                              const WidgetSpan(
+                                child: Icon(
+                                  Icons.access_time_outlined,
+                                  size: 16,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' $timeDisplay',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    action: IconButton(
+                      onPressed: () {
+                        context.goNamed(AppRoute.shift.name, pathParameters: {
+                          'activityId': upcomingShift.activityId.toString(),
+                          'shiftId': upcomingShift.id.toString(),
+                        });
+                      },
+                      icon: const Icon(Icons.navigate_next_outlined),
+                    ),
+                  ),
+                )
+              else
+                const SizedBox(
+                  height: 24,
+                ),
               const SizedBox(
                 height: 48,
               ),
@@ -184,12 +184,12 @@ class ModView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (upcomingActivities) => ListView.builder(
+                  data: (data) => ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: upcomingActivities.length,
+                    itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: upcomingActivities[index]),
+                        LargeActivityCard(activity: data[index]),
                   ),
                 ),
               ),
@@ -223,12 +223,12 @@ class ModView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (suggestedActivities) => ListView.builder(
+                  data: (data) => ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: suggestedActivities.length,
+                    itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: suggestedActivities[index]),
+                        LargeActivityCard(activity: data[index]),
                   ),
                 ),
               ),

@@ -87,7 +87,7 @@ class AdminView extends ConsumerWidget {
                         ),
                         requestData.when(
                           loading: () => AdminDataHolder(
-                            itemCount: 3,
+                            itemCount: 2,
                             itemWidth: context.mediaQuery.size.width * 0.3,
                             itemHeight: 100,
                           ),
@@ -110,19 +110,6 @@ class AdminView extends ConsumerWidget {
                                     height: 100,
                                     width: 100,
                                     onTap: () => context.goNamed(AppRoute.accountRequestManage.name)),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: PenddingRequestData(
-                                    name: 'Organization',
-                                    icon: Icons.verified_user,
-                                    count: data.organization,
-                                    height: 100,
-                                    width: 100,
-                                    onTap: () {}),
                               ),
                               const SizedBox(
                                 width: 10,
