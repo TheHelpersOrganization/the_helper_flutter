@@ -69,7 +69,8 @@ class AdminView extends ConsumerWidget {
                           title: 'Organization',
                           icon: Icons.work_outline_outlined,
                           data: data.organization,
-                          onTap: () {},
+                          onTap: () =>
+                              context.goNamed(AppRoute.organizationAdminManage.name),
                         ),
                       ),
                     ]),
