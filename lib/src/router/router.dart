@@ -21,7 +21,6 @@ import 'package:the_helper/src/features/change_role/presentation/screens/home_sc
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
@@ -42,7 +41,6 @@ import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
-import '../common/widget/bottom_navigation_bar/bottom_navigator.dart';
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
 import '../features/organization/presentation/admin_manage/screens/organization_admin_manage_screen.dart';
 import '../features/profile/presentation/other_user_profile/other_user_profile_screen.dart';
