@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 class CommaSeparatedDateTimesConverter
-    implements JsonConverter<List<DateTime>?, String?> {
+    implements JsonConverter<List<DateTime?>?, String?> {
   const CommaSeparatedDateTimesConverter();
 
   @override
@@ -11,16 +11,22 @@ class CommaSeparatedDateTimesConverter
     }
     return json
         .split(',')
-        .map((e) =>
-            DateTime.fromMicrosecondsSinceEpoch(int.parse(e), isUtc: true))
+        .map(
+          (e) => e.isEmpty
+              ? null
+              : DateTime.fromMillisecondsSinceEpoch(
+                  int.parse(e),
+                  isUtc: true,
+                ),
+        )
         .toList();
   }
 
   @override
-  toJson(List<DateTime>? object) {
+  toJson(List<DateTime?>? object) {
     if (object == null) {
       return null;
     }
-    return object.map((e) => e.millisecondsSinceEpoch).join(',');
+    return object.map((e) => e?.millisecondsSinceEpoch ?? '').join(',');
   }
 }

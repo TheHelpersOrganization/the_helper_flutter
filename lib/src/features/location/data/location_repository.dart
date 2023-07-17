@@ -58,9 +58,9 @@ class LocationRepository {
   Future<List<ReverseGeocode>> reverseGeocodeQuery({
     required ReverseGeocodeQuery query,
   }) async {
-    final res = await client.get(
+    final res = await client.post(
       '/locations/reverse-geocode',
-      queryParameters: query.toJson(),
+      data: query.toJson(),
     );
     final List<dynamic> resList = res.data['data'];
     return resList.map((e) => ReverseGeocode.fromJson(e)).toList();

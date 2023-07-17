@@ -4,8 +4,6 @@ import 'package:the_helper/src/features/activity/domain/activity_log.dart';
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 
 import '../../../activity/application/activity_service.dart';
-import '../../../activity/domain/activity_include.dart';
-import '../../../activity/domain/activity_query.dart';
 import '../../../organization/application/admin_organization_service.dart';
 import '../../../report/application/report_service.dart';
 
@@ -47,9 +45,8 @@ final reportCountProvider = FutureProvider.autoDispose<int>(
 final chartDataProvider = FutureProvider.autoDispose<ActivityLog>((ref) {
   final end = DateTime.now();
   final start = DateTime(end.year);
-  return ref
-      .watch(activityServiceProvider)
-      .getLog(query: ActivityLogQuery(
+  return ref.watch(activityServiceProvider).getLog(
+          query: ActivityLogQuery(
         startDate: start,
         // endDate: end
       ));

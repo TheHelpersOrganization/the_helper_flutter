@@ -4,12 +4,12 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 part 'activity_volunteer.freezed.dart';
 part 'activity_volunteer.g.dart';
 
-enum ActivityVolunteerStatus{
-  pending, 
-  cancelled, 
-  approved, 
-  rejected, 
-  removed, 
+enum ActivityVolunteerStatus {
+  pending,
+  cancelled,
+  approved,
+  rejected,
+  removed,
   left
 }
 

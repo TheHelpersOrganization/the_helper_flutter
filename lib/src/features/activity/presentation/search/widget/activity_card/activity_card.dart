@@ -40,7 +40,7 @@ class ActivityCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap ??
             () {
-              context.goNamed(AppRoute.activity.name, pathParameters: {
+              context.pushNamed(AppRoute.activity.name, pathParameters: {
                 'activityId': activity.id.toString(),
               });
             },

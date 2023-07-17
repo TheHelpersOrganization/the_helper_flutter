@@ -40,7 +40,7 @@ final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
   (ref) => ref.watch(activityServiceProvider).getActivities(
         query: ActivityQuery(
           limit: 5,
-          startDate: [
+          startTime: [
             DateTime.now(),
             DateTime.now().add(const Duration(days: 7))
           ],
