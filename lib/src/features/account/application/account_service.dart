@@ -25,34 +25,26 @@ class AccountService {
   Future<List<AccountModel>> getAll({
     AccountQuery? query,
   }) async {
-    final List<dynamic> res = (await client.get(
-      '/admin/accounts',
-      queryParameters: query?.toJson(),
-    ))
-        .data['data'];
-    return res.map((e) => AccountModel.fromJson(e)).toList();
+    final accounts = await accountRepository.getAll(
+      query: query,
+    );
+    return accounts;
   }
 
   Future<int> getCount({
     AccountQuery? query,
   }) async {
-    final List<dynamic> res = (await client.get(
-      '/admin/accounts',
-      queryParameters: query?.toJson(),
-    ))
-        .data['data'];
-    return res.map((e) => AccountModel.fromJson(e)).toList().length;
+    final accounts = await accountRepository.getAll(
+      query: query,
+    );
+    return accounts.length;
   }
 
   Future<int> getRequestCount({
     AccountRequestQuery? query,
   }) async {
-    final List<dynamic> res = (await client.get(
-      '/account-verifications',
-      queryParameters: query?.toJson(),
-    ))
-        .data['data'];
-    return res.map((e) => AccountRequestModel.fromJson(e)).toList().length;
+    final request = await accountRequestRepository.getAll(query: query);
+    return request.length;
   }
 }
 

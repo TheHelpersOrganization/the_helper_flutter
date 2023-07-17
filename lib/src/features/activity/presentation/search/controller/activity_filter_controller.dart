@@ -67,7 +67,7 @@ final skillsProvider = FutureProvider.autoDispose(
 final selectedSkillsProvider = StateProvider<Set<Skill>>((ref) => {});
 
 final organizationsProvider = FutureProvider.autoDispose(
-  (ref) => ref.watch(organizationRepositoryProvider).get(),
+  (ref) => ref.watch(organizationRepositoryProvider).getAll(),
 );
 
 final selectedOrganizationsProvider =

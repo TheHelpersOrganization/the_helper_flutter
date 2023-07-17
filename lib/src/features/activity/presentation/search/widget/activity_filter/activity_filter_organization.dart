@@ -84,7 +84,7 @@ class _ActivityFilterOrganizationState
             helperText: 'Max 5 organizations',
           ),
           suggestionsCallback: (pattern) =>
-              ref.read(organizationRepositoryProvider).get(
+              ref.read(organizationRepositoryProvider).getAll(
                     query: OrganizationQuery(
                       name: pattern.trim(),
                       limit: 5,

@@ -25,6 +25,7 @@ class AdminView extends ConsumerWidget {
     final userName = ref.watch(profileProvider);
     final adminData = ref.watch(adminHomeControllerProvider);
     final requestData = ref.watch(adminRequestProvider);
+    final chartData = ref.watch(chartDataProvider);
 
     return userName.when(
         error: (_, __) => const ErrorScreen(),
@@ -55,7 +56,8 @@ class AdminView extends ConsumerWidget {
                           title: 'Accounts',
                           icon: Icons.account_circle_outlined,
                           data: data.account,
-                          onTap: () => context.goNamed(AppRoute.accountManage.name),
+                          onTap: () =>
+                              context.goNamed(AppRoute.accountManage.name),
                         ),
                       ),
                       const SizedBox(
@@ -67,7 +69,8 @@ class AdminView extends ConsumerWidget {
                           title: 'Organization',
                           icon: Icons.work_outline_outlined,
                           data: data.organization,
-                          onTap: () {},
+                          onTap: () =>
+                              context.goNamed(AppRoute.organizationAdminManage.name),
                         ),
                       ),
                     ]),
@@ -87,16 +90,18 @@ class AdminView extends ConsumerWidget {
                         ),
                         requestData.when(
                           loading: () => AdminDataHolder(
-                            itemCount: 3,
+                            itemCount: 2,
                             itemWidth: context.mediaQuery.size.width * 0.3,
                             itemHeight: 100,
                           ),
                           error: (_, __) {
-                            return const Center(child: Text(
+                            return const Center(
+                                child: Text(
                               'There\'s a problem while loading data',
                               style: TextStyle(
                                 color: Colors.white,
-                              ),));
+                              ),
+                            ));
                           },
                           data: (data) => Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,20 +114,8 @@ class AdminView extends ConsumerWidget {
                                     count: data.account,
                                     height: 100,
                                     width: 100,
-                                    onTap: () => context.goNamed(AppRoute.accountRequestManage.name)),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: PenddingRequestData(
-                                    name: 'Organization',
-                                    icon: Icons.verified_user,
-                                    count: data.organization,
-                                    height: 100,
-                                    width: 100,
-                                    onTap: () {}),
+                                    onTap: () => context.goNamed(
+                                        AppRoute.accountRequestManage.name)),
                               ),
                               const SizedBox(
                                 width: 10,
@@ -135,7 +128,8 @@ class AdminView extends ConsumerWidget {
                                     count: data.report,
                                     height: 100,
                                     width: 100,
-                                    onTap: () => context.goNamed(AppRoute.reportManage.name)),
+                                    onTap: () => context
+                                        .goNamed(AppRoute.reportManage.name)),
                               ),
                             ],
                           ),
@@ -167,10 +161,18 @@ class AdminView extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  const Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: AdminLineChart(),
+                  Expanded(
+                    child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: chartData.when(
+                      loading: () => AdminDataHolder(
+                        itemCount: 1,
+                        itemWidth: context.mediaQuery.size.width * 0.9,
+                        itemHeight: 250,
+                      ),
+                      error: (_, __) => const ErrorScreen(),
+                    data: (data) => AdminLineChart(data: data,))
+                    ,
                   )),
                 ],
               ),

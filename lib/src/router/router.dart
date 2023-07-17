@@ -21,7 +21,6 @@ import 'package:the_helper/src/features/change_role/presentation/screens/home_sc
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_manage/organization_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
@@ -311,12 +310,7 @@ final routes = [
                 ),
               ),
             ),
-          ]),
-      // GoRoute(
-      //   path: AppRoute.screenBuilderCanvas.path,
-      //   name: AppRoute.screenBuilderCanvas.name,
-      //   builder: (context, state) => const ScreenBuilderCanvas(),
-      // ),
+          ]),    
       accountRoutes,
       profileRoutes,
       organizationRoutes,
@@ -361,7 +355,7 @@ final profileRoutes = GoRoute(
 final organizationRoutes = GoRoute(
   path: AppRoute.organizationManage.path,
   name: AppRoute.organizationManage.name,
-  builder: (_, __) => const OrganizationManageScreen(),
+  builder: (_, __) => const DevelopingScreen(),
   routes: [
     GoRoute(
       path: AppRoute.organizationSearch.path,

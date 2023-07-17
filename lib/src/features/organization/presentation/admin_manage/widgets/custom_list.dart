@@ -32,8 +32,18 @@ class CustomScrollList extends StatelessWidget {
         pagingController: controller,
         builderDelegate: builder,
       ),
-      itemBuilder: (context, item, index) => 
-      CustomListItem(data: item),
+      itemBuilder: (context, item, index) {
+        return CustomListItem(data: item);
+        // if (tabIndex == OrganizationStatus.pending) {
+        //   return PendingListItem(data: item);
+        // } else if (tabIndex == OrganizationStatus.verified) {
+        //   return VerifiedListItem(data: item);
+        // } else if (tabIndex == OrganizationStatus.cancelled) {
+        //   return CancelledListItem(data: item);
+        // } else {
+        //   return RejectListItem(data: item);
+        // }
+      },
       limit: 5,
       pullToRefresh: true,
       firstPageErrorIndicatorBuilder: (context, controller) =>

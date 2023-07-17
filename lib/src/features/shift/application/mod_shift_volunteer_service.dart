@@ -4,6 +4,8 @@ import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
+import '../domain/shift.dart';
+import '../domain/shift_query.dart';
 import '../domain/shift_volunteer.dart';
 
 part 'mod_shift_volunteer_service.g.dart';
@@ -37,6 +39,13 @@ class ModShiftVolunteerService {
         )
         .toList());
     return volunteers;
+  }
+
+  Future<List<Shift>> getShifts({
+    ShiftQuery? query,
+  }) async {
+    final shifts = await modShiftRepository.getShifts(query: query);
+    return shifts;
   }
 }
 

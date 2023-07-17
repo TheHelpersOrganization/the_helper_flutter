@@ -22,7 +22,7 @@ final myPagingControllerProvider = Provider.autoDispose(
     final controller = PagingController<int, Organization>(firstPageKey: 0);
     controller.addPageRequestListener((pageKey) async {
       try {
-        final items = await organizationRepo.get(
+        final items = await organizationRepo.getAll(
           query: OrganizationQuery(
             offset: pageKey * 100,
             memberStatus: currentState,

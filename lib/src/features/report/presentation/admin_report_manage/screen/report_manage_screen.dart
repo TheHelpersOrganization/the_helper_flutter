@@ -15,9 +15,9 @@ import '../widget/custom_list.dart';
 //Screens
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Account'),
-  Tab(text: 'Organization'),
-  Tab(text: 'Activity'),
+  Tab(text: 'Pendding'),
+  Tab(text: 'Completed'),
+  Tab(text: 'Reject'),
 ];
 
 class ReportManageScreen extends ConsumerWidget {

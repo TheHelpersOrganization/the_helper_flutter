@@ -37,7 +37,9 @@ class SubmitReportController extends _$SubmitReportController {
     state = await AsyncValue.guard(
         () => ref.watch(reportRepositoryProvider).submitReport(
           ReportRequest(
-            reportedAccountId: id, 
+            reportedAccountId: type == ReportType.account? id : null,
+            reportedOrganizationId: type == ReportType.organization? id : null,
+            reportedActivityId: type == ReportType.activity? id : null,
             type: type, 
             title: title,
             message: RequestMessage(

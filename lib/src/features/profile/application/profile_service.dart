@@ -23,7 +23,7 @@ class ProfileService {
 
   Future<List<Organization>> getJoinedOrganizations() async {
     // TODO: add logic to check is this your profile or another one profile
-    return await organizationRepository.get(
+    return await organizationRepository.getAll(
       query: const OrganizationQuery(joined: true),
     );
   }

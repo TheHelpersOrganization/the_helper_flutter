@@ -26,6 +26,7 @@ class PenddingRequestData extends StatelessWidget {
         height: height,
         // width: width,
         child: Badge.count(
+          offset: const Offset(-4, 0),
           count: count,
           child: Card(
             elevation: 2,

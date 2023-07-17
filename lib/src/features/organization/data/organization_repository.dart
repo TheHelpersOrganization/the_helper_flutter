@@ -21,7 +21,7 @@ class OrganizationRepository {
     return res.map((data) => Organization.fromJson(data)).toList();
   }
 
-  Future<List<Organization>> get({
+  Future<List<Organization>> getAll({
     OrganizationQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(
@@ -56,4 +56,4 @@ Future<Organization> getOrganization(
 Future<List<Organization>> getOrganizations(
   GetOrganizationsRef ref,
 ) =>
-    ref.watch(organizationRepositoryProvider).get();
+    ref.watch(organizationRepositoryProvider).getAll();
