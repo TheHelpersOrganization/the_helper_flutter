@@ -32,7 +32,7 @@ class LargeActivityCard extends ConsumerWidget {
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: () {
-            context.goNamed(AppRoute.activity.name, pathParameters: {
+            context.pushNamed(AppRoute.activity.name, pathParameters: {
               'activityId': activity.id.toString(),
             });
           },

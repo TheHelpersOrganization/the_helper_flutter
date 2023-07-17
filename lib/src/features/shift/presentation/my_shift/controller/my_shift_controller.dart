@@ -39,7 +39,7 @@ final queries = {
     myJoinStatus: [
       ShiftVolunteerStatus.rejected,
       ShiftVolunteerStatus.removed,
-      ShiftVolunteerStatus.leaved,
+      ShiftVolunteerStatus.left,
     ],
   ),
 };

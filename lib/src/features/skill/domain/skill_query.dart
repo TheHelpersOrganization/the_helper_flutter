@@ -9,6 +9,9 @@ class SkillQuery with _$SkillQuery {
   @JsonSerializable(includeIfNull: false)
   factory SkillQuery({
     @IntListConverter() List<int>? ids,
+    String? name,
+    int? limit,
+    int? offset,
   }) = _SkillQuery;
 
   factory SkillQuery.fromJson(Map<String, dynamic> json) =>

@@ -10,7 +10,7 @@ class ActivityVolunteer with _$ActivityVolunteer {
   factory ActivityVolunteer({
     required int shiftId,
     required int accountId,
-    required bool attendant,
+    //required bool attendant,
     required double completion,
     Profile? profile,
   }) = _ActivityVolunteer;

@@ -11,7 +11,7 @@ enum ShiftVolunteerStatus {
   approved,
   rejected,
   removed,
-  leaved,
+  left,
 }
 
 @freezed
