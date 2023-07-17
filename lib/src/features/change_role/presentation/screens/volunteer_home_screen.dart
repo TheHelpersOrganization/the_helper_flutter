@@ -214,7 +214,11 @@ class VolunteerView extends ConsumerWidget {
                     itemWidth: context.mediaQuery.size.width * 0.7,
                     itemHeight: 380,
                   ),
-                  error: (_, __) => const ErrorScreen(),
+                  error: (_, __) {
+                    print(__);
+                    print(_);
+                    return const ErrorScreen();
+                  },
                   data: (upcomingActivities) => upcomingActivities.isEmpty
                   ? const Center(child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
