@@ -22,7 +22,7 @@ class CustomListItem extends ConsumerWidget {
         elevation: 1,
         child: InkWell(
           onTap: () =>
-              context.goNamed(AppRoute.organization.name, pathParameters: {
+              context.pushNamed(AppRoute.organization.name, pathParameters: {
             'orgId': data.id.toString(),
           }),
           child: Padding(

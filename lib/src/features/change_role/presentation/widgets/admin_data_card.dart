@@ -30,7 +30,7 @@ class AdminDataCard extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.blue,
