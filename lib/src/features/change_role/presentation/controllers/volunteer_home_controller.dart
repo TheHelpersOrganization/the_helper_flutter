@@ -11,14 +11,12 @@ import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 class VolunteerStatusData {
-  final List<String>? skillList;
   final int totalActivity;
   final int increasedActivity;
   final double totalHour;
   final double increasedHour;
 
   const VolunteerStatusData({
-    this.skillList,
     required this.totalActivity,
     required this.increasedActivity,
     required this.totalHour,

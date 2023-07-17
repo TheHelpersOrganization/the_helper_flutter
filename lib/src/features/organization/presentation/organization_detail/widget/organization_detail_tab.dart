@@ -27,7 +27,6 @@ class OrganizationDetailTab extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                
                 DetailListTile(
                     label: 'Name',
                     value: data.name),
@@ -39,30 +38,47 @@ class OrganizationDetailTab extends StatelessWidget {
                     label: 'Website',
                     value: data.website),
                 data.locations != null
-                ? Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
                         'Location',
-                        style: Theme.of(context).textTheme.titleMedium
+                        style: Theme.of(context).textTheme.titleLarge
                         ?.copyWith(
                           fontWeight: FontWeight.bold
                         ),
                       ),
-                      ...data.locations!
-                      .map((e) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(getAddress(e)),
-                      )).toList(),
-                    ],
-                  ),
+                    ),
+                    ...data.locations!
+                    .map((e) => ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Icon(Icons.location_city),
+                          Text(getAddress(e)),
+                        ],
+                      ),
+                    )).toList(),
+                  ],
                 ): const SizedBox(),
                 data.contacts != null
                 ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Contact'),
+                    const Divider(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Contact',
+                        style: Theme.of(context).textTheme.titleLarge
+                        ?.copyWith(
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
                     ...data.contacts!
                     .map((e) => Text(e.toString())).toList(),
                   ],

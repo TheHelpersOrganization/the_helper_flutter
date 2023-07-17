@@ -157,37 +157,33 @@ class VolunteerView extends ConsumerWidget {
                 const SizedBox(
                   height: 24,
                 ),
-              SizedBox(
-                height: 250,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child:VolunteerAnalyticsMainCard(
-                          skillList: data.skills
-                        ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: volunteerData.when(
-                        data: (data) => VolunteerAnalytics(
-                          skillList: data.skillList,
-                          totalActivity: data.totalActivity,
-                          increasedActivity: data.increasedActivity,
-                          totalHour: data.totalHour,
-                          increasedHour: data.increasedHour,
-                        ),
-                        loading: () => VolunteerDataHolder(
-                          itemCount: 2,
-                          itemWidth: context.mediaQuery.size.width * 0.38,
-                          itemHeight: 90,
-                        ),
-                        error: (_, __) => const ErrorScreen(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child:VolunteerAnalyticsMainCard(
+                        skillList: data.skills
                       ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: volunteerData.when(
+                      data: (data) => VolunteerAnalytics(
+                        totalActivity: data.totalActivity,
+                        increasedActivity: data.increasedActivity,
+                        totalHour: data.totalHour,
+                        increasedHour: data.increasedHour,
+                      ),
+                      loading: () => VolunteerDataHolder(
+                        itemCount: 2,
+                        itemWidth: context.mediaQuery.size.width * 0.38,
+                        itemHeight: 90,
+                      ),
+                      error: (_, __) => const ErrorScreen(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 48,
@@ -219,7 +215,17 @@ class VolunteerView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (upcomingActivities) => ListView.builder(
+                  data: (upcomingActivities) => upcomingActivities.isEmpty
+                  ? const Center(child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      
+                      Text('There\'s no activity'),
+
+                    ],
+                  ),)
+                  :ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: upcomingActivities.length,
