@@ -107,12 +107,12 @@ const List<DrawerItemModel> admin = [
     subPaths: [
       DrawerItemModel(
         route: AppRoute.accountManage,
-        title: 'Accounts Manage',
+        title: 'Accounts manage',
         icon: Icons.search_outlined,
       ),
       DrawerItemModel(
         route: AppRoute.accountRequestManage,
-        title: 'Verify Requests Manage',
+        title: 'Accounts requests manage',
         icon: Icons.search_outlined,
       ),
     ],
@@ -120,11 +120,22 @@ const List<DrawerItemModel> admin = [
   DrawerItemModel(
     title: 'Organizations',
     icon: Icons.work,
-    route: AppRoute.organizationAdminManage,
+    subPaths: [
+      DrawerItemModel(
+        route: AppRoute.organizationAdminManage,
+        title: 'Organizations manage',
+        icon: Icons.search_outlined,
+      ),
+      DrawerItemModel(
+        route: AppRoute.organizationRequestsManage,
+        title: 'Organizations requests manage',
+        icon: Icons.search_outlined,
+      ),
+    ],
   ),
   DrawerItemModel(
     route: AppRoute.reportManage,
-    title: 'Reports Manage',
+    title: 'Reports manage',
     icon: Icons.newspaper_outlined,
   ),
   DrawerItemModel(

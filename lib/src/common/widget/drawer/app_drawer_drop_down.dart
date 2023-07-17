@@ -40,19 +40,20 @@ class AppDrawerDropDown extends ConsumerWidget {
           initiallyExpanded: isSelected,
           leading: Icon(icon),
           children: subPaths
-          .map<Widget>((item) => AppDrawerItem(
-            title: item.title,
-            icon: Icons.install_mobile_sharp,
-            onTap: () {
-              context.goNamed(item.route != null
-                  ? item.route!.name
-                  : AppRoute.developing.name);
-            },
+          .map<Widget>((item) => Material(
+            child: AppDrawerItem(
+              title: item.title,
+              icon: Icons.radio_button_off,
+              isSub: true,
+              path: item.route?.path,
+              onTap: () {
+                context.goNamed(item.route != null
+                    ? item.route!.name
+                    : AppRoute.developing.name);
+              },
+            ),
           ))
           .toList(),
-          onExpansionChanged: (bool expanded) {
-            // ref.read(dropDownControllerProvider.notifier).state = expanded;
-          },
         ),
       ),
     );

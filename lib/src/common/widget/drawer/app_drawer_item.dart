@@ -5,7 +5,7 @@ class AppDrawerItem extends StatelessWidget {
   final String title;
   final IconData icon;
   final GestureTapCallback? onTap;
-  // final AppRoute? route;
+  final bool isSub;
   final String? path;
 
   const AppDrawerItem({
@@ -13,13 +13,13 @@ class AppDrawerItem extends StatelessWidget {
     required this.title,
     required this.icon,
     this.onTap,
+    required this.isSub,
     this.path,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isSelected = path == context.currentRoute;
-
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: Ink(
@@ -34,7 +34,8 @@ class AppDrawerItem extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
           title: Text(title,
               style: isSelected ? const TextStyle(color: Colors.white) : null),
-          leading: Icon(icon, color: (isSelected ? Colors.white : null)),
+          leading: Icon(isSub && isSelected ? Icons.radio_button_checked : icon,
+              color: (isSelected ? Colors.white : null)),
           onTap: onTap,
         ),
       ),
