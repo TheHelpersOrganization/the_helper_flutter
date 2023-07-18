@@ -14,6 +14,7 @@ import '../../../../router/router.dart';
 import '../../../profile/data/profile_repository.dart';
 import '../../../shift/domain/shift.dart';
 import '../controllers/mod_home_controller.dart';
+import '../widgets/empty_list_widget.dart';
 import '../widgets/home_welcome_section.dart';
 
 
@@ -184,7 +185,17 @@ class ModView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (data) => ListView.builder(
+                  data: (data) => data.isEmpty
+                  ? EmptyListWidget(
+                    description: const [
+                      'Your organization don\'t have any',
+                      'ongoing activities'
+                    ],
+                    buttonTxt: 'Create one now',
+                    onPress: () => 
+                    context.pushNamed(AppRoute.organizationActivityCreation.name),
+                  )
+                  : ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: data.length,
@@ -223,7 +234,17 @@ class ModView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) => const ErrorScreen(),
-                  data: (data) => ListView.builder(
+                  data: (data) => data.isEmpty
+                  ? EmptyListWidget(
+                    description: const [
+                      'Your organization don\'t have any',
+                      'upcomming activities'
+                    ],
+                    buttonTxt: 'Create one now',
+                    onPress: () => 
+                    context.goNamed(AppRoute.organizationActivityCreation.name),
+                  )
+                  : ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: data.length,

@@ -22,8 +22,8 @@ class CustomListItem extends ConsumerWidget {
         elevation: 1,
         child: InkWell(
           onTap: () =>
-              context.goNamed(AppRoute.reportDetail.name, pathParameters: {
-            'reportId': data.id.toString(),
+              context.pushNamed(AppRoute.organization.name, pathParameters: {
+            'orgId': data.id.toString(),
           }),
           child: Padding(
             padding: const EdgeInsets.all(10),

@@ -59,7 +59,9 @@ class AppDrawer extends ConsumerWidget {
       children: [
         InkWell(
           onTap: () => context.goNamed(AppRoute.profile.name),
-          child: const AppDrawerUser(),
+          child: const SizedBox(
+            height: 80,
+            child: AppDrawerUser()),
         ),
         const Divider(),
         for (var i in drawerItem)
@@ -73,6 +75,8 @@ class AppDrawer extends ConsumerWidget {
             AppDrawerItem(
               title: i.title,
               icon: i.icon,
+              isSub: false,
+              path: i.route?.path,
               onTap: () {
                 if (i.onTap != null) {
                   i.onTap!(context);
@@ -86,11 +90,13 @@ class AppDrawer extends ConsumerWidget {
           AppDrawerItem(
             title: 'Change Role',
             icon: Icons.change_circle_outlined,
+            isSub: false,
             onTap: () => context.goNamed(AppRoute.changeRole.name),
           ),
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout_outlined,
+            isSub: false,
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
               ref.read(roleRepositoryProvider).removeCurrentRole();

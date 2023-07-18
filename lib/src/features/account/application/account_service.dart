@@ -6,7 +6,6 @@ import '../data/account_repository.dart';
 import '../data/account_request_repository.dart';
 import '../domain/account.dart';
 import '../domain/account_query.dart';
-import '../domain/account_request.dart';
 import '../domain/account_request_query.dart';
 
 part 'account_service.g.dart';

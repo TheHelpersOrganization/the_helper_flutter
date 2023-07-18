@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:the_helper/src/common/converter/converter.dart';
 
 part 'mark_notifications_as_read.freezed.dart';
 part 'mark_notifications_as_read.g.dart';

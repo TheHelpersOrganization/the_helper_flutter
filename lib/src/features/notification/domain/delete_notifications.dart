@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:the_helper/src/common/converter/converter.dart';
 
 part 'delete_notifications.freezed.dart';
 part 'delete_notifications.g.dart';

@@ -85,7 +85,7 @@ class ModActivityListManagementScreen extends ConsumerWidget {
             onPressed: () {
               ref
                   .read(routerProvider)
-                  .goNamed(AppRoute.organizationActivityCreation.name);
+                  .pushNamed(AppRoute.organizationActivityCreation.name);
             },
             icon: const Icon(Icons.add),
             label: const Text('Activity'),

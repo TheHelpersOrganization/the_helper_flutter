@@ -17,7 +17,6 @@ class ActivityCardFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(volunteers == null);
     String slots = joinedParticipants.toString();
     if (maxParticipants != null) {
       slots += '/$maxParticipants';

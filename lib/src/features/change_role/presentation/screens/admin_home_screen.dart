@@ -45,8 +45,8 @@ class AdminView extends ConsumerWidget {
                   adminData.when(
                     loading: () => AdminDataHolder(
                       itemCount: 2,
-                      itemWidth: context.mediaQuery.size.width * 0.4,
-                      itemHeight: 100,
+                      itemWidth: context.mediaQuery.size.width * 0.3,
+                      itemHeight: 80,
                     ),
                     error: (_, __) => const ErrorScreen(),
                     data: (data) => Row(children: [
@@ -61,7 +61,7 @@ class AdminView extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       Expanded(
                         flex: 1,

@@ -138,8 +138,12 @@ class ModActivityCreationScreen extends ConsumerWidget {
           appBar: CustomSliverAppBar(
             titleText: 'Create Activity',
             showBackButton: true,
-            onBackFallback: () =>
-                ref.read(routerProvider).goNamed(AppRoute.home.name),
+            onBackFallback: () {
+              if (context.canPop()) {
+                context.pop();
+              }
+              else{context.goNamed(AppRoute.home.name);}
+            },
             actions: const [],
           ),
           body: Stepper(

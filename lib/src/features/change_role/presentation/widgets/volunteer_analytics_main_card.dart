@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/skill/domain/skill_icon_dir.dart';
+import 'package:the_helper/src/features/skill/domain/skill_icon_name_map.dart';
 
 import '../../../skill/domain/skill.dart';
 import 'skill_list_item.dart';
@@ -20,7 +20,7 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
 
     List<Skill> sortedList = List.from(skillList);
     sortedList.sort((b, a) => (a.hours ?? 0.0).compareTo(b.hours ?? 0.0));
-    final topSkills = sortedList.sublist(0, min(4, sortedList.length));
+    final topSkills = sortedList.sublist(0, min(3, sortedList.length));
     return Card(
       color: context.theme.primaryColor,
       margin: const EdgeInsets.only(right: 4),
@@ -53,7 +53,7 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
                 indent: 0,
               ),
             ),
-            Expanded(
+            Flexible(
               child: topSkills.isEmpty
               ? Center(
                 child: Text(
@@ -65,13 +65,14 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
                 )
               )
               : Column(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for(var i in topSkills)
                 SkillListItem(
                   name: i.name, 
-                  icon: skillIcons[i.name]!, 
+                  icon: SkillIcons[i.name]!, 
                   hour: i.hours!, 
                   color: onPrimaryColor
                 ),

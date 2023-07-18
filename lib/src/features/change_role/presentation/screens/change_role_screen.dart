@@ -9,7 +9,6 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
-import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';

@@ -32,7 +32,7 @@ class AccountRequestManageScreen extends ConsumerWidget {
             SliverAppBar(
               centerTitle: true,
               title: const Text(
-                'Accounts manage',
+                'Account requests manage',
               ),
               floating: true,
               actions: [

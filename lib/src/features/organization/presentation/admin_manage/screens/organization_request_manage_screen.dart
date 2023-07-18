@@ -12,12 +12,12 @@ import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
 //Screens
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Active'),
-  Tab(text: 'Banned'),
+  Tab(text: 'Pending'),
+  Tab(text: 'Reject'),
 ];
 
-class OrganizationAdminManageScreen extends ConsumerWidget {
-  const OrganizationAdminManageScreen({super.key});
+class OrganizationRequestManageScreen extends ConsumerWidget {
+  const OrganizationRequestManageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +32,7 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
             SliverAppBar(
               centerTitle: true,
               title: const Text(
-                'Organizations manage',
+                'Organizations request manage',
               ),
               floating: true,
               actions: [
@@ -70,8 +70,8 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
           ],
           body: const TabBarView(
             children: [
-              CustomScrollList(tabIndex: OrganizationStatus.verified),
-              CustomScrollList(tabIndex: OrganizationStatus.cancelled),
+              CustomScrollList(tabIndex: OrganizationStatus.pending),
+              CustomScrollList(tabIndex: OrganizationStatus.rejected),
             ]),
         ),
       ),

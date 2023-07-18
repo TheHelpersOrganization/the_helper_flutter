@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 
 import '../../contact/domain/contact.dart';
-import 'package:the_helper/src/features/file/domain/file_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'organization_request_model.g.dart';

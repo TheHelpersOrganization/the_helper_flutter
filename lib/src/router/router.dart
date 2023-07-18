@@ -19,6 +19,7 @@ import 'package:the_helper/src/features/authentication/presentation/logout_scree
 import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
 import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_request_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
@@ -273,6 +274,11 @@ final routes = [
         path: AppRoute.organizationAdminManage.path,
         name: AppRoute.organizationAdminManage.name,
         builder: (context, state) => const OrganizationAdminManageScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.organizationRequestsManage.path,
+        name: AppRoute.organizationRequestsManage.name,
+        builder: (context, state) => const OrganizationRequestManageScreen(),
       ),
       GoRoute(
         path: AppRoute.accountRequestManage.path,
