@@ -14,6 +14,7 @@ class DebounceSearchBar extends StatefulWidget {
   final bool small;
   final String? hintText;
   final String? initialValue;
+  final bool _isUsingCustomController;
 
   const DebounceSearchBar({
     super.key,
@@ -29,7 +30,8 @@ class DebounceSearchBar extends StatefulWidget {
   })  : _debounceDuration = debounceDuration,
         _onChanged = onChanged,
         _onClear = onClear,
-        _onDebounce = onDebounce;
+        _onDebounce = onDebounce,
+        _isUsingCustomController = controller != null;
 
   @override
   State<DebounceSearchBar> createState() {
@@ -166,7 +168,7 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
   @override
   void dispose() {
     super.dispose();
-    _inputController.dispose();
+    if (!widget._isUsingCustomController) _inputController.dispose();
     _searchAfterDuration.close();
   }
 

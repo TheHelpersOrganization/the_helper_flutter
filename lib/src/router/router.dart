@@ -236,7 +236,6 @@ final routes = [
         name: AppRoute.organizationActivityCreation.name,
         builder: (_, __) => const ModActivityCreationScreen(),
       ),
-
       GoRoute(
         path: AppRoute.home.path,
         name: AppRoute.home.name,
@@ -316,7 +315,7 @@ final routes = [
                 ),
               ),
             ),
-          ]),    
+          ]),
       accountRoutes,
       profileRoutes,
       organizationRoutes,
@@ -491,6 +490,10 @@ enum AppRoute {
   chats(
     path: '/chat',
     name: 'chats',
+  ),
+  initialChat(
+    path: 'to/:chatId',
+    name: 'initial-chat',
   ),
   chat(
     path: ':chatId',

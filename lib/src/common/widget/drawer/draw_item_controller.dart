@@ -144,9 +144,9 @@ const List<DrawerItemModel> admin = [
     icon: Icons.chat_outlined,
   ),
   DrawerItemModel(
-    // route: AppRoute.report,
+    route: AppRoute.chats,
     title: 'Chat',
-    icon: Icons.report_outlined,
+    icon: Icons.chat_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.settings,

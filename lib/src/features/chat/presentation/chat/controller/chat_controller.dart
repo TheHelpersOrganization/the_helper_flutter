@@ -8,6 +8,9 @@ import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message_query.dart';
+import 'package:the_helper/src/features/chat/domain/create_chat.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value.dart';
 import 'package:the_helper/src/utils/socket_provider.dart';
 
 // Use change notifier provider to provide the controller
@@ -261,5 +264,47 @@ final readChatControllerProvider =
     AutoDisposeAsyncNotifierProvider<ReadChatController, void>(
   () {
     return ReadChatController();
+  },
+);
+
+class CreateChatController extends AutoDisposeAsyncNotifier<void> {
+  late Object? _key;
+
+  @override
+  FutureOr<void> build() async {
+    _key = Object();
+    ref.onDispose(() => _key = null);
+  }
+
+  Future<void> createChat(CreateChat data) async {
+    if (state.isLoading) {
+      return;
+    }
+    state = const AsyncValue.loading();
+    final key = _key;
+    final res = await guardAsyncValue(
+      () => ref.read(chatRepositoryProvider).createChat(data),
+    );
+    if (key != _key) {
+      return;
+    }
+    if (res.hasError) {
+      state = AsyncValue.error(res.asError!.error, res.stackTrace!);
+      return;
+    }
+    state = const AsyncValue.data(null);
+    final chat = res.asData?.value;
+    if (chat != null) {
+      ref.watch(routerProvider).goNamed(AppRoute.chat.name, pathParameters: {
+        'chatId': chat.id.toString(),
+      });
+    }
+  }
+}
+
+final createChatControllerProvider =
+    AutoDisposeAsyncNotifierProvider<CreateChatController, void>(
+  () {
+    return CreateChatController();
   },
 );

@@ -299,9 +299,11 @@ class ChatScreen extends ConsumerWidget {
                     CustomErrorWidget(
                   onRetry: () => controller.retryLastFailedRequest(),
                 ),
-                noItemsFoundIndicatorBuilder: (context, _) =>
-                    const NoDataFound.simple(
-                  contentTitle: 'Send the first message to start the chat',
+                noItemsFoundIndicatorBuilder: (context, _) => const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: NoDataFound.simple(
+                    contentSubtitle: 'Send the first message to start the chat',
+                  ),
                 ),
               ),
             );

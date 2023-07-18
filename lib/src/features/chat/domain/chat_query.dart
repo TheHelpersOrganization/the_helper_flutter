@@ -17,6 +17,7 @@ class ChatQueryInclude {
 class ChatQuery with _$ChatQuery {
   @JsonSerializable(includeIfNull: false)
   factory ChatQuery({
+    String? name,
     bool? isBlocked,
     bool? isGroup,
     @CommaSeparatedStringsConverter() List<String>? include,
@@ -25,6 +26,7 @@ class ChatQuery with _$ChatQuery {
     int? offset,
     int? messageLimit,
     int? messageOffset,
+    bool? hasMessage,
   }) = _ChatQuery;
 
   factory ChatQuery.fromJson(Map<String, dynamic> json) =>
