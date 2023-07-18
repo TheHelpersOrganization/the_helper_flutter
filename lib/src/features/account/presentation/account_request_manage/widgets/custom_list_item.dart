@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/account/domain/account_request.dart';
+import 'package:the_helper/src/features/profile/application/profile_service.dart';
+import 'package:the_helper/src/utils/domain_provider.dart';
 
 import '../screens/account_request_detail_screen.dart';
 
@@ -15,23 +19,28 @@ class AccountRequestListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var date =
-        "${data.createdAt.day}/${data.createdAt.month}/${data.createdAt.year}";
-    var cardTitle = "AccountID: #${data.accountId}";
-    var fileNum = data.files.length ?? 0;
+    final profile =
+        ref.watch(accountProfileServiceProvider(id: data.accountId!));
+    var date = DateFormat('dd/mm/yyyy').format(data.createdAt);
+    var fileNum = data.files.length;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Card(
         elevation: 1,
-        child: InkWell(
+        child: profile.when(
+          loading: () => const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: CircularProgressIndicator()),
+          ),
+          error: (_, __) => const CustomErrorWidget(),
+          data: (profile) => InkWell(
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return AccountRequestDetailScreen(
-                    requestData: data
-                  );
+                  return AccountRequestDetailScreen(requestData: data);
                 },
               ),
             );
@@ -42,12 +51,13 @@ class AccountRequestListItem extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(right: 10),
+                Padding(
+                  padding: const EdgeInsets.all(10),
                   child: CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    child: Text('A'),
-                  ),
+                    backgroundImage: profile.avatarId == null
+                        ? Image.asset('assets/images/logo.png').image
+                        : NetworkImage(getImageUrl(profile.avatarId!)),
+                  ),         
                 ),
                 Expanded(
                   child: Padding(
@@ -60,11 +70,12 @@ class AccountRequestListItem extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              cardTitle,
-                              style: context.theme.textTheme.labelLarge?.copyWith(
+                              profile.username!,
+                              style:
+                                  context.theme.textTheme.labelLarge?.copyWith(
                                 fontSize: 18,
                               ),
-                            ),
+                            ),      
                             Text(date),
                           ],
                         ),
@@ -105,11 +116,12 @@ class AccountRequestListItem extends ConsumerWidget {
                     ),
                   ),
                 ),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
               ],
             ),
           ),
         ),
+        ),       
+        
       ),
     );
   }

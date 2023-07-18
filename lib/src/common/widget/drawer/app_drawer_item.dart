@@ -26,21 +26,7 @@ class AppDrawerItem extends StatelessWidget {
             topRight: Radius.circular(32), bottomRight: Radius.circular(32)),
         color: isSelected ? Theme.of(context).colorScheme.primary : null,
       ),
-      child: isSub
-      ? Material(
-        color: Colors.transparent.withOpacity(0.12),
-        child: ListTile(
-          dense: true,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-          title: Text(title,
-              style: isSelected ? const TextStyle(color: Colors.white) : null),
-          leading: Icon(isSub && isSelected ? Icons.radio_button_checked : icon,
-              color: (isSelected ? Colors.white : null)),
-          onTap: onTap,
-        ),
-      )
-      :ListTile(
+      child: ListTile(
         dense: true,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
