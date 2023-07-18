@@ -157,7 +157,7 @@ class ChatScreen extends ConsumerWidget {
                               Icons.account_circle_outlined,
                             ),
                             SizedBox(width: 8),
-                            Text('View user profile'),
+                            Text('Profile'),
                           ],
                         ),
                       ),
