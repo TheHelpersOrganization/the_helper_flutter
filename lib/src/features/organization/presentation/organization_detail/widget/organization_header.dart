@@ -1,4 +1,3 @@
-import 'package:avatar_stack/avatar_stack.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

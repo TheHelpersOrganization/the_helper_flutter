@@ -42,7 +42,9 @@ class AppDrawerDropDown extends ConsumerWidget {
           children: subPaths
           .map<Widget>((item) => AppDrawerItem(
             title: item.title,
-            icon: Icons.install_mobile_sharp,
+            icon: Icons.radio_button_off,
+            isSub: true,
+            path: item.route?.path,
             onTap: () {
               context.goNamed(item.route != null
                   ? item.route!.name
@@ -50,9 +52,6 @@ class AppDrawerDropDown extends ConsumerWidget {
             },
           ))
           .toList(),
-          onExpansionChanged: (bool expanded) {
-            // ref.read(dropDownControllerProvider.notifier).state = expanded;
-          },
         ),
       ),
     );

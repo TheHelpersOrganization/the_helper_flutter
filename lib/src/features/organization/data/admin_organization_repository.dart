@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:the_helper/src/features/organization/domain/reject_organization_data.dart';
 
 import '../../../utils/dio.dart';
 import '../domain/organization.dart';

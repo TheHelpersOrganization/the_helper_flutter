@@ -20,19 +20,23 @@ class ActivityQuery with _$ActivityQuery {
   @JsonSerializable(includeIfNull: false)
   factory ActivityQuery({
     String? name,
-    List<int>? skill,
-    List<int>? org,
-    @CommaSeparatedDateTimesConverter() List<DateTime>? startDate,
-    @CommaSeparatedDateTimesConverter() List<DateTime>? endDate,
+    @CommaSeparatedIntsConverter() List<int>? skill,
+    @CommaSeparatedIntsConverter() List<int>? org,
+    @CommaSeparatedDateTimesConverter() List<DateTime?>? startTime,
+    @CommaSeparatedDateTimesConverter() List<DateTime?>? endTime,
     String? locality,
     String? region,
     String? country,
+    double? lat,
+    double? lng,
+    double? radius,
     String? availableSlots,
     @ActivityStatusListConverter() List<ActivityStatus>? status,
     bool? isManager,
     bool? isShiftManager,
     int? limit,
     int? offset,
+    int? cursor,
     @CommaSeparatedStringsConverter() List<String>? sort,
   }) = _ActivityQuery;
 

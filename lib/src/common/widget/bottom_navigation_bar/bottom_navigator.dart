@@ -8,7 +8,6 @@ import 'package:the_helper/src/features/change_role/presentation/controllers/hom
 
 //Nav Component
 import 'package:the_helper/src/common/widget/bottom_navigation_bar/navigation_item_list.dart';
-import 'package:the_helper/src/common/widget/bottom_navigation_bar/bottom_navigator_item.dart';
 
 class CustomBottomNavigator extends ConsumerWidget {
   const CustomBottomNavigator({

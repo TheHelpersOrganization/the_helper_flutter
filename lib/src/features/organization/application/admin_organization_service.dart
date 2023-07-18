@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/organization/data/admin_organization_repository.dart';
-import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/organization.dart';
 import '../domain/organization_query.dart';

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
@@ -157,37 +158,33 @@ class VolunteerView extends ConsumerWidget {
                 const SizedBox(
                   height: 24,
                 ),
-              SizedBox(
-                height: 250,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child:VolunteerAnalyticsMainCard(
-                          skillList: data.skills
-                        ),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: volunteerData.when(
-                        data: (data) => VolunteerAnalytics(
-                          skillList: data.skillList,
-                          totalActivity: data.totalActivity,
-                          increasedActivity: data.increasedActivity,
-                          totalHour: data.totalHour,
-                          increasedHour: data.increasedHour,
-                        ),
-                        loading: () => VolunteerDataHolder(
-                          itemCount: 2,
-                          itemWidth: context.mediaQuery.size.width * 0.38,
-                          itemHeight: 90,
-                        ),
-                        error: (_, __) => const ErrorScreen(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child:VolunteerAnalyticsMainCard(
+                        skillList: data.skills
                       ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: volunteerData.when(
+                      data: (data) => VolunteerAnalytics(
+                        totalActivity: data.totalActivity,
+                        increasedActivity: data.increasedActivity,
+                        totalHour: data.totalHour,
+                        increasedHour: data.increasedHour,
+                      ),
+                      loading: () => VolunteerDataHolder(
+                        itemCount: 2,
+                        itemWidth: context.mediaQuery.size.width * 0.38,
+                        itemHeight: 90,
+                      ),
+                      error: (_, __) => const ErrorScreen(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 48,
@@ -218,8 +215,45 @@ class VolunteerView extends ConsumerWidget {
                     itemWidth: context.mediaQuery.size.width * 0.7,
                     itemHeight: 380,
                   ),
-                  error: (_, __) => const ErrorScreen(),
-                  data: (upcomingActivities) => ListView.builder(
+                  error: (_, __) {
+                    print(__);
+                    print(_);
+                    return const ErrorScreen();
+                  },
+                  data: (upcomingActivities) => upcomingActivities.isEmpty
+                  ? Center(child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/empty-folder-optimized.svg',
+                          height: 100,
+                          width: 100,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                        const SizedBox(width: 8,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'You don\'t have any',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            Text(
+                              'upcoming activities',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 13,),
+                            FilledButton(
+                              onPressed: () => context.goNamed(AppRoute.activitySearch.name),
+                              child: const Text('Join one now'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),)
+                  :ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: upcomingActivities.length,

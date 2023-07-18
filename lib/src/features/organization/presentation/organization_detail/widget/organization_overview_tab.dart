@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_detail/controller/organization_activity_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/controller/organization_overview_controller.dart';
+import 'package:the_helper/src/features/skill/domain/skill_icon_name_map.dart';
 
 import '../../../../../common/widget/detail_list_tile.dart';
-import '../../../../../router/router.dart';
 
 class OrganizationOverviewTab extends ConsumerWidget {
   final int id;
@@ -68,8 +65,8 @@ class OrganizationOverviewTab extends ConsumerWidget {
                           (skill) => Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Chip(
-                                avatar: const Icon(
-                                    Icons.wb_sunny_outlined),
+                                avatar: Icon(
+                                    SkillIcons[skill.name]),
                                 label: Text(skill.name)),
                           ),
                         )

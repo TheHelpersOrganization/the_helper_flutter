@@ -1,5 +1,4 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
@@ -11,14 +10,12 @@ import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 
 class VolunteerStatusData {
-  final List<String>? skillList;
   final int totalActivity;
   final int increasedActivity;
   final double totalHour;
   final double increasedHour;
 
   const VolunteerStatusData({
-    this.skillList,
     required this.totalActivity,
     required this.increasedActivity,
     required this.totalHour,
@@ -40,7 +37,7 @@ final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
   (ref) => ref.watch(activityServiceProvider).getActivities(
         query: ActivityQuery(
           limit: 5,
-          startDate: [
+          startTime: [
             DateTime.now(),
             DateTime.now().add(const Duration(days: 7))
           ],

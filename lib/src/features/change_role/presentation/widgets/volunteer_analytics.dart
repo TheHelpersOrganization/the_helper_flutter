@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_analytics_secondary_card.dart';
 
 class VolunteerAnalytics extends ConsumerWidget {
-  final List<String>? skillList;
   final int totalActivity;
   final int increasedActivity;
   final double totalHour;
@@ -12,7 +11,6 @@ class VolunteerAnalytics extends ConsumerWidget {
 
   const VolunteerAnalytics({
     super.key,
-    this.skillList,
     required this.totalActivity,
     required this.increasedActivity,
     required this.totalHour,

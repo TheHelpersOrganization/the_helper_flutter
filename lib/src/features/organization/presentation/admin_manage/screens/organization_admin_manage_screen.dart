@@ -12,10 +12,8 @@ import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
 //Screens
 
 const List<Tab> tabs = <Tab>[
-  Tab(text: 'Pending'),
-  Tab(text: 'Cancel'),
-  Tab(text: 'Approved'),
-  Tab(text: 'Reject'),
+  Tab(text: 'Active'),
+  Tab(text: 'Banned'),
 ];
 
 class OrganizationAdminManageScreen extends ConsumerWidget {
@@ -73,9 +71,7 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
           body: const TabBarView(
             children: [
               CustomScrollList(tabIndex: OrganizationStatus.verified),
-              CustomScrollList(tabIndex: OrganizationStatus.pending),
               CustomScrollList(tabIndex: OrganizationStatus.cancelled),
-              CustomScrollList(tabIndex: OrganizationStatus.rejected),
             ]),
         ),
       ),
