@@ -249,9 +249,10 @@ class ChatScreen extends ConsumerWidget {
                             getBackendCircleAvatarOrCharacter(
                               otherProfile?.avatarId,
                               getChatParticipantName(otherProfile),
+                              radius: 18,
                             )
                           else
-                            const SizedBox(width: 48),
+                            const SizedBox(width: 36),
                         Card(
                           color: isMe ? context.theme.primaryColor : null,
                           margin: const EdgeInsets.symmetric(

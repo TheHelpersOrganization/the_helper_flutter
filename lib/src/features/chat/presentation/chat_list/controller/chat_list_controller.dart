@@ -93,8 +93,20 @@ class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
     if (chat.messages!.isEmpty) {
       return;
     }
-    oldChats.removeWhere((element) => element.id == chat.id);
-    state = state.copyWith(records: [chat, ...oldChats]);
+    final oldChatIndex =
+        oldChats.indexWhere((element) => element.id == chat.id);
+    if (oldChatIndex < 0) {
+      state = state.copyWith(records: [chat, ...oldChats]);
+      return;
+    }
+    final oldChat = oldChats[oldChatIndex];
+    if (oldChat.updatedAt.isAtSameMomentAs(chat.updatedAt)) {
+      oldChats[oldChatIndex] = chat;
+      state = state.copyWith(records: [...oldChats]);
+    } else {
+      oldChats.removeWhere((element) => element.id == chat.id);
+      state = state.copyWith(records: [chat, ...oldChats]);
+    }
   }
 }
 
