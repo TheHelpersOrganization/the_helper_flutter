@@ -1,5 +1,4 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';

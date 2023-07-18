@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/widget/detail_list_tile.dart';
-import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/location.dart';
 
 import '../../../domain/organization.dart';
