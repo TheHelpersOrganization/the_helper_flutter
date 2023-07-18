@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
@@ -220,15 +221,38 @@ class VolunteerView extends ConsumerWidget {
                     return const ErrorScreen();
                   },
                   data: (upcomingActivities) => upcomingActivities.isEmpty
-                  ? const Center(child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      
-                      Text('There\'s no activity'),
-
-                    ],
-                  ),)
+                  ? Center(child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/empty-folder-optimized.svg',
+                          height: 100,
+                          width: 100,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                        const SizedBox(width: 8,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'You don\'t have any',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            Text(
+                              'upcoming activities',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 13,),
+                            FilledButton(
+                              onPressed: () => context.goNamed(AppRoute.activitySearch.name),
+                              child: const Text('Join one now'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),)
                   :ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,

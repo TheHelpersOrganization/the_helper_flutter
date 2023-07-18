@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Map<String, IconData> skillIcons = {
+const Map<String, IconData> SkillIcons = {
   "Health": Icons.health_and_safety,
   "Food": Icons.restaurant,
   "Education": Icons.school,

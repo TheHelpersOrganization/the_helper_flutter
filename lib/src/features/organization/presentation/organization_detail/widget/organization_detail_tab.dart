@@ -58,7 +58,9 @@ class OrganizationDetailTab extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Icon(Icons.location_city),
-                          Text(getAddress(e)),
+                          Flexible(child: Text(
+                            getAddress(e),
+                            textAlign: TextAlign.end,)),
                         ],
                       ),
                     )).toList(),
@@ -80,7 +82,18 @@ class OrganizationDetailTab extends StatelessWidget {
                       ),
                     ),
                     ...data.contacts!
-                    .map((e) => Text(e.toString())).toList(),
+                    .map((e) => ListTile(
+                      leading: const Icon(Icons.person),
+                      title: Text(e.name),
+                      trailing: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(e.phoneNumber ?? 'None' ,
+                        style: Theme.of(context).textTheme.labelLarge),
+                        Text(e.email ?? 'None' ,
+                        style: Theme.of(context).textTheme.labelLarge)
+                      ]),
+                    )).toList(),
                   ],
                 ): const SizedBox(),
               ]),

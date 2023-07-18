@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/widget/detail_list_tile.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
+import 'package:the_helper/src/features/skill/domain/skill_icon_name_map.dart';
 // import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 class ProfileOverviewTab extends StatelessWidget {
@@ -35,7 +36,7 @@ class ProfileOverviewTab extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Chip(
-                                avatar: const Icon(Icons.wb_sunny_outlined),
+                                avatar: Icon(SkillIcons[skill.name]),
                                 label: Text(skill.name)),
                             (skill.hours! >= 1)
                                 ? Text('${skill.hours.toString()} hours')
@@ -67,7 +68,7 @@ class ProfileOverviewTab extends StatelessWidget {
                   ...interestedList
                       .map(
                         (interested) => Chip(
-                          avatar: const Icon(Icons.wb_sunny_outlined),
+                          avatar: Icon(SkillIcons[interested.name]),
                           label: Text(interested.name),
                         ),
                       )

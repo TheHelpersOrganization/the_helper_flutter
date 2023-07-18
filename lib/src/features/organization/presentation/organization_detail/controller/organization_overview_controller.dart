@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 
@@ -67,7 +68,7 @@ Future<OrganizationOverviewData> organizationOverviewController(
     )
   );
 
-  var ongoingActivities = activities.filter((t) => t.status == 'ongoing');
+  var ongoingActivities = activities.filter((t) => t.status == ActivityStatus.ongoing);
   return OrganizationOverviewData(
       count: activities.length,
       ongoingCount: ongoingActivities.length,

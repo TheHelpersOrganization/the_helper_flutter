@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/skill/domain/skill_icon_dir.dart';
+import 'package:the_helper/src/features/skill/domain/skill_icon_name_map.dart';
 
 import '../../../skill/domain/skill.dart';
 import 'skill_list_item.dart';
@@ -72,7 +72,7 @@ class VolunteerAnalyticsMainCard extends StatelessWidget {
                 for(var i in topSkills)
                 SkillListItem(
                   name: i.name, 
-                  icon: skillIcons[i.name]!, 
+                  icon: SkillIcons[i.name]!, 
                   hour: i.hours!, 
                   color: onPrimaryColor
                 ),
