@@ -14,7 +14,6 @@ final socketProvider = Provider.autoDispose<io.Socket>((ref) {
           .disableAutoConnect()
           .setAuthFn((callback) async {
             final token = await authService.getToken();
-            print(token?.accessToken);
             callback({
               'token': token?.accessToken,
             });

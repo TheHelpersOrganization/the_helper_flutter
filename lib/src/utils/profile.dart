@@ -1,3 +1,4 @@
+import 'package:the_helper/src/features/chat/domain/chat_participant.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 String getProfileName(Profile? profile) {
@@ -8,6 +9,14 @@ String getProfileName(Profile? profile) {
       profile.email ??
       profile.id?.toString() ??
       'Unknown Name';
+  return name;
+}
+
+String getChatParticipantName(ChatParticipant? profile) {
+  if (profile == null) {
+    return 'Unknown Name';
+  }
+  String name = profile.username ?? profile.email;
   return name;
 }
 

@@ -13,9 +13,9 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_ove
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/report/domain/report_type.dart';
 
+import './profile_verified_status.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
-import './profile_verified_status.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
@@ -122,7 +122,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
     return Column(
       children: [
         Container(
-          height: 300,
+          height: 150,
           decoration: BoxDecoration(
             border: Border.all(
               width: 8,
@@ -142,9 +142,14 @@ class OtherUserProfileScreen extends ConsumerWidget {
           ),
         ),
         // TODO: Should replace when reimplement profileService
-        Text(
-          profile.username!,
-          style: Theme.of(context).textTheme.displayLarge,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Text(
+            profile.username!,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
         ),
         ProfileVerifiedStatus(
           verified: account.isAccountVerified,

@@ -17,6 +17,7 @@ import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_c
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
 import 'package:the_helper/src/features/report/domain/report_type.dart';
 import 'package:the_helper/src/features/report/presentation/submit_report/screen/submit_report_screen.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
 
@@ -77,18 +78,18 @@ class ChatScreen extends ConsumerWidget {
               }
               final otherProfile =
                   chat.participants!.firstWhere((e) => e.id != myId);
-              final otherName = getProfileName(otherProfile);
+              final otherName = getChatParticipantName(otherProfile);
               return AppBar(
                 title: Row(
                   children: [
                     getBackendCircleAvatarOrCharacter(
                       otherProfile.avatarId,
-                      getProfileName(otherProfile),
+                      getChatParticipantName(otherProfile),
                       radius: 16,
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      getProfileName(otherProfile),
+                      getChatParticipantName(otherProfile),
                       style: context.theme.textTheme.titleMedium,
                     ),
                   ],
@@ -98,13 +99,20 @@ class ChatScreen extends ConsumerWidget {
                     position: PopupMenuPosition.under,
                     icon: const Icon(Icons.more_vert),
                     onSelected: (value) {
-                      if (value == 'report') {
+                      if (value == 'profile') {
+                        context.pushNamed(
+                          AppRoute.otherProfile.name,
+                          pathParameters: {
+                            'userId': otherProfile.id.toString(),
+                          },
+                        );
+                      } else if (value == 'report') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) {
                               return SubmitReportScreen(
-                                id: otherProfile.id!,
+                                id: otherProfile.id,
                                 name: otherProfile.username.toString(),
                                 entityType: ReportType.account,
                                 avatarId: otherProfile.avatarId,
@@ -141,6 +149,18 @@ class ChatScreen extends ConsumerWidget {
                       }
                     },
                     itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'profile',
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.account_circle_outlined,
+                            ),
+                            SizedBox(width: 8),
+                            Text('View user profile'),
+                          ],
+                        ),
+                      ),
                       const PopupMenuItem(
                         value: 'report',
                         child: Row(
@@ -228,7 +248,7 @@ class ChatScreen extends ConsumerWidget {
                           if (previousIsNotMe)
                             getBackendCircleAvatarOrCharacter(
                               otherProfile?.avatarId,
-                              getProfileName(otherProfile),
+                              getChatParticipantName(otherProfile),
                             )
                           else
                             const SizedBox(width: 48),
@@ -258,7 +278,7 @@ class ChatScreen extends ConsumerWidget {
                           if (previousIsNotMe)
                             getBackendCircleAvatarOrCharacter(
                               myProfile?.avatarId,
-                              getProfileName(myProfile),
+                              getChatParticipantName(myProfile),
                               radius: 18,
                             )
                           else
@@ -305,7 +325,7 @@ class ChatScreen extends ConsumerWidget {
             }
             final otherProfile =
                 chat.participants!.firstWhere((e) => e.id != myId);
-            final otherName = getProfileName(otherProfile);
+            final otherName = getChatParticipantName(otherProfile);
             if (chat.isBlocked) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

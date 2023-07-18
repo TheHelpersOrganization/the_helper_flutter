@@ -14,43 +14,52 @@ class ChatListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chatListSocketState = ref.watch(chatListSocketProvider);
+
     return Scaffold(
       drawer: const AppDrawer(),
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
-            title: const Text('Chats'),
-            centerTitle: true,
-            floating: true,
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.search),
-              ),
-            ],
-          ),
-        ],
-        body: RiverPagedBuilder<int, Chat>.autoDispose(
-          firstPageKey: 0,
-          provider: chatListPagedNotifierProvider,
-          pagedBuilder: (controller, builder) => PagedListView(
-            pagingController: controller,
-            builderDelegate: builder,
-          ),
-          itemBuilder: (context, chat, index) => ChatCard(chat: chat),
-          limit: 5,
-          pullToRefresh: true,
-          firstPageErrorIndicatorBuilder: (context, controller) =>
-              CustomErrorWidget(
-            onRetry: () => controller.retryLastFailedRequest(),
-          ),
-          newPageErrorIndicatorBuilder: (context, controller) =>
-              CustomErrorWidget(
-            onRetry: () => controller.retryLastFailedRequest(),
-          ),
-          noItemsFoundIndicatorBuilder: (context, _) =>
-              const NoDataFound.simple(
-            contentTitle: 'No notifications found',
+      body: chatListSocketState.when(
+        skipLoadingOnRefresh: false,
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) => CustomErrorWidget(
+          onRetry: () => ref.refresh(chatListSocketProvider),
+        ),
+        data: (data) => NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              title: const Text('Chats'),
+              centerTitle: true,
+              floating: true,
+              actions: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.search),
+                ),
+              ],
+            ),
+          ],
+          body: RiverPagedBuilder<int, Chat>.autoDispose(
+            firstPageKey: 0,
+            provider: chatListPagedNotifierProvider,
+            pagedBuilder: (controller, builder) => PagedListView(
+              pagingController: controller,
+              builderDelegate: builder,
+            ),
+            itemBuilder: (context, chat, index) => ChatCard(chat: chat),
+            limit: 20,
+            pullToRefresh: true,
+            firstPageErrorIndicatorBuilder: (context, controller) =>
+                CustomErrorWidget(
+              onRetry: () => controller.retryLastFailedRequest(),
+            ),
+            newPageErrorIndicatorBuilder: (context, controller) =>
+                CustomErrorWidget(
+              onRetry: () => controller.retryLastFailedRequest(),
+            ),
+            noItemsFoundIndicatorBuilder: (context, _) =>
+                const NoDataFound.simple(
+              contentTitle: 'No notifications found',
+            ),
           ),
         ),
       ),

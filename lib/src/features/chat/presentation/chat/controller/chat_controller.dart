@@ -66,12 +66,12 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
     final socket = ref.watch(socketProvider);
 
     final completer = Completer();
-    socket.emitWithAck('join-chat', chat.id, ack: (data) {
+    socket.emitWithAck('join-chat', '', ack: (data) {
       completer.complete(data);
     });
     await completer.future;
 
-    socket.on('receive-message', (data) {
+    handleReceiveMessage(data) {
       final message = ChatMessage.fromJson(data);
       // Only add the message if it's from the same chat
       if (message.chatId != chatId) {
@@ -80,17 +80,13 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
       messagesNotifier.addMessage(message);
       // Scroll to bottom
       scrollController.jumpTo(scrollController.position.minScrollExtent);
-    });
+      // Mark as read
+      socket.emit('read-chat', chatId);
+    }
 
-    socket.on('chat-blocked', (data) {
-      final chat = Chat.fromJson(data);
-      if (chat.id != chatId) {
-        return;
-      }
-      chatNotifier.setChat(chat);
-    });
+    socket.on('receive-message', handleReceiveMessage);
 
-    socket.on('chat-unblocked', (data) {
+    socket.on('chat-updated', (data) {
       final chat = Chat.fromJson(data);
       if (chat.id != chatId) {
         return;
@@ -99,10 +95,7 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
     });
 
     ref.onDispose(() {
-      socket.off('send-message');
-      socket.off('receive-message');
-      socket.off('chat-blocked');
-      socket.off('chat-unblocked');
+      socket.off('receive-message', handleReceiveMessage);
     });
 
     return socket;
@@ -236,5 +229,37 @@ final unblockChatControllerProvider =
     AutoDisposeAsyncNotifierProvider<UnblockChatController, void>(
   () {
     return UnblockChatController();
+  },
+);
+
+class ReadChatController extends AutoDisposeAsyncNotifier<void> {
+  @override
+  FutureOr<void> build() async {}
+
+  Future<void> readChat(int chatId) async {
+    if (state.isLoading) {
+      return;
+    }
+    final socket = await ref.watch(chatSocketProvider(chatId).future);
+    if (socket == null) {
+      return;
+    }
+
+    state = const AsyncValue.loading();
+
+    Completer completer = Completer();
+    socket.emitWithAck('read-chat', chatId, ack: (data) {
+      state = const AsyncValue.data(null);
+      completer.complete(data);
+    });
+
+    return completer.future;
+  }
+}
+
+final readChatControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ReadChatController, void>(
+  () {
+    return ReadChatController();
   },
 );

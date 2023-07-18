@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
-import 'package:the_helper/src/features/profile/domain/profile.dart';
+import 'package:the_helper/src/features/chat/domain/chat_participant.dart';
 
 part 'chat.freezed.dart';
 part 'chat.g.dart';
@@ -15,7 +15,7 @@ class Chat with _$Chat {
     int? blockedBy,
     required bool isGroup,
     List<int>? participantIds,
-    List<Profile>? participants,
+    List<ChatParticipant>? participants,
     List<ChatMessage>? messages,
     required DateTime createdAt,
     required DateTime updatedAt,
