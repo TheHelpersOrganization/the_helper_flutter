@@ -41,7 +41,7 @@ class AppDrawerDropDown extends ConsumerWidget {
           leading: Icon(icon),
           children: subPaths
           .map<Widget>((item) => Material(
-            color: Colors.transparent.withOpacity(0.12),
+            color: Colors.transparent,
             child: AppDrawerItem(
               title: item.title,
               icon: Icons.radio_button_off,
