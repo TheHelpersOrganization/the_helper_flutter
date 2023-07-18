@@ -1,7 +1,6 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
@@ -15,7 +14,6 @@ class ReportManageScreenController extends AutoDisposeAsyncNotifier<void> {
 
 final isSearchingProvider = StateProvider.autoDispose<bool>((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-
 
 class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
   final ReportRepository requestRepository;
@@ -40,9 +38,11 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
         );
 }
 
-final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
-    .family<ScrollPagingControlNotifier, PagedState<int, ReportModel>, ReportStatus>(
-        (ref, index) => ScrollPagingControlNotifier(
-            requestRepository: ref.watch(reportRepositoryProvider),
-            tabStatus: index,
-            searchPattern: ref.watch(searchPatternProvider)));
+final scrollPagingControlNotifier = StateNotifierProvider.autoDispose.family<
+        ScrollPagingControlNotifier,
+        PagedState<int, ReportModel>,
+        ReportStatus>(
+    (ref, index) => ScrollPagingControlNotifier(
+        requestRepository: ref.watch(reportRepositoryProvider),
+        tabStatus: index,
+        searchPattern: ref.watch(searchPatternProvider)));

@@ -67,6 +67,13 @@ class AccountRequestManageScreen extends ConsumerWidget {
               labelColor: Theme.of(context).colorScheme.onSurface,
               tabs: tabs,
             )),
+            SliverToBoxAdapter(
+              child: Row(
+              children: [
+                
+                // FilterChip(label: label, onSelected: onSelected)
+              ],
+            )),
           ],
           body: const TabBarView(
             children: [

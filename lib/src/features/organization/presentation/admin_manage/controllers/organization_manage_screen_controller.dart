@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/organization/data/admin_organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 
