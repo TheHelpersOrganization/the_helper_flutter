@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
+import 'package:the_helper/src/features/chat/domain/create_chat.dart';
+import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
@@ -13,9 +15,9 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_ove
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/report/domain/report_type.dart';
 
+import './profile_verified_status.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
-import './profile_verified_status.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
@@ -27,12 +29,17 @@ class OtherUserProfileScreen extends ConsumerWidget {
     final profile = ref.watch(profileControllerProvider(id: userId));
     final orgs = ref.watch(profileOrganizationControllerProvider);
     final account = ref.watch(authServiceProvider).value!.account;
+    final createChatState = ref.watch(createChatControllerProvider);
     // final profile = profileService.getProfile();
     return profile.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+      loading: () => const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
-      error: (error, __) => Text('Error: $error'),
+      error: (error, __) => Scaffold(
+        body: Text('Error: $error'),
+      ),
       data: (profile) {
         return Scaffold(
           appBar: AppBar(
@@ -42,22 +49,22 @@ class OtherUserProfileScreen extends ConsumerWidget {
                 context.pop();
               },
             ),
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return SubmitReportScreen(
-                        id: profile.id!,
-                        name: profile.username.toString(),
-                        entityType: ReportType.account,
-                        avatarId: profile.avatarId,
-                        subText: profile.email,
-                      );
-                    }));
-                  },
-                  icon: const Icon(Icons.report)),
-            ],
+            // actions: [
+            //   IconButton(
+            //       onPressed: () {
+            //         Navigator.of(context).push(
+            //             MaterialPageRoute(builder: (BuildContext context) {
+            //           return SubmitReportScreen(
+            //             id: profile.id!,
+            //             name: profile.username.toString(),
+            //             entityType: ReportType.account,
+            //             avatarId: profile.avatarId,
+            //             subText: profile.email,
+            //           );
+            //         }));
+            //       },
+            //       icon: const Icon(Icons.report)),
+            // ],
             centerTitle: true,
             title: Text(
               "${profile.username.toString().toUpperCase()}'s Profile",
@@ -70,7 +77,23 @@ class OtherUserProfileScreen extends ConsumerWidget {
                 return [
                   SliverList(
                     delegate: SliverChildListDelegate(
-                      [_profileHeaderWidget(context, profile, account)],
+                      [
+                        _profileHeaderWidget(
+                          context,
+                          profile,
+                          account,
+                          createChatState.isLoading
+                              ? null
+                              : () {
+                                  ref
+                                      .read(
+                                          createChatControllerProvider.notifier)
+                                      .createChat(
+                                        CreateChat(to: userId),
+                                      );
+                                },
+                        )
+                      ],
                     ),
                   ),
                   SliverOverlapAbsorber(
@@ -80,6 +103,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
                       pinned: true,
                       delegate: _TabBarDelegate(
                         tabBar: const TabBar(
+                          isScrollable: true,
                           tabs: [
                             Tab(
                               text: 'Overview',
@@ -118,14 +142,18 @@ class OtherUserProfileScreen extends ConsumerWidget {
   }
 
   Widget _profileHeaderWidget(
-      BuildContext context, Profile profile, Account account) {
+    BuildContext context,
+    Profile profile,
+    Account account,
+    VoidCallback? onChatButtonPressed,
+  ) {
     return Column(
       children: [
         Container(
-          height: 300,
+          height: 150,
           decoration: BoxDecoration(
             border: Border.all(
-              width: 8,
+              width: 4,
               color: Theme.of(context).primaryColor,
             ),
             shape: BoxShape.circle,
@@ -142,12 +170,52 @@ class OtherUserProfileScreen extends ConsumerWidget {
           ),
         ),
         // TODO: Should replace when reimplement profileService
-        Text(
-          profile.username!,
-          style: Theme.of(context).textTheme.displayLarge,
+        Padding(
+          padding: const EdgeInsets.only(top: 24),
+          child: Text(
+            profile.username!,
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
         ),
         ProfileVerifiedStatus(
           verified: account.isAccountVerified,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              FilledButton.icon(
+                onPressed: onChatButtonPressed,
+                icon: const Icon(
+                  Icons.chat,
+                  size: 20,
+                ),
+                label: const Text('Chat'),
+              ),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return SubmitReportScreen(
+                      id: profile.id!,
+                      name: profile.username.toString(),
+                      entityType: ReportType.account,
+                      avatarId: profile.avatarId,
+                      subText: profile.email,
+                    );
+                  }));
+                },
+                icon: const Icon(
+                  Icons.report_outlined,
+                  size: 20,
+                ),
+                label: const Text('Report'),
+              ),
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -163,7 +231,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
             child: ExpandableText(
               profile.bio!,
               maxLines: 4,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
               ),

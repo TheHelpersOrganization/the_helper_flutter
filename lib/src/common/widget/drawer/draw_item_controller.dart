@@ -71,14 +71,14 @@ final List<DrawerItemModel> moderator = [
     icon: Icons.work_outline,
   ),
   const DrawerItemModel(
-    // route: AppRoute.report,
+    route: AppRoute.chats,
     title: 'Chat',
-    icon: Icons.report_outlined,
+    icon: Icons.chat_outlined,
   ),
   const DrawerItemModel(
-    route: AppRoute.settings,
-    title: 'Settings',
-    icon: Icons.settings_outlined,
+    route: AppRoute.reportHistory,
+    title: 'Report history',
+    icon: Icons.timelapse,
   ),
   DrawerItemModel(
     title: 'Switch Organizations',
@@ -144,9 +144,9 @@ const List<DrawerItemModel> admin = [
     icon: Icons.chat_outlined,
   ),
   DrawerItemModel(
-    // route: AppRoute.report,
+    route: AppRoute.chats,
     title: 'Chat',
-    icon: Icons.report_outlined,
+    icon: Icons.chat_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.settings,
