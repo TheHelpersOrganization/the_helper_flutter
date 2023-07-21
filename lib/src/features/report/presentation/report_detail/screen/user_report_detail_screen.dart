@@ -7,26 +7,29 @@ import 'package:the_helper/src/features/report/domain/report_status.dart';
 import 'package:the_helper/src/features/report/presentation/report_detail/screen/report_reply_screen.dart';
 
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
+import '../../../domain/report_model.dart';
+import '../../../domain/report_type.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
 class UserReportDetailScreen extends ConsumerWidget {
-  final int id;
+  final int requestId;
 
-  const UserReportDetailScreen({super.key, required this.id});
+  const UserReportDetailScreen({super.key, required this.requestId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final detail = ref.watch(reportDetailControllerProvider(id: id));
+    final detail = ref.watch(reportDetailControllerProvider(id: requestId));
     // final customTileExpanded = ref.watch(expansionTitleControllerProvider);
 
     ref.listen<AsyncValue>(
-      reportDetailControllerProvider(id: id),
+      reportDetailControllerProvider(id: requestId),
       (_, state) {
         state.showSnackbarOnError(context);
       },
@@ -40,7 +43,7 @@ class UserReportDetailScreen extends ConsumerWidget {
               context.pop();
             },
           ),
-          title: const Text('Verified request'),
+          title: const Text('Report detail'),
           centerTitle: true,
         ),
         body: detail.when(
@@ -113,7 +116,9 @@ class UserReportDetailScreen extends ConsumerWidget {
                             ),
                           ),
                           TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                goTo(data, context);
+                              },
                               style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -125,13 +130,15 @@ class UserReportDetailScreen extends ConsumerWidget {
                                       Theme.of(context).colorScheme.primary)),
                               icon: const Icon(Icons.visibility_outlined),
                               label: Text(
-                                'Go to ${data.type}',
+                                'Go to ${data.type.name}',
                               ))
                         ],
                       ),
                     ),
                     for (var i in data.messages!) ReportMessageWidget(data: i),
-                    Padding(
+                    data.status == ReportStatus.pending ||
+                            data.status == ReportStatus.reviewing
+                    ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -146,7 +153,7 @@ class UserReportDetailScreen extends ConsumerWidget {
                                     .watch(reportDetailControllerProvider(
                                             id: data.id!)
                                         .notifier)
-                                    .rejectReport();
+                                    .cancelReport();
                                 if (context.mounted) {
                                   context.pop();
                                 }
@@ -163,8 +170,7 @@ class UserReportDetailScreen extends ConsumerWidget {
                           SizedBox(
                             width: context.mediaQuery.size.width * 0.06,
                           ),
-                          data.status == ReportStatus.pending || data.status == ReportStatus.reviewing
-                          ? Expanded(
+                          Expanded(
                             flex: 1,
                             child: PrimaryButton(
                               onPressed: () {
@@ -185,13 +191,35 @@ class UserReportDetailScreen extends ConsumerWidget {
                                       Theme.of(context).colorScheme.onSurface)),
                               child: const Text('Reply'),
                             ),
-                          ) : const SizedBox(),
+                          ),
                         ],
                       ),
-                    ),
+                    ) : const SizedBox(),
                   ],
                 ),
               );
             }));
+  }
+  Future goTo(ReportModel data, BuildContext context) {
+    switch (data.type) {
+      case ReportType.account:
+        return context.pushNamed(
+          AppRoute.otherProfile.name,
+          pathParameters: {
+            'userId': data.reportedAccount!.id.toString(),
+          },
+        );
+      case ReportType.organization:
+        return context.pushNamed(
+          AppRoute.organization.name,
+          pathParameters: {
+            'orgId': data.reportedOrganization!.id.toString(),
+          },
+        );
+      case ReportType.activity:
+        return context.pushNamed(AppRoute.activity.name, pathParameters: {
+          'activityId': data.reportedActivity!.id.toString(),
+        });
+    }
   }
 }

@@ -17,14 +17,18 @@ class AccountManageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isSearching = ref.watch(isSearchingProvider);
+    final filterSelected = ref.watch(filterSelectedProvider);
+    final verified = ref.watch(verifiedProvider);
 
     return Scaffold(
       drawer: const AppDrawer(),
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
             SliverAppBar(
+              pinned: true,
               centerTitle: true,
               title: const Text(
                 'Accounts manage',
@@ -38,7 +42,10 @@ class AccountManageScreen extends ConsumerWidget {
                   },
                 ),
               ],
-            ),
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,
+            ),),
             if (isSearching)
               SliverToBoxAdapter(
                 child: Padding(
@@ -57,17 +64,61 @@ class AccountManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
             SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Quick filter',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        FilterChip(
+                          label: const Text('Verified'),
+                          onSelected: (value) {
+                            ref.read(filterSelectedProvider.notifier).state =
+                                value;
+                            ref.read(verifiedProvider.notifier).state = value;
+                          },
+                          selected: filterSelected && verified,
+                        ),
+                        const SizedBox(width: 12),
+                        FilterChip(
+                          label: const Text('Not verified'),
+                          onSelected: (value) {
+                            ref.read(filterSelectedProvider.notifier).state =
+                                value;
+                            ref.read(verifiedProvider.notifier).state = !value;
+                          },
+                          selected: filterSelected && !verified,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Divider(
+                      height: 0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
-          body: const TabBarView(
-            children: [
-              AccountList(tabIndex: 0),
-              AccountList(tabIndex: 1),
-            ]),
+          body: const TabBarView(children: [
+            AccountList(tabIndex: 0),
+            AccountList(tabIndex: 1),
+          ]),
         ),
       ),
     );

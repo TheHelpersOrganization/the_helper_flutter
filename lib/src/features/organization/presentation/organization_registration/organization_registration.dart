@@ -419,7 +419,10 @@ class _OrganizationRegistrationScreenState
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.goNamed(AppRoute.home.name);
+            if (context.canPop()) {
+              context.pop();
+            }
+            else{context.goNamed(AppRoute.home.name);}
           },
         ),
         title: const Text('Register Organization'),

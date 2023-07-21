@@ -7,11 +7,14 @@ import 'package:the_helper/src/features/report/domain/report_status.dart';
 import 'package:the_helper/src/features/report/presentation/report_detail/screen/report_reply_screen.dart';
 
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
+import '../../../domain/report_model.dart';
+import '../../../domain/report_type.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
@@ -40,7 +43,7 @@ class ReportDetailScreen extends ConsumerWidget {
               context.pop();
             },
           ),
-          title: const Text('Verified request'),
+          title: const Text('Report detail'),
           centerTitle: true,
         ),
         body: detail.when(
@@ -113,7 +116,9 @@ class ReportDetailScreen extends ConsumerWidget {
                             ),
                           ),
                           TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                goTo(data, context);
+                              },
                               style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -131,94 +136,129 @@ class ReportDetailScreen extends ConsumerWidget {
                       ),
                     ),
                     for (var i in data.messages!) ReportMessageWidget(data: i),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              // isLoading: state.isLoading,
-                              loadingText: "Processing...",
-                              onPressed: () async {
-                                await ref
-                                    .watch(reportDetailControllerProvider(
-                                            id: data.id!)
-                                        .notifier)
-                                    .rejectReport();
-                                if (context.mounted) {
-                                  context.pop();
-                                }
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Theme.of(context).colorScheme.error)),
-                              child: const Text('Reject'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: context.mediaQuery.size.width * 0.06,
-                          ),
-                          data.status == ReportStatus.pending || data.status == ReportStatus.reviewing
-                          ? Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return ReportReplyScreen(
-                                          id: data.id!, title: data.title);
+                    data.status == ReportStatus.pending ||
+                            data.status == ReportStatus.reviewing
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: PrimaryButton(
+                                    // isLoading: state.isLoading,
+                                    loadingText: "Processing...",
+                                    onPressed: () async {
+                                      await ref
+                                          .watch(reportDetailControllerProvider(
+                                                  id: data.id!)
+                                              .notifier)
+                                          .rejectReport();
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
                                     },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 25)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .error)),
+                                    child: const Text('Reject'),
                                   ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      Theme.of(context).colorScheme.onSurface)),
-                              child: const Text('Reply'),
+                                ),
+                                SizedBox(
+                                  width: context.mediaQuery.size.width * 0.06,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: PrimaryButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ReportReplyScreen(
+                                                id: data.id!,
+                                                title: data.title);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 25)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface)),
+                                    child: const Text('Reply'),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: context.mediaQuery.size.width * 0.06,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: PrimaryButton(
+                                    // isLoading: profile.isLoading,
+                                    loadingText: "Processing...",
+                                    onPressed: () async {
+                                      await ref
+                                          .watch(reportDetailControllerProvider(
+                                                  id: data.id!)
+                                              .notifier)
+                                          .approveReport();
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 25)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary)),
+                                    child: const Text('Accept'),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ) : const SizedBox(),
-                          SizedBox(
-                            width: context.mediaQuery.size.width * 0.06,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              // isLoading: profile.isLoading,
-                              loadingText: "Processing...",
-                              onPressed: () async {
-                                await ref
-                                    .watch(reportDetailControllerProvider(
-                                            id: data.id!)
-                                        .notifier)
-                                    .approveReport();
-                                if (context.mounted) {
-                                  context.pop();
-                                }
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      Theme.of(context).colorScheme.primary)),
-                              child: const Text('Accept'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               );
             }));
+  }
+
+  Future goTo(ReportModel data, BuildContext context) {
+    switch (data.type) {
+      case ReportType.account:
+        return context.pushNamed(
+          AppRoute.otherProfile.name,
+          pathParameters: {
+            'userId': data.reportedAccount!.id.toString(),
+          },
+        );
+      case ReportType.organization:
+        return context.pushNamed(
+          AppRoute.organization.name,
+          pathParameters: {
+            'orgId': data.reportedOrganization!.id.toString(),
+          },
+        );
+      case ReportType.activity:
+        return context.pushNamed(AppRoute.activity.name, pathParameters: {
+          'activityId': data.reportedActivity!.id.toString(),
+        });
+    }
   }
 }

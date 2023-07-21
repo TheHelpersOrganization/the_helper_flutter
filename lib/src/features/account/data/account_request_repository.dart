@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:the_helper/src/common/domain/file_info.dart';
 
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,41 +6,6 @@ import 'package:the_helper/src/features/account/domain/account_request_query.dar
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'account_request_repository.g.dart';
-
-List<AccountRequestModel> requestList = [
-  // AccountRequestModel(
-  //   name: 'AAAA',
-  //   email: 'AAA@gmail.com',
-  //   time: DateTime.utc(2023, 1, 1, 06, 00 ,00),
-  //   locations: [
-  //     Location(
-  //       country: 'VietNam',
-  //       region: 'dddd',
-  //       locality: 'adad',
-  //     )
-  //   ]
-  // ),
-  AccountRequestModel(
-      accountId: 205,
-      status: 'pending',
-      isVerified: true,
-      note: "asdfaefasvsasf",
-      createdAt: DateTime.utc(2023, 1, 1, 06, 00, 00),
-      files: [
-        FileInfoModel(
-            name: "Filename",
-            internalName: "internalName",
-            mimetype: "mimetype",
-            size: 200,
-            sizeUnit: "sizeUnit"),
-        FileInfoModel(
-            name: "ADF",
-            internalName: "internalName",
-            mimetype: "mimetype",
-            size: 20,
-            sizeUnit: "sizeUnit"),
-      ])
-];
 
 //Role Repository class
 class AccountRequestRepository {
@@ -64,11 +28,12 @@ class AccountRequestRepository {
     // return res;
   }
 
-  Future<AccountRequestModel> getById(int id) async {
-    final res =
-        await client.get('/account-verifications/$id', queryParameters: {
-      "include": "file",
-    });
+  Future<AccountRequestModel> getById({
+    required int id,
+    AccountRequestQuery? query,
+  }) async {
+    final res = await client.get('/account-verifications/$id',
+        queryParameters: query?.toJson());
     return AccountRequestModel.fromJson(res.data['data']);
   }
 
@@ -76,12 +41,13 @@ class AccountRequestRepository {
     await client.post('/something', data: account.toJson());
   }
 
-  Future<void> update(int id, AccountRequestModel account) async {
-    await client.put('/something/$id', data: account.toJson());
+  Future<AccountRequestModel> block(int id) async {
+    final res = await client.put('/account-verifications/$id/block');
+    return AccountRequestModel.fromJson(res.data['data']);
   }
 
-  Future<AccountRequestModel> delete(int id) async {
-    final res = await client.delete('/something/$id');
+  Future<AccountRequestModel> unblock(int id) async {
+    final res = await client.put('/account-verifications/$id/unblock');
     return AccountRequestModel.fromJson(res.data['data']);
   }
 }
@@ -99,7 +65,9 @@ Future<AccountRequestModel> getAccountRequest(
   GetAccountRequestRef ref,
   int accountId,
 ) =>
-    ref.watch(accountRequestRepositoryProvider).getById(accountId);
+    ref.watch(accountRequestRepositoryProvider).getById(
+        id: accountId,
+        query: AccountRequestQuery(include: [AccountRequestInclude.file]));
 
 @riverpod
 Future<List<AccountRequestModel>> getAccountRequests(

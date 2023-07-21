@@ -1,6 +1,5 @@
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 
@@ -34,9 +33,11 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, Activity> {
         );
 }
 
-final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
-    .family<ScrollPagingControlNotifier, PagedState<int, Activity>, List<ActivityStatus>>(
-        (ref, index) => ScrollPagingControlNotifier(
-            activityRepository: ref.watch(activityRepositoryProvider),
-            tabStatus: index,
-            searchPattern: ref.watch(searchPatternProvider)));
+final scrollPagingControlNotifier = StateNotifierProvider.autoDispose.family<
+        ScrollPagingControlNotifier,
+        PagedState<int, Activity>,
+        List<ActivityStatus>>(
+    (ref, index) => ScrollPagingControlNotifier(
+        activityRepository: ref.watch(activityRepositoryProvider),
+        tabStatus: index,
+        searchPattern: ref.watch(searchPatternProvider)));

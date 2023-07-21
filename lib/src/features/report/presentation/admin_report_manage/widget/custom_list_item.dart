@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
+import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -18,17 +20,28 @@ class CustomListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final profile =
+        ref.watch(accountProfileServiceProvider(id: data.reporterId!));
     final date = DateFormat("mm/dd/y").format(data.createdAt);
     final avatarId = data.reportedAccount?.avatarId ??
         data.reportedActivity?.thumbnail ??
         data.reportedOrganization?.logo;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Card(
-        elevation: 1,
-        child: InkWell(
-          onTap: () =>
+    return Container(
+      decoration: BoxDecoration(
+          border:
+              Border(top: BorderSide(color: Theme.of(context).dividerColor))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: profile.when(
+          loading: () => const Center(
+            child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 40),
+                child: CircularProgressIndicator()),
+          ),
+          error: (_, __) => const CustomErrorWidget(),
+          data: (profile) => InkWell(
+            onTap: () =>
               context.pushNamed(AppRoute.reportDetail.name, pathParameters: {
             'reportId': data.id.toString(),
           }),
@@ -39,11 +52,11 @@ class CustomListItem extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(10),
                   child: CircleAvatar(
                     backgroundImage: avatarId == null
-                        ? Image.asset('assets/images/logo.png').image
-                        : NetworkImage(getImageUrl(avatarId)),
+                      ? Image.asset('assets/images/logo.png').image
+                      : NetworkImage(getImageUrl(avatarId)),
                   ),
                 ),
                 Expanded(
@@ -75,40 +88,27 @@ class CustomListItem extends ConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        // RichText(
-                        //   text: TextSpan(
-                        //     text: data.note,
-                        //   ),
-                        //   softWrap: false,
-                        // ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                              text: 'Status:  ',
-                              style:
-                                  context.theme.textTheme.labelSmall?.copyWith(
-                                fontSize: 12,
-                              ),
+                        Row(children: [
+                          const Text('Report by:'),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: CircleAvatar(
+                              radius: 10,
+                              backgroundImage: profile.avatarId == null
+                                ? Image.asset('assets/images/logo.png').image
+                                : NetworkImage(getImageUrl(profile.avatarId!)),
                             ),
-                            TextSpan(
-                              text: data.status.name.toString(),
-                            )
-                          ])),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                          ),
+                          Text(profile.username 
+                            ?? profile.email
+                            ?? 'Unknow'),
+                        ],),
                       ],
                     ),
                   ),
                 ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

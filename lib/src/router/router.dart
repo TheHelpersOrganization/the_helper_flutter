@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
+import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_detail_screen.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
@@ -284,6 +285,18 @@ final routes = [
         path: AppRoute.accountRequestManage.path,
         name: AppRoute.accountRequestManage.name,
         builder: (context, state) => const AccountRequestManageScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoute.accountRequestDetail.path,
+            name: AppRoute.accountRequestDetail.name,
+            builder: (_, state) => AccountRequestDetailScreen(
+              requestId: int.parse(
+                state
+                    .pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
+              ),
+            ),
+          ),
+        ]
       ),
       GoRoute(
           path: AppRoute.reportManage.path,
@@ -310,9 +323,9 @@ final routes = [
               path: AppRoute.reportHistoryDetail.path,
               name: AppRoute.reportHistoryDetail.name,
               builder: (_, state) => UserReportDetailScreen(
-                id: int.parse(
+                requestId: int.parse(
                   state
-                      .pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+                      .pathParameters[AppRoute.reportHistoryDetail.path.substring(1)]!,
                 ),
               ),
             ),
@@ -700,6 +713,10 @@ enum AppRoute {
   accountRequestManage(
     path: '/account-requests',
     name: 'account-requests',
+  ),
+  accountRequestDetail(
+    path: ':requestId',
+    name: 'account-requests-detail',
   ),
   screenBuilderCanvas(
     path: '/screen-builder',
