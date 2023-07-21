@@ -3,6 +3,7 @@ import 'package:the_helper/src/features/organization_member/domain/organization_
 
 import '../../contact/domain/contact.dart';
 import '../../location/domain/location.dart';
+import 'organization_status.dart';
 
 part 'organization.freezed.dart';
 part 'organization.g.dart';
@@ -12,6 +13,8 @@ class Organization with _$Organization {
   @JsonSerializable(includeIfNull: false)
   factory Organization({
     int? id,
+    required OrganizationStatus status,
+    @Default(false) bool isDisabled,
     required String name,
     required String email,
     required String phoneNumber,
@@ -20,7 +23,6 @@ class Organization with _$Organization {
     int? logo,
     int? banner,
     List<Location>? locations,
-    List<int>? files,
     List<Contact>? contacts,
     int? numberOfMembers,
     List<OrganizationMember>? myMembers,

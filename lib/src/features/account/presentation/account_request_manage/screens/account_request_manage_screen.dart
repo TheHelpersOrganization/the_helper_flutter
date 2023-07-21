@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/custom_list.dart';
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
@@ -13,7 +14,7 @@ import '../controllers/account_request_manage_screen_controller.dart';
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Pendding'),
   Tab(text: 'Approved'),
-  Tab(text: 'Reject'),
+  Tab(text: 'Blocked'),
 ];
 
 class AccountRequestManageScreen extends ConsumerWidget {
@@ -28,8 +29,10 @@ class AccountRequestManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
             SliverAppBar(
+              pinned: true,
               centerTitle: true,
               title: const Text(
                 'Account requests manage',
@@ -43,6 +46,9 @@ class AccountRequestManageScreen extends ConsumerWidget {
                   },
                 ),
               ],
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,)
             ),
             if (isSearching)
               SliverToBoxAdapter(
@@ -62,17 +68,17 @@ class AccountRequestManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
           ],
           body: const TabBarView(
             children: [
-              CustomScrollList(tabIndex: 'pending'),
-              CustomScrollList(tabIndex: 'completed'),
-              CustomScrollList(tabIndex: 'rejected'),
+              CustomScrollList(tabIndex: AccountRequestStatus.pending),
+              CustomScrollList(tabIndex: AccountRequestStatus.completed),
+              CustomScrollList(tabIndex: AccountRequestStatus.blocked),
             ]),
         ),
       ),

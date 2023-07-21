@@ -37,7 +37,7 @@ class AdminLineChart extends StatelessWidget {
         minX: 0,
         maxX: 11,
         minY: 0,
-        maxY: 100,
+        maxY: 500,
         titlesData: LineTitles.getTitleData(),
         borderData: FlBorderData(
             show: true,

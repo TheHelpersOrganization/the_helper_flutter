@@ -184,10 +184,11 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
                   ),
                   error: (_, __) => const CustomErrorWidget(),
                   data: (data) => CircleAvatar(
-                  backgroundImage: data.avatarId == null
-                      ? Image.asset('assets/images/logo.png').image
-                      : NetworkImage(getImageUrl(data.avatarId!)),
-                ),
+                    backgroundImage: 
+                    data.avatarId == null
+                        ? Image.asset('assets/images/logo.png').image
+                        : NetworkImage(getImageUrl(data.avatarId!)),
+                  ),
                 ),                
               ),
               Expanded(

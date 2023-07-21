@@ -32,13 +32,15 @@ class ReportManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
             SliverAppBar(
+              pinned: true,
               centerTitle: true,
               title: const Text(
-                'Accounts manage',
+                'Reports manage',
               ),
-              floating: true,
+              floating: false,
               actions: [
                 IconButton(
                   icon: const Icon(Icons.search),
@@ -47,6 +49,10 @@ class ReportManageScreen extends ConsumerWidget {
                   },
                 ),
               ],
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,
+            ),
             ),
             if (isSearching)
               SliverToBoxAdapter(
@@ -66,11 +72,11 @@ class ReportManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
           ],
           body: const TabBarView(
             children: [

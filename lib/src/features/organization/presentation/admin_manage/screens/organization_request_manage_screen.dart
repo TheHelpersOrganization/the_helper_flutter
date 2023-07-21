@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 import 'package:the_helper/src/features/organization/presentation/admin_manage/controllers/organization_manage_screen_controller.dart';
-import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_list.dart';
+import 'package:the_helper/src/features/organization/presentation/admin_manage/widgets/custom_request_list.dart';
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
 
@@ -28,8 +28,10 @@ class OrganizationRequestManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
             SliverAppBar(
+              pinned: true,
               centerTitle: true,
               title: const Text(
                 'Organizations request manage',
@@ -43,6 +45,10 @@ class OrganizationRequestManageScreen extends ConsumerWidget {
                   },
                 ),
               ],
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,
+            ),
             ),
             if (isSearching)
               SliverToBoxAdapter(
@@ -62,16 +68,16 @@ class OrganizationRequestManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
           ],
           body: const TabBarView(
             children: [
-              CustomScrollList(tabIndex: OrganizationStatus.pending),
-              CustomScrollList(tabIndex: OrganizationStatus.rejected),
+              CustomRequestScrollList(tabIndex: OrganizationStatus.pending),
+              CustomRequestScrollList(tabIndex: OrganizationStatus.rejected),
             ]),
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/account/presentation/account_admin_manage/widgets/active_account_list_item.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

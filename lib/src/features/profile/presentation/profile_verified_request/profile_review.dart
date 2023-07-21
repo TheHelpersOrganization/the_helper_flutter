@@ -4,12 +4,12 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import 'package:intl/intl.dart';
+import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 
 import '../../domain/profile.dart';
 import '../profile_edit/profile_edit_gender_widget.dart';
 import '../profile_edit/profile_edit_phone_number_widget.dart';
-import 'profile_avatar_watcher_widget.dart';
 
 // import '../../../common/widget/button/primary_button.dart';
 // import '../domain/profile.dart';
@@ -28,7 +28,26 @@ class ProfileReviewWidget extends StatelessWidget {
       onChanged: () {},
       child: Column(
         children: <Widget>[
-        const ProfileAvatarWatcherWidget(),
+        Container(
+          height: 300,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 8,
+              color: Theme.of(context).primaryColor,
+            ),
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: profile.avatarId == null
+                  ? Image.asset(
+                      'assets/images/organization_placeholder.jpg',
+                    ).image
+                  : ImageX.backend(
+                      profile.avatarId!,
+                    ).image,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
         const SizedBox(
           height: 16,
         ),

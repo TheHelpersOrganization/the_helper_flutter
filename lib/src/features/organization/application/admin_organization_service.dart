@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/organization/data/admin_organization_repository.dart';
+import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 
-import '../domain/organization.dart';
-import '../domain/organization_query.dart';
+import '../domain/admin_organization.dart';
+import '../domain/admin_organization_query.dart';
 
 part 'admin_organization_service.g.dart';
 
@@ -15,30 +16,27 @@ class AdminOrganizationService {
     required this.organizationRepository,
   });
 
-  Future<List<Organization>> getAll({
-    OrganizationQuery? query,
+  Future<List<AdminOrganization>> getAll({
+    AdminOrganizationQuery? query,
   }) async {
     final orgs = await organizationRepository.getAll(query: query);
     return orgs;
   }
 
   Future<int> getCount({
-    OrganizationQuery? query,
+    AdminOrganizationQuery? query,
   }) async {
-    final orgs = await organizationRepository.getAll(query: query);
+    final orgs = await organizationRepository.getAll(
+      query: const AdminOrganizationQuery(status: OrganizationStatus.verified));
     return orgs.length;
   }
 
   Future<int> getRequestCount({
-    OrganizationQuery? query,
+    AdminOrganizationQuery? query,
   }) async {
-    // final List<dynamic> res = (await client.get(
-    //   '/organizations',
-    //   queryParameters: query?.toJson(),
-    // ))
-    //     .data['data'];
-    // return res.map((e) => Organization.fromJson(e)).toList().length;
-    return 5;
+    final orgs = await organizationRepository.getAll(
+      query: const AdminOrganizationQuery(status: OrganizationStatus.pending));
+    return orgs.length;
   }
 }
 

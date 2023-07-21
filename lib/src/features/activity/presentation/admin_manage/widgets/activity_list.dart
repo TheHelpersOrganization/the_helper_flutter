@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/admin_manage/controllers/activity_manage_screen_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/admin_manage/widgets/activity_list_item.dart';
@@ -25,8 +25,7 @@ class CustomScrollList extends StatelessWidget {
         pagingController: controller,
         builderDelegate: builder,
       ),
-      itemBuilder: (context, item, index) => 
-      ActivityListItem(data: item),
+      itemBuilder: (context, item, index) => ActivityListItem(data: item),
       limit: 5,
       pullToRefresh: true,
       firstPageErrorIndicatorBuilder: (context, controller) =>

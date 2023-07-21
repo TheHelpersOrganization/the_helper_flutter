@@ -54,10 +54,8 @@ class ReportRepository {
     return ReportModel.fromJson(res.data['data']);
   }
 
-  Future<ReportModel> sendReportMessage({
-    required int id,
-    required RequestMessage msg
-    }) async {
+  Future<ReportModel> sendReportMessage(
+      {required int id, required RequestMessage msg}) async {
     final res = await client.post(
       '/reports/$id/messages',
       data: msg.toJson(),
@@ -67,7 +65,7 @@ class ReportRepository {
 
   Future<ReportModel> approveReport({
     required int id,
-    }) async {
+  }) async {
     final res = await client.post(
       '/reports/$id/complete',
     );
@@ -76,7 +74,7 @@ class ReportRepository {
 
   Future<ReportModel> rejectReport({
     required int id,
-    }) async {
+  }) async {
     final res = await client.post(
       '/reports/$id/reject',
     );
@@ -85,8 +83,8 @@ class ReportRepository {
 
   Future<ReportModel> cancelReport({
     required int id,
-    }) async {
-    final res = await client.post(
+  }) async {
+    final res = await client.put(
       '/reports/$id/cancel',
     );
     return ReportModel.fromJson(res.data['data']);

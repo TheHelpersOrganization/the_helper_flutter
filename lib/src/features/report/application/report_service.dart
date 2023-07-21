@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
+import 'package:the_helper/src/features/report/domain/report_status.dart';
 
 import '../../../utils/dio.dart';
 
@@ -19,13 +20,10 @@ class ReportService {
   Future<int> getCount({
     ReportQuery? query,
   }) async {
-    // final List<dynamic> res = (await client.get(
-    //   '/something',
-    //   queryParameters: query?.toJson(),
-    // ))
-    //     .data['data'];
-    // return res.map((e) => ReportModel.fromJson(e)).toList().length;
-    return 25;
+    final res = await reportRepository.getAll(
+      query: ReportQuery(status: ReportStatus.pending)
+    );
+    return res.length;
   }
 }
 
