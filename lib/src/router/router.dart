@@ -12,6 +12,7 @@ import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/search/screen/activity_search_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/search/screen/suggested_activity_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_completed_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
@@ -406,6 +407,13 @@ final activityRoutes = [
     path: AppRoute.activitySearch.path,
     name: AppRoute.activitySearch.name,
     builder: (_, __) => const ActivitySearchScreen(),
+    routes: [
+      GoRoute(
+        path: AppRoute.activitySuggestion.path,
+        name: AppRoute.activitySuggestion.name,
+        builder: (_, __) => const SuggestedActivityScreen(),
+      ),
+    ],
   ),
   GoRoute(
     path: AppRoute.activityMy.path,
@@ -585,6 +593,10 @@ enum AppRoute {
   activitySearch(
     path: '/activity/search',
     name: 'activity-search',
+  ),
+  activitySuggestion(
+    path: 'suggestion',
+    name: 'activity-suggestion',
   ),
   activityMy(
     path: '/activity/my',

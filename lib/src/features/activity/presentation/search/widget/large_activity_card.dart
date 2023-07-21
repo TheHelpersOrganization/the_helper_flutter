@@ -28,7 +28,7 @@ class LargeActivityCard extends ConsumerWidget {
     // print(activity);
     return SizedBox(
       width: width ?? context.mediaQuery.size.width * 0.7,
-      height: height ?? 380,
+      height: height ?? 385,
       child: Card(
         clipBehavior: Clip.hardEdge,
         child: InkWell(

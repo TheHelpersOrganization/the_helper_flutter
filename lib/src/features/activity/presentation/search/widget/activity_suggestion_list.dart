@@ -23,7 +23,7 @@ class _ActivitySuggestionListState extends ConsumerState<ActivitySuggestionList>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final suggestedActivities = ref.watch(suggestedActivitiesProvider);
+    final suggestedActivities = ref.watch(suggestedActivitiesProvider(5));
 
     return suggestedActivities.when(
       data: (suggestedActivities) {

@@ -11,7 +11,7 @@ class SliverActivitySuggestionList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final suggestedActivities = ref.watch(suggestedActivitiesProvider);
+    final suggestedActivities = ref.watch(suggestedActivitiesProvider(5));
 
     return SliverToBoxAdapter(
       child: SizedBox(
