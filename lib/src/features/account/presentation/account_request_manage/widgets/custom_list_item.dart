@@ -9,7 +9,6 @@ import 'package:the_helper/src/features/profile/application/profile_service.dart
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import '../screens/account_request_detail_screen.dart';
 
 class AccountRequestListItem extends ConsumerWidget {
   final AccountRequestModel data;

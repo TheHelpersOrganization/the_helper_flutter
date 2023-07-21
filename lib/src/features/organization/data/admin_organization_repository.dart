@@ -4,7 +4,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../utils/dio.dart';
 import '../domain/admin_organization.dart';
 import '../domain/admin_organization_query.dart';
-import '../domain/organization.dart';
 
 part 'admin_organization_repository.g.dart';
 

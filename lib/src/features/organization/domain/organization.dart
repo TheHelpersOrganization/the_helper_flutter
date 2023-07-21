@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:the_helper/src/common/domain/file_info.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 
 import '../../contact/domain/contact.dart';

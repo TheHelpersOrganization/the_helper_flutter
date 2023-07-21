@@ -10,13 +10,11 @@ import 'package:the_helper/src/features/account/presentation/account_request_man
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/note_dialog.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
-import '../../../../../common/domain/file_info.dart';
 import '../../../../../common/extension/image.dart';
 import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/detail_list_tile.dart';
 import '../../../../../common/widget/error_widget.dart';
 import '../../../../profile/application/profile_service.dart';
-import '../../../../profile/presentation/profile_controller.dart';
 import '../../../domain/account_request.dart';
 import '../controllers/account_request_manage_screen_controller.dart';
 

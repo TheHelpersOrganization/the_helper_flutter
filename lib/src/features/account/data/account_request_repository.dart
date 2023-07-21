@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:the_helper/src/common/domain/file_info.dart';
 
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

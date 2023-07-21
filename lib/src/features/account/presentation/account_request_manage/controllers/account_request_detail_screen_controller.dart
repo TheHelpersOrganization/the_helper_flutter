@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/data/account_request_repository.dart';
-import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 
 import '../../../../../utils/async_value.dart';

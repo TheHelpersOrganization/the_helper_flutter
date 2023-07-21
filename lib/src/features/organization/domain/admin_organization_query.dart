@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../organization_member/domain/organization_member_status.dart';
 import 'organization_status.dart';
 
 part 'admin_organization_query.freezed.dart';
