@@ -7,36 +7,6 @@ import '../domain/account_query.dart';
 
 part 'account_repository.g.dart';
 
-// List<AccountModel> accLst = [
-//   AccountModel(
-//     id: 1,
-//     email: 'AAA@gmail',
-//     isAccountDisabled: false,
-//     isAccountVerified: true,
-//   ),
-//   AccountModel(
-//     id: 2,
-//     email: 'BBB@gmail',
-//     isAccountDisabled: false,
-//     isAccountVerified: false,
-//   ),
-// ];
-
-// List<AccountModel> bannedAccLst = [
-//   AccountModel(
-//     id: 1,
-//     email: 'CC@gmail',
-//     isAccountDisabled: true,
-//     isAccountVerified: true,
-//   ),
-//   AccountModel(
-//     id: 2,
-//     email: 'DDD@gmail',
-//     isAccountDisabled: true,
-//     isAccountVerified: false,
-//   ),
-// ];
-
 //Role Repository class
 class AccountRepository {
   final Dio client;
