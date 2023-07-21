@@ -4,6 +4,7 @@ import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message_query.dart';
 import 'package:the_helper/src/features/chat/domain/chat_query.dart';
+import 'package:the_helper/src/features/chat/domain/create_chat.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 class ChatRepository {
@@ -33,6 +34,9 @@ class ChatRepository {
       queryParameters: query?.toJson(),
     );
     final dynamic data = res.data['data'];
+    if (data == null) {
+      return null;
+    }
     return Chat.fromJson(data);
   }
 
@@ -46,6 +50,30 @@ class ChatRepository {
     );
     final List<dynamic> resList = res.data['data'];
     return resList.map((e) => ChatMessage.fromJson(e)).toList();
+  }
+
+  Future<Chat?> getChatToAccount({
+    required int accountId,
+  }) async {
+    final res = await client.get(
+      '/chats/to/$accountId',
+    );
+    final dynamic data = res.data['data'];
+    if (data == null) {
+      return null;
+    }
+    return Chat.fromJson(data);
+  }
+
+  Future<Chat> createChat(
+    CreateChat createChat,
+  ) async {
+    final res = await client.post(
+      '/chats',
+      data: createChat.toJson(),
+    );
+    final dynamic data = res.data['data'];
+    return Chat.fromJson(data);
   }
 }
 

@@ -63,6 +63,7 @@ class NoDataFound extends StatelessWidget {
           Text(
             contentTitle!,
             style: contentTitleStyle ?? Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
           ),
         );
       }

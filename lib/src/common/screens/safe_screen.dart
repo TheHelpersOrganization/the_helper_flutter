@@ -16,7 +16,6 @@ class SafeScreen extends ConsumerWidget {
     return appService.when(
       data: (data) => child,
       error: (_, __) {
-        print(_);
         return const ErrorScreen();
       },
       loading: () => const SplashScreen(

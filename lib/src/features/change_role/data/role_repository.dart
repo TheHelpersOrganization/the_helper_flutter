@@ -40,15 +40,18 @@ class RoleRepository {
   }
 
   Future<void> removeCurrentRole() async {
-    await localStorage.write(key: currentRoleKey, value: null);
+    await localStorage.write(
+      key: currentRoleKey,
+      value: Role.volunteer.toString(),
+    );
   }
 
-  Future<Role?> getCurrentRole() async {
+  Future<Role> getCurrentRole() async {
     final role = await localStorage.read(key: currentRoleKey);
     if (role == null) {
       await localStorage.write(
           key: currentRoleKey, value: Role.volunteer.toString());
-      return null;
+      return Role.volunteer;
     }
     return Role.values.firstWhere((element) => element.toString() == role);
   }

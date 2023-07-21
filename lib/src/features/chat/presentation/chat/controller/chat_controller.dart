@@ -8,6 +8,9 @@ import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message_query.dart';
+import 'package:the_helper/src/features/chat/domain/create_chat.dart';
+import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value.dart';
 import 'package:the_helper/src/utils/socket_provider.dart';
 
 // Use change notifier provider to provide the controller
@@ -66,12 +69,12 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
     final socket = ref.watch(socketProvider);
 
     final completer = Completer();
-    socket.emitWithAck('join-chat', chat.id, ack: (data) {
+    socket.emitWithAck('join-chat', '', ack: (data) {
       completer.complete(data);
     });
     await completer.future;
 
-    socket.on('receive-message', (data) {
+    handleReceiveMessage(data) {
       final message = ChatMessage.fromJson(data);
       // Only add the message if it's from the same chat
       if (message.chatId != chatId) {
@@ -80,17 +83,13 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
       messagesNotifier.addMessage(message);
       // Scroll to bottom
       scrollController.jumpTo(scrollController.position.minScrollExtent);
-    });
+      // Mark as read
+      socket.emit('read-chat', chatId);
+    }
 
-    socket.on('chat-blocked', (data) {
-      final chat = Chat.fromJson(data);
-      if (chat.id != chatId) {
-        return;
-      }
-      chatNotifier.setChat(chat);
-    });
+    socket.on('receive-message', handleReceiveMessage);
 
-    socket.on('chat-unblocked', (data) {
+    socket.on('chat-updated', (data) {
       final chat = Chat.fromJson(data);
       if (chat.id != chatId) {
         return;
@@ -99,10 +98,7 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
     });
 
     ref.onDispose(() {
-      socket.off('send-message');
-      socket.off('receive-message');
-      socket.off('chat-blocked');
-      socket.off('chat-unblocked');
+      socket.off('receive-message', handleReceiveMessage);
     });
 
     return socket;
@@ -236,5 +232,79 @@ final unblockChatControllerProvider =
     AutoDisposeAsyncNotifierProvider<UnblockChatController, void>(
   () {
     return UnblockChatController();
+  },
+);
+
+class ReadChatController extends AutoDisposeAsyncNotifier<void> {
+  @override
+  FutureOr<void> build() async {}
+
+  Future<void> readChat(int chatId) async {
+    if (state.isLoading) {
+      return;
+    }
+    final socket = await ref.watch(chatSocketProvider(chatId).future);
+    if (socket == null) {
+      return;
+    }
+
+    state = const AsyncValue.loading();
+
+    Completer completer = Completer();
+    socket.emitWithAck('read-chat', chatId, ack: (data) {
+      state = const AsyncValue.data(null);
+      completer.complete(data);
+    });
+
+    return completer.future;
+  }
+}
+
+final readChatControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ReadChatController, void>(
+  () {
+    return ReadChatController();
+  },
+);
+
+class CreateChatController extends AutoDisposeAsyncNotifier<void> {
+  late Object? _key;
+
+  @override
+  FutureOr<void> build() async {
+    _key = Object();
+    ref.onDispose(() => _key = null);
+  }
+
+  Future<void> createChat(CreateChat data) async {
+    if (state.isLoading) {
+      return;
+    }
+    state = const AsyncValue.loading();
+    final key = _key;
+    final res = await guardAsyncValue(
+      () => ref.read(chatRepositoryProvider).createChat(data),
+    );
+    if (key != _key) {
+      return;
+    }
+    if (res.hasError) {
+      state = AsyncValue.error(res.asError!.error, res.stackTrace!);
+      return;
+    }
+    state = const AsyncValue.data(null);
+    final chat = res.asData?.value;
+    if (chat != null) {
+      ref.watch(routerProvider).goNamed(AppRoute.chat.name, pathParameters: {
+        'chatId': chat.id.toString(),
+      });
+    }
+  }
+}
+
+final createChatControllerProvider =
+    AutoDisposeAsyncNotifierProvider<CreateChatController, void>(
+  () {
+    return CreateChatController();
   },
 );
