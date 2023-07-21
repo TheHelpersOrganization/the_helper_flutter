@@ -38,7 +38,7 @@ class ActivityService {
     ActivityInclude? include,
   }) async {
     List<Activity> activities =
-        await activityRepository.getActivities(query: query);
+        await activityRepository.getSuggestedActivities(query: query);
     if (include?.organization == true) {
       List<Organization> organizations = await Future.wait(
         activities.map(

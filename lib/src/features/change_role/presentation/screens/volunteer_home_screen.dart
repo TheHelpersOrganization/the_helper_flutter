@@ -163,9 +163,7 @@ class VolunteerView extends ConsumerWidget {
                 children: [
                   Flexible(
                     flex: 3,
-                    child:VolunteerAnalyticsMainCard(
-                        skillList: data.skills
-                      ),
+                    child: VolunteerAnalyticsMainCard(skillList: data.skills),
                   ),
                   Flexible(
                     flex: 1,
@@ -221,45 +219,55 @@ class VolunteerView extends ConsumerWidget {
                     return const ErrorScreen();
                   },
                   data: (upcomingActivities) => upcomingActivities.isEmpty
-                  ? Center(child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/empty-folder-optimized.svg',
-                          height: 100,
-                          width: 100,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                        const SizedBox(width: 8,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'You don\'t have any',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            Text(
-                              'upcoming activities',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            const SizedBox(height: 13,),
-                            FilledButton(
-                              onPressed: () => context.goNamed(AppRoute.activitySearch.name),
-                              child: const Text('Join one now'),
-                            ),
-                          ],
+                      ? Center(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/empty-folder-optimized.svg',
+                                height: 100,
+                                width: 100,
+                                allowDrawingOutsideViewBox: true,
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'You don\'t have any',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    'upcoming activities',
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  const SizedBox(
+                                    height: 13,
+                                  ),
+                                  FilledButton(
+                                    onPressed: () => context
+                                        .goNamed(AppRoute.activitySearch.name),
+                                    child: const Text('Join one now'),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         )
-                      ],
-                    ),)
-                  :ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: upcomingActivities.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: upcomingActivities[index]),
-                  ),
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: upcomingActivities.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              LargeActivityCard(
+                                  activity: upcomingActivities[index]),
+                        ),
                 ),
               ),
               const SizedBox(
@@ -273,7 +281,9 @@ class VolunteerView extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushNamed(AppRoute.activitySuggestion.name);
+                    },
                     child: const Text(
                       'See more',
                     ),

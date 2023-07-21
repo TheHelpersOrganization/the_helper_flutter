@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
@@ -8,21 +7,19 @@ import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/activity/presentation/search/controller/activity_filter_controller.dart';
 import 'package:the_helper/src/utils/paging.dart';
 
-part 'activity_controller.g.dart';
-
 final showSearchProvider = StateProvider.autoDispose((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 
-@riverpod
-Future<List<Activity>> suggestedActivities(SuggestedActivitiesRef ref) async {
-  return ref.watch(activityServiceProvider).getSuggestedActivities(
-        query: ActivityQuery(limit: 5),
+final suggestedActivitiesProvider =
+    FutureProvider.autoDispose.family<List<Activity>, int>(
+  (ref, limit) => ref.watch(activityServiceProvider).getSuggestedActivities(
+        query: ActivityQuery(limit: limit),
         include: ActivityInclude(
           organization: true,
           volunteers: true,
         ),
-      );
-}
+      ),
+);
 
 class ActivityListPagedNotifier extends PagedNotifier<int, Activity> {
   final ActivityService activityService;

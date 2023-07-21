@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
@@ -8,6 +9,7 @@ import 'package:the_helper/src/features/activity/presentation/search/controller/
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_filter/activity_filter_drawer.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/sliver_activity_list.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/sliver_activity_suggestion_list.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class ActivitySearchScreen extends ConsumerWidget {
   const ActivitySearchScreen({super.key});
@@ -29,7 +31,9 @@ class ActivitySearchScreen extends ConsumerWidget {
                     style: context.theme.textTheme.titleMedium,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pushNamed(AppRoute.activitySuggestion.name);
+                    },
                     child: const Text(
                       'See more',
                     ),

@@ -38,8 +38,12 @@ class ActivityRepository {
   }
 
   Future<List<Activity>> getSuggestedActivities({ActivityQuery? query}) async {
-    List<Activity> activities = await getActivities(query: query);
-    return activities;
+    final res = await client.get(
+      '/activities/suggest',
+      queryParameters: query?.toJson(),
+    );
+    final List<dynamic> data = res.data['data'];
+    return data.map((e) => Activity.fromJson(e)).toList();
   }
 
   Future<Activity> getActivityById(
