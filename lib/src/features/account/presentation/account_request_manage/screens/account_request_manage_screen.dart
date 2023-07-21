@@ -29,21 +29,26 @@ class AccountRequestManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
-            const SliverAppBar(
+            SliverAppBar(
+              pinned: true,
               centerTitle: true,
-              title: Text(
+              title: const Text(
                 'Account requests manage',
               ),
               floating: true,
-              // actions: [
-              //   IconButton(
-              //     icon: const Icon(Icons.search),
-              //     onPressed: () {
-              //       ref.read(isSearchingProvider.notifier).state = !isSearching;
-              //     },
-              //   ),
-              // ],
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    ref.read(isSearchingProvider.notifier).state = !isSearching;
+                  },
+                ),
+              ],
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,)
             ),
             if (isSearching)
               SliverToBoxAdapter(
@@ -63,11 +68,11 @@ class AccountRequestManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
           ],
           body: const TabBarView(
             children: [

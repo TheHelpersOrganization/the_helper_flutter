@@ -25,8 +25,10 @@ class AccountManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
+          floatHeaderSlivers: true,
           headerSliverBuilder: (_, __) => [
             SliverAppBar(
+              pinned: true,
               centerTitle: true,
               title: const Text(
                 'Accounts manage',
@@ -40,7 +42,10 @@ class AccountManageScreen extends ConsumerWidget {
                   },
                 ),
               ],
-            ),
+              bottom: TabBar(
+              labelColor: Theme.of(context).colorScheme.onSurface,
+              tabs: tabs,
+            ),),
             if (isSearching)
               SliverToBoxAdapter(
                 child: Padding(
@@ -59,11 +64,11 @@ class AccountManageScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-                child: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            )),
+            // SliverToBoxAdapter(
+            //     child: TabBar(
+            //   labelColor: Theme.of(context).colorScheme.onSurface,
+            //   tabs: tabs,
+            // )),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(

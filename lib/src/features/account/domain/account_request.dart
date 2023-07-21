@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 import '../../../common/domain/file_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,7 +18,7 @@ class AccountRequestModel with _$AccountRequestModel {
     int? performedBy,
     @Default(true) bool isVerified,
     String? note,
-    // List<String>? adminNote,
+    Profile? profile,
     required DateTime createdAt,
     @Default([]) List<FileInfoModel> files,
   }) = _AccountRequestModel;
