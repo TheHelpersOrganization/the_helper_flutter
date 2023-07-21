@@ -1,30 +1,45 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/account/data/account_request_repository.dart';
+import 'package:the_helper/src/features/account/domain/account.dart';
+import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 
 import '../../../../../utils/async_value.dart';
 import '../../../data/account_repository.dart';
+import '../../../domain/account_request.dart';
 
 part 'account_request_detail_screen_controller.g.dart';
 
 @riverpod
 class AccountRequestDetailController extends _$AccountRequestDetailController {
   @override
-  FutureOr<void> build() async {}
-
-  Future<void> verifyAccount({
-    required int id,
-  }) async {
-    state = const AsyncValue.loading();
-    state = await guardAsyncValue(
-        () => ref.watch(accountRepositoryProvider).verifyAccount(accId: id));
-    // state = res;
-    // return res.valueOrNull;
+  FutureOr<AccountRequestModel> build({required int id}) async {
+    return fetchRequest(id);
   }
 
-  // Future<AccountRequestModel> checkIfRequestRejected({
-  //   required int id,
-  // }) async {
-
-  // }
+  Future<AccountRequestModel> fetchRequest(int id) async {
+    final repository = ref.watch(accountRequestRepositoryProvider);
+    final res = await repository.getById(id: id);
+    return res;
+  }
 }
+
+@riverpod
+class VerifiedAccountController extends _$VerifiedAccountController {
+  @override
+  FutureOr<void> build() {}
+
+  Future<void> verifyAccount({
+      required int accountId,
+    }) async {
+      state = const AsyncValue.loading();
+      state = await guardAsyncValue(
+          () => ref.watch(accountRepositoryProvider).verifyAccount(accId: accountId));
+    }
+}
+
+final requestHistoryProvider = FutureProvider.autoDispose
+    .family<List<AccountRequestModel>, int>((ref, accountId) => ref
+        .watch(accountRequestRepositoryProvider)
+        .getAll(query: AccountRequestQuery(accountId: accountId)));

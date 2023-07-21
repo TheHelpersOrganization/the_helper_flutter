@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/custom_list.dart';
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
@@ -13,7 +14,7 @@ import '../controllers/account_request_manage_screen_controller.dart';
 const List<Tab> tabs = <Tab>[
   Tab(text: 'Pendding'),
   Tab(text: 'Approved'),
-  Tab(text: 'Reject'),
+  Tab(text: 'Blocked'),
 ];
 
 class AccountRequestManageScreen extends ConsumerWidget {
@@ -29,20 +30,20 @@ class AccountRequestManageScreen extends ConsumerWidget {
         length: tabs.length,
         child: NestedScrollView(
           headerSliverBuilder: (_, __) => [
-            SliverAppBar(
+            const SliverAppBar(
               centerTitle: true,
-              title: const Text(
+              title: Text(
                 'Account requests manage',
               ),
               floating: true,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    ref.read(isSearchingProvider.notifier).state = !isSearching;
-                  },
-                ),
-              ],
+              // actions: [
+              //   IconButton(
+              //     icon: const Icon(Icons.search),
+              //     onPressed: () {
+              //       ref.read(isSearchingProvider.notifier).state = !isSearching;
+              //     },
+              //   ),
+              // ],
             ),
             if (isSearching)
               SliverToBoxAdapter(
@@ -67,19 +68,12 @@ class AccountRequestManageScreen extends ConsumerWidget {
               labelColor: Theme.of(context).colorScheme.onSurface,
               tabs: tabs,
             )),
-            SliverToBoxAdapter(
-              child: Row(
-              children: [
-                
-                // FilterChip(label: label, onSelected: onSelected)
-              ],
-            )),
           ],
           body: const TabBarView(
             children: [
-              CustomScrollList(tabIndex: 'pending'),
-              CustomScrollList(tabIndex: 'completed'),
-              CustomScrollList(tabIndex: 'rejected'),
+              CustomScrollList(tabIndex: AccountRequestStatus.pending),
+              CustomScrollList(tabIndex: AccountRequestStatus.completed),
+              CustomScrollList(tabIndex: AccountRequestStatus.blocked),
             ]),
         ),
       ),

@@ -100,8 +100,6 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
                                   .notifier)
                               .sendVerifiedRequest(files: files);
 
-
-
                           if (context.mounted) {
                             context.pop();
                           }

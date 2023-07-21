@@ -16,17 +16,17 @@ import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
 class UserReportDetailScreen extends ConsumerWidget {
-  final int id;
+  final int requestId;
 
-  const UserReportDetailScreen({super.key, required this.id});
+  const UserReportDetailScreen({super.key, required this.requestId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final detail = ref.watch(reportDetailControllerProvider(id: id));
+    final detail = ref.watch(reportDetailControllerProvider(id: requestId));
     // final customTileExpanded = ref.watch(expansionTitleControllerProvider);
 
     ref.listen<AsyncValue>(
-      reportDetailControllerProvider(id: id),
+      reportDetailControllerProvider(id: requestId),
       (_, state) {
         state.showSnackbarOnError(context);
       },

@@ -22,7 +22,7 @@ final accountRequestManageControllerProvider = AutoDisposeAsyncNotifierProvider<
 class ScrollPagingControlNotifier
     extends PagedNotifier<int, AccountRequestModel> {
   final AccountRequestRepository requestRepository;
-  final String tabStatus;
+  final AccountRequestStatus tabStatus;
   final String? searchPattern;
 
   ScrollPagingControlNotifier({
@@ -36,6 +36,7 @@ class ScrollPagingControlNotifier
                 limit: limit,
                 offset: page * limit,
                 status: tabStatus,
+                include: [AccountRequestInclude.file]
               ),
             );
           },
@@ -46,7 +47,7 @@ class ScrollPagingControlNotifier
 final scrollPagingControlNotifier = StateNotifierProvider.autoDispose.family<
         ScrollPagingControlNotifier,
         PagedState<int, AccountRequestModel>,
-        String>(
+        AccountRequestStatus>(
     (ref, index) => ScrollPagingControlNotifier(
         requestRepository: ref.watch(accountRequestRepositoryProvider),
         tabStatus: index,

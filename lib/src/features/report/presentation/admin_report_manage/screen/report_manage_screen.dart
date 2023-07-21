@@ -36,7 +36,7 @@ class ReportManageScreen extends ConsumerWidget {
             SliverAppBar(
               centerTitle: true,
               title: const Text(
-                'Accounts manage',
+                'Reports manage',
               ),
               floating: true,
               actions: [

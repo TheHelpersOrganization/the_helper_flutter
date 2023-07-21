@@ -2,8 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../utils/dio.dart';
+import '../domain/admin_organization.dart';
+import '../domain/admin_organization_query.dart';
 import '../domain/organization.dart';
-import '../domain/organization_query.dart';
 
 part 'admin_organization_repository.g.dart';
 
@@ -12,42 +13,42 @@ class AdminOrganizationRepository {
 
   AdminOrganizationRepository({required this.client});
 
-  Future<List<Organization>> getAll({
-    OrganizationQuery? query,
+  Future<List<AdminOrganization>> getAll({
+    AdminOrganizationQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(
       '/admin/organizations',
       queryParameters: query?.toJson(),
     ))
         .data['data'];
-    return res.map((e) => Organization.fromJson(e)).toList();
+    return res.map((e) => AdminOrganization.fromJson(e)).toList();
     // return status == 0 ? lst : lst2;
   }
 
-  Future<Organization> getById(int id) async {
+  Future<AdminOrganization> getById(int id) async {
     final res = await client.get('/admin/organizations/$id');
-    return Organization.fromJson(res.data['data']);
+    return AdminOrganization.fromJson(res.data['data']);
   }
 
-  Future<Organization> ban(int id) async {
+  Future<AdminOrganization> ban(int id) async {
     final res = await client.post('/admin/organizations/$id/disable');
-    return Organization.fromJson(res.data['data']);
+    return AdminOrganization.fromJson(res.data['data']);
   }
 
-  Future<Organization> unban(int id) async {
+  Future<AdminOrganization> unban(int id) async {
+    final res = await client.post('/admin/organizations/$id/enable');
+    return AdminOrganization.fromJson(res.data['data']);
+  }
+
+  Future<AdminOrganization> verify(int id) async {
     final res = await client.post('/admin/organizations/$id/verify');
-    return Organization.fromJson(res.data['data']);
+    return AdminOrganization.fromJson(res.data['data']);
   }
 
-  Future<Organization> verify(int id) async {
-    final res = await client.post('/admin/organizations/$id/verify');
-    return Organization.fromJson(res.data['data']);
-  }
-
-  Future<Organization> reject(int id) async {
+  Future<AdminOrganization> reject(int id) async {
     final res = await client.post(
       '/admin/organizations/$id/reject',);
-    return Organization.fromJson(res.data['data']);
+    return AdminOrganization.fromJson(res.data['data']);
   }
 }
 

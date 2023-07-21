@@ -8,9 +8,10 @@ import 'package:the_helper/src/features/account/presentation/account_request_man
 
 import '../../../../../common/widget/error_widget.dart';
 import '../../../../../common/widget/no_data_found.dart';
+import '../../../domain/account_request_query.dart';
 
 class CustomScrollList extends StatelessWidget {
-  final String tabIndex;
+  final AccountRequestStatus tabIndex;
   const CustomScrollList({
     super.key,
     required this.tabIndex,
