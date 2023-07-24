@@ -4,7 +4,6 @@ import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:the_helper/src/features/report/domain/report_model.dart';
-import 'package:the_helper/src/features/report/domain/report_type.dart';
 
 import '../../../../../common/widget/error_widget.dart';
 import '../../../../../common/widget/no_data_found.dart';
@@ -12,7 +11,7 @@ import '../controller/report_history_screen_controller.dart';
 import 'custom_list_item.dart';
 
 class CustomScrollList extends StatelessWidget {
-  final ReportType tabIndex;
+  final String tabIndex;
   const CustomScrollList({
     super.key,
     required this.tabIndex,

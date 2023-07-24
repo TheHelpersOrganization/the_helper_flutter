@@ -6,6 +6,7 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
+import 'package:the_helper/src/features/report/domain/report_query.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../../utils/domain_provider.dart';
@@ -21,7 +22,7 @@ class CustomListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile =
-        ref.watch(accountProfileServiceProvider(id: data.reporterId!));
+        ref.watch(accountProfileServiceProvider(id: data.reporterId));
     final date = DateFormat("mm/dd/y").format(data.createdAt);
     final avatarId = data.reportedAccount?.avatarId ??
         data.reportedActivity?.thumbnail ??
@@ -89,6 +90,10 @@ class CustomListItem extends ConsumerWidget {
                           height: 5,
                         ),
                         Row(children: [
+                          const Text('Type: '),
+                          reportStatus(data.type)
+                        ],),
+                        Row(children: [
                           const Text('Report by:'),
                           Padding(
                             padding: const EdgeInsets.all(10),
@@ -114,5 +119,16 @@ class CustomListItem extends ConsumerWidget {
         ),
       ),
     );
+  }
+  Widget reportStatus(String status) {
+    switch (status) {
+      case ReportType.account:
+        return const Text('Account',style: TextStyle(fontWeight: FontWeight.bold));
+      case ReportType.organization:
+        return const Text('Organization',style: TextStyle(fontWeight: FontWeight.bold));
+      case ReportType.activity:
+        return const Text('Activity',style: TextStyle(fontWeight: FontWeight.bold));
+    }
+    return const Text('Unknown',style: TextStyle(fontWeight: FontWeight.bold));
   }
 }

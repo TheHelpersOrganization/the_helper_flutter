@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/report/domain/report_type.dart';
 
 import '../../../../../common/extension/image.dart';
+import '../../../../report/domain/report_query.dart';
 import '../../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../../../data/organization_repository.dart';
 import '../../../domain/organization.dart';

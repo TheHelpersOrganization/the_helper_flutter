@@ -7,12 +7,11 @@ import 'package:the_helper/src/features/report/domain/report_model.dart';
 
 import '../../../../../common/widget/error_widget.dart';
 import '../../../../../common/widget/no_data_found.dart';
-import '../../../domain/report_status.dart';
 import '../controller/report_manage_screen_controller.dart';
 import 'custom_list_item.dart';
 
 class CustomScrollList extends StatelessWidget {
-  final ReportStatus tabIndex;
+  final String tabIndex;
   const CustomScrollList({
     super.key,
     required this.tabIndex,

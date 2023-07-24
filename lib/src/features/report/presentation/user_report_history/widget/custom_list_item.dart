@@ -9,7 +9,7 @@ import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../../utils/domain_provider.dart';
-import '../../../domain/report_status.dart';
+import '../../../domain/report_query.dart';
 
 class CustomListItem extends ConsumerWidget {
   final ReportModel data;
@@ -22,7 +22,7 @@ class CustomListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile =
-        ref.watch(accountProfileServiceProvider(id: data.reporterId!));
+        ref.watch(accountProfileServiceProvider(id: data.reporterId));
     final date = DateFormat("mm/dd/y").format(data.createdAt);
     final avatarId = data.reportedAccount?.avatarId ??
         data.reportedActivity?.thumbnail ??
@@ -109,7 +109,7 @@ class CustomListItem extends ConsumerWidget {
     );
   }
 
-  Widget reportStatus(ReportStatus status) {
+  Widget reportStatus(String status) {
     switch (status) {
       case ReportStatus.cancelled:
         return const Text('Cancelled');
@@ -122,5 +122,6 @@ class CustomListItem extends ConsumerWidget {
       case ReportStatus.rejected:
         return const Text('Rejected');
     }
+    return const Text('Unknown');
   }
 }
