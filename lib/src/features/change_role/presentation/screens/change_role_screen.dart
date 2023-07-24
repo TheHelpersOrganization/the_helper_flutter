@@ -52,26 +52,26 @@ class ChangeRoleScreen extends ConsumerWidget {
               ],
             ),
             const Expanded(child: RoleChoice()),
-            Padding(
-                padding: EdgeInsets.only(
-                  bottom: context.mediaQuery.size.height * 0.1,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not sure what to do?',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'See here',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                )),
+            // Padding(
+            //     padding: EdgeInsets.only(
+            //       bottom: context.mediaQuery.size.height * 0.1,
+            //     ),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Text(
+            //           'Not sure what to do?',
+            //           style: Theme.of(context).textTheme.bodyMedium,
+            //         ),
+            //         TextButton(
+            //           onPressed: () {},
+            //           child: const Text(
+            //             'See here',
+            //             style: TextStyle(color: Colors.blue),
+            //           ),
+            //         ),
+            //       ],
+            //     )),
           ],
         ),
       ),
@@ -121,6 +121,7 @@ class RoleChoice extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const SizedBox(height: 10,),
           data != Role.volunteer
           ? RoleOption(
             optionColor: Colors.purple,
@@ -135,47 +136,50 @@ class RoleChoice extends ConsumerWidget {
           ) : const SizedBox(),
 
           //Second Option
+          const SizedBox(height: 10,),
           roles.contains(Role.moderator) && data != Role.moderator
-              ? RoleOption(
-                  optionColor: Colors.red,
-                  title: 'Organization',
-                  description:
-                      'Manage your organization activities, members and more',
-                  role: Role.moderator,
-                  image: SvgPicture.asset(
-                    'assets/images/role_mod.svg',
-                    fit: BoxFit.fitWidth,
-                  ),
-                  onTap: () async {
-                    if (organization == null) {
-                      await showDialog(
-                        context: context,
-                        useRootNavigator: false,
-                        builder: (context) => const SwitchOrganizationDialog(),
-                      );
-                      return;
-                    }
-                    ref
-                        .read(setRoleControllerProvider.notifier)
-                        .setCurrentRole(Role.moderator, navigateToHome: true);
-                    context.goNamed(AppRoute.home.name);
-                  },
-                )
-              : const SizedBox(),
+          ? RoleOption(
+              optionColor: Colors.red,
+              title: 'Organization',
+              description:
+                  'Manage your organization activities, members and more',
+              role: Role.moderator,
+              image: SvgPicture.asset(
+                'assets/images/role_mod.svg',
+                fit: BoxFit.fitWidth,
+              ),
+              onTap: () async {
+                if (organization == null) {
+                  await showDialog(
+                    context: context,
+                    useRootNavigator: false,
+                    builder: (context) => const SwitchOrganizationDialog(),
+                  );
+                  return;
+                }
+                ref
+                    .read(setRoleControllerProvider.notifier)
+                    .setCurrentRole(Role.moderator, navigateToHome: true);
+                context.goNamed(AppRoute.home.name);
+              },
+            )
+          : const SizedBox(),
 
           //Third Option
+          const SizedBox(height: 10,),
           roles.contains(Role.admin) && data != Role.admin
-              ? RoleOption(
-                  optionColor: Colors.blue,
-                  title: 'Admin',
-                  description: 'Dashboard for Volunteer App Admin',
-                  role: Role.admin,
-                  image: SvgPicture.asset(
-                    'assets/images/role_admin.svg',
-                    fit: BoxFit.fitWidth,
-                  ),
-                )
-              : const SizedBox(),
+          ? RoleOption(
+              optionColor: Colors.blue,
+              title: 'Admin',
+              description: 'Dashboard for Volunteer App Admin',
+              role: Role.admin,
+              image: SvgPicture.asset(
+                'assets/images/role_admin.svg',
+                fit: BoxFit.fitWidth,
+              ),
+            )
+          : const SizedBox(),
+          const SizedBox(height: 10,),
         ],
       ),
     );

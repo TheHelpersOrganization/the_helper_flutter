@@ -11,6 +11,11 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Banned'),
 ];
 
+const List<Widget> tabViews = <Widget>[
+  AccountList(tabIndex: 0),
+  AccountList(tabIndex: 1),
+];
+
 class AccountManageScreen extends ConsumerWidget {
   const AccountManageScreen({super.key});
 
@@ -25,30 +30,14 @@ class AccountManageScreen extends ConsumerWidget {
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (_, __) => [
+          // floatHeaderSlivers: true,
+          headerSliverBuilder: (_, __) => 
+            [
             SliverAppBar(
               pinned: true,
               centerTitle: true,
-              title: const Text(
-                'Accounts manage',
-              ),
-              floating: true,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    ref.read(isSearchingProvider.notifier).state = !isSearching;
-                  },
-                ),
-              ],
-              bottom: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            ),),
-            if (isSearching)
-              SliverToBoxAdapter(
-                child: Padding(
+              title: isSearching
+              ? Padding(
                   padding: const EdgeInsets.all(12),
                   child: DebounceSearchBar(
                     hintText: 'Search accounts',
@@ -62,13 +51,23 @@ class AccountManageScreen extends ConsumerWidget {
                       ref.read(searchPatternProvider.notifier).state = null;
                     },
                   ),
-                ),
+                )
+              :const Text(
+                'Accounts manage',
               ),
-            // SliverToBoxAdapter(
-            //     child: TabBar(
-            //   labelColor: Theme.of(context).colorScheme.onSurface,
-            //   tabs: tabs,
-            // )),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    ref.read(isSearchingProvider.notifier).state = !isSearching;
+                  },
+                ),
+              ],
+              bottom: TabBar(
+                labelColor: Theme.of(context).colorScheme.onSurface,
+                tabs: tabs,
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -115,10 +114,9 @@ class AccountManageScreen extends ConsumerWidget {
               ),
             ),
           ],
-          body: const TabBarView(children: [
-            AccountList(tabIndex: 0),
-            AccountList(tabIndex: 1),
-          ]),
+          body: const TabBarView(
+            children: tabViews
+          ),
         ),
       ),
     );

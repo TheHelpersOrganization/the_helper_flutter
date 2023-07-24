@@ -20,7 +20,6 @@ import 'package:the_helper/src/features/authentication/presentation/login_screen
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
-import 'package:the_helper/src/features/menu/presentation/screens/menu_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_request_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
@@ -250,16 +249,6 @@ final routes = [
         path: AppRoute.news.path,
         name: AppRoute.news.name,
         builder: (_, __) => const DevelopingScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.menu.path,
-        name: AppRoute.menu.name,
-        builder: (_, __) => const MenuScreen(),
-      ),
-      GoRoute(
-        path: AppRoute.settings.path,
-        name: AppRoute.settings.name,
-        builder: (_, __) => const MenuScreen(),
       ),
       GoRoute(
         path: AppRoute.myOrganization.path,
@@ -717,10 +706,6 @@ enum AppRoute {
   accountRequestDetail(
     path: ':requestId',
     name: 'account-requests-detail',
-  ),
-  screenBuilderCanvas(
-    path: '/screen-builder',
-    name: 'screen-builder',
   ),
   ;
 

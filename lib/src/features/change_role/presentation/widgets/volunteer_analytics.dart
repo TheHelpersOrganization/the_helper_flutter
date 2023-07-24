@@ -21,19 +21,23 @@ class VolunteerAnalytics extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var f = NumberFormat.compact(locale: "en_US");
     return Column(   
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,   
+      mainAxisAlignment: MainAxisAlignment.start,   
       children: [
-        VolunteerAnalyticsSecondaryCard(
-          titleText: totalActivity.toString(),
-          metaText: '+${f.format(increasedActivity)}',
-          subtitleText: 'Activities Participated',
-          margin: const EdgeInsets.only(left: 2, bottom: 2),
+        Expanded(
+          child: VolunteerAnalyticsSecondaryCard(
+            titleText: totalActivity.toString(),
+            metaText: '+${f.format(increasedActivity)}',
+            subtitleText: 'Activities',
+            margin: const EdgeInsets.only(left: 2, bottom: 2),
+          ),
         ),
-        VolunteerAnalyticsSecondaryCard(
-          titleText: f.format(totalHour).toString(),
-          metaText: '+${f.format(increasedHour)} h',
-          subtitleText: 'Hours contributed',
-          margin: const EdgeInsets.only(left: 2, top: 2),
+        Expanded(
+          child: VolunteerAnalyticsSecondaryCard(
+            titleText: f.format(totalHour).toString(),
+            metaText: '+${f.format(increasedHour)}',
+            subtitleText: 'Hours',
+            margin: const EdgeInsets.only(left: 2, top: 2),
+          ),
         ),
       ],
     );

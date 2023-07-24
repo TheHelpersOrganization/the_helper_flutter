@@ -17,6 +17,12 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Blocked'),
 ];
 
+const List<Widget> tabViews = <Widget>[
+  CustomScrollList(tabIndex: AccountRequestStatus.pending),
+  CustomScrollList(tabIndex: AccountRequestStatus.completed),
+  CustomScrollList(tabIndex: AccountRequestStatus.blocked),
+];
+
 class AccountRequestManageScreen extends ConsumerWidget {
   const AccountRequestManageScreen({super.key});
 
@@ -34,7 +40,23 @@ class AccountRequestManageScreen extends ConsumerWidget {
             SliverAppBar(
               pinned: true,
               centerTitle: true,
-              title: const Text(
+              title: isSearching
+              ? Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: DebounceSearchBar(
+                    hintText: 'Search account requests',
+                    debounceDuration: const Duration(seconds: 1),
+                    small: true,
+                    onDebounce: (value) {
+                      ref.read(searchPatternProvider.notifier).state =
+                          value.trim().isNotEmpty ? value.trim() : null;
+                    },
+                    onClear: () {
+                      ref.read(searchPatternProvider.notifier).state = null;
+                    },
+                  ),
+                )
+              :const Text(
                 'Account requests manage',
               ),
               floating: true,
@@ -50,36 +72,25 @@ class AccountRequestManageScreen extends ConsumerWidget {
               labelColor: Theme.of(context).colorScheme.onSurface,
               tabs: tabs,)
             ),
-            if (isSearching)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: DebounceSearchBar(
-                    hintText: 'Search accounts request',
-                    debounceDuration: const Duration(seconds: 1),
-                    small: true,
-                    onDebounce: (value) {
-                      ref.read(searchPatternProvider.notifier).state =
-                          value.trim().isNotEmpty ? value.trim() : null;
-                    },
-                    onClear: () {
-                      ref.read(searchPatternProvider.notifier).state = null;
-                    },
-                  ),
-                ),
-              ),
-            // SliverToBoxAdapter(
-            //     child: TabBar(
-            //   labelColor: Theme.of(context).colorScheme.onSurface,
-            //   tabs: tabs,
-            // )),
           ],
           body: const TabBarView(
-            children: [
-              CustomScrollList(tabIndex: AccountRequestStatus.pending),
-              CustomScrollList(tabIndex: AccountRequestStatus.completed),
-              CustomScrollList(tabIndex: AccountRequestStatus.blocked),
-            ]),
+            children: tabViews
+            // .map((Widget e) {
+            //   return SafeArea(
+            //     top: false,
+            //     bottom: false,
+            //     child: Builder(builder: (context) {
+            //       return CustomScrollView(
+            //         slivers: <Widget>[
+            //           SliverFillRemaining(
+            //             child: e
+            //           )
+            //         ],
+            //       );
+            //     })
+            //   );
+            // }).toList(),
+          ),
         ),
       ),
     );

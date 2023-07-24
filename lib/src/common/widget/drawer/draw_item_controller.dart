@@ -33,6 +33,11 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.work_outline,
   ),
   DrawerItemModel(
+    route: AppRoute.organizationRegistration,
+    title: 'Create organization',
+    icon: Icons.group_add,
+  ),
+  DrawerItemModel(
     route: AppRoute.reportHistory,
     title: 'Report history',
     icon: Icons.timelapse,

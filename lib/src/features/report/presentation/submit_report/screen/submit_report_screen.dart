@@ -8,13 +8,12 @@ import 'package:the_helper/src/features/report/presentation/submit_report/contro
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/widget/file_picker/form_multiple_file_picker_field.dart';
-import '../../../domain/report_type.dart';
 import '../../widget/avatar_watcher.dart';
 
 class SubmitReportScreen extends ConsumerWidget {
   final int id;
   final String name;
-  final ReportType entityType;
+  final String entityType;
   final int? avatarId;
   final String? subText;
 

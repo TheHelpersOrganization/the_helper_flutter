@@ -37,15 +37,6 @@ class ReportRepository {
     return ReportModel.fromJson(res);
   }
 
-  Future<List<ReportModel>> getMy({
-    ReportQuery? query,
-  }) async {
-    final List<dynamic> res =
-        (await client.get('/something/', queryParameters: query?.toJson()))
-            .data['data'];
-    return res.map((e) => ReportModel.fromJson(e)).toList();
-  }
-
   Future<ReportModel> submitReport(ReportRequest report) async {
     final res = await client.post(
       '/reports',

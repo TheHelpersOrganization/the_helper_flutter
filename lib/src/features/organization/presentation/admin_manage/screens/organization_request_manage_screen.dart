@@ -16,6 +16,11 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Reject'),
 ];
 
+const List<Widget> tabViews = <Widget>[
+  CustomRequestScrollList(tabIndex: OrganizationStatus.pending),
+  CustomRequestScrollList(tabIndex: OrganizationStatus.rejected),
+];
+
 class OrganizationRequestManageScreen extends ConsumerWidget {
   const OrganizationRequestManageScreen({super.key});
 
@@ -33,7 +38,23 @@ class OrganizationRequestManageScreen extends ConsumerWidget {
             SliverAppBar(
               pinned: true,
               centerTitle: true,
-              title: const Text(
+              title: isSearching
+              ? Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: DebounceSearchBar(
+                    hintText: 'Search organization requests',
+                    debounceDuration: const Duration(seconds: 1),
+                    small: true,
+                    onDebounce: (value) {
+                      ref.read(searchPatternProvider.notifier).state =
+                          value.trim().isNotEmpty ? value.trim() : null;
+                    },
+                    onClear: () {
+                      ref.read(searchPatternProvider.notifier).state = null;
+                    },
+                  ),
+                )
+              :const Text(
                 'Organizations request manage',
               ),
               floating: true,
@@ -46,39 +67,28 @@ class OrganizationRequestManageScreen extends ConsumerWidget {
                 ),
               ],
               bottom: TabBar(
-              labelColor: Theme.of(context).colorScheme.onSurface,
-              tabs: tabs,
-            ),
-            ),
-            if (isSearching)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: DebounceSearchBar(
-                    hintText: 'Search organizations',
-                    debounceDuration: const Duration(seconds: 1),
-                    small: true,
-                    onDebounce: (value) {
-                      ref.read(searchPatternProvider.notifier).state =
-                          value.trim().isNotEmpty ? value.trim() : null;
-                    },
-                    onClear: () {
-                      ref.read(searchPatternProvider.notifier).state = null;
-                    },
-                  ),
-                ),
+                labelColor: Theme.of(context).colorScheme.onSurface,
+                tabs: tabs,
               ),
-            // SliverToBoxAdapter(
-            //     child: TabBar(
-            //   labelColor: Theme.of(context).colorScheme.onSurface,
-            //   tabs: tabs,
-            // )),
+            ),
           ],
-          body: const TabBarView(
-            children: [
-              CustomRequestScrollList(tabIndex: OrganizationStatus.pending),
-              CustomRequestScrollList(tabIndex: OrganizationStatus.rejected),
-            ]),
+          body: const TabBarView(children: tabViews
+          // .map((Widget e) {
+          //   return SafeArea(
+          //     top: false,
+          //     bottom: false,
+          //       child: Builder(builder: (context) {
+          //         return CustomScrollView(
+          //           slivers: <Widget>[
+          //             SliverFillRemaining(
+          //               child: e
+          //             )
+          //           ],
+          //         );
+          //       })
+          //     );
+          //   }).toList(),
+          ),
         ),
       ),
     );

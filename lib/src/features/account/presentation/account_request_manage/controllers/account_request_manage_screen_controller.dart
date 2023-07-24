@@ -2,9 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/account/data/account_request_repository.dart';
 import 'package:the_helper/src/features/account/domain/account_request.dart';
-import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
-import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 import '../../../domain/account_request_query.dart';
 
