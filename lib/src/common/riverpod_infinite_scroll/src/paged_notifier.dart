@@ -62,10 +62,12 @@ class PagedNotifier<PageKeyType, ItemType>
       return records;
     } catch (e, stacktrace) {
       if (mounted) {
-        state = state.copyWith(
-            error: errorBuilder != null
-                ? errorBuilder!(e)
-                : 'An error occurred. Please try again.');
+        await Future.delayed(const Duration(seconds: 0), () {
+          state = state.copyWith(
+              error: errorBuilder != null
+                  ? errorBuilder!(e)
+                  : 'An error occurred. Please try again.');
+        });
         debugPrint(e.toString());
         if (printStackTrace) {
           debugPrint(stacktrace.toString());
