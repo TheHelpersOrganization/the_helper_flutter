@@ -97,6 +97,11 @@ final List<DrawerItemModel> moderator = [
       );
     },
   ),
+  DrawerItemModel(
+    route: AppRoute.organizationRegistration,
+    title: 'Create organization',
+    icon: Icons.group_add,
+  ),
 ];
 
 const List<DrawerItemModel> admin = [
