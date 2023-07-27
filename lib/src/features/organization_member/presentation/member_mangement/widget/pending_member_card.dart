@@ -6,36 +6,40 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/bottom_sheet/custom_modal_botton_sheet.dart';
 import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/controller/organization_member_management_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import 'organization_member_management_controller.dart';
-
-class JoinedMemberCard extends ConsumerStatefulWidget {
+class PendingMemberCard extends ConsumerStatefulWidget {
   final OrganizationMember member;
+  final OrganizationMember myMember;
 
-  const JoinedMemberCard({
+  const PendingMemberCard({
     super.key,
     required this.member,
+    required this.myMember,
   });
 
   @override
-  ConsumerState<JoinedMemberCard> createState() => _MemberCardState();
+  ConsumerState<PendingMemberCard> createState() => _PendingMemberCardState();
 }
 
-class _MemberCardState extends ConsumerState<JoinedMemberCard> {
-  Future<dynamic> showRemoveDialog() {
+class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
+  final reasonTextController = TextEditingController();
+
+  Future<dynamic> showApproveDialog() {
     OrganizationMember member = widget.member;
 
     return showDialog(
       context: context,
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
-        titleText: 'Remove Member',
+        titleText: 'Approve Member',
         content: RichText(
           text: TextSpan(
-            text: 'Do you want to remove member ',
+            text: 'Do you want to approve member ',
             children: [
               TextSpan(
                 text: getMemberName(),
@@ -49,10 +53,10 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
         ),
         onConfirm: () async {
           context.pop();
-          showLoadingDialog();
+          showLoadingDialog(isApproving: true);
           await ref
-              .read(removeMemberControllerProvider.notifier)
-              .remove(member.organization!.id!, member.id);
+              .read(approveMemberControllerProvider.notifier)
+              .approve(member.organization!.id!, member.id);
           if (context.mounted) {
             context.pop();
           }
@@ -61,13 +65,49 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
     );
   }
 
-  void showLoadingDialog() {
+  Future<dynamic> showRejectDialog() {
+    OrganizationMember member = widget.member;
+
+    return showDialog(
+      context: context,
+      useRootNavigator: false,
+      builder: (dialogContext) => ConfirmationDialog(
+        titleText: 'Reject Member',
+        content: Column(children: [
+          TextField(
+            controller: reasonTextController,
+            decoration: const InputDecoration(
+              labelText: 'Reason',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: 3,
+          ),
+        ]),
+        onConfirm: () async {
+          context.pop();
+          showLoadingDialog(isApproving: false);
+          String reason = reasonTextController.text;
+          await ref.read(rejectMemberControllerProvider.notifier).reject(
+                member.organization!.id!,
+                member.id,
+                rejectionReason: reason,
+              );
+          reasonTextController.clear();
+          if (context.mounted) {
+            context.pop();
+          }
+        },
+      ),
+    );
+  }
+
+  void showLoadingDialog({required bool isApproving}) {
     showDialog(
       context: context,
       barrierDismissible: true,
       useRootNavigator: false,
-      builder: (context) => const LoadingDialog(
-        titleText: 'Removing member...',
+      builder: (context) => LoadingDialog(
+        titleText: isApproving ? 'Approving member...' : 'Rejecting member...',
       ),
     );
   }
@@ -82,6 +122,8 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
 
   void showOptionsSheet() {
     OrganizationMember member = widget.member;
+    OrganizationMember myMember = widget.myMember;
+
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -97,19 +139,33 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
                   context.pushNamed(
                     AppRoute.otherProfile.name,
                     pathParameters: {
-                      'userId': member.accountId.toString(),
+                      'userId': member.id.toString(),
                     },
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.person_remove_outlined),
-                title: const Text('Remove member'),
-                onTap: () {
-                  context.pop();
-                  showRemoveDialog();
-                },
-              ),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != widget.myMember.id)
+                ListTile(
+                  leading: const Icon(Icons.check_circle_outline),
+                  title: const Text('Approve member'),
+                  onTap: () {
+                    context.pop();
+                    showApproveDialog();
+                  },
+                ),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != widget.myMember.id)
+                ListTile(
+                  leading: const Icon(Icons.cancel_outlined),
+                  title: const Text('Reject member'),
+                  onTap: () {
+                    context.pop();
+                    showRejectDialog();
+                  },
+                ),
             ],
           ),
         );
@@ -121,7 +177,7 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
   Widget build(BuildContext context) {
     OrganizationMember member = widget.member;
     String memberName = getMemberName();
-    final joinedAt = member.updatedAt == null
+    final pendingAt = member.updatedAt == null
         ? 'Unknown'
         : DateFormat('dd/MM/yyyy').format(member.updatedAt!);
 
@@ -156,7 +212,7 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
           ),
           const SizedBox(width: 4),
           Text(
-            'Joined at $joinedAt',
+            ' Request at $pendingAt',
             //style: context.theme.textTheme.bodySmall,
           ),
         ],

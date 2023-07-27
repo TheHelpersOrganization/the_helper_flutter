@@ -4,7 +4,7 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
-import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_controller.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/controller/organization_member_management_controller.dart';
 import 'package:the_helper/src/utils/member.dart';
 
 class RemoveMemberDialog extends ConsumerWidget {

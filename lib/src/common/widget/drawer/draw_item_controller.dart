@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_model.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
+import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -163,3 +165,10 @@ List<DrawerItemModel> getDrawerItem(Role role) {
 
 final dropDownControllerProvider =
     StateProvider.autoDispose<bool>((ref) => false);
+
+final currentOrganizationProvider = FutureProvider((ref) =>
+    ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
+
+final joinedOrganizationsProvider = FutureProvider(
+  (ref) => ref.watch(modOrganizationRepositoryProvider).getOwnedOrganizations(),
+);

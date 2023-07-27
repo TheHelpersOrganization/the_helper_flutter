@@ -32,8 +32,6 @@ class ModOrganizationRepository {
     return Organization.fromJson(res.data['data']);
   }
 
-  
-
   Future<Organization> create(OrganizationRequestModel organization) async {
     final res =
         await client.post('/organizations', data: organization.toJson());
@@ -45,7 +43,7 @@ class ModOrganizationRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 ModOrganizationRepository modOrganizationRepository(
         ModOrganizationRepositoryRef ref) =>
     ModOrganizationRepository(client: ref.watch(dioProvider));

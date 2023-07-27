@@ -4,6 +4,8 @@ import 'package:the_helper/src/features/activity/application/activity_service.da
 import 'package:the_helper/src/features/activity/data/activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
+import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
+import 'package:the_helper/src/features/organization_member/domain/get_organization_member_query.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
@@ -77,6 +79,18 @@ final getActivityAndShiftsProvider =
     );
   },
 );
+
+final myMemberProvider = FutureProvider.autoDispose((ref) async {
+  return ref.watch(organizationMemberRepositoryProvider).getMe(
+        organizationId:
+            (await ref.watch(currentOrganizationProvider.future))!.id,
+        query: GetOrganizationMemberQuery(
+          include: [
+            GetOrganizationMemberQueryInclude.role,
+          ],
+        ),
+      );
+});
 
 class DeleteActivityController extends StateNotifier<AsyncValue<void>> {
   final AutoDisposeStateNotifierProviderRef ref;

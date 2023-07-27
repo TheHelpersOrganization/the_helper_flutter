@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -27,10 +26,19 @@ class OrganizationDetailScreen extends ConsumerWidget {
     final org = ref.watch(getOrganizationProvider(orgId));
 
     return org.when(
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
+      skipLoadingOnRefresh: false,
+      loading: () => const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
-      error: (error, __) => Text('Error: $error'),
+      error: (error, __) => Scaffold(
+        body: CustomErrorWidget(
+          onRetry: () => ref.invalidate(
+            getOrganizationProvider(orgId),
+          ),
+        ),
+      ),
       data: (org) => Scaffold(
         appBar: AppBar(
           leading: IconButton(

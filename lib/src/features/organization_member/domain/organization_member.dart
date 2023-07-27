@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 part 'organization_member.freezed.dart';
@@ -17,8 +18,15 @@ class OrganizationMember with _$OrganizationMember {
     DateTime? updatedAt,
     Profile? profile,
     Organization? organization,
+    List<OrganizationMemberRole>? roles,
   }) = _OrganizationMember;
 
   factory OrganizationMember.fromJson(Map<String, dynamic> json) =>
       _$OrganizationMemberFromJson(json);
+}
+
+extension OrganizationMemberX on OrganizationMember {
+  bool hasRole(OrganizationMemberRoleType role) {
+    return roles?.any((element) => element.name.weight >= role.weight) ?? false;
+  }
 }
