@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
@@ -50,26 +49,26 @@ class ChangeRoleScreen extends ConsumerWidget {
               ],
             ),
             const Expanded(child: RoleChoice()),
-            Padding(
-                padding: EdgeInsets.only(
-                  bottom: context.mediaQuery.size.height * 0.1,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not sure what to do?',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'See here',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                )),
+            // Padding(
+            //     padding: EdgeInsets.only(
+            //       bottom: context.mediaQuery.size.height * 0.1,
+            //     ),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Text(
+            //           'Not sure what to do?',
+            //           style: Theme.of(context).textTheme.bodyMedium,
+            //         ),
+            //         TextButton(
+            //           onPressed: () {},
+            //           child: const Text(
+            //             'See here',
+            //             style: TextStyle(color: Colors.blue),
+            //           ),
+            //         ),
+            //       ],
+            //     )),
           ],
         ),
       ),

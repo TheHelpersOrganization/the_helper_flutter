@@ -96,14 +96,14 @@ class _MyOrganizationScreenState extends ConsumerState<MyOrganizationScreen>
         appBar: AppBar(
           title: const Text('My Organizations'),
           centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () => context.pushNamed(
-                AppRoute.organizationRegistration.name
-              ), 
-              icon: const Icon(Icons.group_add)
-            )
-          ],
+          // actions: [
+          //   IconButton(
+          //     onPressed: () => context.pushNamed(
+          //       AppRoute.organizationRegistration.name
+          //     ), 
+          //     icon: const Icon(Icons.group_add)
+          //   )
+          // ],
           bottom: TabBar(
             controller: _tabController,
             tabs: tab.map((e) => Tab(text: e.tabTitle)).toList(),

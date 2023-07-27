@@ -15,11 +15,12 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
-import 'package:the_helper/src/features/report/domain/report_type.dart';
 import 'package:the_helper/src/features/report/presentation/submit_report/screen/submit_report_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
+
+import '../../../../report/domain/report_query.dart';
 
 class ChatScreen extends ConsumerWidget {
   final int chatId;

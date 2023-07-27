@@ -158,31 +158,34 @@ class VolunteerView extends ConsumerWidget {
                 const SizedBox(
                   height: 24,
                 ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: VolunteerAnalyticsMainCard(skillList: data.skills),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: volunteerData.when(
-                      data: (data) => VolunteerAnalytics(
-                        totalActivity: data.totalActivity,
-                        increasedActivity: data.increasedActivity,
-                        totalHour: data.totalHour,
-                        increasedHour: data.increasedHour,
-                      ),
-                      loading: () => VolunteerDataHolder(
-                        itemCount: 2,
-                        itemWidth: context.mediaQuery.size.width * 0.38,
-                        itemHeight: 90,
-                      ),
-                      error: (_, __) => const ErrorScreen(),
+              SizedBox(
+                height: 230,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: VolunteerAnalyticsMainCard(skillList: data.skills),
                     ),
-                  ),
-                ],
+                    Flexible(
+                      flex: 2,
+                      child: volunteerData.when(
+                        data: (data) => VolunteerAnalytics(
+                          totalActivity: data.totalActivity,
+                          increasedActivity: data.increasedActivity,
+                          totalHour: data.totalHour,
+                          increasedHour: data.increasedHour,
+                        ),
+                        loading: () => VolunteerDataHolder(
+                          itemCount: 2,
+                          itemWidth: context.mediaQuery.size.width * 0.38,
+                          itemHeight: 90,
+                        ),
+                        error: (_, __) => const ErrorScreen(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 48,

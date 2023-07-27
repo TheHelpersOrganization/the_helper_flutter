@@ -418,12 +418,7 @@ class _OrganizationRegistrationScreenState
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            }
-            else{context.goNamed(AppRoute.home.name);}
-          },
+          onPressed: () =>context.goNamed(AppRoute.home.name),
         ),
         title: const Text('Register Organization'),
         centerTitle: true,

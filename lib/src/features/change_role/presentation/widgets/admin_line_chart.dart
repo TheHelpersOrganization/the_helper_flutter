@@ -28,7 +28,7 @@ class AdminLineChart extends StatelessWidget {
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
         spots: activityCount
-            .map((e) => FlSpot((e.month-1) as double, e.count as double))
+            .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
             .toList(),
       ),
     ];

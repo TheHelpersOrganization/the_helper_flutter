@@ -15,6 +15,11 @@ const List<Tab> tabs = <Tab>[
   Tab(text: 'Banned'),
 ];
 
+const List<Widget> tabViews = <Widget> [
+  CustomScrollList(tabIndex: false),
+  CustomScrollList(tabIndex: true),
+];
+
 class OrganizationAdminManageScreen extends ConsumerWidget {
   const OrganizationAdminManageScreen({super.key});
 
@@ -32,7 +37,23 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
             SliverAppBar(
               pinned: true,
               centerTitle: true,
-              title: const Text(
+              title: isSearching
+              ? Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: DebounceSearchBar(
+                    hintText: 'Search organizations',
+                    debounceDuration: const Duration(seconds: 1),
+                    small: true,
+                    onDebounce: (value) {
+                      ref.read(searchPatternProvider.notifier).state =
+                          value.trim().isNotEmpty ? value.trim() : null;
+                    },
+                    onClear: () {
+                      ref.read(searchPatternProvider.notifier).state = null;
+                    },
+                  ),
+                )
+              :const Text(
                 'Organizations manage',
               ),
               floating: true,
@@ -49,35 +70,25 @@ class OrganizationAdminManageScreen extends ConsumerWidget {
               tabs: tabs,
             ),
             ),
-            if (isSearching)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: DebounceSearchBar(
-                    hintText: 'Search organizations',
-                    debounceDuration: const Duration(seconds: 1),
-                    small: true,
-                    onDebounce: (value) {
-                      ref.read(searchPatternProvider.notifier).state =
-                          value.trim().isNotEmpty ? value.trim() : null;
-                    },
-                    onClear: () {
-                      ref.read(searchPatternProvider.notifier).state = null;
-                    },
-                  ),
-                ),
-              ),
-            // SliverToBoxAdapter(
-            //     child: TabBar(
-            //   labelColor: Theme.of(context).colorScheme.onSurface,
-            //   tabs: tabs,
-            // )),
           ],
           body: const TabBarView(
-            children: [
-              CustomScrollList(tabIndex: false),
-              CustomScrollList(tabIndex: true),
-            ]),
+            children: tabViews
+            // .map((Widget e) {
+            //   return SafeArea(
+            //     top: false,
+            //     bottom: false,
+            //     child: Builder(builder: (context) {
+            //       return CustomScrollView(
+            //         slivers: <Widget>[
+            //           SliverFillRemaining(
+            //             child: e
+            //           )
+            //         ],
+            //       );
+            //     })
+            //   );
+            // }).toList(),
+          ),
         ),
       ),
     );

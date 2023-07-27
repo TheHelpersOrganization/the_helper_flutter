@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/report/domain/report_status.dart';
 import 'package:the_helper/src/features/report/presentation/report_detail/screen/report_reply_screen.dart';
 
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';
@@ -14,7 +13,7 @@ import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
 import '../../../domain/report_model.dart';
-import '../../../domain/report_type.dart';
+import '../../../domain/report_query.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
@@ -130,7 +129,7 @@ class UserReportDetailScreen extends ConsumerWidget {
                                       Theme.of(context).colorScheme.primary)),
                               icon: const Icon(Icons.visibility_outlined),
                               label: Text(
-                                'Go to ${data.type.name}',
+                                'Go to ${data.type}',
                               ))
                         ],
                       ),
@@ -138,69 +137,78 @@ class UserReportDetailScreen extends ConsumerWidget {
                     for (var i in data.messages!) ReportMessageWidget(data: i),
                     data.status == ReportStatus.pending ||
                             data.status == ReportStatus.reviewing
-                    ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              // isLoading: state.isLoading,
-                              loadingText: "Processing...",
-                              onPressed: () async {
-                                await ref
-                                    .watch(reportDetailControllerProvider(
-                                            id: data.id!)
-                                        .notifier)
-                                    .cancelReport();
-                                if (context.mounted) {
-                                  context.pop();
-                                }
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Theme.of(context).colorScheme.error)),
-                              child: const Text('Cancel'),
-                            ),
-                          ),
-                          SizedBox(
-                            width: context.mediaQuery.size.width * 0.06,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: PrimaryButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                      return ReportReplyScreen(
-                                          id: data.id!, title: data.title);
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: PrimaryButton(
+                                    // isLoading: state.isLoading,
+                                    loadingText: "Processing...",
+                                    onPressed: () async {
+                                      await ref
+                                          .watch(reportDetailControllerProvider(
+                                                  id: data.id!)
+                                              .notifier)
+                                          .cancelReport();
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
                                     },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 25)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .error)),
+                                    child: const Text('Cancel'),
                                   ),
-                                );
-                              },
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      const EdgeInsets.symmetric(vertical: 25)),
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      Theme.of(context).colorScheme.onSurface)),
-                              child: const Text('Reply'),
+                                ),
+                                SizedBox(
+                                  width: context.mediaQuery.size.width * 0.06,
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: PrimaryButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ReportReplyScreen(
+                                                id: data.id!,
+                                                title: data.title);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all(
+                                            const EdgeInsets.symmetric(
+                                                vertical: 25)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface)),
+                                    child: const Text('Reply'),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ) : const SizedBox(),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               );
             }));
   }
-  Future goTo(ReportModel data, BuildContext context) {
+
+  Future? goTo(ReportModel data, BuildContext context) {
     switch (data.type) {
       case ReportType.account:
         return context.pushNamed(
@@ -221,5 +229,6 @@ class UserReportDetailScreen extends ConsumerWidget {
           'activityId': data.reportedActivity!.id.toString(),
         });
     }
+    return null;
   }
 }

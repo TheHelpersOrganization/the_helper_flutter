@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/report/domain/report_status.dart';
 import 'package:the_helper/src/features/report/presentation/report_detail/screen/report_reply_screen.dart';
 
 import 'package:the_helper/src/features/report/presentation/widget/report_message_widget.dart';
@@ -14,7 +13,7 @@ import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
 import '../../../domain/report_model.dart';
-import '../../../domain/report_type.dart';
+import '../../../domain/report_query.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
 
@@ -130,7 +129,7 @@ class ReportDetailScreen extends ConsumerWidget {
                                       Theme.of(context).colorScheme.primary)),
                               icon: const Icon(Icons.visibility_outlined),
                               label: Text(
-                                'Go to ${data.type.name}',
+                                'Go to ${data.type}',
                               ))
                         ],
                       ),
@@ -239,7 +238,7 @@ class ReportDetailScreen extends ConsumerWidget {
             }));
   }
 
-  Future goTo(ReportModel data, BuildContext context) {
+  Future? goTo(ReportModel data, BuildContext context) {
     switch (data.type) {
       case ReportType.account:
         return context.pushNamed(
@@ -260,5 +259,6 @@ class ReportDetailScreen extends ConsumerWidget {
           'activityId': data.reportedActivity!.id.toString(),
         });
     }
+    return null;
   }
 }

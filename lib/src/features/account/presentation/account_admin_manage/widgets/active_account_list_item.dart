@@ -60,12 +60,48 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
                 .ban(account.id!);
 
             if (context.mounted) {
-              print(res);
+              if (res == null) {
+                showErrorDialog();
+              }
               context.pop();
             }
             ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));
           }),
     );
+  }
+
+  void showErrorDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      useRootNavigator: false,
+      builder: (dialogContext) => SimpleDialog(
+        alignment: Alignment.center,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 24,
+        ),
+        children: [
+          Center(
+            child: Text(
+              'Something went wrong',
+              style: TextStyle(
+                color: dialogContext.theme.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          FilledButton(
+            onPressed: () {
+              dialogContext.pop();
+            },
+            child: const Text('Ok'),
+          ),
+        ],
+      ));
   }
 
   // show delete dialog
@@ -98,7 +134,9 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
                 .watch(accountManageControllerProvider.notifier)
                 .delete(account.id!);
             if (context.mounted) {
-              print(res);
+              if (res == null) {
+                showErrorDialog();
+              }
               context.pop();
             }
             ref.invalidate(scrollPagingControlNotifier(widget.tabIndex));

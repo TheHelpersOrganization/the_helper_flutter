@@ -13,12 +13,14 @@ class OrganizationOption {
   final String name;
   final int? logoId;
   final bool isCurrent;
+  final bool lastItem;
 
   const OrganizationOption({
     required this.id,
     required this.name,
     this.logoId,
     this.isCurrent = false,
+    this.lastItem = false,
   });
 }
 
@@ -90,7 +92,9 @@ class SwitchOrganizationDialog extends ConsumerWidget {
     } else {
       child = SingleChildScrollView(
         child: Column(
-          children: options.map(
+          children: [
+            Column(
+            children:options.map(
             (e) {
               final bool isSelected;
               if (radioSelectedOrganizationId != null) {
@@ -118,7 +122,14 @@ class SwitchOrganizationDialog extends ConsumerWidget {
                     : null,
               );
             },
-          ).toList(),
+          ).toList()),
+          ListTile(
+            selected: true,
+            dense: true,
+            title: const Text('Make a new one'),
+            leading: const Icon(Icons.add),
+            onTap: () => context.goNamed(AppRoute.organizationRegistration.name),
+          )],
         ),
       );
     }
