@@ -26,7 +26,10 @@ import 'package:the_helper/src/features/organization/presentation/my/my_organiza
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
-import 'package:the_helper/src/features/organization_member/presentation/member_mangement/organization_member_management_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_success_screen.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/screen/organization_member_management_screen.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/screen/organization_member_role_assignment_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_screen.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_setting/profile_setting_screen.dart';
@@ -88,6 +91,17 @@ final routes = [
         name: AppRoute.organizationMembersManagement.name,
         builder: (context, state) =>
             const OrganizationMembersManagementScreen(),
+        routes: [
+          GoRoute(
+            path: AppRoute.organizationMemberRoleAssignment.path,
+            name: AppRoute.organizationMemberRoleAssignment.name,
+            builder: (context, state) => OrganizationMemberRoleAssignmentScreen(
+              memberId: int.parse(
+                state.pathParameters['memberId']!,
+              ),
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoute.organizationActivityListManagement.path,
@@ -282,22 +296,21 @@ final routes = [
         builder: (context, state) => const OrganizationRequestManageScreen(),
       ),
       GoRoute(
-        path: AppRoute.accountRequestManage.path,
-        name: AppRoute.accountRequestManage.name,
-        builder: (context, state) => const AccountRequestManageScreen(),
-        routes: [
-          GoRoute(
-            path: AppRoute.accountRequestDetail.path,
-            name: AppRoute.accountRequestDetail.name,
-            builder: (_, state) => AccountRequestDetailScreen(
-              requestId: int.parse(
-                state
-                    .pathParameters[AppRoute.accountRequestDetail.path.substring(1)]!,
+          path: AppRoute.accountRequestManage.path,
+          name: AppRoute.accountRequestManage.name,
+          builder: (context, state) => const AccountRequestManageScreen(),
+          routes: [
+            GoRoute(
+              path: AppRoute.accountRequestDetail.path,
+              name: AppRoute.accountRequestDetail.name,
+              builder: (_, state) => AccountRequestDetailScreen(
+                requestId: int.parse(
+                  state.pathParameters[
+                      AppRoute.accountRequestDetail.path.substring(1)]!,
+                ),
               ),
             ),
-          ),
-        ]
-      ),
+          ]),
       GoRoute(
           path: AppRoute.reportManage.path,
           name: AppRoute.reportManage.name,
@@ -324,15 +337,15 @@ final routes = [
               name: AppRoute.reportHistoryDetail.name,
               builder: (_, state) => UserReportDetailScreen(
                 requestId: int.parse(
-                  state
-                      .pathParameters[AppRoute.reportHistoryDetail.path.substring(1)]!,
+                  state.pathParameters[
+                      AppRoute.reportHistoryDetail.path.substring(1)]!,
                 ),
               ),
             ),
           ]),
       accountRoutes,
       profileRoutes,
-      organizationRoutes,
+      ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
     ],
@@ -371,32 +384,37 @@ final profileRoutes = GoRoute(
   ],
 );
 
-final organizationRoutes = GoRoute(
-  path: AppRoute.organizationManage.path,
-  name: AppRoute.organizationManage.name,
-  builder: (_, __) => const DevelopingScreen(),
-  routes: [
-    GoRoute(
-      path: AppRoute.organizationSearch.path,
-      name: AppRoute.organizationSearch.name,
-      builder: (_, __) => const OrganizationSearchScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.organizationRegistration.path,
-      name: AppRoute.organizationRegistration.name,
-      builder: (_, __) => const OrganizationRegistrationScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.organization.path,
-      name: AppRoute.organization.name,
-      builder: (_, state) => OrganizationDetailScreen(
-        orgId: int.parse(
-          state.pathParameters[AppRoute.organization.path.substring(1)]!,
-        ),
+final organizationRoutes = [
+  GoRoute(
+    path: AppRoute.organizationSearch.path,
+    name: AppRoute.organizationSearch.name,
+    builder: (_, __) => const OrganizationSearchScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.organizationRegistration.path,
+    name: AppRoute.organizationRegistration.name,
+    builder: (_, __) => const OrganizationRegistrationScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.organizationTransferOwnership.path,
+    name: AppRoute.organizationTransferOwnership.name,
+    builder: (_, __) => const OrganizationTransferOwnershipScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.organizationTransferOwnershipSuccess.path,
+    name: AppRoute.organizationTransferOwnershipSuccess.name,
+    builder: (_, __) => const OrganizationTransferOwnershipSuccessScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.organization.path,
+    name: AppRoute.organization.name,
+    builder: (_, state) => OrganizationDetailScreen(
+      orgId: int.parse(
+        state.pathParameters['orgId']!,
       ),
     ),
-  ],
-);
+  ),
+];
 
 final shiftRoutes = [
   GoRoute(
@@ -574,29 +592,41 @@ enum AppRoute {
   ),
 
   // Org
-  organizationManage(
-    path: '/organization',
-    name: 'organization-manage',
-  ),
+  // organizationManage(
+  //   path: '/organization',
+  //   name: 'organization-manage',
+  // ),
   organizationRequestsManage(
     path: '/organization-requests',
     name: 'organization-requests-manage',
   ),
   organization(
-    path: ':orgId',
+    path: '/organization/:orgId',
     name: 'organization',
   ),
   organizationSearch(
-    path: 'search',
+    path: '/organization/search',
     name: 'organization-search',
   ),
   organizationRegistration(
-    path: 'registration',
+    path: '/organization/registration',
     name: 'organization-registration',
   ),
   organizationMembersManagement(
     path: '/organization-members',
     name: 'organization-members',
+  ),
+  organizationMemberRoleAssignment(
+    path: ':memberId/roles',
+    name: 'organization-member-role-assignment',
+  ),
+  organizationTransferOwnership(
+    path: '/organization/transfer-ownership',
+    name: 'organization-transfer-ownership',
+  ),
+  organizationTransferOwnershipSuccess(
+    path: '/organization/transfer-ownership/success',
+    name: 'organization-transfer-ownership-success',
   ),
 
   activityManage(

@@ -12,6 +12,7 @@ class ConfirmationDialog extends StatelessWidget {
   final String confirmText;
   final String cancelText;
   final bool showActionCanNotBeUndoneText;
+  final bool hideConfirmButton;
 
   const ConfirmationDialog({
     super.key,
@@ -25,6 +26,7 @@ class ConfirmationDialog extends StatelessWidget {
     this.confirmText = 'Confirm',
     this.cancelText = 'Cancel',
     this.showActionCanNotBeUndoneText = false,
+    this.hideConfirmButton = false,
   });
 
   @override
@@ -97,13 +99,15 @@ class ConfirmationDialog extends StatelessWidget {
           },
           child: Text(cancelText),
         ),
-        const SizedBox(
-          width: 8,
-        ),
-        FilledButton(
-          onPressed: onConfirm,
-          child: Text(confirmText),
-        )
+        if (!hideConfirmButton) ...[
+          const SizedBox(
+            width: 8,
+          ),
+          FilledButton(
+            onPressed: onConfirm,
+            child: Text(confirmText),
+          ),
+        ]
       ],
     );
   }

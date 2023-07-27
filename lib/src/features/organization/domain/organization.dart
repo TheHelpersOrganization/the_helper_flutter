@@ -12,7 +12,8 @@ part 'organization.g.dart';
 class Organization with _$Organization {
   @JsonSerializable(includeIfNull: false)
   factory Organization({
-    int? id,
+    required int id,
+    required int ownerId,
     required OrganizationStatus status,
     @Default(false) bool isDisabled,
     required String name,
