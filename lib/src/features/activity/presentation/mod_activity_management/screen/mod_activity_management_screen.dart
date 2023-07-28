@@ -10,6 +10,8 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/delete_activity_dialog.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/mod_activity_shift_management_screen.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
+import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift/controller/shift_controller.dart';
@@ -53,6 +55,13 @@ class _ModActivityManagementState
     final tab = ref.watch(currentTabProvider);
     final extendedActivity =
         ref.watch(getActivityAndShiftsProvider(widget.activityId));
+    final myMember = ref.watch(myMemberProvider).valueOrNull;
+    final canManageActivity = myMember?.hasRole(
+                OrganizationMemberRoleType.organizationActivityManager) ==
+            true ||
+        extendedActivity.valueOrNull?.activity.activityManagerIds
+                ?.contains(myMember?.accountId) ==
+            true;
 
     ref.listen<AsyncValue>(
       deleteShiftControllerProvider,
@@ -71,7 +80,7 @@ class _ModActivityManagementState
     return Scaffold(
       drawer: const AppDrawer(),
       floatingActionButton: extendedActivity.maybeWhen(
-        data: (data) => tab == TabType.overview
+        data: (data) => tab == TabType.overview || !canManageActivity
             ? null
             : FloatingActionButton.extended(
                 onPressed: () {
@@ -103,60 +112,62 @@ class _ModActivityManagementState
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 floating: true,
-                actions: [
-                  PopupMenuButton(
-                    tooltip: 'Edit activity content',
-                    position: PopupMenuPosition.under,
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: const Text('Edit basic info'),
-                          onTap: () => context.pushNamed(
-                            AppRoute.activityEdit.name,
-                            pathParameters: {
-                              'activityId': activityId.toString()
-                            },
-                          ),
+                actions: canManageActivity
+                    ? [
+                        PopupMenuButton(
+                          tooltip: 'Edit activity content',
+                          position: PopupMenuPosition.under,
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: const Text('Edit basic info'),
+                                onTap: () => context.pushNamed(
+                                  AppRoute.activityEdit.name,
+                                  pathParameters: {
+                                    'activityId': activityId.toString()
+                                  },
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: const Text('Edit contacts'),
+                                onTap: () => context.pushNamed(
+                                  AppRoute.activityEditContact.name,
+                                  pathParameters: {
+                                    'activityId': activityId.toString()
+                                  },
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: const Text('Edit managers'),
+                                onTap: () => context.pushNamed(
+                                  AppRoute.activityEditManager.name,
+                                  pathParameters: {
+                                    'activityId': activityId.toString()
+                                  },
+                                ),
+                              ),
+                            ];
+                          },
+                          icon: const Icon(Icons.edit_outlined),
                         ),
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: const Text('Edit contacts'),
-                          onTap: () => context.pushNamed(
-                            AppRoute.activityEditContact.name,
-                            pathParameters: {
-                              'activityId': activityId.toString()
-                            },
-                          ),
+                        IconButton(
+                          tooltip: 'Delete activity',
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              useRootNavigator: false,
+                              builder: (context) => DeleteActivityDialog(
+                                activityId: activityId,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.delete_outline),
                         ),
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: const Text('Edit managers'),
-                          onTap: () => context.pushNamed(
-                            AppRoute.activityEditManager.name,
-                            pathParameters: {
-                              'activityId': activityId.toString()
-                            },
-                          ),
-                        ),
-                      ];
-                    },
-                    icon: const Icon(Icons.edit_outlined),
-                  ),
-                  IconButton(
-                    tooltip: 'Delete activity',
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        useRootNavigator: false,
-                        builder: (context) => DeleteActivityDialog(
-                          activityId: activityId,
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.delete_outline),
-                  ),
-                ],
+                      ]
+                    : null,
               ),
             ],
             body: Padding(

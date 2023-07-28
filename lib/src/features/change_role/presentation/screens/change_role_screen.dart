@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
+import 'package:the_helper/src/features/change_role/presentation/controllers/change_role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/role_option.dart';
-import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ChangeRoleScreen extends ConsumerWidget {
   const ChangeRoleScreen({Key? key}) : super(key: key);
@@ -86,102 +83,86 @@ class RoleChoice extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final roles = ref.watch(authServiceProvider).valueOrNull!.account.roles;
-    final currentOrganization = ref.watch(currentOrganizationProvider);
-    final currentRole = ref.watch(setRoleControllerProvider);
-    // Watch owned organizations so that dialog does not have to reload them
+    final changeRoleDataState = ref.watch(changeRoleDataProvider);
 
-    ref.listen<AsyncValue>(
-      setRoleControllerProvider,
-      (_, state) => state.showSnackbarOnError(context),
-    );
-    ref.listen<AsyncValue>(
-      currentOrganizationProvider,
-      (_, state) => state.showSnackbarOnError(context),
-    );
-
-    if (currentOrganization.isLoading || currentRole.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (currentOrganization.hasError || currentRole.hasError) {
-      return const ErrorScreen();
-    }
-
-    final organization = currentOrganization.value;
-
-    return currentRole.when(
+    return changeRoleDataState.when(
+      skipLoadingOnRefresh: false,
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
-      error: (_, __) => const ErrorScreen(),
-      data: (data) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 10,),
-          data != Role.volunteer
-          ? RoleOption(
-            optionColor: Colors.purple,
-            title: 'Volunteer',
-            description:
-                'Join thousands of activities, by trusted organizations',
-            role: Role.volunteer,
-            image: SvgPicture.asset(
-              'assets/images/role_volunteer.svg',
-              fit: BoxFit.fitWidth,
-            ),
-          ) : const SizedBox(),
-
-          //Second Option
-          const SizedBox(height: 10,),
-          roles.contains(Role.moderator) && data != Role.moderator
-          ? RoleOption(
-              optionColor: Colors.red,
-              title: 'Organization',
-              description:
-                  'Manage your organization activities, members and more',
-              role: Role.moderator,
-              image: SvgPicture.asset(
-                'assets/images/role_mod.svg',
-                fit: BoxFit.fitWidth,
-              ),
-              onTap: () async {
-                if (organization == null) {
-                  await showDialog(
-                    context: context,
-                    useRootNavigator: false,
-                    builder: (context) => const SwitchOrganizationDialog(),
-                  );
-                  return;
-                }
-                ref
-                    .read(setRoleControllerProvider.notifier)
-                    .setCurrentRole(Role.moderator, navigateToHome: true);
-                context.goNamed(AppRoute.home.name);
-              },
-            )
-          : const SizedBox(),
-
-          //Third Option
-          const SizedBox(height: 10,),
-          roles.contains(Role.admin) && data != Role.admin
-          ? RoleOption(
-              optionColor: Colors.blue,
-              title: 'Admin',
-              description: 'Dashboard for Volunteer App Admin',
-              role: Role.admin,
-              image: SvgPicture.asset(
-                'assets/images/role_admin.svg',
-                fit: BoxFit.fitWidth,
-              ),
-            )
-          : const SizedBox(),
-          const SizedBox(height: 10,),
-        ],
+      error: (_, __) => CustomErrorWidget(
+        onRetry: () => ref.invalidate(changeRoleDataProvider),
       ),
+      data: (data) {
+        final roles = data.roles;
+        final currentRole = data.currentRole;
+        final joinedOrganizations = data.joinedOrganizations;
+        final currentOrganization = data.currentOrganization;
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            currentRole != Role.volunteer
+                ? RoleOption(
+                    optionColor: Colors.purple,
+                    title: 'Volunteer',
+                    description:
+                        'Join thousands of activities, by trusted organizations',
+                    role: Role.volunteer,
+                    image: SvgPicture.asset(
+                      'assets/images/role_volunteer.svg',
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
+                : const SizedBox(),
+
+            //Second Option
+            joinedOrganizations.isNotEmpty && currentRole != Role.moderator
+                ? RoleOption(
+                    optionColor: Colors.red,
+                    title: 'Organization',
+                    description:
+                        'Manage your organization activities, members and more',
+                    role: Role.moderator,
+                    image: SvgPicture.asset(
+                      'assets/images/role_mod.svg',
+                      fit: BoxFit.fitWidth,
+                    ),
+                    onTap: () async {
+                      if (currentOrganization == null) {
+                        await showDialog(
+                          context: context,
+                          useRootNavigator: false,
+                          builder: (context) =>
+                              const SwitchOrganizationDialog(),
+                        );
+                        return;
+                      }
+                      ref
+                          .read(setRoleControllerProvider.notifier)
+                          .setCurrentRole(Role.moderator, navigateToHome: true);
+                      context.goNamed(AppRoute.home.name);
+                    },
+                  )
+                : const SizedBox(),
+
+            //Third Option
+            roles.contains(Role.admin) && currentRole != Role.admin
+                ? RoleOption(
+                    optionColor: Colors.blue,
+                    title: 'Admin',
+                    description: 'Dashboard for Volunteer App Admin',
+                    role: Role.admin,
+                    image: SvgPicture.asset(
+                      'assets/images/role_admin.svg',
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
+                : const SizedBox(),
+          ],
+        );
+      },
     );
   }
 }
