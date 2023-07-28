@@ -78,6 +78,24 @@ class ActivityRepository {
     return Activity.fromJson(res.data['data']);
   }
 
+  Future<Activity?> banActivity({
+    required int activityId,
+  }) async {
+    final res = await client.post(
+      '/activities/$activityId/disable',
+    );
+    return Activity.fromJson(res.data['data']);
+  }
+
+  Future<Activity?> unbanActivity({
+    required int activityId,
+  }) async {
+    final res = await client.post(
+      '/activities/$activityId/enable',
+    );
+    return Activity.fromJson(res.data['data']);
+  }
+
   Future<Activity?> deleteActivity({
     required int activityId,
   }) async {

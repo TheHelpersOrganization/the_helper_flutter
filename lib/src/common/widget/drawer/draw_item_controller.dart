@@ -146,6 +146,11 @@ const List<DrawerItemModel> admin = [
     ],
   ),
   DrawerItemModel(
+    route: AppRoute.activityManage,
+    title: 'Activities manage',
+    icon: Icons.volunteer_activism,
+  ),
+  DrawerItemModel(
     route: AppRoute.reportManage,
     title: 'Reports manage',
     icon: Icons.newspaper_outlined,

@@ -34,6 +34,7 @@ class ActivityQuery with _$ActivityQuery {
     @ActivityStatusListConverter() List<ActivityStatus>? status,
     bool? isManager,
     bool? isShiftManager,
+    bool? isDisabled,
     int? limit,
     int? offset,
     int? cursor,

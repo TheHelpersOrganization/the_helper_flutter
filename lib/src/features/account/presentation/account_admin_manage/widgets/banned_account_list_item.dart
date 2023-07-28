@@ -204,61 +204,66 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
   @override
   Widget build(BuildContext context) {
     final profile = ref.watch(accountProfileServiceProvider(id: widget.data.id!));
-    return Padding(
-        padding: const EdgeInsets.all(5),
-        child: InkWell(
-          onTap: () {
-            showOptionSheet();
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: profile.when(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  error: (_, __) => const CustomErrorWidget(),
-                  data: (data) => CircleAvatar(
-                  backgroundImage: data.avatarId == null
-                      ? Image.asset('assets/images/logo.png').image
-                      : CachedNetworkImageProvider(getImageUrl(data.avatarId!)),
-                ),
-                ),                
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.data.email),
-                  ],
-                ),
-              ),
-              widget.data.isAccountVerified
-                  ? Center(
-                      child: Text(
-                        'Verified',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.apply(color: Colors.green),
-                      ),
-                    )
-                  : Center(
-                      child: Text(
-                        'Not verified',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.apply(color: Colors.red),
-                      ),
+    return Container(
+      decoration: BoxDecoration(
+          border:
+              Border(top: BorderSide(color: Theme.of(context).dividerColor))),
+      child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: InkWell(
+            onTap: () {
+              showOptionSheet();
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: profile.when(
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
                     ),
-              PopupButton(accountId: widget.data.id)
-            ],
-          ),
-        ));
+                    error: (_, __) => const CustomErrorWidget(),
+                    data: (data) => CircleAvatar(
+                    backgroundImage: data.avatarId == null
+                        ? Image.asset('assets/images/logo.png').image
+                        : CachedNetworkImageProvider(getImageUrl(data.avatarId!)),
+                  ),
+                  ),                
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.data.email),
+                    ],
+                  ),
+                ),
+                widget.data.isAccountVerified
+                    ? Center(
+                        child: Text(
+                          'Verified',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.apply(color: Colors.green),
+                        ),
+                      )
+                    : Center(
+                        child: Text(
+                          'Not verified',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.apply(color: Colors.red),
+                        ),
+                      ),
+                PopupButton(accountId: widget.data.id)
+              ],
+            ),
+          )),
+    );
   }
 }
