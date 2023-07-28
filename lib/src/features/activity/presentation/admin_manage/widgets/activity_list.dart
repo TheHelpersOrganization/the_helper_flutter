@@ -10,7 +10,7 @@ import '../../../../../common/widget/no_data_found.dart';
 import '../../../domain/activity_status.dart';
 
 class CustomScrollList extends StatelessWidget {
-  final List<ActivityStatus> tabIndex;
+  final ActivityStatus tabIndex;
   const CustomScrollList({
     super.key,
     required this.tabIndex,

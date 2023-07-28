@@ -6,6 +6,7 @@ import 'package:the_helper/src/common/screens/screen404.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_detail_screen.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/admin_manage/screens/activity_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_contact_screen.dart';
@@ -316,6 +317,23 @@ final routes = [
               ),
             ),
           ]),
+      GoRoute(
+        path: AppRoute.activityManage.path,
+        name: AppRoute.activityManage.name,
+        builder: (context, state) => const AdminActivityManageScreen(),
+        // routes: [
+        //   GoRoute(
+        //     path: AppRoute.reportDetail.path,
+        //     name: AppRoute.reportDetail.name,
+        //     builder: (_, state) => ReportDetailScreen(
+        //       id: int.parse(
+        //         state
+        //             .pathParameters[AppRoute.reportDetail.path.substring(1)]!,
+        //       ),
+        //     ),
+        //   ),
+        // ]
+      ),
       GoRoute(
           path: AppRoute.reportHistory.path,
           name: AppRoute.reportHistory.name,

@@ -27,22 +27,37 @@ class AdminOrganizationService {
     AdminOrganizationQuery? query,
   }) async {
     final orgs = await organizationRepository.getAll(
-      query: const AdminOrganizationQuery(status: OrganizationStatus.verified));
+        query:
+            const AdminOrganizationQuery(status: OrganizationStatus.verified));
     return orgs.length;
+  }
+
+  Future<AdminOrganization> getById(int id) async {
+    final orgs = await organizationRepository.getById(id);
+    return orgs;
   }
 
   Future<int> getRequestCount({
     AdminOrganizationQuery? query,
   }) async {
     final orgs = await organizationRepository.getAll(
-      query: const AdminOrganizationQuery(status: OrganizationStatus.pending));
+        query:
+            const AdminOrganizationQuery(status: OrganizationStatus.pending));
     return orgs.length;
   }
 }
 
 @riverpod
-AdminOrganizationService adminOrganizationService(AdminOrganizationServiceRef ref) {
+AdminOrganizationService adminOrganizationService(
+    AdminOrganizationServiceRef ref) {
   return AdminOrganizationService(
     organizationRepository: ref.watch(adminOrganizationRepositoryProvider),
   );
 }
+
+@riverpod
+Future<AdminOrganization> getOrganization(
+  GetOrganizationRef ref,
+  int orgId,
+) =>
+    ref.watch(adminOrganizationServiceProvider).getById(orgId);
