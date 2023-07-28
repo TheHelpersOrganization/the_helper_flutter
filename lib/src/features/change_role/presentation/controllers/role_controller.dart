@@ -30,14 +30,14 @@ class SetRoleController extends _$SetRoleController {
           ),
     );
     ref.invalidate(getRoleProvider);
-    if (key == _key) {
+    // if (key == _key) {
       // 5. check if the key is still the same
       if (navigateToHome) {
         ref.read(routerProvider).goNamed(AppRoute.home.name);
         return;
       }
       state = newState;
-    }
+    // }
   }
 }
 
