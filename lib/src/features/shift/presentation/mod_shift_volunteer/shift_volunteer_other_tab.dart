@@ -6,8 +6,10 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/v
 
 class ShiftVolunteerOtherTab extends ConsumerWidget {
   final int shiftId;
+  final int activityId;
   const ShiftVolunteerOtherTab({
     required this.shiftId,
+    required this.activityId,
     super.key,
   });
 
@@ -31,6 +33,7 @@ class ShiftVolunteerOtherTab extends ConsumerWidget {
                   final itemIndex = index % limit;
                   final tabData = ref.watch(
                     shiftVolunteerControllerProvider(
+                      activityId: activityId,
                       shiftId: shiftId,
                       offset: offset,
                       limit: limit,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -223,7 +224,7 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
                   data: (data) => CircleAvatar(
                   backgroundImage: data.avatarId == null
                       ? Image.asset('assets/images/logo.png').image
-                      : NetworkImage(getImageUrl(data.avatarId!)),
+                      : CachedNetworkImageProvider(getImageUrl(data.avatarId!)),
                 ),
                 ),                
               ),

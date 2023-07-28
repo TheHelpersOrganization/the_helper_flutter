@@ -60,13 +60,13 @@ class ShiftVolunteerScreen extends ConsumerWidget {
             ];
           },
           body: TabBarView(children: [
-            ShiftVolunteerApplicantTab(shiftId: shiftId),
+            ShiftVolunteerApplicantTab(shiftId: shiftId, activityId: activityId),
             // ShiftVolunteerTab(
             // shiftId: shiftId,
             // tabName: 'Applicants',
             // ),
-            ShiftVolunteerParticipantTab(shiftId: shiftId),
-            ShiftVolunteerOtherTab(shiftId: shiftId),
+            ShiftVolunteerParticipantTab(shiftId: shiftId, activityId: activityId),
+            ShiftVolunteerOtherTab(shiftId: shiftId, activityId: activityId),
             // ParticipantTab(),
           ]),
         ),

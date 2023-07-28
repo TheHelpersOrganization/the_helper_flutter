@@ -78,7 +78,7 @@ class _ModActivityManagementState
     );
 
     return Scaffold(
-      drawer: const AppDrawer(),
+      // drawer: const AppDrawer(),
       floatingActionButton: extendedActivity.maybeWhen(
         data: (data) => tab == TabType.overview || !canManageActivity
             ? null
@@ -111,6 +111,16 @@ class _ModActivityManagementState
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.goNamed(AppRoute.organizationActivityListManagement.name);
+                    }
+                  },
+                ),
                 floating: true,
                 actions: canManageActivity
                     ? [

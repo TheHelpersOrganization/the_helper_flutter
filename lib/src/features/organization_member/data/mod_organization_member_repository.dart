@@ -24,12 +24,19 @@ class ModOrganizationMemberRepository {
     int organizationId, {
     GetOrganizationMemberQuery? query,
   }) async {
-    final updatedQuery = query?.copyWith(
-      include: [
-        GetOrganizationMemberQueryInclude.profile,
-        GetOrganizationMemberQueryInclude.role,
-      ],
-    );
+    final updatedQuery = query != null
+        ? query.copyWith(
+            include: [
+              GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.role,
+            ],
+          )
+        : GetOrganizationMemberQuery(
+            include: [
+              GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.role,
+            ],
+          );
     final List<dynamic> res = (await client.get(
       '/mod/organizations/$organizationId/members',
       queryParameters: updatedQuery?.toJson(),

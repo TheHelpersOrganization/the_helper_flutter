@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
-
 import 'package:the_helper/src/features/account/data/account_repository.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
 
@@ -65,17 +64,15 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, AccountModel> {
           load: (page, limit) {
             return accountRepository.getAll(
               query: AccountQuery(
-                limit: limit,
-                offset: page * limit,
-                email: searchPattern,
-                isBanned: tabStatus != 0,
-                isVerified: filterSelected
-                ? verified
-                : null
-              ),
+                  limit: limit,
+                  offset: page * limit,
+                  email: searchPattern,
+                  isBanned: tabStatus != 0,
+                  isVerified: filterSelected ? verified : null),
             );
           },
           nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
+          printStackTrace: true,
         );
 }
 
