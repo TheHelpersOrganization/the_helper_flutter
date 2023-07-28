@@ -105,10 +105,10 @@ class AccountManageScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    const Divider(
-                      height: 0,
-                    ),
+                    // const SizedBox(height: 16),
+                    // const Divider(
+                    //   height: 0,
+                    // ),
                   ],
                 ),
               ),

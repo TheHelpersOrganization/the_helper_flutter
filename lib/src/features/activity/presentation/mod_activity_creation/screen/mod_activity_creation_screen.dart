@@ -75,7 +75,12 @@ class ModActivityCreationScreen extends ConsumerWidget {
                     child: currentStep == 0
                         ? TextButton(
                             onPressed: () {
-                              context.pop();
+                              if (context.canPop()) {
+                                context.pop();
+                              } else {
+                                context.goNamed(AppRoute
+                                    .organizationActivityListManagement.name);
+                              }
                             },
                             child: const Text('Cancel'),
                           )
@@ -141,8 +146,9 @@ class ModActivityCreationScreen extends ConsumerWidget {
             onBackFallback: () {
               if (context.canPop()) {
                 context.pop();
+              } else {
+                context.goNamed(AppRoute.home.name);
               }
-              else{context.goNamed(AppRoute.home.name);}
             },
             actions: const [],
           ),

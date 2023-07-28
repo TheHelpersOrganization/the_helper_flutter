@@ -44,7 +44,7 @@ class CurrentOrganizationRepository {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 CurrentOrganizationRepository currentOrganizationRepository(
         CurrentOrganizationRepositoryRef ref) =>
     CurrentOrganizationRepository(

@@ -17,6 +17,7 @@ class Activity with _$Activity {
   factory Activity({
     int? id,
     String? name,
+    bool? isDisabled,
     ActivityStatus? status,
     String? description,
     int? thumbnail,

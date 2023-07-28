@@ -12,6 +12,8 @@ SnackBar errorSnackBarFromException(Object error) {
   String? message;
   if (error is BackendException) {
     message = error.error.message;
+  } else if (error is String) {
+    message = error;
   }
   return SnackBar(
     content: Row(

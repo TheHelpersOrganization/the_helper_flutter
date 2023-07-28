@@ -58,10 +58,10 @@ class HomeWelcomeSection extends StatelessWidget {
             ),
           ],
         ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.search_outlined),
-        ),
+        // IconButton(
+        //   onPressed: () {},
+        //   icon: const Icon(Icons.search_outlined),
+        // ),
       ],
     );
   }

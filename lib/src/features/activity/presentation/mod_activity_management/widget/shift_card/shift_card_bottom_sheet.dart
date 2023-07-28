@@ -33,7 +33,8 @@ class ShiftCardBottomSheet extends ConsumerWidget {
           leading: const Icon(Icons.group_outlined),
           title: const Text('Participants'),
           onTap: () {
-            context.goNamed(
+            context.pop();
+            context.pushNamed(
               AppRoute.shiftVolunteer.name,
               pathParameters: {
                 'activityId': shift.activityId.toString(),
@@ -46,7 +47,8 @@ class ShiftCardBottomSheet extends ConsumerWidget {
           leading: const Icon(Icons.info_outline),
           title: const Text('Shift overview'),
           onTap: () {
-            context.goNamed(AppRoute.organizationShift.name, pathParameters: {
+            context.pop();
+            context.pushNamed(AppRoute.organizationShift.name, pathParameters: {
               'activityId': shift.activityId.toString(),
               'shiftId': shift.id.toString(),
             });

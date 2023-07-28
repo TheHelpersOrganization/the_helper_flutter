@@ -1,14 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/data/account_repository.dart';
-import 'package:the_helper/src/features/organization_member/domain/get_organization_member_data.dart';
+import 'package:the_helper/src/features/organization_member/domain/get_organization_member_query.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/features/organization_member/domain/reject_member_data.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
-import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
-import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/dio.dart';
-
 
 part 'mod_organization_member_repository.g.dart';
 
@@ -25,32 +22,45 @@ class ModOrganizationMemberRepository {
 
   Future<List<OrganizationMember>> getMemberWithAccountProfile(
     int organizationId, {
-    GetOrganizationMemberData? data,
+    GetOrganizationMemberQuery? query,
   }) async {
+    final updatedQuery = query != null
+        ? query.copyWith(
+            include: [
+              GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.role,
+            ],
+          )
+        : GetOrganizationMemberQuery(
+            include: [
+              GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.role,
+            ],
+          );
     final List<dynamic> res = (await client.get(
       '/mod/organizations/$organizationId/members',
-      queryParameters: data?.toJson(),
+      queryParameters: updatedQuery?.toJson(),
     ))
         .data['data'];
     final List<OrganizationMember> members =
         res.map((e) => OrganizationMember.fromJson(e)).toList();
-    final accountIds = members.map((e) => e.accountId).toList();
+    // final accountIds = members.map((e) => e.accountId).toList();
 
-    final profiles = await profileRepository.getProfiles(
-      GetProfilesData(ids: accountIds),
-    );
+    // final profiles = await profileRepository.getProfiles(
+    //   GetProfilesData(ids: accountIds),
+    // );
 
-    final List<OrganizationMember> result = [];
-    for (final member in members) {
-      final profile = profiles.cast<Profile?>().firstWhere(
-            (e) => e!.id == member.accountId,
-            orElse: () => null,
-          );
-      result.add(member.copyWith(
-        profile: profile,
-      ));
-    }
-    return result;
+    // final List<OrganizationMember> result = [];
+    // for (final member in members) {
+    //   final profile = profiles.cast<Profile?>().firstWhere(
+    //         (e) => e!.id == member.accountId,
+    //         orElse: () => null,
+    //       );
+    //   result.add(member.copyWith(
+    //     profile: profile,
+    //   ));
+    // }
+    return members;
   }
 
   Future<OrganizationMember> approve({

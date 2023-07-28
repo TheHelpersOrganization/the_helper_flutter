@@ -10,6 +10,8 @@ import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/widget/activity_card.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
+import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
@@ -55,6 +57,7 @@ class ModActivityListManagementScreen extends ConsumerWidget {
     final isManager = ref.watch(isManagerProvider);
     final isShiftManager = ref.watch(isShiftManagerProvider);
     final searchPattern = ref.watch(searchPatternProvider);
+    final myMember = ref.watch(myMemberProvider).valueOrNull;
 
     ref.listen<AsyncValue>(
       deleteActivityControllerProvider,
@@ -81,15 +84,19 @@ class ModActivityListManagementScreen extends ConsumerWidget {
 
         return Scaffold(
           drawer: const AppDrawer(),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              ref
-                  .read(routerProvider)
-                  .pushNamed(AppRoute.organizationActivityCreation.name);
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('Activity'),
-          ),
+          floatingActionButton: myMember?.hasRole(
+                      OrganizationMemberRoleType.organizationActivityManager) ==
+                  true
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    ref
+                        .read(routerProvider)
+                        .pushNamed(AppRoute.organizationActivityCreation.name);
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Activity'),
+                )
+              : null,
           body: CustomScrollView(
             slivers: [
               SliverAppBar(

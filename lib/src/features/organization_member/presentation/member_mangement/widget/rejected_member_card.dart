@@ -6,23 +6,27 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/bottom_sheet/custom_modal_botton_sheet.dart';
 import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/controller/organization_member_management_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-class RemovedMemberCard extends ConsumerStatefulWidget {
+class RejectedMemberCard extends ConsumerStatefulWidget {
   final OrganizationMember member;
+  final OrganizationMember myMember;
 
-  const RemovedMemberCard({
+  const RejectedMemberCard({
     super.key,
     required this.member,
+    required this.myMember,
   });
 
   @override
-  ConsumerState<RemovedMemberCard> createState() => _MemberCardState();
+  ConsumerState<RejectedMemberCard> createState() => _MemberCardState();
 }
 
-class _MemberCardState extends ConsumerState<RemovedMemberCard> {
+class _MemberCardState extends ConsumerState<RejectedMemberCard> {
   Future<dynamic> showRemoveDialog() {
     OrganizationMember member = widget.member;
 
@@ -48,10 +52,9 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
         onConfirm: () async {
           context.pop();
           showLoadingDialog();
-          // Add member back
-          // await ref
-          //     .read(removeMemberControllerProvider.notifier)
-          //     .remove(member.organization!.id!, member.id);
+          await ref
+              .read(removeMemberControllerProvider.notifier)
+              .remove(member.organization!.id!, member.id);
           if (context.mounted) {
             context.pop();
           }
@@ -66,7 +69,7 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
       barrierDismissible: true,
       useRootNavigator: false,
       builder: (context) => const LoadingDialog(
-        titleText: 'Adding member...',
+        titleText: 'Removing member...',
       ),
     );
   }
@@ -81,6 +84,8 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
 
   void showOptionsSheet() {
     OrganizationMember member = widget.member;
+    OrganizationMember myMember = widget.myMember;
+
     final dateOfRejection = member.updatedAt == null
         ? 'Unknown'
         : DateFormat('dd/MM/yyyy').format(member.updatedAt!);
@@ -105,18 +110,24 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.person_add_outlined),
-                title: const Text('Add member back'),
-                onTap: () => context.goNamed(AppRoute.profile.name),
-              ),
-              ListTile(
-                title: Text(
-                  'Removal reason: ${member.rejectionReason ?? 'Unspecified'}',
-                  style: const TextStyle(color: Colors.red),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != widget.myMember.id)
+                ListTile(
+                  leading: const Icon(Icons.person_add_outlined),
+                  title: const Text('Add member back'),
+                  onTap: () => context.goNamed(AppRoute.profile.name),
                 ),
-                subtitle: Text('Date of removal: $dateOfRejection'),
-              ),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != widget.myMember.id)
+                ListTile(
+                  title: Text(
+                    'Rejection reason: ${member.rejectionReason ?? 'Unspecified'}',
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  subtitle: Text('Date of rejection: $dateOfRejection'),
+                ),
             ],
           ),
         );
@@ -163,7 +174,8 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
           ),
           const SizedBox(width: 4),
           Text(
-            ' Removed at $dateOfRejection',
+            ' Rejected at $dateOfRejection',
+            //style: context.theme.textTheme.bodySmall,
           ),
         ],
       ),

@@ -22,6 +22,7 @@ class LoadingDialog extends StatelessWidget {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(24),
       content: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             constraints: BoxConstraints(

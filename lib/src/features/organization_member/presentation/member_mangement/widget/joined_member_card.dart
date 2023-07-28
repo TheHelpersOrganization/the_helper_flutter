@@ -6,25 +6,27 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/bottom_sheet/custom_modal_botton_sheet.dart';
 import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
+import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/controller/organization_member_management_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import 'organization_member_management_controller.dart';
-
-class RejectedMemberCard extends ConsumerStatefulWidget {
+class JoinedMemberCard extends ConsumerStatefulWidget {
   final OrganizationMember member;
+  final OrganizationMember myMember;
 
-  const RejectedMemberCard({
+  const JoinedMemberCard({
     super.key,
     required this.member,
+    required this.myMember,
   });
 
   @override
-  ConsumerState<RejectedMemberCard> createState() => _MemberCardState();
+  ConsumerState<JoinedMemberCard> createState() => _MemberCardState();
 }
 
-class _MemberCardState extends ConsumerState<RejectedMemberCard> {
+class _MemberCardState extends ConsumerState<JoinedMemberCard> {
   Future<dynamic> showRemoveDialog() {
     OrganizationMember member = widget.member;
 
@@ -82,9 +84,7 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
 
   void showOptionsSheet() {
     OrganizationMember member = widget.member;
-    final dateOfRejection = member.updatedAt == null
-        ? 'Unknown'
-        : DateFormat('dd/MM/yyyy').format(member.updatedAt!);
+    OrganizationMember myMember = widget.myMember;
 
     showModalBottomSheet(
       context: context,
@@ -101,23 +101,40 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
                   context.pushNamed(
                     AppRoute.otherProfile.name,
                     pathParameters: {
-                      'userId': member.id.toString(),
+                      'userId': member.accountId.toString(),
                     },
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.person_add_outlined),
-                title: const Text('Add member back'),
-                onTap: () => context.goNamed(AppRoute.profile.name),
-              ),
-              ListTile(
-                title: Text(
-                  'Rejection reason: ${member.rejectionReason ?? 'Unspecified'}',
-                  style: const TextStyle(color: Colors.red),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != myMember.id)
+                ListTile(
+                  leading: const Icon(Icons.assignment_ind_outlined),
+                  title: const Text('Assign roles'),
+                  onTap: () {
+                    context.pop();
+                    context.pushNamed(
+                      AppRoute.organizationMemberRoleAssignment.name,
+                      pathParameters: {
+                        'memberId': member.id.toString(),
+                      },
+                    );
+                  },
                 ),
-                subtitle: Text('Date of rejection: $dateOfRejection'),
-              ),
+              if (myMember.hasRole(
+                      OrganizationMemberRoleType.organizationMemberManager) &&
+                  member.id != myMember.id)
+                ListTile(
+                  leading: const Icon(Icons.person_remove_outlined),
+                  title: const Text('Remove member'),
+                  textColor: Colors.red,
+                  iconColor: Colors.red,
+                  onTap: () {
+                    context.pop();
+                    showRemoveDialog();
+                  },
+                ),
             ],
           ),
         );
@@ -129,7 +146,7 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
   Widget build(BuildContext context) {
     OrganizationMember member = widget.member;
     String memberName = getMemberName();
-    final dateOfRejection = member.updatedAt == null
+    final joinedAt = member.updatedAt == null
         ? 'Unknown'
         : DateFormat('dd/MM/yyyy').format(member.updatedAt!);
 
@@ -149,26 +166,46 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
         radius: 20,
       ),
       title: Text(
-        memberName,
+        memberName + (widget.myMember.id == member.id ? ' (You)' : ''),
         style: context.theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.bold,
         ),
       ),
-      subtitle: Row(
+      subtitle: Column(
         children: [
-          Icon(
-            Icons.calendar_month_outlined,
-            color: context.theme.colorScheme.secondary,
-            weight: 100,
-            size: 18,
+          Row(
+            children: [
+              Icon(
+                Icons.calendar_month_outlined,
+                color: context.theme.colorScheme.secondary,
+                weight: 100,
+                size: 18,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                'Joined at $joinedAt',
+                //style: context.theme.textTheme.bodySmall,
+              ),
+            ],
           ),
-          const SizedBox(width: 4),
-          Text(
-            ' Rejected at $dateOfRejection',
-            //style: context.theme.textTheme.bodySmall,
-          ),
+          if (member.roles?.isNotEmpty ?? false) ...[
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(
+                  Icons.assignment_ind_outlined,
+                  color: context.theme.colorScheme.secondary,
+                  weight: 100,
+                  size: 18,
+                ),
+                const SizedBox(width: 4),
+                Text('${member.roles!.first.displayName}'),
+              ],
+            ),
+          ]
         ],
       ),
+      isThreeLine: member.roles?.isNotEmpty ?? false,
       trailing: IconButton(
         onPressed: () {
           showOptionsSheet();

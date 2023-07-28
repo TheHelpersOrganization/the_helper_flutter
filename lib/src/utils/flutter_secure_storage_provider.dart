@@ -6,7 +6,7 @@ part 'flutter_secure_storage_provider.g.dart';
 // final secureStorageProvider =
 //     Provider((ref) => const FlutterSecureStorage());
 
-@riverpod
+@Riverpod(keepAlive: true)
 FlutterSecureStorage secureStorage(SecureStorageRef ref) {
   return const FlutterSecureStorage();
 }

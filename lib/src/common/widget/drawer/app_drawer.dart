@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_drop_down.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_header.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
@@ -10,8 +11,10 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
+import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/utils/image.dart';
 
 import '../../../features/authentication/presentation/logout_controller.dart';
 import '../../../router/router.dart';
@@ -47,10 +50,14 @@ class AppDrawer extends ConsumerWidget {
       );
 
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
+    final accountId = ref.watch(authServiceProvider).valueOrNull?.account.id;
     final userRoleState = ref.watch(getRoleProvider);
     final userRole = userRoleState.valueOrNull;
     final roles = ref.watch(getAllRolesProvider).valueOrNull;
-    // final roles = tempRole;
+    final currentOrganization =
+        ref.watch(currentOrganizationProvider).valueOrNull;
+    final joinedOrganizations =
+        ref.watch(joinedOrganizationsProvider).valueOrNull;
 
     if (userRoleState.isLoading || roles == null) return ListView();
 
@@ -59,11 +66,31 @@ class AppDrawer extends ConsumerWidget {
       children: [
         InkWell(
           onTap: () => context.goNamed(AppRoute.profile.name),
-          child: const SizedBox(
-            height: 80,
-            child: AppDrawerUser()),
+          child: const SizedBox(height: 80, child: AppDrawerUser()),
         ),
         const Divider(),
+        if (userRole == Role.moderator && currentOrganization != null) ...[
+          AppDrawerItem(
+            title: currentOrganization.name,
+            titleStyle: context.theme.textTheme.titleMedium,
+            subtitle: 'Current organization',
+            subtitleStyle: context.theme.textTheme.bodyMedium,
+            leading: CircleAvatar(
+              radius: 24,
+              backgroundImage: getBackendImageOrLogoProvider(
+                currentOrganization.logo,
+              ),
+            ),
+            onTap: () => context.pushNamed(
+              AppRoute.organization.name,
+              pathParameters: {
+                'orgId': currentOrganization.id.toString(),
+              },
+            ),
+            isSub: false,
+          ),
+          const Divider(),
+        ],
         for (var i in drawerItem)
           if (i.subPaths != null)
             AppDrawerDropDown(
@@ -86,7 +113,20 @@ class AppDrawer extends ConsumerWidget {
                     i.route != null ? i.route!.name : AppRoute.developing.name);
               },
             ),
-        if (roles.length > 1)
+        if (userRole == Role.moderator &&
+            accountId != null &&
+            currentOrganization != null &&
+            accountId == currentOrganization.ownerId)
+          AppDrawerItem(
+            title: 'Transfer ownership',
+            icon: Icons.backup_table_outlined,
+            isSub: false,
+            onTap: () => context.goNamed(
+              AppRoute.organizationTransferOwnership.name,
+            ),
+            path: AppRoute.organizationTransferOwnership.path,
+          ),
+        if (roles.length > 1 || joinedOrganizations?.isNotEmpty == true)
           AppDrawerItem(
             title: 'Change Role',
             icon: Icons.change_circle_outlined,
@@ -103,6 +143,9 @@ class AppDrawer extends ConsumerWidget {
               ref.invalidate(profileControllerProvider);
               ref.invalidate(profileRepositoryProvider);
               ref.invalidate(authServiceProvider);
+              ref.invalidate(currentOrganizationProvider);
+              ref.invalidate(currentOrganizationRepositoryProvider);
+              ref.invalidate(joinedOrganizationsProvider);
             }),
       ],
     );

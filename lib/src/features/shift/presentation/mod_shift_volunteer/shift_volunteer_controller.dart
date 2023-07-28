@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+// import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/shift/application/mod_shift_volunteer_service.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/attendance.dart';

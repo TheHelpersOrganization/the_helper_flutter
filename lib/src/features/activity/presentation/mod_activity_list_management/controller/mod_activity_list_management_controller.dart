@@ -37,11 +37,11 @@ final pagingControllerProvider = FutureProvider.autoDispose(
     controller.addPageRequestListener((pageKey) async {
       try {
         final items = await modActivityService.getActivitiesWithOrganization(
-          organizationId: org.id!,
+          organizationId: org.id,
           query: ModActivityQuery(
             name: searchPattern?.isNotEmpty == true ? searchPattern : null,
             offset: pageKey * 5,
-            org: [org.id!],
+            org: [org.id],
             status: [currentStatus],
             isManager: isManager,
             isShiftManager: isShiftManager,

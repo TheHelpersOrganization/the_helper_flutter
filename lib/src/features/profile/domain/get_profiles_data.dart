@@ -11,6 +11,7 @@ class GetProfilesData with _$GetProfilesData {
     @CommaSeparatedIntsConverter() List<int>? ids,
     @CommaSeparatedStringsConverter() List<String>? includes,
   }) = _GetProfilesData;
+
   factory GetProfilesData.fromJson(Map<String, dynamic> json) =>
       _$GetProfilesDataFromJson(json);
 }

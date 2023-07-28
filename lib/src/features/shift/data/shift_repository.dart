@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/shift/domain/attendance.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/list_attendance.dart';
-import 'package:the_helper/src/features/shift/domain/list_shift_volunteers.dart';
 import 'package:the_helper/src/features/shift/domain/many_query_response.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';

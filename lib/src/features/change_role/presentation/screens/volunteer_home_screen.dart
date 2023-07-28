@@ -159,7 +159,7 @@ class VolunteerView extends ConsumerWidget {
                   height: 24,
                 ),
               SizedBox(
-                height: 230,
+                height: 240,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

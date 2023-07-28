@@ -6,9 +6,7 @@ import '../domain/profile.dart';
 
 part 'profile_controller.g.dart';
 
-// TODO: resolve conflict betweeen keepAlive and autoDispose
-// @Riverpod(keepAlive: true)
-@riverpod
+@Riverpod(keepAlive: true)
 class ProfileController extends _$ProfileController {
   // '/profiles/me?includes=interested-skills,skills',
   @override
