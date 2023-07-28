@@ -41,7 +41,10 @@ class VolunteerListTile extends ConsumerWidget {
         ),
         secondary: CircleAvatar(
           radius: 24,
-          backgroundImage: ImageX.backend(
+          backgroundImage: 
+          profile.avatarId == null
+          ? Image.asset('assets/images/logo.png').image
+          :ImageX.backend(
             profile.avatarId!,
             loadingBuilder: (context, child, loadingProgress) =>
                 loadingProgress == null

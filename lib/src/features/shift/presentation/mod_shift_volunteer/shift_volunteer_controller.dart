@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 
 import '../../application/mod_shift_volunteer_service.dart';
 
@@ -63,6 +64,7 @@ class ApplicantFilter extends _$ApplicantFilter {
 class ShiftVolunteerController extends _$ShiftVolunteerController {
   @override
   FutureOr<List<ShiftVolunteer>> build({
+    required int activityId,
     required int shiftId,
     required int offset,
     required int limit,
@@ -74,28 +76,32 @@ class ShiftVolunteerController extends _$ShiftVolunteerController {
   Future<List<ShiftVolunteer>> _getShiftVolunteer() async {
     final ModShiftVolunteerService modShiftRepository =
         ref.watch(modShiftVolunteerServiceProvider);
-    String? st;
+    List<String>? st;
     switch (status) {
       case 'Applicant':
-        st = 'pending';
+        st = ['pending'];
         break;
       case 'Participants':
-        st = 'approved';
+        st = ['approved'];
         break;
       case 'Other':
-        st = 'rejected,removed,left';
+        st = ['rejected','removed','left'];
         break;
       default:
         break;
     }
     final List<ShiftVolunteer> volunteers =
         await modShiftRepository.getShiftVolunteersBriefProfile(
-            queryParameters: {
-      'shiftId': shiftId,
-      'offset': offset,
-      'limit': limit,
-      'status': st,
-    }..removeWhere((key, value) => value == null));
+            queryParameters: ShiftVolunteerQuery(
+              shiftId: shiftId,
+              activityId: activityId,
+              limit: limit,
+              offset: offset,
+              status: st,
+              include: [
+                ShiftVolunteerQueryInclude.profile,
+              ]
+            ));
     return volunteers;
   }
 

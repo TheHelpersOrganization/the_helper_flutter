@@ -18,7 +18,7 @@ class ShiftVolunteerQuery with _$ShiftVolunteerQuery {
     int? shiftId,
     int? activityId,
     bool? mine,
-    ShiftVolunteerStatus? status,
+    @CommaSeparatedStringsConverter() List<String>? status,
     int? limit,
     int? offset,
     @CommaSeparatedStringsConverter() List<String>? include,

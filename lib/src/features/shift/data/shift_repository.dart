@@ -25,11 +25,12 @@ class ShiftRepository {
     return resList.map((e) => Shift.fromJson(e)).toList();
   }
 
-  Future<List<ShiftVolunteer>> getShiftVolunteerQ(
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<List<ShiftVolunteer>> getShiftVolunteersMod({
+    ShiftVolunteerQuery? query,
+  }) async {
     final List<dynamic> res = (await client.get(
       '/mod/shift-volunteers',
-      queryParameters: queryParameters,
+      queryParameters: query?.toJson(),
     ))
         .data['data'];
     return res.map((data) => ShiftVolunteer.fromJson(data)).toList();

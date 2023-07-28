@@ -26,10 +26,13 @@ class ShiftCard extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
-          context.goNamed(AppRoute.shiftVolunteer.name, pathParameters: {
-            'activityId': shift.activityId.toString(),
-            'shiftId': shift.id.toString(),
-          });
+          showModalBottomSheet(
+            showDragHandle: true,
+            context: context,
+            builder: (context) => ShiftCardBottomSheet(
+              shift: shift,
+            ),
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(12),

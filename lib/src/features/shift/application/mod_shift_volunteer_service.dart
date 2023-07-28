@@ -7,6 +7,7 @@ import 'package:the_helper/src/utils/dio.dart';
 import '../domain/shift.dart';
 import '../domain/shift_query.dart';
 import '../domain/shift_volunteer.dart';
+import '../domain/shift_volunteer_query.dart';
 
 part 'mod_shift_volunteer_service.g.dart';
 
@@ -20,24 +21,24 @@ class ModShiftVolunteerService {
     required this.modShiftRepository,
   });
   Future<List<ShiftVolunteer>> getShiftVolunteersBriefProfile({
-    Map<String, dynamic>? queryParameters,
+    ShiftVolunteerQuery? queryParameters,
   }) async {
     List<ShiftVolunteer> volunteers = await modShiftRepository
-        .getShiftVolunteerQ(queryParameters: queryParameters);
-    volunteers = await Future.wait(volunteers
-        .map(
-          (volunteer) async => volunteer = volunteer.copyWith(
-            profile: await profileRepository
-                .getBriefProfile(id: volunteer.accountId, includes: [
-              'skills',
-              'interested-skills',
-            ], select: [
-              'full-name',
-              'avatar',
-            ]),
-          ),
-        )
-        .toList());
+        .getShiftVolunteersMod(query: queryParameters);
+    // volunteers = await Future.wait(volunteers
+    //     .map(
+    //       (volunteer) async => volunteer = volunteer.copyWith(
+    //         profile: await profileRepository
+    //             .getBriefProfile(id: volunteer.accountId, includes: [
+    //           'skills',
+    //           'interested-skills',
+    //         ], select: [
+    //           'full-name',
+    //           'avatar',
+    //         ]),
+    //       ),
+    //     )
+    //     .toList());
     return volunteers;
   }
 
