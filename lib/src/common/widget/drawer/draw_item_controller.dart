@@ -99,7 +99,7 @@ final List<DrawerItemModel> moderator = [
       );
     },
   ),
-  DrawerItemModel(
+  const DrawerItemModel(
     route: AppRoute.organizationRegistration,
     title: 'Create organization',
     icon: Icons.group_add,
@@ -167,9 +167,6 @@ List<DrawerItemModel> getDrawerItem(Role role) {
       return volunteer;
   }
 }
-
-final dropDownControllerProvider =
-    StateProvider.autoDispose<bool>((ref) => false);
 
 final currentOrganizationProvider = FutureProvider((ref) =>
     ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());

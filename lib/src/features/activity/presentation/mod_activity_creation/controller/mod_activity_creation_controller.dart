@@ -37,7 +37,8 @@ final activityManagersProvider = FutureProvider.autoDispose((ref) async {
 
   final managers = await ref
       .watch(modOrganizationMemberRepositoryProvider)
-      .getMemberWithAccountProfile(org!.id!);
+      .getMemberWithAccountProfile(org!.id);
+  // print(managers);
 
   return ActivityManagerData(account: account!.account, managers: managers);
 });
