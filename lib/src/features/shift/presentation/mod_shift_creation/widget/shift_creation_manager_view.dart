@@ -95,7 +95,9 @@ class ShiftCreationManagerView extends ConsumerWidget {
                                     ? const Text('Your account')
                                     : null,
                             leading: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
+                              backgroundImage: manager.profile!.avatarId == null
+                              ? Image.asset('assets/images/logo.png').image
+                              :CachedNetworkImageProvider(
                                 getImageUrl(manager.profile!.avatarId!),
                               ),
                             ),
