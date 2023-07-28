@@ -1,160 +1,242 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/features/shift/application/mod_shift_volunteer_service.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
+import 'package:the_helper/src/features/shift/domain/attendance.dart';
+import 'package:the_helper/src/features/shift/domain/list_attendance.dart';
+import 'package:the_helper/src/features/shift/domain/many_query_response.dart';
+import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
-
-import '../../application/mod_shift_volunteer_service.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_arg.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 
 part 'shift_volunteer_controller.g.dart';
 
-// @riverpod
-// Future<List<ShiftVolunteer>> shiftVolunteerController(
-//   ShiftVolunteerControllerRef ref, {
-//   required shiftId,
-//   required int page,
-//   required int size,
-//   required bool isPending,
-// }) async {
-//   final keepAliveLink = ref.keepAlive();
-//   Timer(const Duration(minutes: 5), () {
-//     keepAliveLink.close();
-//   });
-//   final ModShiftRepository shiftRepository =
-//       ref.watch(modShiftRepositoryProvider);
-//   final List<ShiftVolunteer> volunteers =
-//       await shiftRepository.getShiftVolunteerQ(queryParameters: {
-//     'shiftId': shiftId,
-//     'status': isPending ? 'pending' : 'approved',
-//     'limit': size,
-//     'offset': page * size,
-//   });
-//   return volunteers;
-// }
-enum ApplicantStatus {
-  all,
-  satisfied,
-  unsatisfied,
+final isSearchingProvider = StateProvider.autoDispose<bool>((ref) => false);
+final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
+final selectedVolunteerProvider =
+    StateProvider.autoDispose<Set<ShiftVolunteer>>((ref) => {});
+
+final sliderValueProvider = StateProvider<double>((ref) => 0.0);
+final textValueProvider = StateProvider<String>((ref) => '');
+
+class ShiftVolunteerListPagedNotifier
+    extends PagedNotifier<int, ShiftVolunteer> {
+  final ModShiftVolunteerService modShiftVolunteerService;
+  final int shiftId;
+  final List<ShiftVolunteerStatus> status;
+  final String? searchPattern;
+
+  ShiftVolunteerListPagedNotifier({
+    required this.modShiftVolunteerService,
+    required this.shiftId,
+    required this.status,
+    this.searchPattern,
+  }) : super(
+          load: (page, limit) {
+            return modShiftVolunteerService.getShiftVolunteersBriefProfile(
+              query: ShiftVolunteerQuery(
+                shiftId: shiftId,
+                limit: limit,
+                offset: page * limit,
+                status: status,
+                name: searchPattern?.trim().isNotEmpty == true
+                    ? searchPattern!.trim()
+                    : null,
+                active: true,
+              ),
+            );
+          },
+          nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
+        );
 }
 
-enum OtherStatus {
-  all,
-  rejected,
-  cancelled,
-}
+final shiftVolunteerListPagedNotifierProvider =
+    StateNotifierProvider.autoDispose.family<ShiftVolunteerListPagedNotifier,
+        PagedState<int, ShiftVolunteer>, ShiftVolunteerArg>(
+  (ref, shiftVolunteerArg) => ShiftVolunteerListPagedNotifier(
+    modShiftVolunteerService: ref.watch(modShiftVolunteerServiceProvider),
+    shiftId: shiftVolunteerArg.shiftId,
+    status: shiftVolunteerArg.status,
+    searchPattern: ref.watch(searchPatternProvider),
+  ),
+);
 
 @riverpod
-class OtherTabFilter extends _$OtherTabFilter {
+class ChangeVolunteerStatusController
+    extends _$ChangeVolunteerStatusController {
   @override
-  OtherStatus build() {
-    return OtherStatus.all;
-  }
-}
-
-@riverpod
-class ApplicantFilter extends _$ApplicantFilter {
-  @override
-  ApplicantStatus build() {
-    return ApplicantStatus.all;
-  }
-}
-
-@riverpod
-class ShiftVolunteerController extends _$ShiftVolunteerController {
-  @override
-  FutureOr<List<ShiftVolunteer>> build({
-    required int shiftId,
-    required int offset,
-    required int limit,
-    String? status,
-  }) {
-    return _getShiftVolunteer();
+  FutureOr<ShiftVolunteer?> build() {
+    return null;
   }
 
-  Future<List<ShiftVolunteer>> _getShiftVolunteer() async {
-    final ModShiftVolunteerService modShiftRepository =
-        ref.watch(modShiftVolunteerServiceProvider);
-    String? st;
-    switch (status) {
-      case 'Applicant':
-        st = 'pending';
-        break;
-      case 'Participants':
-        st = 'approved';
-        break;
-      case 'Other':
-        st = 'rejected,removed,left';
-        break;
-      default:
-        break;
-    }
-    final List<ShiftVolunteer> volunteers =
-        await modShiftRepository.getShiftVolunteersBriefProfile(
-            queryParameters: {
-      'shiftId': shiftId,
-      'offset': offset,
-      'limit': limit,
-      'status': st,
-    }..removeWhere((key, value) => value == null));
-    return volunteers;
-  }
-
-  Future<void> approveVolunteer(
-    int accountId,
+  Future<ShiftVolunteer?> approveVolunteer(
+    ShiftVolunteer volunteer,
   ) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () async {
-        await ref.watch(shiftRepositoryProvider).approveVolunteer(
-              shiftId,
-              accountId,
-            );
-        return _getShiftVolunteer();
-      },
+    final response = await AsyncValue.guard(
+        () async => await ref.watch(shiftRepositoryProvider).approveVolunteer(
+              shiftId: volunteer.shiftId,
+              volunteerId: volunteer.id,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ShiftVolunteer?> rejectVolunteer(
+    ShiftVolunteer volunteer,
+  ) async {
+    state = const AsyncLoading();
+    final response = await AsyncValue.guard(
+        () async => await ref.watch(shiftRepositoryProvider).rejectVolunteer(
+              shiftId: volunteer.shiftId,
+              volunteerId: volunteer.id,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ShiftVolunteer?> removeVolunteer(
+    ShiftVolunteer volunteer,
+  ) async {
+    state = const AsyncLoading();
+    final response = await AsyncValue.guard(
+        () async => await ref.watch(shiftRepositoryProvider).removeVolunteer(
+              shiftId: volunteer.shiftId,
+              volunteerId: volunteer.id,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ShiftVolunteer?> reviewVolunteer(
+    ShiftVolunteer volunteer, {
+    required double completion,
+    required String reviewNote,
+  }) async {
+    state = const AsyncLoading();
+    final response = await AsyncValue.guard(
+      () async => await ref.watch(shiftRepositoryProvider).reviewVolunteer(
+            shiftId: volunteer.shiftId,
+            volunteerId: volunteer.id,
+            completion,
+            reviewNote,
+          ),
     );
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ShiftVolunteer?> toggleVerifyAttendance(
+    ShiftVolunteer volunteer, {
+    required bool checkIn,
+  }) async {
+    state = const AsyncLoading();
+    final response = await AsyncValue.guard(() async {
+      final checkedIn = volunteer.isCheckInVerified ?? false;
+      final checkedOut = volunteer.isCheckOutVerified ?? false;
+      return await ref.watch(shiftRepositoryProvider).verifyAttendance(
+            shiftId: volunteer.shiftId,
+            volunteerId: volunteer.id,
+            attendance: Attendance(
+              checkedIn: checkIn ? !checkedIn : checkedOut,
+              checkedOut: !checkIn ? !checkedOut : checkedOut,
+            ),
+          );
+    });
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
   }
 }
 
-// @riverpod
-// Future<List<ShiftVolunteer>> filteredShiftOther(
-//   FilteredShiftOtherRef ref, {
-//   required int shiftId,
-//   required int limit,
-//   required int offset,
-// }) {
-//   final filter = ref.watch(otherTabFilterProvider);
-//   final volunteers = ref.watch(shiftVolunteerControllerProvider(
-//     shiftId: shiftId,
-//     limit: limit,
-//     offset: offset,
-//   ));
-//   switch (filter) {
-//     case OtherStatus.all:
-//       return volunteers;
-//     case OtherStatus.rejected:
-//       return volunteers
-//           .where(
-//               (volunteer) => volunteer.status == ShiftVolunteerStatus.rejected)
-//           .toList();
-//     case OtherStatus.cancelled:
-//       return volunteers
-//           .where(
-//               (volunteer) => volunteer.status == ShiftVolunteerStatus.cancelled)
-//           .toList();
-//   }
-// }
+@riverpod
+class ChangeVolunteersStatusController
+    extends _$ChangeVolunteersStatusController {
+  @override
+  FutureOr<ManyQueryResponse?> build() {
+    return null;
+  }
 
-// TODO: waiting for backend satisfied query
-// @riverpod
-// List<ShiftVolunteer> filteredShiftApplicant(FilteredShiftApplicantRef ref) {
-//   final filter = ref.watch(applicantFilterProvider);
-//   final volunteers = ref.watch(shiftVolunteerControllerProvider);
-//   switch (filter) {
-//     case ApplicantStatus.all:
-//       return volunteers;
-//     case ApplicantStatus.satisfied:
-//       return volunteers.where((volunteer) => volunteer.satisfied).toList();
-//     case ApplicantStatus.unsatisfied:
-//       return volunteers.where((volunteer) => !volunteer.satisfied).toList();
-//   }
-// }
+  Future<ManyQueryResponse?> approveVolunteers({
+    required int shiftId,
+    required List<int> volunteerIds,
+  }) async {
+    state = const AsyncValue.loading();
+    final response = await AsyncValue.guard(() async =>
+        await ref.watch(shiftRepositoryProvider).approveManyVolunteer(
+              shiftId: shiftId,
+              volunteerIds: volunteerIds,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ManyQueryResponse?> rejectVolunteers({
+    required int shiftId,
+    required List<int> volunteerIds,
+  }) async {
+    state = const AsyncValue.loading();
+    final response = await AsyncValue.guard(() async =>
+        await ref.watch(shiftRepositoryProvider).rejectManyVolunteer(
+              shiftId: shiftId,
+              volunteerIds: volunteerIds,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ManyQueryResponse?> removeVolunteers({
+    required int shiftId,
+    required List<int> volunteerIds,
+  }) async {
+    state = const AsyncValue.loading();
+    final response = await AsyncValue.guard(() async =>
+        await ref.watch(shiftRepositoryProvider).removeManyVolunteer(
+              shiftId: shiftId,
+              volunteerIds: volunteerIds,
+            ));
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+
+  Future<ManyQueryResponse?> toggleVerifyAttendance({
+    required int shiftId,
+    required List<ShiftVolunteer> volunteers,
+    required bool checkIn,
+  }) async {
+    state = const AsyncLoading();
+    final response = await AsyncValue.guard(() async {
+      return await ref.watch(shiftRepositoryProvider).verifyManyAttendance(
+            shiftId: shiftId,
+            volunteers: ListAttendance(
+                volunteers: volunteers.map((volunteer) {
+              final checkedIn = volunteer.isCheckInVerified ?? false;
+              final checkedOut = volunteer.isCheckOutVerified ?? false;
+              return Attendance(
+                id: volunteer.id,
+                checkedIn: checkIn ? !checkedIn : checkedIn,
+                checkedOut: !checkIn ? !checkedOut : checkedOut,
+              );
+            }).toList()),
+          );
+    });
+    ref.invalidate(shiftVolunteerListPagedNotifierProvider);
+    state = response;
+    return null;
+  }
+}
+
+@riverpod
+Future<Shift> getShift(GetShiftRef ref, {required int shiftId}) =>
+    ref.watch(shiftRepositoryProvider).getShiftById(id: shiftId);

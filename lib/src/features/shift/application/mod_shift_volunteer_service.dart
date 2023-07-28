@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
+import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
+import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/domain/shift_query.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../domain/shift.dart';
-import '../domain/shift_query.dart';
 import '../domain/shift_volunteer.dart';
 
 part 'mod_shift_volunteer_service.g.dart';
@@ -13,38 +16,36 @@ part 'mod_shift_volunteer_service.g.dart';
 class ModShiftVolunteerService {
   final Dio client;
   final ProfileRepository profileRepository;
-  final ShiftRepository modShiftRepository;
+  final ShiftRepository shiftRepository;
   ModShiftVolunteerService({
     required this.client,
     required this.profileRepository,
-    required this.modShiftRepository,
+    required this.shiftRepository,
   });
   Future<List<ShiftVolunteer>> getShiftVolunteersBriefProfile({
-    Map<String, dynamic>? queryParameters,
+    ShiftVolunteerQuery? query,
   }) async {
-    List<ShiftVolunteer> volunteers = await modShiftRepository
-        .getShiftVolunteerQ(queryParameters: queryParameters);
-    volunteers = await Future.wait(volunteers
-        .map(
-          (volunteer) async => volunteer = volunteer.copyWith(
-            profile: await profileRepository
-                .getBriefProfile(id: volunteer.accountId, includes: [
-              'skills',
-              'interested-skills',
-            ], select: [
-              'full-name',
-              'avatar',
-            ]),
-          ),
-        )
-        .toList());
+    List<ShiftVolunteer> volunteers =
+        await shiftRepository.modGetShiftVolunteers(query: query);
+
+    final List<int> listAccountId =
+        volunteers.map((volunteer) => volunteer.accountId).toList();
+    final List<Profile> listProfile = await profileRepository
+        .getProfiles(GetProfilesData(ids: listAccountId, includes: [
+      'skills',
+    ]));
+    volunteers = volunteers
+        .map((volunteer) => volunteer.copyWith(
+            profile: listProfile
+                .firstWhere((profile) => profile.id == volunteer.accountId)))
+        .toList();
     return volunteers;
   }
 
   Future<List<Shift>> getShifts({
     ShiftQuery? query,
   }) async {
-    final shifts = await modShiftRepository.getShifts(query: query);
+    final shifts = await shiftRepository.getShifts(query: query);
     return shifts;
   }
 }
@@ -55,6 +56,6 @@ ModShiftVolunteerService modShiftVolunteerService(
   return ModShiftVolunteerService(
     client: ref.watch(dioProvider),
     profileRepository: ref.watch(profileRepositoryProvider),
-    modShiftRepository: ref.watch(shiftRepositoryProvider),
+    shiftRepository: ref.watch(shiftRepositoryProvider),
   );
 }

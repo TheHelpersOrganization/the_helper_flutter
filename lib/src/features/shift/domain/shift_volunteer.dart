@@ -33,6 +33,7 @@ class ShiftVolunteer with _$ShiftVolunteer {
     String? reviewNote,
     int? reviewerId,
     required ShiftVolunteerStatus status,
+    bool? meetSkillRequirements,
     required DateTime createdAt,
     required DateTime updatedAt,
     Profile? profile,
