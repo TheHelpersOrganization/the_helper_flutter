@@ -23,71 +23,73 @@ class ShiftBottomBar extends StatelessWidget {
     final status = shiftVolunteer?.status;
     final VoidCallback? buttonAction;
     final String? buttonLabel;
-    if (status == null) {
+    if (shift.status == ShiftStatus.completed || shift.isFull) {
       buttonAction = null;
       buttonLabel = null;
-    } else {
-      if (status == ShiftVolunteerStatus.pending) {
+    } else if (status == ShiftVolunteerStatus.pending) {
+      buttonAction = () {
+        showDialog(
+          context: context,
+          builder: (buildContext) => CancelJoinShiftDialog(
+            activityId: activityId,
+            shiftId: shiftId,
+          ),
+        );
+      };
+      buttonLabel = 'Cancel registration';
+    } else if (status == ShiftVolunteerStatus.approved) {
+      if (shift.status == ShiftStatus.pending) {
         buttonAction = () {
           showDialog(
             context: context,
-            builder: (buildContext) => CancelJoinShiftDialog(
+            builder: (buildContext) => LeaveShiftDialog(
               activityId: activityId,
               shiftId: shiftId,
             ),
           );
         };
-        buttonLabel = 'Cancel registration';
-      } else if (status == ShiftVolunteerStatus.approved) {
-        if (shift.status == ShiftStatus.pending) {
-          buttonAction = () {
-            showDialog(
-              context: context,
-              builder: (buildContext) => LeaveShiftDialog(
-                activityId: activityId,
-                shiftId: shiftId,
-              ),
-            );
-          };
-          buttonLabel = 'Leave';
-        } else if (shift.status == ShiftStatus.ongoing) {
-          buttonAction = () {
-            showModalBottomSheet(
-              context: context,
-              builder: (buildContext) => ShiftCheckInBottomSheet(
-                shiftId: shift.id,
-              ),
-              showDragHandle: true,
-            );
-          };
-          buttonLabel = 'Manage check-in';
-        } else if (shift.status == ShiftStatus.completed) {
-          buttonAction = () {
-            showModalBottomSheet(
-              context: context,
-              builder: (buildContext) => ShiftCheckInBottomSheet(
-                shiftId: shift.id,
-              ),
-              showDragHandle: true,
-            );
-          };
-          buttonLabel = 'Your status';
-        } else {
-          buttonAction = null;
-          buttonLabel = null;
-        }
+        buttonLabel = 'Leave';
+      } else if (shift.status == ShiftStatus.ongoing) {
+        buttonAction = () {
+          showModalBottomSheet(
+            context: context,
+            builder: (buildContext) => ShiftCheckInBottomSheet(
+              shiftId: shift.id,
+            ),
+            showDragHandle: true,
+          );
+        };
+        buttonLabel = 'Manage check-in';
+      } else if (shift.status == ShiftStatus.completed) {
+        buttonAction = () {
+          showModalBottomSheet(
+            context: context,
+            builder: (buildContext) => ShiftCheckInBottomSheet(
+              shiftId: shift.id,
+            ),
+            showDragHandle: true,
+          );
+        };
+        buttonLabel = 'Your status';
       } else {
-        buttonAction = () {
-          showDialog(
-            context: context,
-            builder: (buildContext) => JoinShiftDialog(
-              activityId: activityId,
-              shiftId: shiftId,
-            ),
-          );
-        };
-        buttonLabel = 'Join';
+        buttonAction = null;
+        buttonLabel = null;
       }
+    } else {
+      buttonAction = () {
+        showDialog(
+          context: context,
+          builder: (buildContext) => JoinShiftDialog(
+            activityId: activityId,
+            shiftId: shiftId,
+          ),
+        );
+      };
+      buttonLabel = 'Join';
+    }
+
+    if (buttonAction == null && buttonLabel == null) {
+      return const SizedBox.shrink();
     }
 
     return Column(

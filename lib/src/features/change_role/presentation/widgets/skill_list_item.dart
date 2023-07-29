@@ -19,7 +19,7 @@ class SkillListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var f = NumberFormat.compact(locale: "en_US");
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -36,9 +36,9 @@ class SkillListItem extends StatelessWidget {
             child: Text(
               '${f.format(hour)} h',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w500,
-              ),
+                    color: color,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
         ],
