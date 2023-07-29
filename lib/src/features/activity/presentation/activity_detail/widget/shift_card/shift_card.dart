@@ -9,6 +9,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/shift.dart';
 
 class ShiftCard extends StatelessWidget {
   final Shift shift;
@@ -49,8 +50,10 @@ class ShiftCard extends StatelessWidget {
     final shiftIsFull = shift.numberOfParticipants != null &&
         shift.joinedParticipants >= shift.numberOfParticipants!;
 
-    final VoidCallback buttonAction;
-    if (volunteerStatus == ShiftVolunteerStatus.pending) {
+    final VoidCallback? buttonAction;
+    if (shift.status == ShiftStatus.completed || shiftIsFull) {
+      buttonAction = null;
+    } else if (volunteerStatus == ShiftVolunteerStatus.pending) {
       buttonAction = () {
         showDialog(
           context: context,
@@ -122,10 +125,19 @@ class ShiftCard extends StatelessWidget {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(
-                  shift.name,
-                  style: context.theme.textTheme.bodyLarge
-                      ?.copyWith(fontWeight: FontWeight.w500),
+                title: Text.rich(
+                  TextSpan(
+                    text: shift.name,
+                    style: context.theme.textTheme.bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                    children: [
+                      const WidgetSpan(child: SizedBox(width: 4)),
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: getShiftStatusLabel(shift.status),
+                      )
+                    ],
+                  ),
                 ),
                 subtitle: Text(
                   shift.description ?? 'No description',
@@ -158,7 +170,7 @@ class ShiftCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: FilledButton.tonal(
-                      onPressed: shiftIsFull ? null : buttonAction,
+                      onPressed: buttonAction,
                       child: Text(buttonLabel),
                     ),
                   ),
