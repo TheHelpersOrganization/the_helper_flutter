@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
@@ -88,6 +89,7 @@ class VolunteerListTile extends ConsumerWidget {
         ];
       }
     }
+    var f = NumberFormat.compact(locale: "en_US");
     return ListTile(
       selected: isSelected,
       selectedTileColor: Colors.grey.shade200,
@@ -159,7 +161,7 @@ class VolunteerListTile extends ConsumerWidget {
                           labelPadding: const EdgeInsets.only(right: 8),
                           padding: const EdgeInsets.symmetric(horizontal: 2),
                           avatar: const Icon(Icons.wb_sunny_outlined),
-                          label: Text('${skill.name} - ${skill.hours}h'),
+                          label: Text('${skill.name} - ${f.format(skill.hours)} h'),
                         );
                       }
                     },

@@ -108,44 +108,47 @@ class ReportHistoryScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        FilterChip(
-                          label: const Text('Pending'),
-                          onSelected: (value) {
-                            ref.read(penddingStatusProvider.notifier).state =
-                                value;
-                          },
-                          selected: isPendding,
-                        ),
-                        const SizedBox(width: 12),
-                        FilterChip(
-                          label: const Text('Reviewing'),
-                          onSelected: (value) {
-                            ref.read(reviewingStatusProvider.notifier).state =
-                                value;
-                          },
-                          selected: isReviewing,
-                        ),
-                        const SizedBox(width: 12),
-                        FilterChip(
-                          label: const Text('Rejected'),
-                          onSelected: (value) {
-                            ref.read(rejectStatusProvider.notifier).state =
-                                value;
-                          },
-                          selected: isRejected,
-                        ),
-                        const SizedBox(width: 12),
-                        FilterChip(
-                          label: const Text('Completed'),
-                          onSelected: (value) {
-                            ref.read(completedStatusProvider.notifier).state =
-                                value;
-                          },
-                          selected: isCompleted,
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          FilterChip(
+                            label: const Text('Pending'),
+                            onSelected: (value) {
+                              ref.read(penddingStatusProvider.notifier).state =
+                                  value;
+                            },
+                            selected: isPendding,
+                          ),
+                          const SizedBox(width: 12),
+                          FilterChip(
+                            label: const Text('Reviewing'),
+                            onSelected: (value) {
+                              ref.read(reviewingStatusProvider.notifier).state =
+                                  value;
+                            },
+                            selected: isReviewing,
+                          ),
+                          const SizedBox(width: 12),
+                          FilterChip(
+                            label: const Text('Rejected'),
+                            onSelected: (value) {
+                              ref.read(rejectStatusProvider.notifier).state =
+                                  value;
+                            },
+                            selected: isRejected,
+                          ),
+                          const SizedBox(width: 12),
+                          FilterChip(
+                            label: const Text('Completed'),
+                            onSelected: (value) {
+                              ref.read(completedStatusProvider.notifier).state =
+                                  value;
+                            },
+                            selected: isCompleted,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 16),
                     const Divider(
