@@ -154,9 +154,18 @@ class ModShiftScreen extends ConsumerWidget {
                       const SizedBox(
                         height: 48,
                       ),
-                      ShiftParticipant(
-                        joinedParticipants: shift.joinedParticipants,
-                        numberOfParticipants: shift.numberOfParticipants,
+                      InkWell(
+                        onTap:() => context.pushNamed(
+                          AppRoute.shiftVolunteer.name,
+                          pathParameters: {
+                            'activityId': shift.activityId.toString(),
+                            'shiftId': shift.id.toString(),
+                          },
+                        ),
+                        child: ShiftParticipant(
+                          joinedParticipants: shift.joinedParticipants,
+                          numberOfParticipants: shift.numberOfParticipants,
+                        ),
                       ),
                       const SizedBox(
                         height: 24,

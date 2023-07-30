@@ -54,11 +54,6 @@ const List<DrawerItemModel> volunteer = [
   //   title: 'Report',
   //   icon: Icons.report_outlined,
   // ),
-  DrawerItemModel(
-    route: AppRoute.settings,
-    title: 'Settings',
-    icon: Icons.settings_outlined,
-  ),
 ];
 
 final List<DrawerItemModel> moderator = [
