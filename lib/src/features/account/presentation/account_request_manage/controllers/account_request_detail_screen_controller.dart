@@ -36,6 +36,30 @@ class VerifiedAccountController extends _$VerifiedAccountController {
       state = await guardAsyncValue(
           () => ref.watch(accountRepositoryProvider).verifyAccount(accId: accountId));
     }
+  
+  Future<void> rejectAccount({
+      required int requestId,
+    }) async {
+      state = const AsyncValue.loading();
+      state = await guardAsyncValue(
+          () => ref.watch(accountRequestRepositoryProvider).reject(requestId: requestId));
+    }
+
+  Future<void> blockRequest({
+      required int requestId,
+    }) async {
+      state = const AsyncValue.loading();
+      state = await guardAsyncValue(
+          () => ref.watch(accountRequestRepositoryProvider).block(requestId: requestId));
+    }
+  
+  Future<void> unblockRequest({
+      required int requestId,
+    }) async {
+      state = const AsyncValue.loading();
+      state = await guardAsyncValue(
+          () => ref.watch(accountRequestRepositoryProvider).unblock(requestId: requestId));
+    }
 }
 
 final requestHistoryProvider = FutureProvider.autoDispose

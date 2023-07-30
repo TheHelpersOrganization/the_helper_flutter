@@ -276,6 +276,65 @@ class AccountRequestDetailScreen extends ConsumerWidget {
                                   ),
                                   Expanded(
                                     flex: 1,
+                                    child: requestData.status == AccountRequestStatus.blocked
+                                    ? PrimaryButton(
+                                      // isLoading: state.isLoading,
+                                      loadingText: "Processing...",
+                                      onPressed: () async {
+                                        await ref
+                                            .watch(
+                                                verifiedAccountControllerProvider
+                                                    .notifier)
+                                            .blockRequest(
+                                                requestId:
+                                                    requestData.id!);
+                                        if (context.mounted) {
+                                          context.pop();
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                          padding: MaterialStateProperty.all(
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 25)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface)),
+                                      child: const Text('Unblock'),
+                                    )
+                                    : PrimaryButton(
+                                      // isLoading: state.isLoading,
+                                      loadingText: "Processing...",
+                                      onPressed: () async {
+                                        await ref
+                                            .watch(
+                                                verifiedAccountControllerProvider
+                                                    .notifier)
+                                            .unblockRequest(
+                                                requestId:
+                                                    requestData.id!);
+                                        if (context.mounted) {
+                                          context.pop();
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                          padding: MaterialStateProperty.all(
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 25)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurface)),
+                                      child: const Text('Block'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: context.mediaQuery.size.width * 0.06,
+                                  ),
+                                  Expanded(
+                                    flex: 1,
                                     child: PrimaryButton(
                                       // isLoading: profile.isLoading,
                                       loadingText: "Processing...",

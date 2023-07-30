@@ -41,13 +41,25 @@ class AccountRequestRepository {
     await client.post('/something', data: account.toJson());
   }
 
-  Future<AccountRequestModel> block(int id) async {
-    final res = await client.put('/account-verifications/$id/block');
+  Future<AccountRequestModel> reject({
+    required int requestId,
+  }) async {
+    final res = await client.put('/admin/accounts/$requestId/something',
+        data: {"isVerified": true, "note": "Admin has verified your account"});
     return AccountRequestModel.fromJson(res.data['data']);
   }
 
-  Future<AccountRequestModel> unblock(int id) async {
-    final res = await client.put('/account-verifications/$id/unblock');
+  Future<AccountRequestModel> block({
+    required int requestId
+  }) async {
+    final res = await client.put('/account-verifications/$requestId/block');
+    return AccountRequestModel.fromJson(res.data['data']);
+  }
+
+  Future<AccountRequestModel> unblock({
+    required int requestId
+  }) async {
+    final res = await client.put('/account-verifications/$requestId/unblock');
     return AccountRequestModel.fromJson(res.data['data']);
   }
 }

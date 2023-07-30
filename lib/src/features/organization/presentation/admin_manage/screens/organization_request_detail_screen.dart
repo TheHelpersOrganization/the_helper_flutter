@@ -94,6 +94,9 @@ class OrganizationRequestDetailScreen extends ConsumerWidget {
                   data.description,
                   maxLines: 4,
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
                   expandText: 'See More',
                   collapseText: 'See Less',
                   linkColor: Theme.of(context).colorScheme.onPrimaryContainer,
