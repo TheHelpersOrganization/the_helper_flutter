@@ -46,7 +46,7 @@ class ActivityParticipant extends StatelessWidget {
           ),
         if (activity.maxParticipants != null)
           Text(
-            '${activity.maxParticipants! - joinedParticipants} slots remaining',
+            '${(activity.maxParticipants! - joinedParticipants).isNegative ? 0 : (activity.maxParticipants! - joinedParticipants)}  slots remaining',
           )
         else
           const Text('Unlimited slots'),

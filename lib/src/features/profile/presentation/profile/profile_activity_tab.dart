@@ -41,7 +41,7 @@ class ProfileActivityTab extends ConsumerWidget {
                     data: (data) {
                       if (itemIndex >= data.length) return null;
                       return ListTile(
-                        isThreeLine: true,
+                        // isThreeLine: false,
                         onTap: () {
                           context.pushNamed(
                             AppRoute.activity.name,
@@ -51,9 +51,16 @@ class ProfileActivityTab extends ConsumerWidget {
                           );
                         },
                         leading: const Icon(Icons.star_outline),
-                        title: Text(data[itemIndex].name!),
+                        title: Text(
+                          maxLines: 1,
+                          data[itemIndex].name!,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         subtitle: Text(
-                            '${DateFormat("dd/MM/yyyy").format(data[itemIndex].startTime!)} - ${DateFormat("dd/MM/yyyy").format(data[itemIndex].endTime!)}'),
+                          maxLines: 1,
+                          '${DateFormat("dd/MM/yyyy").format(data[itemIndex].startTime!)} - ${DateFormat("dd/MM/yyyy").format(data[itemIndex].endTime!)}',
+                          overflow: TextOverflow.ellipsis,
+                        ),
 
                         // trailing: Text(
                         //   getInitials(activity.organization!.name),
