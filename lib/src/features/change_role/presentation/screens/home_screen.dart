@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
 import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
+import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/admin_home_screen.dart';
@@ -31,10 +33,31 @@ class HomeScreen extends ConsumerWidget {
           return Scaffold(
             drawer: const AppDrawer(),
             body: CustomSliverScrollView(
-              appBar: const CustomSliverAppBar(
-                titleText: 'Home',
+              appBar: CustomSliverAppBar(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Home'),
+                    const SizedBox(width: 12),
+                    if (role == Role.admin)
+                      Label(
+                        labelText: 'Admin',
+                        color: context.theme.primaryColor,
+                      ),
+                    if (role == Role.moderator)
+                      const Label(
+                        labelText: 'Moderator',
+                        color: Colors.orange,
+                      ),
+                    if (role == Role.volunteer)
+                      const Label(
+                        labelText: 'Volunteer',
+                        color: Colors.purple,
+                      ),
+                  ],
+            ),
               ),
-              body: getHomeScreen(role ?? Role.volunteer),
+              body: getHomeScreen(role),
             ),
             //body: const VolunteerView(),
             //bottomNavigationBar: const CustomBottomNavigator(),
