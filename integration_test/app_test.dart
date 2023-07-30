@@ -9,12 +9,6 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('end-to-end test', () {
-    // testWidgets('sign in with email and password', (tester) async {
-    //   app.main();
-    //   await tester.pumpAndSettle();
-    //   await signIn(tester);
-    // });
-
     testWidgets('search activities', (tester) async {
       app.main();
       await tester.pumpAndSettle();

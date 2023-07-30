@@ -74,8 +74,11 @@ Future<void> searchActivities(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   final shiftItem = find.ancestor(
-    of: find.widgetWithText(Label, 'Upcoming'),
-    matching: find.byType(ShiftCard),
+    of: find.widgetWithText(FilledButton, 'Join'),
+    matching: find.ancestor(
+      of: find.widgetWithText(Label, 'Upcoming'),
+      matching: find.byType(ShiftCard),
+    ),
   );
   expect(shiftItem, findsWidgets);
 
