@@ -29,7 +29,7 @@ class ShiftVolunteer with _$ShiftVolunteer {
     bool? isCheckOutVerified,
     int? checkInOutVerifierId,
     required bool attendant,
-    required double completion,
+    @Default(0) double completion,
     String? reviewNote,
     int? reviewerId,
     required ShiftVolunteerStatus status,
