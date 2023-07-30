@@ -49,7 +49,11 @@ class ProfileOrganizationTab extends StatelessWidget {
                         );
                       },
                       leading: const Icon(Icons.star_outline),
-                      title: Text(org.name),
+                      title: Text(
+                        maxLines: 1,
+                        org.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                 ]),
               ),

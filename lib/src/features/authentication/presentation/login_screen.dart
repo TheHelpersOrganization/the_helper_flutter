@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
@@ -25,7 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       (err, state) => state.showSnackbarOnError(context),
     );
     final state = ref.watch(loginControllerProvider);
-
+    final passwordVisible = ref.watch(passwordVisibilityProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: LoadingOverlay(
@@ -62,9 +63,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: emailController,
                       onFieldSubmitted: (e) {
                         ref.read(loginControllerProvider.notifier).signIn(
-                          emailController.text,
-                          passwordController.text,
-                        );
+                              emailController.text,
+                              passwordController.text,
+                            );
                       },
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.mail),
@@ -76,32 +77,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: TextFormField(
-                      obscureText: true,
+                      obscureText: passwordVisible,
                       enableSuggestions: false,
                       autocorrect: false,
                       controller: passwordController,
                       onFieldSubmitted: (e) {
                         ref.read(loginControllerProvider.notifier).signIn(
-                          emailController.text,
-                          passwordController.text,
-                        );
+                              emailController.text,
+                              passwordController.text,
+                            );
                       },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.key),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            ref
+                                .read(passwordVisibilityProvider.notifier)
+                                .state = !passwordVisible;
+                          },
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                        ),
+                        prefixIcon: const Icon(Icons.key),
+                        border: const OutlineInputBorder(),
                         hintText: 'Enter password',
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text('Forgot password?'),
-                        ),
-                      ],
                     ),
                   ),
                   Padding(
@@ -126,6 +128,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              minimumSize: Size(
+                                  0, context.mediaQuery.size.height * 0.06),
+                            ),
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -135,24 +141,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             },
                             child: const Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),
-                              child: Text('Register'),
+                              child: Text('Sign Up Now'),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: PrimaryButton(
-                            isLoading: false,
-                            loadingText: "Logging in...",
-                            onPressed: () {
-                              ref.read(loginControllerProvider.notifier).signIn(
-                                    "hquan310@gmail.com",
-                                    "123456",
-                                  );
-                            },
-                            child: const Text('Tester login...'),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //   child: PrimaryButton(
+                        //     isLoading: false,
+                        //     loadingText: "Logging in...",
+                        //     onPressed: () {
+                        //       ref.read(loginControllerProvider.notifier).signIn(
+                        //             "hquan310@gmail.com",
+                        //             "123456",
+                        //           );
+                        //     },
+                        //     child: const Text('Tester login...'),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

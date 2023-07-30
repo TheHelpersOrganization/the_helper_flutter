@@ -46,13 +46,13 @@ class ProfileScreen extends ConsumerWidget {
                 tooltip: 'Edit profile',
                 onPressed: () => context.pushNamed(AppRoute.profileEdit.name),
               ),
-              IconButton(
-                icon: const Icon(Icons.settings),
-                tooltip: 'Setting profile',
-                onPressed: () {
-                  context.pushNamed(AppRoute.profileSetting.name);
-                },
-              )
+              // IconButton(
+              //   icon: const Icon(Icons.settings),
+              //   tooltip: 'Setting profile',
+              //   onPressed: () {
+              //     context.pushNamed(AppRoute.profileSetting.name);
+              //   },
+              // )
             ],
           ),
           body: DefaultTabController(
@@ -77,10 +77,10 @@ class ProfileScreen extends ConsumerWidget {
                               text: 'Overview',
                             ),
                             Tab(
-                              text: 'Activities',
+                              text: 'Activity',
                             ),
                             Tab(
-                              text: 'Organizatons',
+                              text: 'Organization',
                             ),
                           ],
                         ),

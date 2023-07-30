@@ -43,7 +43,7 @@ class OrganizationActivityTab extends ConsumerWidget {
                     data: (data) {
                       if (itemIndex >= data.length) return null;
                       return ListTile(
-                        isThreeLine: true,
+                        // isThreeLine: true,
                         onTap: () {
                           context.pushNamed(
                             AppRoute.activity.name,
@@ -53,9 +53,16 @@ class OrganizationActivityTab extends ConsumerWidget {
                           );
                         },
                         leading: const Icon(Icons.star_outline),
-                        title: Text(data[itemIndex].name!),
+                        title: Text(
+                          data[itemIndex].name!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         subtitle: Text(
-                            '${DateFormat("dd/MM/yyyy").format(data[itemIndex].startTime!)} - ${DateFormat("dd/MM/yyyy").format(data[itemIndex].endTime!)}'),
+                          '${DateFormat("dd/MM/yyyy").format(data[itemIndex].startTime!)} - ${DateFormat("dd/MM/yyyy").format(data[itemIndex].endTime!)}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     },
                     error: (Object error, StackTrace stackTrace) =>

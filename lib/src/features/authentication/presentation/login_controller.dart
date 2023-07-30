@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 
 part 'login_controller.g.dart';
+
+final passwordVisibilityProvider = StateProvider<bool>((ref) => true);
 
 @riverpod
 class LoginController extends _$LoginController {
