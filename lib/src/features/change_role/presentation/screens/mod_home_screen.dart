@@ -17,7 +17,6 @@ import '../controllers/mod_home_controller.dart';
 import '../widgets/empty_list_widget.dart';
 import '../widgets/home_welcome_section.dart';
 
-
 class ModView extends ConsumerWidget {
   const ModView({
     super.key,
@@ -186,22 +185,22 @@ class ModView extends ConsumerWidget {
                   ),
                   error: (_, __) => const ErrorScreen(),
                   data: (data) => data.isEmpty
-                  ? EmptyListWidget(
-                    description: const [
-                      'Your organization don\'t have any',
-                      'ongoing activities'
-                    ],
-                    buttonTxt: 'Create one now',
-                    onPress: () => 
-                    context.pushNamed(AppRoute.organizationActivityCreation.name),
-                  )
-                  : ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: data[index]),
-                  ),
+                      ? EmptyListWidget(
+                          description: const [
+                            'Your organization don\'t have any',
+                            'ongoing activities'
+                          ],
+                          buttonTxt: 'Create one now',
+                          onPress: () => context.pushNamed(
+                              AppRoute.organizationActivityCreation.name),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              LargeActivityCard(activity: data[index]),
+                        ),
                 ),
               ),
               const SizedBox(
@@ -233,24 +232,27 @@ class ModView extends ConsumerWidget {
                     itemWidth: context.mediaQuery.size.width * 0.7,
                     itemHeight: 380,
                   ),
-                  error: (_, __) => const ErrorScreen(),
+                  error: (er, __) {
+                    print(er);
+                    return const ErrorScreen();
+                  },
                   data: (data) => data.isEmpty
-                  ? EmptyListWidget(
-                    description: const [
-                      'Your organization don\'t have any',
-                      'upcomming activities'
-                    ],
-                    buttonTxt: 'Create one now',
-                    onPress: () => 
-                    context.goNamed(AppRoute.organizationActivityCreation.name),
-                  )
-                  : ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        LargeActivityCard(activity: data[index]),
-                  ),
+                      ? EmptyListWidget(
+                          description: const [
+                            'Your organization don\'t have any',
+                            'upcomming activities'
+                          ],
+                          buttonTxt: 'Create one now',
+                          onPress: () => context.goNamed(
+                              AppRoute.organizationActivityCreation.name),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) =>
+                              LargeActivityCard(activity: data[index]),
+                        ),
                 ),
               ),
             ],

@@ -41,3 +41,9 @@ class Shift with _$Shift {
 
   factory Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);
 }
+
+extension ShiftX on Shift {
+  get isFull =>
+      numberOfParticipants != null &&
+      joinedParticipants >= numberOfParticipants!;
+}

@@ -132,6 +132,7 @@ class _ActivityDetailScreenState extends ConsumerState<ActivityDetailScreen>
             body: Padding(
               padding: const EdgeInsets.all(12),
               child: SingleChildScrollView(
+                key: const Key('activity_detail_screen_scroll_view'),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

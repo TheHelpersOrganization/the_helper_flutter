@@ -34,8 +34,8 @@ final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>((r
         query: ModActivityQuery(
           limit: 5,
           startTime: [
-            DateTime.now(),
-            DateTime.now().add(const Duration(days: 7))
+            // DateTime.now().millisecondsSinceEpoch,
+            DateTime.now().add(const Duration(days: 7)).millisecondsSinceEpoch
           ]
         ),
       );
