@@ -46,7 +46,9 @@ class ShiftCreationSkillView extends ConsumerWidget {
                 ),
               ),
               TextButton.icon(
-                onPressed: () async {
+                onPressed: selectedSkills?.isNotEmpty == true
+                ? null
+                :() async {
                   showDialog(
                     context: context,
                     builder: (_) => ShiftSkillView(
