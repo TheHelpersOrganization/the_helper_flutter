@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ShiftParticipant extends StatelessWidget {
@@ -24,6 +26,7 @@ class ShiftParticipant extends StatelessWidget {
     final joinedPercentage = maxParticipants == null || maxParticipants < 1
         ? null
         : jp / maxParticipants;
+    final slotsRemain = max(0, (maxParticipants ?? 0) - jp);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +52,7 @@ class ShiftParticipant extends StatelessWidget {
         ),
         if (maxParticipants != null)
           Text(
-            '${maxParticipants - jp} slots remaining',
+            '$slotsRemain slots remaining',
           )
         else
           const Text('Unlimited slots'),
