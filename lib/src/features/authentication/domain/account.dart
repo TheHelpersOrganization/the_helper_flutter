@@ -13,6 +13,7 @@ class Account with _$Account {
     required List<Role> roles,
     required bool isAccountDisabled,
     required bool isAccountVerified,
+    required bool isEmailVerified,
   }) = _Account;
 
   factory Account.fromJson(Map<String, dynamic> json) =>

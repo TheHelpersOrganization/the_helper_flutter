@@ -350,7 +350,7 @@ final routes = [
               ),
             ),
           ]),
-      accountRoutes,
+      ...accountRoutes,
       profileRoutes,
       ...organizationRoutes,
       ...activityRoutes,
@@ -471,23 +471,18 @@ final activityRoutes = [
   ),
 ];
 
-final accountRoutes = GoRoute(
-  path: AppRoute.account.path,
-  name: AppRoute.account.name,
-  builder: (_, __) => const DevelopingScreen(),
-  routes: [
-    GoRoute(
-      path: AppRoute.accountVerification.path,
-      name: AppRoute.accountVerification.name,
-      builder: (context, state) => const AccountVerificationScreen(),
-    ),
-    GoRoute(
-      path: AppRoute.accountVerificationCompleted.path,
-      name: AppRoute.accountVerificationCompleted.name,
-      builder: (context, state) => const AccountVerificationCompletedScreen(),
-    ),
-  ],
-);
+final accountRoutes = [
+  GoRoute(
+    path: AppRoute.accountVerification.path,
+    name: AppRoute.accountVerification.name,
+    builder: (context, state) => const AccountVerificationScreen(),
+  ),
+  GoRoute(
+    path: AppRoute.accountVerificationCompleted.path,
+    name: AppRoute.accountVerificationCompleted.name,
+    builder: (context, state) => const AccountVerificationCompletedScreen(),
+  ),
+];
 
 enum AppRoute {
   // 404
@@ -519,11 +514,11 @@ enum AppRoute {
     name: 'account',
   ),
   accountVerification(
-    path: 'verification',
+    path: '/account/verification',
     name: 'account-verification',
   ),
   accountVerificationCompleted(
-    path: 'verification-completed',
+    path: '/account/verification-completed',
     name: 'account-verification-completed',
   ),
 
