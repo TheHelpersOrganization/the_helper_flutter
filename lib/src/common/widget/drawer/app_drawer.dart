@@ -11,6 +11,7 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
+import 'package:the_helper/src/features/notification/application/notification_service.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
@@ -146,6 +147,7 @@ class AppDrawer extends ConsumerWidget {
               ref.invalidate(currentOrganizationProvider);
               ref.invalidate(currentOrganizationRepositoryProvider);
               ref.invalidate(joinedOrganizationsProvider);
+              ref.invalidate(notificationCountProvider);
             }),
       ],
     );

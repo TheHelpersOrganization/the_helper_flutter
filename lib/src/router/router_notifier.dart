@@ -34,7 +34,7 @@ class RouterNotifier extends Notifier<bool> implements Listenable {
     //FlutterNativeSplash.remove();
 
     // Navigate to home if user has logged in
-    final isLoggingIn = state.location == AppRoute.login.path;
+    final isLoggingIn = state.fullPath == AppRoute.login.path;
     if (isLoggingIn) return _isAuth ? AppRoute.home.path : null;
 
     return _isAuth ? null : AppRoute.login.path;

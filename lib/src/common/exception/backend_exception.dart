@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-class BackendException extends DioError {
+class BackendException extends DioException {
   @override
   final BackendExceptionData error;
 
