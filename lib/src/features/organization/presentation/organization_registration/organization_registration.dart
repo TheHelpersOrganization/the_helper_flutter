@@ -14,8 +14,8 @@ import 'package:the_helper/src/common/widget/file_picker/form_multiple_file_pick
 import 'package:the_helper/src/common/widget/image_picker/form_custom_image_picker.dart';
 import 'package:the_helper/src/common/widget/phone_number_field.dart';
 import 'package:the_helper/src/common/widget/required_text.dart';
+import 'package:the_helper/src/config/config.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/utils/config_provider.dart';
 
 import '../../../location/domain/location.dart';
 import 'organization_registration_controller.dart';
@@ -121,7 +121,7 @@ class _OrganizationRegistrationScreenState
               ),
             ),
             const SizedBox(height: 16),
-            if (AppConfig.debug)
+            if (AppConfig.isDevelopment)
               Column(
                 children: [
                   FilledButton.icon(
@@ -321,7 +321,7 @@ class _OrganizationRegistrationScreenState
             const SizedBox(
               height: 32,
             ),
-            if (AppConfig.debug)
+            if (AppConfig.isDevelopment)
               Column(
                 children: [
                   FilledButton.icon(
@@ -418,7 +418,7 @@ class _OrganizationRegistrationScreenState
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () =>context.goNamed(AppRoute.home.name),
+          onPressed: () => context.goNamed(AppRoute.home.name),
         ),
         title: const Text('Register Organization'),
         centerTitle: true,
