@@ -76,6 +76,7 @@ dependencies:
   logging: ^1.2.0
   logger:
   mocktail: ^1.0.0
+  envied: ^0.3.0+3
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +93,7 @@ dev_dependencies:
   custom_lint:
   freezed: ^2.4.1
   json_serializable: ^6.7.1
+  envied_generator: ^0.3.0+3
 
 flutter:
   uses-material-design: true

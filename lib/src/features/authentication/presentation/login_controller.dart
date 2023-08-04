@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
@@ -19,3 +20,7 @@ class LoginController extends _$LoginController {
     state = await AsyncValue.guard(() => authService.signIn(email, password));
   }
 }
+
+final volunteerIdTextEditingControllerProvider =
+    ChangeNotifierProvider<TextEditingController>(
+        (ref) => TextEditingController());
