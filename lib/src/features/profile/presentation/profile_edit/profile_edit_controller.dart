@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/contact/application/contact_service.dart';
+import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
 
 import '../../data/profile_repository.dart';

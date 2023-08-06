@@ -6,6 +6,7 @@ part 'contact.freezed.dart';
 @freezed
 class Contact with _$Contact {
   factory Contact({
+    int? id,
     required String name,
     String? phoneNumber,
     String? email,

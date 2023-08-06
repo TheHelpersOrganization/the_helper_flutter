@@ -14,6 +14,7 @@ class AccountModel with _$AccountModel {
     required String email,
     @Default(false) bool isAccountDisabled,
     @Default(false) bool isAccountVerified,
+    @Default(false) bool isEmailVerified,
     required DateTime createdAt,
     required DateTime updatedAt,
     List<AccountVerificationModel>? verificationList,
