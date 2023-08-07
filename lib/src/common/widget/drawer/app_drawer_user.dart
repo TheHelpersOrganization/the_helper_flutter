@@ -36,28 +36,32 @@ class AppDrawerUser extends ConsumerWidget {
               child: CircularProgressIndicator(),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                profile.when(
-                  data: (data) => Text(
-                    data.username ?? 'Your profile',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: context.theme.textTheme.bodyLarge?.color,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  profile.when(
+                    data: (data) => Text(
+                      data.username ?? 'Your profile',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: context.theme.textTheme.bodyLarge?.color,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    error: (_, __) => Container(),
+                    loading: () => Container(),
                   ),
-                  error: (_, __) => Container(),
-                  loading: () => Container(),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  account?.email ?? 'Unknown',
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    account?.email ?? 'Unknown',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
