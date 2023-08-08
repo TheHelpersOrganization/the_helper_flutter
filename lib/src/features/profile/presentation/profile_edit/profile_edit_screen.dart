@@ -5,11 +5,16 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_contact_controller.dart';
+import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_contact_widget.dart';
 
 import '../../../../common/widget/button/primary_button.dart';
 import '../profile_controller.dart';
 import '../../domain/profile.dart';
 import 'profile_edit_avatar_picker_widget.dart';
+import 'profile_edit_controller.dart';
 import 'profile_edit_gender_widget.dart';
 import 'profile_edit_phone_number_widget.dart';
 
@@ -23,10 +28,8 @@ class ProfileEditScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final editProfileController =
-    //     ref.watch(editProfileControllerProvider.notifier);
-    // final editProfileControllerState = ref.watch(editProfileControllerProvider);
-    // final profile = editProfileControllerState;
+    final account = ref.watch(authServiceProvider).value!.account;
+    final contacts = ref.watch(profileContactControllerProvider);
     final profile = ref.watch(profileControllerProvider());
 
     return Scaffold(
@@ -122,6 +125,16 @@ class ProfileEditScreen extends ConsumerWidget {
                 ProfileEditPhoneNumberWidget(
                   initialValue: profile.phoneNumber,
                 ),
+                contacts.when(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  error: (_, __) => const CustomErrorWidget(),
+                  data: (data) => ProfileEditContactWidget(
+                    initialContacts: data,
+                  ),
+                ),
+
                 // FormBuilderTextField(
                 //   name: 'addressLine1',
                 //   initialValue: profile.addressLine1,
@@ -149,6 +162,7 @@ class ProfileEditScreen extends ConsumerWidget {
                             child: const Text('Cancel'),
                             onPressed: () {
                               _formKey.currentState!.reset();
+                              context.pop();
                             })),
                     const SizedBox(
                       width: 16,

@@ -9,12 +9,14 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_contacts_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_verified_status.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 
+import 'profile_contact_controller.dart';
 import 'profile_organization_controller.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -26,6 +28,7 @@ class ProfileScreen extends ConsumerWidget {
     // final activities = ref.watch(profileActivityControllerProvider);
     final orgs = ref.watch(profileOrganizationControllerProvider);
     final account = ref.watch(authServiceProvider).value!.account;
+    final contacts = ref.watch(profileContactControllerProvider);
     // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Center(
@@ -56,7 +59,7 @@ class ProfileScreen extends ConsumerWidget {
             ],
           ),
           body: DefaultTabController(
-            length: 3,
+            length: 4,
             child: NestedScrollView(
               headerSliverBuilder: (context, _) {
                 return [
@@ -82,6 +85,9 @@ class ProfileScreen extends ConsumerWidget {
                             Tab(
                               text: 'Organization',
                             ),
+                            Tab(
+                              text: 'Contact',
+                            ),
                           ],
                         ),
                       ),
@@ -96,6 +102,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                   const ProfileActivityTab(),
                   ProfileOrganizationTab(orgs: orgs),
+                  ProfileContactsTab(contacts: contacts),
                 ],
               ),
               // body: Column(
