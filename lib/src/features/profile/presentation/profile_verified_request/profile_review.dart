@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_phone_field/form_builder_phone_field.dart';
 
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import 'package:intl/intl.dart';
+import 'package:the_helper/src/common/constant/regex.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 
 import '../../domain/profile.dart';
 import '../profile_edit/profile_edit_gender_widget.dart';
-import '../profile_edit/profile_edit_phone_number_widget.dart';
 
 // import '../../../common/widget/button/primary_button.dart';
 // import '../domain/profile.dart';
@@ -27,7 +29,7 @@ class ProfileReviewWidget extends StatelessWidget {
     return FormBuilder(
       onChanged: () {},
       child: Column(
-        children: <Widget>[
+          children: <Widget>[
         Container(
           height: 300,
           decoration: BoxDecoration(
@@ -59,8 +61,7 @@ class ProfileReviewWidget extends StatelessWidget {
             hintText: 'Enter username. e.g Cool-combatant_0',
             labelText: 'Username',
           ),
-          validator:
-              FormBuilderValidators.match(r'^[A-Za-z0-9_-]{5,20}$'),
+          validator: FormBuilderValidators.match(r'^[A-Za-z0-9_-]{5,20}$'),
         ),
         FormBuilderTextField(
           name: 'firstName',
@@ -117,8 +118,21 @@ class ProfileReviewWidget extends StatelessWidget {
             labelText: 'Date Of Birth',
           ),
         ),
-        ProfileEditPhoneNumberWidget(
+        FormBuilderPhoneField(
+          name: 'phoneNumber',
           initialValue: profile.phoneNumber,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'eg. 0999123456',
+            labelText: 'Phone Number',
+          ),
+          keyboardType: TextInputType.phone,
+          defaultSelectedCountryIsoCode: 'VN',
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          validator: FormBuilderValidators.match(phoneNumberRegex,
+              errorText: 'Not a valid phone number'),
         ),
       ].padding(const EdgeInsets.symmetric(vertical: 12))),
     );

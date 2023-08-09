@@ -188,7 +188,7 @@ class _MyOrganizationScreenState
                           context.pop();
                           await ref
                               .read(leaveControllerProvider.notifier)
-                              .leave(organization!.id!);
+                              .leave(organization!.id);
                           if (context.mounted) {
                             //context.go(organizationListManagementPath);
                           }

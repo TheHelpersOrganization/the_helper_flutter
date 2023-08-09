@@ -121,7 +121,7 @@ class ActivityFilterDrawer extends ConsumerWidget {
                             org: selectedOrganizations.isNotEmpty
                                 ? ref
                                     .read(selectedOrganizationsProvider)
-                                    .map((e) => e.id!)
+                                    .map((e) => e.id)
                                     .toList()
                                 : null,
                             startTime: selectedStartTime != null

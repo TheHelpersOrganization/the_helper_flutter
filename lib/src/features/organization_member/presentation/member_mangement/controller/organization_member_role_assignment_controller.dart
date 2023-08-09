@@ -23,7 +23,7 @@ final memberProvider =
     FutureProvider.autoDispose.family<OrganizationMember, int>(
   (ref, memberId) async {
     final organization = await ref.watch(currentOrganizationProvider.future);
-    final organizationId = organization!.id!;
+    final organizationId = organization!.id;
 
     return ref.watch(organizationMemberRepositoryProvider).getMemberById(
         organizationId: organizationId,
@@ -42,7 +42,7 @@ final memberRoleInfoProvider =
     FutureProvider.autoDispose.family<MemberRoleInfo, int>(
   (ref, memberId) async {
     final organization = await ref.watch(currentOrganizationProvider.future);
-    final organizationId = organization!.id!;
+    final organizationId = organization!.id;
 
     return ref.watch(organizationMemberRepositoryProvider).getMemberRoleInfo(
           organizationId: organizationId,
@@ -84,7 +84,7 @@ class UpdateRoleController extends AutoDisposeAsyncNotifier<void> {
 
     state = const AsyncValue.loading();
     final organizationId =
-        (await ref.watch(currentOrganizationProvider.future))!.id!;
+        (await ref.watch(currentOrganizationProvider.future))!.id;
 
     final res = await guardAsyncValue(
       () => ref.watch(organizationMemberRepositoryProvider).grantRole(
@@ -117,7 +117,7 @@ class UpdateRoleController extends AutoDisposeAsyncNotifier<void> {
     state = const AsyncValue.loading();
 
     final organizationId =
-        (await ref.watch(currentOrganizationProvider.future))!.id!;
+        (await ref.watch(currentOrganizationProvider.future))!.id;
 
     final res = await guardAsyncValue(
       () => ref.watch(organizationMemberRepositoryProvider).revokeRole(

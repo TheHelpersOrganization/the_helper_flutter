@@ -89,7 +89,7 @@ class CreateActivityController extends StateNotifier<AsyncValue<void>> {
         await ref.watch(currentOrganizationProvider.future);
     final res = await guardAsyncValue(
       () => modActivityRepository.createActivity(
-        organizationId: currentOrganization!.id!,
+        organizationId: currentOrganization!.id,
         activity: Activity(
           name: name,
           description: description,

@@ -27,7 +27,7 @@ final selectedRoleProvider =
 
 final myMemberProvider = FutureProvider.autoDispose((ref) {
   final currentOrganizationId =
-      ref.watch(currentOrganizationProvider).valueOrNull!.id!;
+      ref.watch(currentOrganizationProvider).valueOrNull!.id;
   return ref.watch(organizationMemberRepositoryProvider).getMe(
         organizationId: currentOrganizationId,
         query: GetOrganizationMemberQuery(
@@ -56,7 +56,7 @@ class OrganizationMemberListPagedNotifier
           load: (page, limit) async {
             final items = (await modOrganizationMemberRepository
                     .getMemberWithAccountProfile(
-              organization.id!,
+              organization.id,
               query: GetOrganizationMemberQuery(
                 name: searchPattern,
                 statuses: [status],

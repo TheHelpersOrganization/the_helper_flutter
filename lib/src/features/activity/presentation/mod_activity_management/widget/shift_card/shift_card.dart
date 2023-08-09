@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
@@ -7,7 +6,6 @@ import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_bottom_sheet.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/widget/shift_card/shift_card_skills.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
-import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/shift.dart';
 
 class ShiftCard extends StatelessWidget {

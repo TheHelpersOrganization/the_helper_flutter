@@ -37,7 +37,7 @@ class RemoveMemberDialog extends ConsumerWidget {
       ),
       onConfirm: () => ref
           .read(removeMemberControllerProvider.notifier)
-          .remove(organization.id!, member.id),
+          .remove(organization.id, member.id),
     );
   }
 }

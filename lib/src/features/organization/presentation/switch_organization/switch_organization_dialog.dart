@@ -49,7 +49,7 @@ class SwitchOrganizationDialog extends ConsumerWidget {
       if (selected != null) {
         options.add(
           OrganizationOption(
-            id: selected.id!,
+            id: selected.id,
             name: selected.name,
             logoId: selected.logo,
             isCurrent: true,
@@ -64,7 +64,7 @@ class SwitchOrganizationDialog extends ConsumerWidget {
         }
         options.add(
           OrganizationOption(
-            id: value.id!,
+            id: value.id,
             name: value.name,
             logoId: value.logo,
           ),

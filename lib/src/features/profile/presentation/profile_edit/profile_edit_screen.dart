@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
-import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_contact_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_contact_widget.dart';
 
@@ -14,9 +12,7 @@ import '../../../../common/widget/button/primary_button.dart';
 import '../profile_controller.dart';
 import '../../domain/profile.dart';
 import 'profile_edit_avatar_picker_widget.dart';
-import 'profile_edit_controller.dart';
-import 'profile_edit_gender_widget.dart';
-import 'profile_edit_phone_number_widget.dart';
+import 'profile_edit_basic_info_widget.dart';
 
 // import '../../../common/widget/button/primary_button.dart';
 // import '../domain/profile.dart';
@@ -28,15 +24,18 @@ class ProfileEditScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final account = ref.watch(authServiceProvider).value!.account;
+    
     final contacts = ref.watch(profileContactControllerProvider);
     final profile = ref.watch(profileControllerProvider());
+
+    
 
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
+              _formKey.currentState!.reset();
               context.pop();
             },
           ),
@@ -52,79 +51,22 @@ class ProfileEditScreen extends ConsumerWidget {
               key: _formKey,
               child: Column(
                   children: <Widget>[
+                Text(
+                  'Avatar',
+                  style: context.theme.textTheme.titleLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
                 const ProfileEditAvatarPickerWidget(),
                 const SizedBox(
                   height: 16,
                 ),
-                FormBuilderTextField(
-                  name: 'username',
-                  initialValue: profile.username,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter username. e.g Cool-combatant_0',
-                    labelText: 'Username',
-                  ),
-                  validator:
-                      FormBuilderValidators.match(r'^[A-Za-z0-9_-]{5,20}$'),
+                const Divider(),
+                ProfileEditBasicInfoWidget(
+                  profile: profile,
+                  formKey: _formKey
                 ),
-                FormBuilderTextField(
-                  name: 'firstName',
-                  initialValue: profile.firstName,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your first name',
-                    labelText: 'First Name',
-                  ),
-                ),
-                FormBuilderTextField(
-                  name: 'lastName',
-                  initialValue: profile.lastName,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your last name',
-                    labelText: 'Last Name',
-                  ),
-                ),
-                FormBuilderTextField(
-                  name: 'bio',
-                  initialValue: profile.bio,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 3,
-                  maxLines: null,
-                  validator: FormBuilderValidators.maxLength(200),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Bio',
-                    hintText: 'Write something about you',
-                  ),
-                ),
-                FormBuilderField(
-                    name: 'gender',
-                    initialValue: profile.gender,
-                    builder: (FormFieldState<dynamic> field) {
-                      return ProfileEditGenderWidget(
-                          initialValue: profile.gender,
-                          onValueChange: (gender) => {
-                                field.didChange(gender),
-                              });
-                    }),
-                FormBuilderDateTimePicker(
-                  inputType: InputType.date,
-                  initialValue: profile.dateOfBirth?.toLocal(),
-                  format: DateFormat('yyyy-MM-dd'),
-                  name: 'dateOfBirth',
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime.now(),
-                  decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.calendar_today),
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your date of birth',
-                    labelText: 'Date Of Birth',
-                  ),
-                ),
-                ProfileEditPhoneNumberWidget(
-                  initialValue: profile.phoneNumber,
-                ),
+                
+                const Divider(),
                 contacts.when(
                   loading: () => const Center(
                     child: CircularProgressIndicator(),
@@ -134,25 +76,6 @@ class ProfileEditScreen extends ConsumerWidget {
                     initialContacts: data,
                   ),
                 ),
-
-                // FormBuilderTextField(
-                //   name: 'addressLine1',
-                //   initialValue: profile.addressLine1,
-                //   decoration: const InputDecoration(
-                //     border: OutlineInputBorder(),
-                //     hintText: 'Enter your street name',
-                //     labelText: 'Address Line 1',
-                //   ),
-                // ),
-                // FormBuilderTextField(
-                //   name: 'addressLine2',
-                //   initialValue: profile.addressLine2,
-                //   decoration: const InputDecoration(
-                //     border: OutlineInputBorder(),
-                //     hintText: 'Enter your district, city',
-                //     labelText: 'Address Line 2',
-                //   ),
-                // ),
                 const SizedBox(height: 16),
                 Row(
                   children: [

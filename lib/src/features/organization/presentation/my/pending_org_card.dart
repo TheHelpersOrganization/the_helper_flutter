@@ -39,7 +39,7 @@ class _PendingOrgCardState extends ConsumerState<PendingOrgCard> {
           context.pop();
           showLoadingDialog();
           final res = await cancelJoinRequestController.cancel(
-            organization.id!,
+            organization.id,
           );
           if (context.mounted) {
             context.pop();
