@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_builder_phone_field/form_builder_phone_field.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:the_helper/src/common/extension/widget.dart';
 
-import '../../../../common/constant/regex.dart';
 import '../../domain/profile.dart';
 import '../profile_controller.dart';
 import 'profile_edit_controller.dart';
 import 'profile_edit_gender_widget.dart';
 
-class ProfileEditBasicInfoWidget extends ConsumerWidget {
+class ProfileEditBasicInfoWidget extends ConsumerStatefulWidget {
   final Profile profile;
   final GlobalKey<FormBuilderState> formKey;
 
@@ -24,10 +23,30 @@ class ProfileEditBasicInfoWidget extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileEditBasicInfoWidget> createState() =>
+      _ProfileEditBasicInfoWidgetState();
+}
+
+class _ProfileEditBasicInfoWidgetState
+    extends ConsumerState<ProfileEditBasicInfoWidget> {
+  late PhoneController phoneController = PhoneController(
+      widget.profile.phoneNumber != null
+          ? PhoneNumber.parse(widget.profile.phoneNumber!)
+          : null);
+
+  @override
+  void dispose() {
+    super.dispose();
+    phoneController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final basicInfoChange = ref.watch(basicInfoValurChangeProvider);
+    final formKey = widget.formKey;
+    final profile = widget.profile;
     return Column(
-      children: [
+      children: <Widget>[
         Row(
           children: [
             Expanded(
@@ -43,6 +62,7 @@ class ProfileEditBasicInfoWidget extends ConsumerWidget {
                       formKey.currentState!.save();
                       // Validate returns true if the form is valid, or false otherwise.
                       if (!formKey.currentState!.validate()) {
+                        // 2134435742
                         return;
                       }
                       final value = formKey.currentState!.value;
@@ -51,11 +71,14 @@ class ProfileEditBasicInfoWidget extends ConsumerWidget {
                         'dateOfBirth': (value['dateOfBirth'] as DateTime)
                             .toUtc()
                             .toIso8601String(),
+                        'phoneNumber': phoneController.value?.international,
                       };
-                      final profile = Profile.fromJson(newValue);
+                      // print(newValue);
+
+                      final newProfile = Profile.fromJson(newValue);
                       ref
                           .read(profileControllerProvider().notifier)
-                          .updateProfile(profile);
+                          .updateProfile(newProfile);
                     },
                     icon: const Icon(Icons.check),
                     label: const Text('Save change'),
@@ -130,21 +153,15 @@ class ProfileEditBasicInfoWidget extends ConsumerWidget {
             ref.read(basicInfoValurChangeProvider.notifier).state = true;
           },
         ),
-        FormBuilderPhoneField(
-          name: 'phoneNumber',
-          initialValue: profile.phoneNumber,
+        PhoneFormField(
+          controller: phoneController,
+          defaultCountry: IsoCode.VN,
+          isCountryChipPersistent: true,
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'eg. 0999123456',
-            labelText: 'Phone Number',
+            label: Text('Phone number'),
+            hintText: 'Enter phone number',
           ),
-          keyboardType: TextInputType.phone,
-          defaultSelectedCountryIsoCode: 'VN',
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-          validator: FormBuilderValidators.match(phoneNumberRegex,
-              errorText: 'Not a valid phone number'),
           onChanged: (value) {
             ref.read(basicInfoValurChangeProvider.notifier).state = true;
           },
@@ -165,7 +182,7 @@ class ProfileEditBasicInfoWidget extends ConsumerWidget {
             ref.read(basicInfoValurChangeProvider.notifier).state = true;
           },
         ),
-      ],
+      ].padding(const EdgeInsets.symmetric(vertical: 12)),
     );
   }
 }

@@ -24,7 +24,7 @@ class ProfileEditContactWidget extends ConsumerWidget {
             Expanded(
               child: Text(
                 'Contacts',
-                style: context.theme.textTheme.titleMedium
+                style: context.theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
