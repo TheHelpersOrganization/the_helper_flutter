@@ -19,23 +19,29 @@ final popularNewsProvider = FutureProvider.autoDispose(
       ),
 );
 
+const defaultSort = NewsQuerySort.dateDesc;
+final sortProvider = StateProvider.autoDispose<String>((ref) => defaultSort);
+
 class NewsListPagedNotifier extends PagedNotifier<int, News> {
   final NewsRepository newsRepository;
   final String searchPattern;
+  final String sort;
 
   NewsListPagedNotifier({
     required this.newsRepository,
     required this.searchPattern,
+    required this.sort,
   }) : super(
           load: (page, limit) async {
             return newsRepository.getNews(
               query: NewsQuery(
                 search: searchPattern.trim().isEmpty ? null : searchPattern,
+                isPublished: true,
                 include: [
                   //NewsQueryInclude.author,
                   NewsQueryInclude.organization
                 ],
-                sort: NewsQuerySort.dateDesc,
+                sort: sort,
                 limit: limit,
                 offset: page * limit,
               ),
@@ -50,10 +56,12 @@ final newsListPagedNotifierProvider = StateNotifierProvider.autoDispose<
   (ref) {
     final newsRepository = ref.watch(newsRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
+    final sort = ref.watch(sortProvider);
 
     return NewsListPagedNotifier(
       newsRepository: newsRepository,
       searchPattern: searchPattern,
+      sort: sort,
     );
   },
 );

@@ -8,6 +8,7 @@ const shiftSnackbarName = 'shift';
 const myShiftSnackbarName = 'myShift';
 const roleAssignmentSnackbarName = 'roleAssignment';
 const transferOwnershipSnackbarName = 'transferOwnership';
+const createNewsSnackbarName = 'createNews';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(
