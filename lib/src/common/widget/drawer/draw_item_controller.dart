@@ -12,11 +12,13 @@ const List<DrawerItemModel> volunteer = [
     route: AppRoute.home,
     title: 'Home',
     icon: Icons.home_outlined,
+    enabled: true,
   ),
   DrawerItemModel(
     route: AppRoute.activitySearch,
     title: 'Activities',
     icon: Icons.search_outlined,
+    enabled: true,
   ),
   DrawerItemModel(
     route: AppRoute.activityMy,
@@ -27,6 +29,7 @@ const List<DrawerItemModel> volunteer = [
     route: AppRoute.organizationSearch,
     title: 'Organizations',
     icon: Icons.search_outlined,
+    enabled: true,
   ),
   DrawerItemModel(
     route: AppRoute.myOrganization,

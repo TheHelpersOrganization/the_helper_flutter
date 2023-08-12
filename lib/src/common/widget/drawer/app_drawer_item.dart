@@ -11,6 +11,7 @@ class AppDrawerItem extends StatelessWidget {
   final GestureTapCallback? onTap;
   final bool isSub;
   final String? path;
+  final bool enabled;
 
   const AppDrawerItem({
     super.key,
@@ -23,6 +24,7 @@ class AppDrawerItem extends StatelessWidget {
     this.onTap,
     required this.isSub,
     this.path,
+    required this.enabled,
   });
 
   @override
@@ -51,6 +53,7 @@ class AppDrawerItem extends StatelessWidget {
       ),
       child: ListTile(
         dense: true,
+        enabled: enabled,
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
         title: Text(title, style: tStyle),
         subtitle: subtitle == null ? null : Text(subtitle!, style: sStyle),
