@@ -44,6 +44,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/s
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/chat_routes.dart';
+import 'package:the_helper/src/router/news_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
@@ -261,11 +262,6 @@ final routes = [
         ],
       ),
       GoRoute(
-        path: AppRoute.news.path,
-        name: AppRoute.news.name,
-        builder: (_, __) => const DevelopingScreen(),
-      ),
-      GoRoute(
         path: AppRoute.myOrganization.path,
         name: AppRoute.myOrganization.name,
         builder: (context, state) => const MyOrganizationScreen(),
@@ -352,6 +348,7 @@ final routes = [
           ]),
       ...accountRoutes,
       profileRoutes,
+      ...newsRoutes,
       ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
@@ -382,11 +379,13 @@ final profileRoutes = GoRoute(
     GoRoute(
       path: AppRoute.otherProfile.path,
       name: AppRoute.otherProfile.name,
-      builder: (_, state) => OtherUserProfileScreen(
-        userId: int.parse(
-          state.pathParameters[AppRoute.otherProfile.path.substring(1)]!,
-        ),
-      ),
+      builder: (_, state) {
+        return OtherUserProfileScreen(
+          userId: int.parse(
+            state.pathParameters[AppRouteParameter.profileId]!,
+          ),
+        );
+      },
     ),
   ],
 );
@@ -484,6 +483,12 @@ final accountRoutes = [
   ),
 ];
 
+abstract class AppRouteParameter {
+  static const profileId = 'userId';
+  static const organizationId = 'orgId';
+  static const newsId = 'newsId';
+}
+
 enum AppRoute {
   // 404
   developing(
@@ -522,10 +527,21 @@ enum AppRoute {
     name: 'account-verification-completed',
   ),
 
-  // Todo: news crud
   news(
     path: '/news',
     name: 'news',
+  ),
+  newsDetail(
+    path: ':${AppRouteParameter.newsId}',
+    name: 'news-detail',
+  ),
+  organizationNews(
+    path: '/organization/news',
+    name: 'organization-news',
+  ),
+  organizationNewsCreate(
+    path: 'create',
+    name: 'organization-news-create',
   ),
 
   chats(
@@ -577,7 +593,7 @@ enum AppRoute {
     name: 'profile',
   ),
   otherProfile(
-    path: ':userId',
+    path: ':${AppRouteParameter.profileId}',
     name: 'profile-other',
   ),
   profileEdit(
@@ -603,7 +619,7 @@ enum AppRoute {
     name: 'organization-requests-manage',
   ),
   organization(
-    path: '/organization/:orgId',
+    path: '/organization/:${AppRouteParameter.organizationId}',
     name: 'organization',
   ),
   organizationSearch(
@@ -770,6 +786,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     navigatorKey: rootNavigatorKey,
     routes: routes,
     redirect: notifier.redirect,
-    errorBuilder: (context, state) => const DevelopingScreen(),
+    errorBuilder: (context, state) {
+      print(state.error);
+      return const DevelopingScreen();
+    },
   );
 });

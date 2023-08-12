@@ -21,4 +21,13 @@ enum Role {
   moderator,
   admin,
   operator,
+  ;
+
+  get isVolunteer => this == Role.volunteer;
+
+  get isModerator => this == Role.moderator;
+
+  get isAdmin => this == Role.admin;
+
+  get isOperator => this == Role.operator;
 }

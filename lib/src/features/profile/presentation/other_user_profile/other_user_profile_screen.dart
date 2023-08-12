@@ -14,15 +14,18 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_org
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 
-import '../../../report/domain/report_query.dart';
 import './profile_verified_status.dart';
+import '../../../report/domain/report_query.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
 
-  const OtherUserProfileScreen({super.key, required this.userId});
+  const OtherUserProfileScreen({
+    super.key,
+    required this.userId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

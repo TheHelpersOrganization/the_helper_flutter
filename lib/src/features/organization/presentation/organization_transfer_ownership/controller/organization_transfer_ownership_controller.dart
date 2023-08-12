@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization/domain/organization_transfer_ownership.dart';
@@ -24,14 +24,10 @@ class OrganizationTransferOwnershipData {
   });
 }
 
-final currentOrganizationProvider = FutureProvider.autoDispose(
-  (ref) =>
-      ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization(),
-);
-
 final organizationTransferOwnershipDataProvider = FutureProvider.autoDispose(
   (ref) async {
-    final organization = await ref.watch(currentOrganizationProvider.future);
+    final organization =
+        await ref.watch(currentOrganizationServiceProvider.future);
     final myMember = ref.watch(organizationMemberRepositoryProvider).getMe(
           organizationId: organization!.id,
         );
@@ -53,7 +49,8 @@ final selectedMemberProvider = StateProvider.autoDispose<OrganizationMember?>(
 );
 final membersProvider = FutureProvider.autoDispose(
   (ref) async {
-    final organization = await ref.watch(currentOrganizationProvider.future);
+    final organization =
+        await ref.watch(currentOrganizationServiceProvider.future);
     return ref
         .watch(modOrganizationMemberRepositoryProvider)
         .getMemberWithAccountProfile(

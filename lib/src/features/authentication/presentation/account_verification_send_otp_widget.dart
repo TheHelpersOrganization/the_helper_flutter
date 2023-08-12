@@ -14,18 +14,31 @@ class AccountVerificationSendOtpWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final accountVerificationController =
         ref.read(accountVerificationControllerProvider.notifier);
+    final resendOtpCountdown = ref.watch(resendOtpCountdownProvider);
+    final isWaitingForOtp = resendOtpCountdown > 0;
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("Don't receive the code?"),
           RichText(
-              text: TextSpan(
-                  text: 'Send again',
-                  style: TextStyle(color: context.theme.primaryColor),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      accountVerificationController.sendOtp();
-                    }))
+            text: TextSpan(
+              text: isWaitingForOtp
+                  ? 'Send again in ${resendOtpCountdown}s'
+                  : 'Send again',
+              style: isWaitingForOtp
+                  ? null
+                  : TextStyle(color: context.theme.primaryColor),
+              recognizer: isWaitingForOtp
+                  ? null
+                  : (TapGestureRecognizer()
+                    ..onTap = () async {
+                      await accountVerificationController.sendOtp();
+                      if (context.mounted) {
+                        ref.read(resendOtpCountdownProvider.notifier).reset();
+                      }
+                    }),
+            ),
+          )
         ].padding(const EdgeInsets.symmetric(horizontal: 2, vertical: 2)));
   }
 }

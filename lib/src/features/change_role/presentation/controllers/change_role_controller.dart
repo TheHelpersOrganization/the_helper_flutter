@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 
@@ -25,7 +26,7 @@ final changeRoleDataProvider = FutureProvider.autoDispose((ref) async {
   final joinedOrganizations =
       await ref.watch(joinedOrganizationProvider.future);
   final currentOrganization =
-      await ref.watch(currentOrganizationProvider.future);
+      await ref.watch(currentOrganizationServiceProvider.future);
 
   return ChangeRoleData(
     roles: roles,

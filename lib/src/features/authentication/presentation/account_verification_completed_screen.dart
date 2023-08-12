@@ -13,10 +13,10 @@ class AccountVerificationCompletedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(32),
-        alignment: Alignment.center,
+      body: Padding(
+        padding: const EdgeInsets.all(12),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
               'images/account_verification_completed.svg',
@@ -31,9 +31,8 @@ class AccountVerificationCompletedScreen extends ConsumerWidget {
                   ),
               textAlign: TextAlign.center,
             ),
-            Text(
+            const Text(
               'Great. Now you can enjoy all the features of The Helpers!',
-              style: context.theme.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
             PrimaryButton(

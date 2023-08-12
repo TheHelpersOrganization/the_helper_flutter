@@ -60,9 +60,9 @@ class OrganizationTransferOwnershipScreen extends ConsumerWidget {
         body: screenDataState.when(
           skipLoadingOnRefresh: false,
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (_, __) => CustomErrorWidget(
-            onRetry: () => ref.invalidate(currentOrganizationProvider),
-          ),
+          error: (_, __) => const CustomErrorWidget(
+              // onRetry: () => ref.invalidate(currentOrganizationServiceProvider),
+              ),
           data: (screenData) {
             final organization = screenData.currentOrganization;
             final myMember = screenData.myMember;

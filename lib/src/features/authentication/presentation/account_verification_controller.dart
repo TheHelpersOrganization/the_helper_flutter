@@ -30,12 +30,17 @@ class AccountVerificationController extends AutoDisposeAsyncNotifier<void> {
           .goNamed(AppRoute.accountVerificationCompleted.name);
     } on BackendException catch (ex) {
       state = AsyncValue.error(ex.error.message, StackTrace.current);
-    } catch (ex) {
-      state = AsyncValue.error('Cannot verify OTP', StackTrace.current);
+    } catch (ex, st) {
+      print(st);
+      print(ex);
+      state = AsyncValue.error('Cannot verify OTP', st);
     }
   }
 
   Future<void> sendOtp() async {
+    if (state.isLoading) {
+      return;
+    }
     try {
       state = const AsyncValue.loading();
       final authService = ref.read(authServiceProvider.notifier);
@@ -52,3 +57,38 @@ class AccountVerificationController extends AutoDisposeAsyncNotifier<void> {
 final accountVerificationControllerProvider =
     AutoDisposeAsyncNotifierProvider<AccountVerificationController, void>(
         () => AccountVerificationController());
+
+class ResendOtpCountdown extends AutoDisposeNotifier<int> {
+  Timer? _timer;
+
+  @override
+  int build() {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (state > 0) {
+        state = state - 1;
+      } else {
+        _timer?.cancel();
+        _timer = null;
+      }
+    });
+    ref.onDispose(() {
+      _timer?.cancel();
+      _timer = null;
+    });
+    return 5;
+  }
+
+  void reset() {
+    if (_timer == null) {
+      state = build();
+    }
+  }
+}
+
+final resendOtpCountdownProvider =
+    AutoDisposeNotifierProvider<ResendOtpCountdown, int>(() {
+  return ResendOtpCountdown();
+});

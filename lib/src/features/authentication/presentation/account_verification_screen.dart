@@ -35,7 +35,7 @@ class AccountVerificationScreen extends ConsumerWidget {
             const AccountVerificationOtpFieldWidget(),
             accountVerificationControllerState.hasError
                 ? Text(
-                    'Error: ${accountVerificationControllerState.error}',
+                    '${accountVerificationControllerState.error}',
                     style: TextStyle(color: context.theme.colorScheme.error),
                   )
                 : const Text(''),
@@ -45,7 +45,7 @@ class AccountVerificationScreen extends ConsumerWidget {
               onPressed: () {
                 accountVerificationController.verifyOtp(otpController.text);
               },
-              child: const Text('Send'),
+              child: const Text('Verify'),
             )
           ].padding(const EdgeInsets.symmetric(vertical: 16)),
         ),

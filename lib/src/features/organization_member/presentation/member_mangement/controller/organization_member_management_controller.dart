@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
-import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/get_organization_member_query.dart';
@@ -25,11 +25,11 @@ final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 final selectedRoleProvider =
     StateProvider.autoDispose<Set<OrganizationMemberRoleType>>((ref) => {});
 
-final myMemberProvider = FutureProvider.autoDispose((ref) {
-  final currentOrganizationId =
-      ref.watch(currentOrganizationProvider).valueOrNull!.id!;
+final myMemberProvider = FutureProvider.autoDispose((ref) async {
+  final currentOrganization =
+      await ref.watch(currentOrganizationServiceProvider.future);
   return ref.watch(organizationMemberRepositoryProvider).getMe(
-        organizationId: currentOrganizationId,
+        organizationId: currentOrganization!.id,
         query: GetOrganizationMemberQuery(
           include: [
             GetOrganizationMemberQueryInclude.role,
@@ -56,7 +56,7 @@ class OrganizationMemberListPagedNotifier
           load: (page, limit) async {
             final items = (await modOrganizationMemberRepository
                     .getMemberWithAccountProfile(
-              organization.id!,
+              organization.id,
               query: GetOrganizationMemberQuery(
                 name: searchPattern,
                 statuses: [status],

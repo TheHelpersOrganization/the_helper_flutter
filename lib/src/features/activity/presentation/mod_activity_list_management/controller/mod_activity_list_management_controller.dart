@@ -4,7 +4,7 @@ import 'package:the_helper/src/features/activity/application/mod_activity_servic
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/activity/domain/mod_activity_query.dart';
-import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 
 import '../screen/mod_activity_list_management_screen.dart';
 
@@ -14,9 +14,6 @@ final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final currentStatusProvider =
     StateProvider.autoDispose((ref) => tabs.first.status);
 
-final currentOrganizationProvider = FutureProvider.autoDispose((ref) =>
-    ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
-
 final isManagerProvider = StateProvider.autoDispose((ref) => false);
 final isShiftManagerProvider = StateProvider.autoDispose((ref) => false);
 
@@ -25,7 +22,7 @@ final pagingControllerProvider = FutureProvider.autoDispose(
     final currentStatus = ref.watch(currentStatusProvider);
     final modActivityService = ref.watch(modActivityServiceProvider);
     final controller = PagingController<int, Activity>(firstPageKey: 0);
-    final org = await ref.watch(currentOrganizationProvider.future);
+    final org = await ref.watch(currentOrganizationServiceProvider.future);
     final isManager = ref.watch(isManagerProvider);
     final isShiftManager = ref.watch(isShiftManagerProvider);
     final searchPattern = ref.watch(searchPatternProvider)?.trim();
