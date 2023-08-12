@@ -4,11 +4,11 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/data/mod_activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -32,7 +32,7 @@ class ActivityManagerData {
 }
 
 final activityManagersProvider = FutureProvider.autoDispose((ref) async {
-  final org = await ref.watch(currentOrganizationProvider.future);
+  final org = await ref.watch(currentOrganizationServiceProvider.future);
   final account = await ref.watch(authServiceProvider.future);
 
   final managers = await ref
@@ -86,10 +86,10 @@ class CreateActivityController extends StateNotifier<AsyncValue<void>> {
     }
 
     final currentOrganization =
-        await ref.watch(currentOrganizationProvider.future);
+        await ref.watch(currentOrganizationServiceProvider.future);
     final res = await guardAsyncValue(
       () => modActivityRepository.createActivity(
-        organizationId: currentOrganization!.id!,
+        organizationId: currentOrganization!.id,
         activity: Activity(
           name: name,
           description: description,

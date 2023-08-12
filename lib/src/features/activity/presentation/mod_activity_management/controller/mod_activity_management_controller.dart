@@ -4,6 +4,7 @@ import 'package:the_helper/src/features/activity/application/activity_service.da
 import 'package:the_helper/src/features/activity/data/activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/controller/mod_activity_list_management_controller.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/get_organization_member_query.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
@@ -83,7 +84,7 @@ final getActivityAndShiftsProvider =
 final myMemberProvider = FutureProvider.autoDispose((ref) async {
   return ref.watch(organizationMemberRepositoryProvider).getMe(
         organizationId:
-            (await ref.watch(currentOrganizationProvider.future))!.id,
+            (await ref.watch(currentOrganizationServiceProvider.future))!.id,
         query: GetOrganizationMemberQuery(
           include: [
             GetOrganizationMemberQueryInclude.role,

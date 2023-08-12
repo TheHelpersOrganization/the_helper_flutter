@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
-import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization_member/data/organization_member_repository.dart';
 import 'package:the_helper/src/features/organization_member/domain/get_organization_member_query.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
@@ -22,8 +22,9 @@ class MemberAndRoles {
 final memberProvider =
     FutureProvider.autoDispose.family<OrganizationMember, int>(
   (ref, memberId) async {
-    final organization = await ref.watch(currentOrganizationProvider.future);
-    final organizationId = organization!.id!;
+    final organization =
+        await ref.watch(currentOrganizationServiceProvider.future);
+    final organizationId = organization!.id;
 
     return ref.watch(organizationMemberRepositoryProvider).getMemberById(
         organizationId: organizationId,
@@ -41,8 +42,9 @@ final memberProvider =
 final memberRoleInfoProvider =
     FutureProvider.autoDispose.family<MemberRoleInfo, int>(
   (ref, memberId) async {
-    final organization = await ref.watch(currentOrganizationProvider.future);
-    final organizationId = organization!.id!;
+    final organization =
+        await ref.watch(currentOrganizationServiceProvider.future);
+    final organizationId = organization!.id;
 
     return ref.watch(organizationMemberRepositoryProvider).getMemberRoleInfo(
           organizationId: organizationId,
@@ -84,7 +86,7 @@ class UpdateRoleController extends AutoDisposeAsyncNotifier<void> {
 
     state = const AsyncValue.loading();
     final organizationId =
-        (await ref.watch(currentOrganizationProvider.future))!.id!;
+        (await ref.watch(currentOrganizationServiceProvider.future))!.id;
 
     final res = await guardAsyncValue(
       () => ref.watch(organizationMemberRepositoryProvider).grantRole(
@@ -117,7 +119,7 @@ class UpdateRoleController extends AutoDisposeAsyncNotifier<void> {
     state = const AsyncValue.loading();
 
     final organizationId =
-        (await ref.watch(currentOrganizationProvider.future))!.id!;
+        (await ref.watch(currentOrganizationServiceProvider.future))!.id;
 
     final res = await guardAsyncValue(
       () => ref.watch(organizationMemberRepositoryProvider).revokeRole(

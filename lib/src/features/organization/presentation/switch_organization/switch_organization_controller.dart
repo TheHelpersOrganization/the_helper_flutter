@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
@@ -10,8 +11,8 @@ import 'package:the_helper/src/utils/async_value.dart';
 
 final selectedOrganization = StateProvider.autoDispose<int?>((ref) => null);
 
-final currentOrganizationProvider = FutureProvider.autoDispose((ref) =>
-    ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
+// final currentOrganizationProvider = FutureProvider.autoDispose((ref) =>
+//     ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
 
 final joinedOrganizationProvider = FutureProvider.autoDispose(
   (ref) => ref.watch(modOrganizationRepositoryProvider).getOwnedOrganizations(),
@@ -20,12 +21,12 @@ final joinedOrganizationProvider = FutureProvider.autoDispose(
 class SwitchOrganizationController extends AutoDisposeAsyncNotifier<void> {
   @override
   FutureOr<void> build() {
-    ref.watch(currentOrganizationRepositoryProvider);
+    ref.watch(currentOrganizationServiceProvider);
   }
 
   Future<Organization?> switchOrganization(int organizationId) async {
     final res = await guardAsyncValue(() => ref
-        .read(currentOrganizationRepositoryProvider)
+        .read(currentOrganizationServiceProvider.notifier)
         .setCurrentOrganization(organizationId));
     ref
         .read(setRoleControllerProvider.notifier)

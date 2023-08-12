@@ -35,13 +35,13 @@ class CurrentOrganizationRepository {
     return res;
   }
 
-  Future<Organization?> getCurrentOrganization() async {
-    final id = await getCurrentOrganizationId();
-    if (id == null) {
-      return null;
-    }
-    return modOrganizationRepository.getOwnedOrganizationById(id);
-  }
+  // Future<Organization?> getCurrentOrganization() async {
+  //   final id = await getCurrentOrganizationId();
+  //   if (id == null) {
+  //     return null;
+  //   }
+  //   return modOrganizationRepository.getOwnedOrganizationById(id);
+  // }
 }
 
 @Riverpod(keepAlive: true)

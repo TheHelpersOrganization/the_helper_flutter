@@ -56,7 +56,6 @@ class OrganizationSearchScreen extends ConsumerWidget {
                 ref.read(searchPatternProvider.notifier).state = null;
                 ref.read(hasUsedSearchProvider.notifier).state = true;
               },
-              filter: _buildFilter(context),
             ),
             const SizedBox(
               height: 16,
