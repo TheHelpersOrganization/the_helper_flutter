@@ -50,15 +50,18 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   riverpod_infinite_scroll:
   cross_file:
+  path:
+  path_provider:
   flutter_cache_manager:
   cached_network_image:
   flutter_quill: 
+  flutter_quill_extensions:
+  vsc_quill_delta_to_html:
   image_cropper:
   country_picker:
   file_picker:
   back_button_interceptor:
   avatar_stack: ^1.2.0
-  google_fonts: ^5.1.0
   expandable_text: ^2.3.0
   auto_size_text: ^3.0.0
   skeletons: ^0.0.3
@@ -77,6 +80,8 @@ dependencies:
   logger:
   mocktail: ^1.0.0
   envied: ^0.3.0+3
+  flutter_html:
+  flutter_html_all:
 
 dev_dependencies:
   flutter_test:

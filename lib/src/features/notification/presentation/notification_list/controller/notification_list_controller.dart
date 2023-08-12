@@ -37,7 +37,6 @@ class NotificationListPagedNotifier
     this.isOrganizationNotificationSelected = false,
   }) : super(
           load: (page, limit) {
-            print(page);
             final notificationType = <NotificationType>[];
             if (isActivityNotificationSelected) {
               notificationType.addAll(

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -37,7 +38,7 @@ class SwitchOrganizationDialog extends ConsumerWidget {
     );
     final router = ref.watch(routerProvider);
     final organizations = ref.watch(getOwnedOrganizationsProvider);
-    final currentOrganization = ref.watch(currentOrganizationProvider);
+    final currentOrganization = ref.watch(currentOrganizationServiceProvider);
     final isLoading = organizations.isLoading || currentOrganization.isLoading;
     final hasError = organizations.hasError || currentOrganization.hasError;
     final radioSelectedOrganizationId = ref.watch(selectedOrganization);
@@ -94,42 +95,45 @@ class SwitchOrganizationDialog extends ConsumerWidget {
         child: Column(
           children: [
             Column(
-            children:options.map(
-            (e) {
-              final bool isSelected;
-              if (radioSelectedOrganizationId != null) {
-                isSelected = e.id == radioSelectedOrganizationId;
-              } else {
-                isSelected = e.isCurrent;
-              }
-              return RadioListTile<int>(
-                value: e.id,
-                groupValue: radioSelectedOrganizationId,
-                onChanged: switchState.isLoading
-                    ? null
-                    : (int? option) {
-                        ref.read(selectedOrganization.notifier).state = option;
-                      },
-                selected: isSelected,
-                controlAffinity: ListTileControlAffinity.trailing,
-                title: Text(
-                  e.name,
-                ),
-                subtitle: e.isCurrent
-                    ? const Text(
-                        'Currently selected',
-                      )
-                    : null,
-              );
-            },
-          ).toList()),
-          ListTile(
-            selected: true,
-            dense: true,
-            title: const Text('Make a new one'),
-            leading: const Icon(Icons.add),
-            onTap: () => context.goNamed(AppRoute.organizationRegistration.name),
-          )],
+                children: options.map(
+              (e) {
+                final bool isSelected;
+                if (radioSelectedOrganizationId != null) {
+                  isSelected = e.id == radioSelectedOrganizationId;
+                } else {
+                  isSelected = e.isCurrent;
+                }
+                return RadioListTile<int>(
+                  value: e.id,
+                  groupValue: radioSelectedOrganizationId,
+                  onChanged: switchState.isLoading
+                      ? null
+                      : (int? option) {
+                          ref.read(selectedOrganization.notifier).state =
+                              option;
+                        },
+                  selected: isSelected,
+                  controlAffinity: ListTileControlAffinity.trailing,
+                  title: Text(
+                    e.name,
+                  ),
+                  subtitle: e.isCurrent
+                      ? const Text(
+                          'Currently selected',
+                        )
+                      : null,
+                );
+              },
+            ).toList()),
+            ListTile(
+              selected: true,
+              dense: true,
+              title: const Text('Make a new one'),
+              leading: const Icon(Icons.add),
+              onTap: () =>
+                  context.goNamed(AppRoute.organizationRegistration.name),
+            )
+          ],
         ),
       );
     }

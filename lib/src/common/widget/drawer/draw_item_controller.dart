@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_model.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
-import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization/data/mod_organization_repository.dart';
 import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -35,9 +34,9 @@ const List<DrawerItemModel> volunteer = [
     icon: Icons.work_outline,
   ),
   DrawerItemModel(
-    route: AppRoute.organizationRegistration,
-    title: 'Create organization',
-    icon: Icons.group_add,
+    route: AppRoute.news,
+    title: 'News',
+    icon: Icons.newspaper_outlined,
   ),
   DrawerItemModel(
     route: AppRoute.reportHistory,
@@ -48,6 +47,11 @@ const List<DrawerItemModel> volunteer = [
     route: AppRoute.chats,
     title: 'Chat',
     icon: Icons.chat_outlined,
+  ),
+  DrawerItemModel(
+    route: AppRoute.organizationRegistration,
+    title: 'Create organization',
+    icon: Icons.group_add,
   ),
   // DrawerItemModel(
   //   route: AppRoute.report,
@@ -71,6 +75,11 @@ final List<DrawerItemModel> moderator = [
     route: AppRoute.organizationActivityListManagement,
     title: 'Organization Activities',
     icon: Icons.work_outline,
+  ),
+  const DrawerItemModel(
+    route: AppRoute.organizationNews,
+    title: 'Organization News',
+    icon: Icons.newspaper_outlined,
   ),
   const DrawerItemModel(
     route: AppRoute.chats,
@@ -167,9 +176,6 @@ List<DrawerItemModel> getDrawerItem(Role role) {
       return volunteer;
   }
 }
-
-final currentOrganizationProvider = FutureProvider((ref) =>
-    ref.watch(currentOrganizationRepositoryProvider).getCurrentOrganization());
 
 final joinedOrganizationsProvider = FutureProvider(
   (ref) => ref.watch(modOrganizationRepositoryProvider).getOwnedOrganizations(),

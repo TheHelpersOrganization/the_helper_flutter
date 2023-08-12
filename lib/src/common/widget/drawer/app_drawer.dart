@@ -12,6 +12,7 @@ import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/notification/application/notification_service.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
@@ -56,7 +57,7 @@ class AppDrawer extends ConsumerWidget {
     final userRole = userRoleState.valueOrNull;
     final roles = ref.watch(getAllRolesProvider).valueOrNull;
     final currentOrganization =
-        ref.watch(currentOrganizationProvider).valueOrNull;
+        ref.watch(currentOrganizationServiceProvider).valueOrNull;
     final joinedOrganizations =
         ref.watch(joinedOrganizationsProvider).valueOrNull;
 
@@ -144,7 +145,7 @@ class AppDrawer extends ConsumerWidget {
               ref.invalidate(profileControllerProvider);
               ref.invalidate(profileRepositoryProvider);
               ref.invalidate(authServiceProvider);
-              ref.invalidate(currentOrganizationProvider);
+              ref.invalidate(currentOrganizationServiceProvider);
               ref.invalidate(currentOrganizationRepositoryProvider);
               ref.invalidate(joinedOrganizationsProvider);
               ref.invalidate(notificationCountProvider);

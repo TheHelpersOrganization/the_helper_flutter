@@ -8,8 +8,8 @@ import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
-import 'package:the_helper/src/features/organization/presentation/switch_organization/switch_organization_controller.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member_status.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/widget/joined_member_card.dart';
@@ -92,7 +92,8 @@ class _MyOrganizationScreenState
     final showSearch = ref.watch(showSearchProvider);
     final currentStatus = ref.watch(currentStatusProvider);
     final myMember = ref.watch(myMemberProvider).valueOrNull;
-    final organization = ref.watch(currentOrganizationProvider).valueOrNull;
+    final organization =
+        ref.watch(currentOrganizationServiceProvider).valueOrNull;
     final searchPattern = ref.watch(searchPatternProvider);
     final selectedRoles = ref.watch(selectedRoleProvider);
 

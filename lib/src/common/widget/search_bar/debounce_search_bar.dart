@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/widget/side_sheet.dart';
 
 class DebounceSearchBar extends StatefulWidget {
   final TextEditingController? controller;
@@ -10,7 +7,6 @@ class DebounceSearchBar extends StatefulWidget {
   final void Function(String value)? _onChanged;
   final void Function()? _onClear;
   final void Function(String value)? _onDebounce;
-  final Widget? filter;
   final bool small;
   final String? hintText;
   final String? initialValue;
@@ -23,7 +19,6 @@ class DebounceSearchBar extends StatefulWidget {
     void Function(String value)? onChanged,
     void Function()? onClear,
     void Function(String value)? onDebounce,
-    this.filter,
     this.small = false,
     this.hintText,
     this.initialValue,
@@ -47,13 +42,18 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
   @override
   void initState() {
     super.initState();
+
     final onDebounce = widget._onDebounce;
     _inputController =
         widget.controller ?? TextEditingController(text: widget.initialValue);
     if (onDebounce != null) {
       _searchAfterDuration
-          .debounceTime(widget._debounceDuration ?? const Duration(seconds: 3))
-          .listen((event) => onDebounce(event));
+          .debounceTime(widget._debounceDuration ?? const Duration(seconds: 1))
+          .listen((event) {
+        if (mounted) {
+          onDebounce(event);
+        }
+      });
     }
   }
 
@@ -64,22 +64,6 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
         Expanded(
           child: _buildTextField(),
         ),
-        if (widget.filter != null) _buildFilter(widget.filter!),
-      ],
-    );
-  }
-
-  Row _buildFilter(Widget body) {
-    return Row(
-      children: [
-        const SizedBox(
-          width: 8,
-        ),
-        IconButton(
-            onPressed: () {
-              _openSideSheet(body);
-            },
-            icon: const Icon(Icons.filter_list_rounded)),
       ],
     );
   }
@@ -107,69 +91,11 @@ class _DebounceSearchBarState extends State<DebounceSearchBar> {
     );
   }
 
-  void _openSideSheet(Widget body) {
-    SideSheet.right(
-      context: context,
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Filter',
-                  style: context.theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  icon: const Icon(Icons.close_rounded),
-                )
-              ],
-            ),
-            body,
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: OutlinedButton.icon(
-                    icon: const Icon(
-                      Icons.clear_outlined,
-                      size: 18,
-                    ),
-                    label: const Text('Clear'),
-                    onPressed: () {},
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  flex: 3,
-                  child: FilledButton(
-                    child: const Text('Apply'),
-                    onPressed: () {},
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-      width: context.mediaQuery.size.width * 0.8,
-    );
-  }
-
   @override
   void dispose() {
     super.dispose();
-    if (!widget._isUsingCustomController) _inputController.dispose();
     _searchAfterDuration.close();
+    if (!widget._isUsingCustomController) _inputController.dispose();
   }
 
   void _internalOnChange(String value) {
