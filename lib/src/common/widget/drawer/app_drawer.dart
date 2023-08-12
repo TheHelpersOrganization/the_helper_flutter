@@ -52,7 +52,9 @@ class AppDrawer extends ConsumerWidget {
       );
 
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
-    final accountId = ref.watch(authServiceProvider).valueOrNull?.account.id;
+    final accountData = ref.watch(authServiceProvider).valueOrNull?.account;
+    final accountId = accountData?.id;
+    final isEmailVerified = accountData?.isEmailVerified ?? false;
     final userRoleState = ref.watch(getRoleProvider);
     final userRole = userRoleState.valueOrNull;
     final roles = ref.watch(getAllRolesProvider).valueOrNull;
@@ -90,6 +92,7 @@ class AppDrawer extends ConsumerWidget {
               },
             ),
             isSub: false,
+            enabled: isEmailVerified,
           ),
           const Divider(),
         ],
@@ -114,6 +117,7 @@ class AppDrawer extends ConsumerWidget {
                 context.goNamed(
                     i.route != null ? i.route!.name : AppRoute.developing.name);
               },
+              enabled: i.enabled ?? isEmailVerified,
             ),
         if (userRole == Role.moderator &&
             accountId != null &&
@@ -127,6 +131,7 @@ class AppDrawer extends ConsumerWidget {
               AppRoute.organizationTransferOwnership.name,
             ),
             path: AppRoute.organizationTransferOwnership.path,
+            enabled: isEmailVerified,
           ),
         if (roles.length > 1 || joinedOrganizations?.isNotEmpty == true)
           AppDrawerItem(
@@ -134,11 +139,13 @@ class AppDrawer extends ConsumerWidget {
             icon: Icons.change_circle_outlined,
             isSub: false,
             onTap: () => context.goNamed(AppRoute.changeRole.name),
+            enabled: isEmailVerified,
           ),
         AppDrawerItem(
             title: 'Logout',
             icon: Icons.logout_outlined,
             isSub: false,
+            enabled: true,
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
               ref.read(roleRepositoryProvider).removeCurrentRole();

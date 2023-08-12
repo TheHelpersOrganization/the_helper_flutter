@@ -10,7 +10,6 @@ import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart'
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/shift_volunteer.dart';
-import '../domain/shift_volunteer_query.dart';
 
 part 'mod_shift_volunteer_service.g.dart';
 

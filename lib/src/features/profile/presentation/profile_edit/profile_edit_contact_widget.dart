@@ -6,7 +6,6 @@ import 'package:collection/collection.dart';
 import '../profile/profile_contact_controller.dart';
 import 'profile_contact_create_view.dart';
 import 'profile_contact_edit_view.dart';
-import 'profile_edit_controller.dart';
 
 class ProfileEditContactWidget extends ConsumerWidget {
   final List<Contact>? initialContacts;
@@ -25,7 +24,7 @@ class ProfileEditContactWidget extends ConsumerWidget {
             Expanded(
               child: Text(
                 'Contacts',
-                style: context.theme.textTheme.titleMedium
+                style: context.theme.textTheme.titleLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),

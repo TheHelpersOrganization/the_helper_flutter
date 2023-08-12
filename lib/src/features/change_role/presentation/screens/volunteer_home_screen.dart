@@ -10,6 +10,7 @@ import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/alert.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/volunteer_home_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/home_welcome_section.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_analytics.dart';
@@ -27,7 +28,8 @@ class VolunteerView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final email = ref.watch(authServiceProvider).value!.account.email;
+    final isEmailVerified =
+        ref.watch(authServiceProvider).value!.account.isEmailVerified;
     final profile = ref.watch(profileProvider);
     final suggestedActivitiesState = ref.watch(suggestedActivitiesProvider);
     final upcomingActivitiesState = ref.watch(upcomingActivitiesProvider);
@@ -66,6 +68,22 @@ class VolunteerView extends ConsumerWidget {
               HomeWelcomeSection(
                 volunteerName: data.lastName ?? data.username ?? 'Back',
               ),
+              isEmailVerified
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 14),
+                      child: Alert(
+                        leading: const Icon(
+                          Icons.info_outline,
+                        ),
+                        message: const Text(
+                            'Verify your account \'s email now to use other features'),
+                        action: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.navigate_next_outlined),
+                        ),
+                      ),
+                    ),
               if (ongoingShift != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 14, bottom: 24),

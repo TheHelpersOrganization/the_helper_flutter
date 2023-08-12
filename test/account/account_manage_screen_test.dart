@@ -17,8 +17,8 @@ void main() {
   }
 
   testWidgets('title is display', (WidgetTester tester) async {
-    await tester.pumpWidget(createTestableWidget(AccountManageScreen()));
-    await tester.pump(Duration(seconds: 3));
+    await tester.pumpWidget(createTestableWidget(const AccountManageScreen()));
+    await tester.pump(const Duration(seconds: 3));
 
     expect(find.text('Accounts manage'), findsOneWidget);
   });

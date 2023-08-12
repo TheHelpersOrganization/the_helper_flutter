@@ -101,7 +101,7 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                     dialogContext.pop();
                     _showJoinLoadingDialog();
                     final res = await organizationJoinController.join(
-                      organization.id!,
+                      organization.id,
                     );
                     if (context.mounted) {
                       context.pop();
