@@ -34,7 +34,7 @@ class NewsCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          context.goNamed(AppRoute.newsDetail.name, pathParameters: {
+          context.pushNamed(AppRoute.newsDetail.name, pathParameters: {
             AppRouteParameter.newsId: news.id.toString(),
           });
         },

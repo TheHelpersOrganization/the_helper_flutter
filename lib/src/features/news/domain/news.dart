@@ -5,6 +5,11 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 part 'news.freezed.dart';
 part 'news.g.dart';
 
+enum NewsContentFormat {
+  plaintext,
+  delta,
+}
+
 @freezed
 class News with _$News {
   factory News({
@@ -15,6 +20,7 @@ class News with _$News {
     Profile? author,
     required String title,
     required String content,
+    required NewsContentFormat contentFormat,
     int? thumbnail,
     required int views,
     required bool isPublished,

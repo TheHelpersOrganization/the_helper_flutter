@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
@@ -22,6 +24,7 @@ class NewsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final news = ref.watch(newsProvider(newsId));
+    final quillController = ref.watch(quillControllerProvider);
 
     return Scaffold(
       body: NestedScrollView(
@@ -45,6 +48,12 @@ class NewsScreen extends ConsumerWidget {
             ),
           ),
           data: (news) {
+            if (news.contentFormat == NewsContentFormat.delta) {
+              Future.delayed(Duration.zero, () {
+                quillController.document =
+                    quill.Document.fromJson(jsonDecode(news.content));
+              });
+            }
             return Padding(
               padding: const EdgeInsets.all(12),
               child: SingleChildScrollView(
@@ -72,10 +81,17 @@ class NewsScreen extends ConsumerWidget {
                     const SizedBox(
                       height: 32,
                     ),
-                    Html(
-                      data: news.content,
-                      style: {'body': Style(margin: Margins.zero)},
-                    ),
+                    // Html(
+                    //   data: news.content,
+                    //   style: {'body': Style(margin: Margins.zero)},
+                    // ),
+                    if (news.contentFormat == NewsContentFormat.plaintext)
+                      Text(news.content)
+                    else
+                      quill.QuillEditor.basic(
+                        controller: quillController,
+                        readOnly: true,
+                      ),
                     const SizedBox(
                       height: 24,
                     ),

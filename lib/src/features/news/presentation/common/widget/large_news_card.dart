@@ -24,11 +24,12 @@ class LargeNewsCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 12),
         child: InkWell(
           onTap: () {
-            context.goNamed(AppRoute.newsDetail.name, pathParameters: {
+            context.pushNamed(AppRoute.newsDetail.name, pathParameters: {
               AppRouteParameter.newsId: news.id.toString(),
             });
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
@@ -87,6 +88,7 @@ class LargeNewsCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(

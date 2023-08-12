@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 class InlineEditableText extends StatefulWidget {
   const InlineEditableText({
     Key? key,
-    required this.text,
+    required this.initialValue,
     required this.style,
+    this.showEditButton = true,
+    this.onSubmitted,
   }) : super(key: key);
 
-  final String text;
+  final String initialValue;
   final TextStyle? style;
+  final bool showEditButton;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   State<InlineEditableText> createState() => _InlineEditableTextState();
 }
 
 class _InlineEditableTextState extends State<InlineEditableText> {
-  var _isEditing = false;
   final _focusNode = FocusNode();
-  late String _text = widget.text;
+  bool _isEditing = false;
+  late String _text = widget.initialValue;
   late final TextStyle? _style = widget.style;
   late TextEditingController _controller;
 
@@ -44,16 +48,20 @@ class _InlineEditableTextState extends State<InlineEditableText> {
     super.dispose();
   }
 
+  void _setEditing(bool isEditing) {
+    setState(() => _isEditing = isEditing);
+    _focusNode.requestFocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () => setState(() {
-        _isEditing = !_isEditing;
-        _focusNode.requestFocus();
-      }),
+      onDoubleTap: () => _setEditing(!_isEditing),
       child: TextField(
-        maxLines: 1,
+        minLines: 1,
+        maxLines: 10,
         style: _style,
+        textAlignVertical: TextAlignVertical.center,
         focusNode: _focusNode,
         controller: _controller,
         onSubmitted: (changed) {
@@ -61,6 +69,7 @@ class _InlineEditableTextState extends State<InlineEditableText> {
             _text = changed;
             _isEditing = false;
           });
+          widget.onSubmitted?.call(changed);
         },
         showCursor: _isEditing,
         cursorColor: Colors.black,
@@ -76,6 +85,15 @@ class _InlineEditableTextState extends State<InlineEditableText> {
                   borderRadius: BorderRadius.all(Radius.circular(0)),
                 )
               : InputBorder.none,
+          suffixIcon: widget.showEditButton
+              ? IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    _setEditing(!_isEditing);
+                  },
+                  icon: const Icon(Icons.edit_outlined),
+                )
+              : null,
         ),
       ),
     );

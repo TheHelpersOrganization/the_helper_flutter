@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/news/domain/news.dart';
 
 part 'create_news.freezed.dart';
 part 'create_news.g.dart';
@@ -9,6 +10,7 @@ class CreateNews with _$CreateNews {
     required int organizationId,
     required String title,
     required String content,
+    required NewsContentFormat contentFormat,
     int? thumbnail,
     required bool isPublished,
   }) = _CreateNews;
