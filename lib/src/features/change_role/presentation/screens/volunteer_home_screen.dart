@@ -71,7 +71,7 @@ class VolunteerView extends ConsumerWidget {
               isEmailVerified
                   ? const SizedBox()
                   : Padding(
-                      padding: const EdgeInsets.only(top: 14, bottom: 24),
+                      padding: const EdgeInsets.only(top: 14),
                       child: Alert(
                         leading: const Icon(
                           Icons.info_outline,
