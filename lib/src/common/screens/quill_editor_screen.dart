@@ -7,7 +7,6 @@ import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
 class QuillEditorScreen extends StatefulWidget {
   final Widget? title;
@@ -68,10 +67,6 @@ class _QuillEditorScreenState extends State<QuillEditorScreen> {
         actions: [
           TextButton.icon(
             onPressed: () {
-              final converter = QuillDeltaToHtmlConverter(
-                controller.document.toDelta(),
-                ConverterOptions.forEmail(),
-              );
               context.pop(controller.document.toDelta().toJson());
             },
             icon: const Icon(Icons.check),
