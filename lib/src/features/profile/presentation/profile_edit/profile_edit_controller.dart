@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
+import 'package:the_helper/src/features/skill/data/skill_repository.dart';
+import 'package:the_helper/src/features/skill/domain/skill.dart';
+import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 
 import '../../data/profile_repository.dart';
 import '../../domain/gender.dart';
@@ -17,6 +20,11 @@ final genderInputSelectionProvider =
 
 final basicInfoValurChangeProvider =
     StateProvider.autoDispose<bool>((ref) => false);
+
+final selectedSkillsProvider =
+    StateProvider.autoDispose<Set<Skill>?>((ref) => null);
+
+final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 
 class ProfileEditAvatarController extends AutoDisposeAsyncNotifier<int?> {
   @override
@@ -67,6 +75,18 @@ class ProfileEditController extends AutoDisposeAsyncNotifier<Profile> {
   }
 }
 
+class SkillEditController extends AutoDisposeAsyncNotifier<List<Skill>> {
+  @override
+  FutureOr<List<Skill>> build() async {
+    final name = ref.watch(searchPatternProvider);
+    final skills = await ref.watch(skillRepositoryProvider).getSkills(
+            query: SkillQuery(
+          name: name,
+        ));
+    return skills;
+  }
+}
+
 final profileEditControllerProvider =
     AutoDisposeAsyncNotifierProvider<ProfileEditController, Profile>(
         () => ProfileEditController());
@@ -74,3 +94,7 @@ final profileEditControllerProvider =
 final profileEditAvatarControllerProvider =
     AutoDisposeAsyncNotifierProvider<ProfileEditAvatarController, int?>(
         () => ProfileEditAvatarController());
+
+final skillEditControllerProvider =
+    AutoDisposeAsyncNotifierProvider<SkillEditController, List<Skill>>(
+        () => SkillEditController());

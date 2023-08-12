@@ -7,10 +7,12 @@ import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_contact_controller.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_edit/profile_edit_contact_widget.dart';
+import 'package:the_helper/src/router/router.dart';
 
 import '../profile_controller.dart';
 import 'profile_edit_avatar_picker_widget.dart';
 import 'profile_edit_basic_info_widget.dart';
+import 'profile_edit_skill_widget.dart';
 
 class ProfileEditScreen extends ConsumerWidget {
   ProfileEditScreen({super.key});
@@ -28,7 +30,7 @@ class ProfileEditScreen extends ConsumerWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               _formKey.currentState!.reset();
-              context.pop();
+              context.goNamed(AppRoute.profile.name);
             },
           ),
           title: const Text('Edit Profile'),
@@ -58,6 +60,10 @@ class ProfileEditScreen extends ConsumerWidget {
                 ),
                 const Divider(),
                 ProfileEditBasicInfoWidget(profile: profile, formKey: _formKey),
+                const Divider(),
+                ProfileEditSkillWidget(
+                  profile: profile,
+                ),
                 const Divider(),
                 contacts.when(
                   loading: () => const Center(
