@@ -348,7 +348,7 @@ final routes = [
           ]),
       ...accountRoutes,
       profileRoutes,
-      ...newsRoutes,
+      newsRoutes,
       ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
@@ -486,6 +486,7 @@ final accountRoutes = [
 abstract class AppRouteParameter {
   static const profileId = 'userId';
   static const organizationId = 'orgId';
+  static const activityId = 'activityId';
   static const newsId = 'newsId';
 }
 
@@ -535,13 +536,13 @@ enum AppRoute {
     path: ':${AppRouteParameter.newsId}',
     name: 'news-detail',
   ),
-  organizationNews(
-    path: '/organization/news',
-    name: 'organization-news',
-  ),
-  organizationNewsCreate(
+  newsCreate(
     path: 'create',
-    name: 'organization-news-create',
+    name: 'news-create',
+  ),
+  newsUpdate(
+    path: 'update',
+    name: 'news-update',
   ),
 
   chats(
@@ -664,7 +665,7 @@ enum AppRoute {
     name: 'activity-my',
   ),
   activity(
-    path: '/activity/:activityId',
+    path: '/activity/:${AppRouteParameter.activityId}',
     name: 'activity',
   ),
 

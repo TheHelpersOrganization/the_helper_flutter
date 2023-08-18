@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/common/converter/converter.dart';
+import 'package:the_helper/src/features/news/domain/converter/convert.dart';
+import 'package:the_helper/src/features/news/domain/news.dart';
 
 part 'news_query.freezed.dart';
 part 'news_query.g.dart';
@@ -7,6 +9,12 @@ part 'news_query.g.dart';
 abstract class NewsQueryInclude {
   static const String author = 'author';
   static const String organization = 'organization';
+  static const String reference = 'reference';
+  static const List<String> all = [
+    NewsQueryInclude.author,
+    NewsQueryInclude.organization,
+    NewsQueryInclude.reference,
+  ];
 }
 
 abstract class NewsQuerySort {
@@ -36,6 +44,7 @@ class NewsQuery with _$NewsQuery {
   @JsonSerializable(includeIfNull: false)
   factory NewsQuery({
     @CommaSeparatedIntsConverter() List<int>? id,
+    @NewsTypeListConverter() List<NewsType>? type,
     int? organizationId,
     int? authorId,
     String? search,

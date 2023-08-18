@@ -4,6 +4,8 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/shift_action_dialog/leave_shift_dialog.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/bottom_sheet_heading.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/ongoing_shift_bottom_sheet.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_check_in_bottom_sheet.dart';
 
 class ShiftBottomBar extends StatelessWidget {
@@ -23,7 +25,7 @@ class ShiftBottomBar extends StatelessWidget {
     final status = shiftVolunteer?.status;
     final VoidCallback? buttonAction;
     final String? buttonLabel;
-    if (shift.status == ShiftStatus.completed || shift.isFull) {
+    if (shiftVolunteer == null && shift.isFull) {
       buttonAction = null;
       buttonLabel = null;
     } else if (status == ShiftVolunteerStatus.pending) {
@@ -64,13 +66,17 @@ class ShiftBottomBar extends StatelessWidget {
         buttonAction = () {
           showModalBottomSheet(
             context: context,
-            builder: (buildContext) => ShiftCheckInBottomSheet(
-              shiftId: shift.id,
+            builder: (buildContext) => OngoingShiftBottomSheet(
+              initialShift: shift,
+              bottomSheetHeadingOptions: const BottomSheetHeadingOptions(
+                showDetailButton: false,
+                showShiftTime: false,
+              ),
             ),
             showDragHandle: true,
           );
         };
-        buttonLabel = 'Your status';
+        buttonLabel = 'My status';
       } else {
         buttonAction = null;
         buttonLabel = null;

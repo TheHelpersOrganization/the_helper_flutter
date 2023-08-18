@@ -5,10 +5,25 @@ import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/router/router.dart';
 
+class BottomSheetHeadingOptions {
+  final bool showDetailButton;
+  final bool showShiftTime;
+
+  const BottomSheetHeadingOptions({
+    this.showDetailButton = true,
+    this.showShiftTime = true,
+  });
+}
+
 class BottomSheetHeading extends StatelessWidget {
   final Shift shift;
+  final BottomSheetHeadingOptions options;
 
-  const BottomSheetHeading({super.key, required this.shift});
+  const BottomSheetHeading({
+    super.key,
+    required this.shift,
+    this.options = const BottomSheetHeadingOptions(),
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,24 +37,27 @@ class BottomSheetHeading extends StatelessWidget {
             style: context.theme.textTheme.bodyLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
-          trailing: FilledButton.tonal(
-            onPressed: () {
-              context.pop();
-              context.pushNamed(AppRoute.shift.name, pathParameters: {
-                'activityId': shift.activityId.toString(),
-                'shiftId': shift.id.toString(),
-              });
-            },
-            child: const Text('Detail'),
-          ),
+          trailing: !options.showDetailButton
+              ? null
+              : FilledButton.tonal(
+                  onPressed: () {
+                    context.pop();
+                    context.pushNamed(AppRoute.shift.name, pathParameters: {
+                      'activityId': shift.activityId.toString(),
+                      'shiftId': shift.id.toString(),
+                    });
+                  },
+                  child: const Text('Detail'),
+                ),
         ),
-        ListTile(
-          leading: const Icon(Icons.access_time_outlined),
-          title: const Text('Shift time'),
-          subtitle: Text(
-            '${shift.startTime.formatDayMonthYearBulletHourMinute()} 🡒 ${shift.endTime.formatHourSecond()}',
+        if (options.showShiftTime)
+          ListTile(
+            leading: const Icon(Icons.access_time_outlined),
+            title: const Text('Shift time'),
+            subtitle: Text(
+              '${shift.startTime.formatDayMonthYearBulletHourMinute()} 🡒 ${shift.endTime.formatHourSecond()}',
+            ),
           ),
-        ),
       ],
     );
   }

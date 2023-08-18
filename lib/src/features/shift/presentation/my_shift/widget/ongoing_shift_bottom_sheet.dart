@@ -5,16 +5,19 @@ import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/controller/my_shift_controller.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/bottom_sheet_heading.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/widget/bottom_sheet_rating.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/bottom_sheet_review.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/check_in_dialog.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/check_out_dialog.dart';
 
 class OngoingShiftBottomSheet extends ConsumerWidget {
   final Shift initialShift;
+  final BottomSheetHeadingOptions bottomSheetHeadingOptions;
 
   const OngoingShiftBottomSheet({
     super.key,
     required this.initialShift,
+    this.bottomSheetHeadingOptions = const BottomSheetHeadingOptions(),
   });
 
   @override
@@ -98,8 +101,13 @@ class OngoingShiftBottomSheet extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BottomSheetHeading(shift: myShift),
+          BottomSheetHeading(
+            shift: myShift,
+            options: bottomSheetHeadingOptions,
+          ),
           if (myShift.status == ShiftStatus.completed) ...[
+            const Divider(),
+            BottomSheetRating(shift: myShift, volunteer: myVolunteer),
             const Divider(),
             BottomSheetReview(shift: myShift, volunteer: myVolunteer),
           ],

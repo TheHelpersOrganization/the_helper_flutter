@@ -3,43 +3,43 @@ import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite
 import 'package:the_helper/src/features/news/data/news_repository.dart';
 import 'package:the_helper/src/features/news/domain/news.dart';
 import 'package:the_helper/src/features/news/domain/news_query.dart';
-import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
 
+final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 final showSearchBoxProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
 });
-final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 
-final isPublishedProvider = StateProvider.autoDispose<bool?>((ref) => null);
-final sortProvider =
-    StateProvider.autoDispose<String>((ref) => NewsQuerySort.dateDesc);
+final popularNewsProvider = FutureProvider.autoDispose(
+  (ref) => ref.watch(newsRepositoryProvider).getNews(
+        query: NewsQuery(
+          isPublished: true,
+          include: [NewsQueryInclude.author, NewsQueryInclude.organization],
+          sort: NewsQuerySort.popularityDesc,
+          limit: 10,
+        ),
+      ),
+);
 
-class OrganizationNewsListPagedNotifier extends PagedNotifier<int, News> {
-  final AutoDisposeStateNotifierProviderRef ref;
+const defaultSort = NewsQuerySort.dateDesc;
+final sortProvider = StateProvider.autoDispose<String>((ref) => defaultSort);
+
+class NewsListPagedNotifier extends PagedNotifier<int, News> {
   final NewsRepository newsRepository;
   final String searchPattern;
-  final bool? isPublished;
   final String sort;
 
-  OrganizationNewsListPagedNotifier({
-    required this.ref,
+  NewsListPagedNotifier({
     required this.newsRepository,
     required this.searchPattern,
-    required this.isPublished,
     required this.sort,
   }) : super(
           load: (page, limit) async {
-            final organizationId = await ref
-                .watch(currentOrganizationServiceProvider.notifier)
-                .getCurrentOrganizationId();
-
             return newsRepository.getNews(
               query: NewsQuery(
-                organizationId: organizationId,
                 search: searchPattern.trim().isEmpty ? null : searchPattern,
-                isPublished: isPublished,
+                isPublished: true,
                 include: [
-                  NewsQueryInclude.author,
+                  //NewsQueryInclude.author,
                   NewsQueryInclude.organization
                 ],
                 sort: sort,
@@ -52,19 +52,16 @@ class OrganizationNewsListPagedNotifier extends PagedNotifier<int, News> {
         );
 }
 
-final organizationNewsListPagedNotifierProvider = StateNotifierProvider
-    .autoDispose<OrganizationNewsListPagedNotifier, PagedState<int, News>>(
+final newsListPagedNotifierProvider = StateNotifierProvider.autoDispose<
+    NewsListPagedNotifier, PagedState<int, News>>(
   (ref) {
     final newsRepository = ref.watch(newsRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
-    final isPublished = ref.watch(isPublishedProvider);
     final sort = ref.watch(sortProvider);
 
-    return OrganizationNewsListPagedNotifier(
-      ref: ref,
+    return NewsListPagedNotifier(
       newsRepository: newsRepository,
       searchPattern: searchPattern,
-      isPublished: isPublished,
       sort: sort,
     );
   },

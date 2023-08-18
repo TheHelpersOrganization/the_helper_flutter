@@ -7,22 +7,21 @@ import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/label.dart';
+import 'package:the_helper/src/features/change_role/application/role_service.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
-import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/admin_home_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/mod_home_screen.dart';
 //Screens
 import 'package:the_helper/src/features/change_role/presentation/screens/volunteer_home_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
-  // final String? role;
   const HomeScreen({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final role = ref.watch(getRoleProvider);
+    final role = ref.watch(roleServiceProvider);
 
     return role.when(
         loading: () => const Center(
@@ -55,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
                         color: Colors.purple,
                       ),
                   ],
-            ),
+                ),
               ),
               body: getHomeScreen(role),
             ),

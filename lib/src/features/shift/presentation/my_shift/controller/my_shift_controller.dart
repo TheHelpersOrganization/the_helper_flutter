@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/features/shift/data/shift_repository.dart';
+import 'package:the_helper/src/features/shift/domain/rate_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/shift/controller/shift_controller.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
 final isSearchingProvider = StateProvider.autoDispose((ref) => false);
@@ -242,4 +246,43 @@ final leaveShiftControllerProvider =
     ref: ref,
     shiftRepository: ref.watch(shiftRepositoryProvider),
   ),
+);
+
+class RateShiftController extends AutoDisposeAsyncNotifier<void> {
+  late ShiftRepository _shiftRepository;
+
+  @override
+  FutureOr<void> build() {
+    _shiftRepository = ref.watch(shiftRepositoryProvider);
+  }
+
+  Future<void> rateShift({
+    required int shiftId,
+    required int rating,
+    required String? comment,
+  }) async {
+    if (state.isLoading) {
+      return;
+    }
+    state = const AsyncValue.loading();
+    final res = await guardAsyncValue(
+      () => _shiftRepository.rateShift(
+        shiftId: shiftId,
+        data: RateShift(rating: rating, comment: comment),
+      ),
+    );
+    if (res.hasError) {
+      state = AsyncValue.error(res.error!, res.stackTrace!);
+      return;
+    }
+    ref.invalidate(myActivityPagingControllerProvider);
+    ref.invalidate(getActivityAndShiftProvider);
+    ref.read(hasChangedProvider.notifier).state = true;
+    state = const AsyncValue.data(null);
+  }
+}
+
+final rateShiftControllerProvider =
+    AutoDisposeAsyncNotifierProvider<RateShiftController, void>(
+  () => RateShiftController(),
 );

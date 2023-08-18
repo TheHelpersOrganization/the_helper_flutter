@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
+import 'package:the_helper/src/common/extension/string.dart';
+import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/news/domain/news.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
@@ -141,6 +143,12 @@ class LargeNewsCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Label(
+                      labelText: news.type.name.capitalize(),
                     ),
                   ],
                 ),

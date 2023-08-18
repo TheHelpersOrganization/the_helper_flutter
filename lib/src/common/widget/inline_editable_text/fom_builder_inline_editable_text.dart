@@ -37,7 +37,7 @@ class FormBuilderInlineEditableText extends StatelessWidget {
             initialValue: initialValue,
             style: style,
             showEditButton: showEditButton,
-            onSubmitted: (value) {
+            onChanged: (value) {
               field.didChange(value);
             },
           ),
