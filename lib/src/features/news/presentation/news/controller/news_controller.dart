@@ -15,6 +15,7 @@ final newsProvider = FutureProvider.autoDispose.family<News, int>(
         query: NewsByIdQuery(include: [
           NewsQueryInclude.author,
           NewsQueryInclude.organization,
+          NewsQueryInclude.reference,
         ]),
       ),
 );

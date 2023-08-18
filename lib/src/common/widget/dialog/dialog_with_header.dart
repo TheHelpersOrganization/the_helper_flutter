@@ -8,6 +8,8 @@ class DialogWithHeader extends StatelessWidget {
   final Widget? content;
   final EdgeInsetsGeometry? titlePadding;
   final EdgeInsetsGeometry? contentPadding;
+  final List<Widget>? actions;
+  final bool enableCloseButton;
 
   const DialogWithHeader({
     Key? key,
@@ -16,6 +18,8 @@ class DialogWithHeader extends StatelessWidget {
     this.content,
     this.titlePadding,
     this.contentPadding,
+    this.actions,
+    this.enableCloseButton = true,
   }) : super(key: key);
 
   @override
@@ -31,9 +35,11 @@ class DialogWithHeader extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {
-              context.pop();
-            },
+            onPressed: enableCloseButton
+                ? () {
+                    context.pop();
+                  }
+                : null,
             icon: const Icon(
               Icons.close,
             ),
@@ -42,6 +48,7 @@ class DialogWithHeader extends StatelessWidget {
       ),
       contentPadding: contentPadding,
       content: content,
+      actions: actions,
     );
   }
 }

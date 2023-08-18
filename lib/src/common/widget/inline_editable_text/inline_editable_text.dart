@@ -6,12 +6,14 @@ class InlineEditableText extends StatefulWidget {
     required this.initialValue,
     required this.style,
     this.showEditButton = true,
+    this.onChanged,
     this.onSubmitted,
   }) : super(key: key);
 
   final String initialValue;
   final TextStyle? style;
   final bool showEditButton;
+  final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
 
   @override
@@ -48,15 +50,22 @@ class _InlineEditableTextState extends State<InlineEditableText> {
     super.dispose();
   }
 
-  void _setEditing(bool isEditing) {
-    setState(() => _isEditing = isEditing);
-    _focusNode.requestFocus();
+  void _setIsEditing(bool isEditing) {
+    if (_isEditing == isEditing) {
+      return;
+    }
+    if (isEditing) {
+      setState(() => _isEditing = isEditing);
+      _focusNode.requestFocus();
+    } else {
+      setState(() => _isEditing = isEditing);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onDoubleTap: () => _setEditing(!_isEditing),
+      onDoubleTap: () => _setIsEditing(!_isEditing),
       child: TextField(
         minLines: 1,
         maxLines: 10,
@@ -64,6 +73,10 @@ class _InlineEditableTextState extends State<InlineEditableText> {
         textAlignVertical: TextAlignVertical.center,
         focusNode: _focusNode,
         controller: _controller,
+        onChanged: (value) {
+          setState(() => _text = value);
+          widget.onChanged?.call(value);
+        },
         onSubmitted: (changed) {
           setState(() {
             _text = changed;
@@ -89,7 +102,7 @@ class _InlineEditableTextState extends State<InlineEditableText> {
               ? IconButton(
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    _setEditing(!_isEditing);
+                    _setIsEditing(!_isEditing);
                   },
                   icon: const Icon(Icons.edit_outlined),
                 )

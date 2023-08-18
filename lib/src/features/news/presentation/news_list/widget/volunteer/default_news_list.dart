@@ -8,7 +8,7 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/features/news/domain/news.dart';
 import 'package:the_helper/src/features/news/presentation/common/widget/news_card.dart';
-import 'package:the_helper/src/features/news/presentation/news_list/controller/news_list_controller.dart';
+import 'package:the_helper/src/features/news/presentation/news_list/controller/news_list_volunteer_controller.dart';
 
 class DefaultNewsList extends ConsumerWidget {
   const DefaultNewsList({super.key});

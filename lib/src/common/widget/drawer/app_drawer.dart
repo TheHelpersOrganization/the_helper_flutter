@@ -8,6 +8,7 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer_item.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer_user.dart';
 import 'package:the_helper/src/common/widget/drawer/draw_item_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/change_role/application/role_service.dart';
 import 'package:the_helper/src/features/change_role/data/role_repository.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/role_controller.dart';
@@ -53,9 +54,9 @@ class AppDrawer extends ConsumerWidget {
 
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
     final accountId = ref.watch(authServiceProvider).valueOrNull?.account.id;
-    final userRoleState = ref.watch(getRoleProvider);
+    final userRoleState = ref.watch(roleServiceProvider);
     final userRole = userRoleState.valueOrNull;
-    final roles = ref.watch(getAllRolesProvider).valueOrNull;
+    final roles = ref.watch(getAccountRolesProvider).valueOrNull;
     final currentOrganization =
         ref.watch(currentOrganizationServiceProvider).valueOrNull;
     final joinedOrganizations =
@@ -141,7 +142,8 @@ class AppDrawer extends ConsumerWidget {
             isSub: false,
             onTap: () {
               ref.read(logoutControllerProvider).signOut();
-              ref.read(roleRepositoryProvider).removeCurrentRole();
+              ref.read(roleServiceProvider.notifier).removeCurrentRole();
+              ref.invalidate(roleRepositoryProvider);
               ref.invalidate(profileControllerProvider);
               ref.invalidate(profileRepositoryProvider);
               ref.invalidate(authServiceProvider);

@@ -159,8 +159,6 @@ class ShiftScreen extends ConsumerWidget {
                     ShiftTitle(activity: activity, shift: shift),
                     ShiftVolunteerDescription(
                       shift: shift,
-                      status: volunteer?.status,
-                      updatedAt: volunteer?.updatedAt,
                     ),
                     ShiftDescription(
                       description: shift.description,

@@ -32,7 +32,6 @@ class _ActivityListItemState extends ConsumerState<ActivityListItem> {
         .watch(activityManageControllerProvider.notifier)
         .unban(data.id!);
     if (context.mounted) {
-      print('dfdfd');
       if (res == null) {
         showErrorDialog();
       }
@@ -48,7 +47,6 @@ class _ActivityListItemState extends ConsumerState<ActivityListItem> {
         .watch(activityManageControllerProvider.notifier)
         .ban(data.id!);
     if (context.mounted) {
-      print('dfdfd');
       if (res == null) {
         showErrorDialog();
       }

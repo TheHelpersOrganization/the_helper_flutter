@@ -32,7 +32,6 @@ class ActivityListPagedNotifier extends PagedNotifier<int, Activity> {
     required this.query,
   }) : super(
           load: (page, limit) {
-            print('page: $page, limit: $limit');
             int? cursor = page == 0 ? null : page;
             final q = query ?? ActivityQuery();
             return activityService.getActivities(

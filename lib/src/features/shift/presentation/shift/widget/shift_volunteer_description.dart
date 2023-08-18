@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
+import 'package:the_helper/src/common/widget/rating.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_check_in_bottom_sheet.dart';
@@ -9,18 +10,18 @@ import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_vo
 
 class ShiftVolunteerDescription extends StatelessWidget {
   final Shift shift;
-  final ShiftVolunteerStatus? status;
-  final DateTime? updatedAt;
 
   const ShiftVolunteerDescription({
     super.key,
     required this.shift,
-    this.status,
-    this.updatedAt,
   });
 
   @override
   Widget build(BuildContext context) {
+    final volunteer = shift.myShiftVolunteer;
+    final status = volunteer?.status;
+    final updatedAt = volunteer?.updatedAt;
+
     if (status == ShiftVolunteerStatus.approved) {
       return _buildApproved(context);
     } else if (status == ShiftVolunteerStatus.pending) {
@@ -166,7 +167,7 @@ class ShiftVolunteerDescription extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Approved at ${updatedAt!.formatDayMonthYearBulletHourMinute()}',
+              'Approved at ${volunteer.updatedAt.formatDayMonthYearBulletHourMinute()}',
               style: TextStyle(
                 color: context.theme.colorScheme.secondary,
               ),
@@ -210,6 +211,19 @@ class ShiftVolunteerDescription extends StatelessWidget {
                   child: const Text('Check-out'),
                 ),
               ),
+            if (volunteer.shiftRating != null) ...[
+              const SizedBox(
+                height: 12,
+              ),
+              Row(
+                children: [
+                  const Text('Your rating: '),
+                  Rating(
+                    rating: volunteer.shiftRating!,
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       );

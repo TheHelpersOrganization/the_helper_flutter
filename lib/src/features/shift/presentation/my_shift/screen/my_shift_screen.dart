@@ -106,6 +106,14 @@ class MyShiftScreen extends ConsumerWidget {
         );
       },
     );
+    ref.listen(rateShiftControllerProvider, (previous, next) {
+      next.showSnackbarOnError(context, name: rateShiftSnackbarName);
+      next.showSnackbarOnSuccess(
+        context,
+        content: const Text('Rate shift successfully'),
+        name: rateShiftSnackbarName,
+      );
+    });
 
     return DefaultTabController(
       length: tabElements.length,
