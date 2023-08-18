@@ -5,7 +5,6 @@ import 'account_data.dart';
 import 'activity_data.dart';
 import 'organization_data.dart';
 import 'report_message.dart';
-import 'report_query.dart';
 
 part 'report_model.freezed.dart';
 part 'report_model.g.dart';

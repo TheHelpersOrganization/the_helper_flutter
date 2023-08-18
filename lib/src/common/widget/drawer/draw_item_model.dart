@@ -7,6 +7,7 @@ class DrawerItemModel {
   final List<DrawerItemModel>? subPaths;
   final String title;
   final IconData icon;
+  final bool? enabled;
   final void Function(BuildContext context)? onTap;
 
   const DrawerItemModel({
@@ -16,5 +17,6 @@ class DrawerItemModel {
     required this.title,
     required this.icon,
     this.onTap,
+    this.enabled,
   });
 }

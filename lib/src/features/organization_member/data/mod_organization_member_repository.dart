@@ -39,7 +39,7 @@ class ModOrganizationMemberRepository {
           );
     final List<dynamic> res = (await client.get(
       '/mod/organizations/$organizationId/members',
-      queryParameters: updatedQuery?.toJson(),
+      queryParameters: updatedQuery.toJson(),
     ))
         .data['data'];
     final List<OrganizationMember> members =

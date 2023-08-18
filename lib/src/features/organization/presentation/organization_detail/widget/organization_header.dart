@@ -96,7 +96,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                     dialogContext.pop();
                     _showJoinLoadingDialog();
                     final res = await organizationJoinController.join(
-                      organization.id!,
+                      organization.id,
                     );
                     if (context.mounted) {
                       context.pop();
@@ -181,14 +181,14 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                     dialogContext.pop();
                     _showLeaveLoadingDialog();
                     final res = await organizationLeaveController.leave(
-                      organization.id!,
+                      organization.id,
                     );
                     if (context.mounted) {
                       context.pop();
                       if (res != null) {
                         _showLeaveSuccessDialog();
                         ref.invalidate(
-                            getOrganizationProvider(widget.organization.id!));
+                            getOrganizationProvider(widget.organization.id));
                       }
                     }
                   },
@@ -432,7 +432,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
   ) async {
     await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return SubmitReportScreen(
-        id: data.id!,
+        id: data.id,
         name: data.name.toString(),
         entityType: ReportType.organization,
         avatarId: data.logo,

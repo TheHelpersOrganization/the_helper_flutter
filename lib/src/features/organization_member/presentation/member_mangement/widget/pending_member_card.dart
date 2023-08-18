@@ -56,7 +56,7 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
           showLoadingDialog(isApproving: true);
           await ref
               .read(approveMemberControllerProvider.notifier)
-              .approve(member.organization!.id!, member.id);
+              .approve(member.organization!.id, member.id);
           if (context.mounted) {
             context.pop();
           }
@@ -88,7 +88,7 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
           showLoadingDialog(isApproving: false);
           String reason = reasonTextController.text;
           await ref.read(rejectMemberControllerProvider.notifier).reject(
-                member.organization!.id!,
+                member.organization!.id,
                 member.id,
                 rejectionReason: reason,
               );

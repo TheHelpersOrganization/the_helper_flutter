@@ -54,7 +54,7 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
           showLoadingDialog();
           await ref
               .read(removeMemberControllerProvider.notifier)
-              .remove(member.organization!.id!, member.id);
+              .remove(member.organization!.id, member.id);
           if (context.mounted) {
             context.pop();
           }
