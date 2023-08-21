@@ -7,6 +7,8 @@ Future<AsyncValue<T>> guardAsyncValue<T>(FutureOr<T> Function() future) async {
   } on BackendException catch (ex, st) {
     return AsyncValue.error(ex.error.message, st);
   } catch (err, stack) {
+    print(stack);
+    print(err);
     return AsyncValue.error('An error has happened', stack);
   }
 }

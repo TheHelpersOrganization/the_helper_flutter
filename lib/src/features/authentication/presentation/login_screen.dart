@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/config/config.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
 import 'package:the_helper/src/features/authentication/presentation/register/register_screen.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -113,6 +115,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         hintText: 'Enter password',
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        context.goNamed(AppRoute.resetPassword.name);
+                      },
+                      child: const Text('Forgot password?'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 12,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12),

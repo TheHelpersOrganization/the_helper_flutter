@@ -79,7 +79,9 @@ class VolunteerView extends ConsumerWidget {
                         message: const Text(
                             'Verify your account \'s email now to use other features'),
                         action: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.goNamed(AppRoute.accountVerification.name);
+                          },
                           icon: const Icon(Icons.navigate_next_outlined),
                         ),
                       ),
