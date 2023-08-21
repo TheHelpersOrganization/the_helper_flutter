@@ -46,6 +46,7 @@ import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_sc
 import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/news_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
+import 'package:the_helper/src/router/reset_password_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -352,6 +353,7 @@ final routes = [
       ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
+      resetPasswordRoutes,
     ],
   ),
 ];
@@ -512,6 +514,11 @@ enum AppRoute {
   logout(
     path: '/logout',
     name: 'logout',
+  ),
+
+  resetPassword(
+    path: '/reset-password',
+    name: 'reset-password',
   ),
 
   // Todo: create modal instead of using this route

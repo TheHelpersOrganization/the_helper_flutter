@@ -5,6 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:the_helper/src/common/exception/backend_exception.dart';
 import 'package:the_helper/src/features/authentication/domain/account_token.dart';
+import 'package:the_helper/src/features/authentication/domain/request_reset_password.dart';
+import 'package:the_helper/src/features/authentication/domain/reset_password.dart';
+import 'package:the_helper/src/features/authentication/domain/verify_reset_password_token.dart';
 import 'package:the_helper/src/utils/flutter_secure_storage_provider.dart';
 import 'package:the_helper/src/utils/raw_dio_provider.dart';
 
@@ -52,7 +55,7 @@ class AuthRepository {
       final accountToken = AccountToken.fromJson(response.data['data']);
       await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
-  } on DioException catch (ex) {
+    } on DioException catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));
     }
   }
@@ -119,8 +122,29 @@ class AuthRepository {
     }
   }
 
-  // TODO: register method
-  // TODO: password recovery
+  Future<void> requestResetPassword(RequestResetPassword data) async {
+    await client.post(
+      '$url/auth/request-reset-password',
+      data: data.toJson(),
+    );
+  }
+
+  Future<bool> verifyResetPasswordToken(VerifyResetPasswordToken data) async {
+    final res = await client.post(
+      '$url/auth/verify-reset-password-token',
+      data: data.toJson(),
+    );
+
+    return res.data['data'];
+  }
+
+  Future<Account> resetPassword(ResetPassword data) async {
+    final res = await client.post(
+      '$url/auth/reset-password',
+      data: data.toJson(),
+    );
+    return Account.fromJson(res.data['data']);
+  }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

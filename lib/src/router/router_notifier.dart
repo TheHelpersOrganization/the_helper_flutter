@@ -31,7 +31,10 @@ class RouterNotifier extends Notifier<bool> implements Listenable {
       return null;
     }
 
-    //FlutterNativeSplash.remove();
+    // Don't redirect if we're already on the reset password screen
+    if (state.fullPath == AppRoute.resetPassword.path) {
+      return null;
+    }
 
     // Navigate to home if user has logged in
     final isLoggingIn = state.fullPath == AppRoute.login.path;
