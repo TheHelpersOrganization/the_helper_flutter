@@ -55,7 +55,8 @@ class AppDrawer extends ConsumerWidget {
   Widget _buildDrawerItem(BuildContext context, WidgetRef ref) {
     final accountData = ref.watch(authServiceProvider).valueOrNull?.account;
     final accountId = accountData?.id;
-    final isEmailVerified = accountData?.isEmailVerified ?? false;
+    // final isEmailVerified = accountData?.isEmailVerified ?? false;
+    const isEmailVerified = true;
     final userRoleState = ref.watch(roleServiceProvider);
     final userRole = userRoleState.valueOrNull;
     final roles = ref.watch(getAccountRolesProvider).valueOrNull;

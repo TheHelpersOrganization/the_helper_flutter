@@ -30,6 +30,7 @@ class ReportType {
   static const account = 'account';
   static const organization = 'organization';
   static const activity = 'activity';
+  static const news = 'news';
 }
 
 @freezed

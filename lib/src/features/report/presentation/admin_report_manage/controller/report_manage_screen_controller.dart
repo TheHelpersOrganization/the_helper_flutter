@@ -13,8 +13,10 @@ class ReportManageScreenController extends AutoDisposeAsyncNotifier<void> {
 final isSearchingProvider = StateProvider.autoDispose<bool>((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final filterAccountProvider = StateProvider.autoDispose<bool>((ref) => false);
-final filterOrganizationProvider = StateProvider.autoDispose<bool>((ref) => false);
+final filterOrganizationProvider =
+    StateProvider.autoDispose<bool>((ref) => false);
 final filterActivityProvider = StateProvider.autoDispose<bool>((ref) => false);
+final filterNewsProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 final sortBySendDateProvider = StateProvider.autoDispose<bool>((ref) => false);
 final sortByNewestProvider = StateProvider.autoDispose<bool>((ref) => true);
@@ -26,6 +28,7 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
   final bool filterAccount;
   final bool filterOrg;
   final bool filterActivity;
+  final bool filterNews;
   final bool bySendDate;
   final bool byNewest;
 
@@ -36,6 +39,7 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
     required this.filterAccount,
     required this.filterOrg,
     required this.filterActivity,
+    required this.filterNews,
     required this.bySendDate,
     required this.byNewest,
   }) : super(
@@ -49,6 +53,9 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
             }
             if (filterActivity) {
               typeList.add(ReportType.activity);
+            }
+            if (filterNews) {
+              typeList.add(ReportType.news);
             }
 
             List<String>? sort;
@@ -70,9 +77,7 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
                 limit: limit,
                 offset: page * limit,
                 status: [tabStatus],
-                type: typeList.isEmpty
-                ? null
-                :typeList,
+                type: typeList.isEmpty ? null : typeList,
                 sort: sort,
               ),
             );
@@ -81,16 +86,15 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, ReportModel> {
         );
 }
 
-final scrollPagingControlNotifier = StateNotifierProvider.autoDispose.family<
-        ScrollPagingControlNotifier,
-        PagedState<int, ReportModel>,
-        String>(
-    (ref, index) => ScrollPagingControlNotifier(
-        requestRepository: ref.watch(reportRepositoryProvider),
-        tabStatus: index,
-        searchPattern: ref.watch(searchPatternProvider),
-        filterAccount: ref.watch(filterAccountProvider),
-        filterOrg: ref.watch(filterOrganizationProvider),
-        filterActivity: ref.watch(filterActivityProvider),
-        bySendDate: ref.watch(sortBySendDateProvider),
-        byNewest: ref.watch(sortByNewestProvider)));
+final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
+    .family<ScrollPagingControlNotifier, PagedState<int, ReportModel>, String>(
+        (ref, index) => ScrollPagingControlNotifier(
+            requestRepository: ref.watch(reportRepositoryProvider),
+            tabStatus: index,
+            searchPattern: ref.watch(searchPatternProvider),
+            filterAccount: ref.watch(filterAccountProvider),
+            filterOrg: ref.watch(filterOrganizationProvider),
+            filterActivity: ref.watch(filterActivityProvider),
+            filterNews: ref.watch(filterNewsProvider),
+            bySendDate: ref.watch(sortBySendDateProvider),
+            byNewest: ref.watch(sortByNewestProvider)));
