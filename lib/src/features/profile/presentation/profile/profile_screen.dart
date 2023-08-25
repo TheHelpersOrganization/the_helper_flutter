@@ -97,9 +97,10 @@ class ProfileScreen extends ConsumerWidget {
               },
               body: TabBarView(
                 children: [
-                  ProfileOverviewTab(
-                    profile: profile,
-                  ),
+                  const SizedBox(),
+                  // ProfileOverviewTab(
+                  //   profile: profile,
+                  // ),
                   const ProfileActivityTab(),
                   ProfileOrganizationTab(orgs: orgs),
                   ProfileContactsTab(contacts: contacts),

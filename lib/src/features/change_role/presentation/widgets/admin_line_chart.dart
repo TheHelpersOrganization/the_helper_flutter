@@ -1,21 +1,65 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:the_helper/src/features/activity/domain/activity_count.dart';
 import 'package:the_helper/src/features/activity/domain/activity_log.dart';
 
-class AdminLineChart extends StatelessWidget {
-  final ActivityLog data;
+import '../controllers/admin_home_controller.dart';
+
+class AdminLineChart extends ConsumerWidget {
   const AdminLineChart({
     super.key,
-    required this.data,
+    required this.accountData,
+    required this.activityData,
+    required this.organizationData,
   });
 
+  final ActivityLog accountData;
+  final ActivityLog activityData;
+  final ActivityLog organizationData;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var dateNow = DateTime.now();
-    List<ActivityCount> activityCount =
-        data.monthly.filter((e) => e.year == dateNow.year).toList();
+    final filterValue = ref.watch(chartFilterProvider);
+    List<ActivityCount> activityCount = activityData.monthly
+        .filter((e) => e.year == (dateNow.year - filterValue))
+        .toList();
+    List<ActivityCount> accountCount = accountData.monthly
+        .filter((e) => e.year == (dateNow.year - filterValue))
+        .toList();
+    List<ActivityCount> orgCount = organizationData.monthly
+        .filter((e) => e.year == (dateNow.year - filterValue))
+        .toList();
+    // final activityCount = activityData.monthly;
+
+    var maxValue = 50;
+
+    final totalData = activityCount + accountCount + orgCount;
+    if (totalData.isNotEmpty) {
+      for (var i in totalData) {
+        if (i.count > maxValue) {
+          maxValue = i.count;
+        }
+      }
+    }
+
+    var firstDigit = (maxValue / 10).floor();
+    var k = 1;
+    var ceilValue = 10;
+    while (firstDigit > 10) {
+      k += 1;
+      firstDigit = (firstDigit / 10).floor();
+    }
+
+    if (firstDigit < 5) {
+      ceilValue = 5;
+    }
+
+    final chartMaxY = (ceilValue * pow(10, k)).toDouble();
 
     List<LineChartBarData> lineData = [
       // Activity
@@ -31,48 +75,91 @@ class AdminLineChart extends StatelessWidget {
             .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
             .toList(),
       ),
+
+      // account
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.orange,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: accountCount
+            .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
+            .toList(),
+      ),
+
+      // org
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.redAccent,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: orgCount
+            .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
+            .toList(),
+      ),
     ];
 
     return LineChart(LineChartData(
         minX: 0,
         maxX: 11,
         minY: 0,
-        maxY: 500,
-        titlesData: LineTitles.getTitleData(),
+        maxY: chartMaxY,
+        titlesData: LineTitles.getTitleData(chartMaxY),
+        gridData: FlGridData(
+          show: false,
+          drawVerticalLine: true,
+          drawHorizontalLine: true,
+          horizontalInterval: maxValue * 0.1,
+          verticalInterval: 1,
+          getDrawingHorizontalLine: (value) {
+            return const FlLine(
+              // color: Colors.white10,
+              strokeWidth: 1,
+            );
+          },
+          getDrawingVerticalLine: (value) {
+            return const FlLine(
+              // color: Colors.white10,
+              strokeWidth: 1,
+            );
+          },
+        ),
         borderData: FlBorderData(
             show: true,
             border: const Border(
-              left: BorderSide(
-                color: Colors.black,
-                width: 1,
-              ),
+              // left: BorderSide(
+              //   color: Colors.black,
+              //   width: 1,
+              // ),
               bottom: BorderSide(
                 color: Colors.black,
                 width: 1,
               ),
             )),
-        gridData: const FlGridData(
-          show: false,
-        ),
         lineTouchData: LineTouchData(
-          touchTooltipData: LineTouchTooltipData(
-            tooltipBgColor: Colors.white10.withOpacity(0.8),
-          )
-        ),
+            touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Colors.black.withOpacity(0.6),
+        )),
         lineBarsData: lineData));
   }
 }
 
 class LineTitles {
-  static getTitleData() => const FlTitlesData(
+  static getTitleData(double maxValue) => FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
+        rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        bottomTitles: AxisTitles(
+        bottomTitles: const AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
@@ -82,8 +169,8 @@ class LineTitles {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: false,
-            interval: 1,
+            showTitles: true,
+            interval: maxValue / 5,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -149,27 +236,28 @@ class LineTitles {
       fontWeight: FontWeight.bold,
       fontSize: 9,
     );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '100';
-        break;
-      case 2:
-        text = '200';
-        break;
-      case 3:
-        text = '300';
-        break;
-      case 4:
-        text = '400';
-        break;
-      case 5:
-        text = '500';
-        break;
-      default:
-        return Container();
-    }
+    // String text;
+    // switch (value.toInt()) {
+    //   case 1:
+    //     text = '100';
+    //     break;
+    //   case 2:
+    //     text = '200';
+    //     break;
+    //   case 3:
+    //     text = '300';
+    //     break;
+    //   case 4:
+    //     text = '400';
+    //     break;
+    //   case 5:
+    //     text = '500';
+    //     break;
+    //   default:
+    //     return Container();
+    // }
 
-    return Text(text, style: style, textAlign: TextAlign.left);
+    return Text(value.toInt().toString(),
+        style: style, textAlign: TextAlign.left);
   }
 }

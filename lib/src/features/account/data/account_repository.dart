@@ -1,11 +1,31 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
+import 'package:the_helper/src/features/activity/domain/activity_count.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/account_query.dart';
 
 part 'account_repository.g.dart';
+
+ActivityLog res = ActivityLog(total: 0, monthly: [
+  ActivityCount(month: 8, year: 2022, count: 13),
+  ActivityCount(month: 9, year: 2022, count: 44),
+  ActivityCount(month: 10, year: 2022, count: 20),
+  ActivityCount(month: 11, year: 2022, count: 18),
+  ActivityCount(month: 12, year: 2022, count: 75),
+  ActivityCount(month: 1, year: 2023, count: 13),
+  ActivityCount(month: 2, year: 2023, count: 44),
+  ActivityCount(month: 3, year: 2023, count: 20),
+  ActivityCount(month: 4, year: 2023, count: 18),
+  ActivityCount(month: 5, year: 2023, count: 75),
+  ActivityCount(month: 6, year: 2023, count: 43),
+  ActivityCount(month: 7, year: 2023, count: 11),
+  ActivityCount(month: 8, year: 2023, count: 8),
+  ActivityCount(month: 9, year: 2023, count: 51),
+]);
 
 //Role Repository class
 class AccountRepository {
@@ -64,6 +84,15 @@ class AccountRepository {
   Future<AccountModel> delete(int id) async {
     final res = await client.delete('/something/$id');
     return AccountModel.fromJson(res.data['data']);
+  }
+
+  Future<ActivityLog> getLog({
+    ActivityLogQuery? query,
+  }) async {
+    // final res =
+    //     await client.get('/activities/count', queryParameters: query?.toJson());
+    // return ActivityLog.fromJson(res.data['data']);
+    return res;
   }
 }
 
