@@ -37,6 +37,7 @@ class ReportManageScreen extends ConsumerWidget {
     final filterAccount = ref.watch(filterAccountProvider);
     final filterOrg = ref.watch(filterOrganizationProvider);
     final filterActivity = ref.watch(filterActivityProvider);
+    final filterNews = ref.watch(filterNewsProvider);
     final byDate = ref.watch(sortBySendDateProvider);
     final byNewest = ref.watch(sortByNewestProvider);
 
@@ -139,6 +140,15 @@ class ReportManageScreen extends ConsumerWidget {
                                 value;
                           },
                           selected: filterActivity,
+                        ),
+                        const SizedBox(width: 12),
+                        FilterChip(
+                          label: const Text('News'),
+                          onSelected: (value) {
+                            ref.read(filterNewsProvider.notifier).state =
+                                value;
+                          },
+                          selected: filterNews,
                         ),
                       ],
                     ),

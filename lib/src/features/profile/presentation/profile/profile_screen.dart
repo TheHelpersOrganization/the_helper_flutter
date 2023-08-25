@@ -11,7 +11,6 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_contacts_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_verified_status.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -97,9 +96,10 @@ class ProfileScreen extends ConsumerWidget {
               },
               body: TabBarView(
                 children: [
-                  ProfileOverviewTab(
-                    profile: profile,
-                  ),
+                  const SizedBox(),
+                  // ProfileOverviewTab(
+                  //   profile: profile,
+                  // ),
                   const ProfileActivityTab(),
                   ProfileOrganizationTab(orgs: orgs),
                   ProfileContactsTab(contacts: contacts),

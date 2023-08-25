@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'account_data.dart';
 import 'activity_data.dart';
+import 'news_data.dart';
 import 'organization_data.dart';
 import 'report_message.dart';
 
@@ -24,7 +25,8 @@ class ReportModel with _$ReportModel {
       List<ReportMessageModel>? messages,
       AccountData? reportedAccount,
       ActivityData? reportedActivity,
-      OrganizationData? reportedOrganization}) = _ReportModel;
+      OrganizationData? reportedOrganization,
+      NewsData? reportedNews}) = _ReportModel;
 
   factory ReportModel.fromJson(Map<String, dynamic> json) =>
       _$ReportModelFromJson(json);

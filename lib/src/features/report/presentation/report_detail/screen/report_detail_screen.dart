@@ -61,7 +61,8 @@ class ReportDetailScreen extends ConsumerWidget {
                   data.reportedAccount?.email ??
                   data.reportedOrganization?.name ??
                   data.reportedOrganization?.email ??
-                  data.reportedActivity?.name;
+                  data.reportedActivity?.name ??
+                  data.reportedNews?.title ?? 'Unknow';
 
               final avatarId = data.reportedAccount?.avatarId ??
                   data.reportedActivity?.thumbnail ??

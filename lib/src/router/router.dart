@@ -498,7 +498,6 @@ enum AppRoute {
     path: '/developing',
     name: 'developing',
   ),
-
   home(
     path: '/home',
     name: 'home',
