@@ -5,6 +5,7 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/label.dart';
+import 'package:the_helper/src/common/widget/rating.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/ongoing_shift_bottom_sheet.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/upcoming_shift_bottom_sheet.dart';
@@ -188,6 +189,23 @@ class MyShiftCard extends ConsumerWidget {
                   Text(participants),
                 ],
               ),
+              if (myVolunteer.shiftRating != null) ...[
+                const SizedBox(
+                  height: 4,
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.star_outline_outlined),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    const Text('Your rating: '),
+                    Rating(
+                      rating: myVolunteer.shiftRating!,
+                    ),
+                  ],
+                ),
+              ],
               if (shift.status == ShiftStatus.ongoing)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,6 +8,7 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/features/change_role/application/role_service.dart';
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_list/controller/chat_list_controller.dart';
@@ -21,7 +22,7 @@ class ChatListScreen extends ConsumerWidget {
     final chatListSocketState = ref.watch(chatListSocketProvider);
     final showSearch = ref.watch(showSearchProvider);
     final searchPattern = ref.watch(searchPatternProvider);
-    final role = ref.watch(currentRoleProvider).valueOrNull;
+    final role = ref.watch(roleServiceProvider).valueOrNull;
 
     return Scaffold(
       drawer: const AppDrawer(),

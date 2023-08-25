@@ -24,17 +24,7 @@ class RoleRepository {
     required this.localStorage,
   });
 
-  Future<void> getUserRole(String userID) async {
-    final response = await client.get(
-      '$url/somthing',
-      data: {
-        'id': userID,
-      },
-    );
-    _roleState.value = UserRole.fromJson(response.data['data']);
-  }
-
-  Future<Role?> setCurrentRole(Role role) async {
+  Future<Role> setCurrentRole(Role role) async {
     await localStorage.write(key: currentRoleKey, value: role.toString());
     return role;
   }
@@ -70,12 +60,3 @@ RoleRepository roleRepository(RoleRepositoryRef ref) {
     localStorage: ref.read(secureStorageProvider),
   );
 }
-// final roleRepositoryProvider = Provider<RoleRepository>((ref) {
-//   return RoleRepository(
-//     client: ref.read(dioProvider),
-//     url: ref.read(baseUrlProvider),
-//     localStorage: ref.read(secureStorageProvider),
-//   );
-// });
-
-// final roleStateChangeProvider = 

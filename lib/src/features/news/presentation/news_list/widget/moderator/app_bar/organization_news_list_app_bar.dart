@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/search_bar/river_debounce_search_bar.dart';
 import 'package:the_helper/src/features/news/domain/news_query.dart';
-import 'package:the_helper/src/features/news/presentation/organization_news_list/controller/organization_news_list_controller.dart';
+import 'package:the_helper/src/features/news/presentation/news_list/controller/news_list_mod_controller.dart';
+import 'package:the_helper/src/features/news/presentation/news_list/widget/moderator/app_bar/news_status_filter.dart';
+import 'package:the_helper/src/features/news/presentation/news_list/widget/moderator/app_bar/news_type_filter.dart';
 
 class OrganizationNewsListAppBar extends ConsumerWidget {
   const OrganizationNewsListAppBar({super.key});
@@ -13,7 +14,6 @@ class OrganizationNewsListAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final showSearchBox = ref.watch(showSearchBoxProvider);
     ref.watch(searchPatternProvider);
-    final isPublished = ref.watch(isPublishedProvider);
     final sort = ref.watch(sortProvider);
 
     return SliverAppBar(
@@ -42,6 +42,7 @@ class OrganizationNewsListAppBar extends ConsumerWidget {
               ),
               PopupMenuButton(
                 icon: const Icon(Icons.sort),
+                position: PopupMenuPosition.under,
                 onSelected: (value) {
                   ref.read(sortProvider.notifier).state = value;
                 },
@@ -67,41 +68,17 @@ class OrganizationNewsListAppBar extends ConsumerWidget {
               ),
             ]
           : null,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(48),
+      bottom: const PreferredSize(
+        preferredSize: Size.fromHeight(90),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          child: Row(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              FilterChip(
-                label: const Text('All'),
-                selected: isPublished == null,
-                onSelected: (value) {
-                  if (value) {
-                    ref.read(isPublishedProvider.notifier).state = null;
-                  }
-                },
-              ),
-              FilterChip(
-                label: const Text('Published'),
-                selected: isPublished == true,
-                onSelected: (value) {
-                  if (value) {
-                    ref.read(isPublishedProvider.notifier).state = true;
-                  }
-                },
-              ),
-              FilterChip(
-                label: const Text('Draft'),
-                selected: isPublished == false,
-                onSelected: (value) {
-                  if (value) {
-                    ref.read(isPublishedProvider.notifier).state = false;
-                  }
-                },
-              ),
-              const Spacer(),
-            ].sizedBoxSpacing(const SizedBox(width: 8)),
+              NewsStatusFilter(),
+              SizedBox(height: 8),
+              NewsTypeFilter(),
+            ],
           ),
         ),
       ),

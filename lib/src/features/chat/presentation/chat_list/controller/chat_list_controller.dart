@@ -3,16 +3,10 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
-import 'package:the_helper/src/features/change_role/data/role_repository.dart';
-import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_query.dart';
 import 'package:the_helper/src/utils/socket_provider.dart';
-
-final currentRoleProvider = FutureProvider.autoDispose<Role>((ref) {
-  return ref.watch(roleRepositoryProvider).getCurrentRole();
-});
 
 final showSearchProvider = StateProvider.autoDispose<bool>((ref) {
   return false;

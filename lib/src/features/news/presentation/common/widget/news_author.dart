@@ -33,7 +33,7 @@ class NewsAuthor extends StatelessWidget {
       child: Row(
         children: [
           if (authorPrefix != null && authorPrefix!.trim().isNotEmpty) ...[
-            Text(authorPrefix!.trim()),
+            Text(authorPrefix!),
             const SizedBox(width: 8)
           ],
           CircleAvatar(

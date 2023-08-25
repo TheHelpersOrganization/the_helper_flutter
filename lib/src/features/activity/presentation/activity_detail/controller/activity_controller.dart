@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/application/activity_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/shift/presentation/my_shift/controller/my_shift_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
@@ -11,6 +10,7 @@ import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/controller/my_shift_controller.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/controller/shift_controller.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
@@ -45,7 +45,6 @@ final getActivityAndShiftsProvider =
     if (activity == null) {
       return null;
     }
-    print('activityy');
     final shifts = ref.watch(shiftRepositoryProvider).getShifts(
           query: ShiftQuery(
             activityId: activityId,
@@ -54,7 +53,6 @@ final getActivityAndShiftsProvider =
             ],
           ),
         );
-    print('shifts');
     final managerProfiles = ref.watch(profileRepositoryProvider).getProfiles(
           GetProfilesData(
             ids: activity.activityManagerIds?.toList(),

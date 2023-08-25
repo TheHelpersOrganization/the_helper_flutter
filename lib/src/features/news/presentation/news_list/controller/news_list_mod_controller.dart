@@ -10,7 +10,10 @@ final showSearchBoxProvider = StateProvider.autoDispose<bool>((ref) {
 });
 final searchPatternProvider = StateProvider.autoDispose((ref) => '');
 
-final isPublishedProvider = StateProvider.autoDispose<bool?>((ref) => null);
+final isPublishedFilterProvider =
+    StateProvider.autoDispose<bool?>((ref) => null);
+final newsTypeFilterProvider =
+    StateProvider.autoDispose<Set<NewsType>>((ref) => {});
 final sortProvider =
     StateProvider.autoDispose<String>((ref) => NewsQuerySort.dateDesc);
 
@@ -19,6 +22,7 @@ class OrganizationNewsListPagedNotifier extends PagedNotifier<int, News> {
   final NewsRepository newsRepository;
   final String searchPattern;
   final bool? isPublished;
+  final Set<NewsType>? types;
   final String sort;
 
   OrganizationNewsListPagedNotifier({
@@ -26,6 +30,7 @@ class OrganizationNewsListPagedNotifier extends PagedNotifier<int, News> {
     required this.newsRepository,
     required this.searchPattern,
     required this.isPublished,
+    required this.types,
     required this.sort,
   }) : super(
           load: (page, limit) async {
@@ -38,6 +43,7 @@ class OrganizationNewsListPagedNotifier extends PagedNotifier<int, News> {
                 organizationId: organizationId,
                 search: searchPattern.trim().isEmpty ? null : searchPattern,
                 isPublished: isPublished,
+                type: types?.toList(),
                 include: [
                   NewsQueryInclude.author,
                   NewsQueryInclude.organization
@@ -57,7 +63,8 @@ final organizationNewsListPagedNotifierProvider = StateNotifierProvider
   (ref) {
     final newsRepository = ref.watch(newsRepositoryProvider);
     final searchPattern = ref.watch(searchPatternProvider);
-    final isPublished = ref.watch(isPublishedProvider);
+    final isPublished = ref.watch(isPublishedFilterProvider);
+    final types = ref.watch(newsTypeFilterProvider);
     final sort = ref.watch(sortProvider);
 
     return OrganizationNewsListPagedNotifier(
@@ -65,6 +72,7 @@ final organizationNewsListPagedNotifierProvider = StateNotifierProvider
       newsRepository: newsRepository,
       searchPattern: searchPattern,
       isPublished: isPublished,
+      types: types,
       sort: sort,
     );
   },

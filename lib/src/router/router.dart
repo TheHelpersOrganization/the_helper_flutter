@@ -46,6 +46,7 @@ import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_sc
 import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/news_routes.dart';
 import 'package:the_helper/src/router/notification_routes.dart';
+import 'package:the_helper/src/router/reset_password_routes.dart';
 import 'package:the_helper/src/router/router_notifier.dart';
 
 import '../features/account/presentation/account_admin_manage/screens/account_manage_screen.dart';
@@ -348,10 +349,11 @@ final routes = [
           ]),
       ...accountRoutes,
       profileRoutes,
-      ...newsRoutes,
+      newsRoutes,
       ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
+      resetPasswordRoutes,
     ],
   ),
 ];
@@ -486,6 +488,7 @@ final accountRoutes = [
 abstract class AppRouteParameter {
   static const profileId = 'userId';
   static const organizationId = 'orgId';
+  static const activityId = 'activityId';
   static const newsId = 'newsId';
 }
 
@@ -512,6 +515,11 @@ enum AppRoute {
     name: 'logout',
   ),
 
+  resetPassword(
+    path: '/reset-password',
+    name: 'reset-password',
+  ),
+
   // Todo: create modal instead of using this route
   account(
     path: '/account',
@@ -534,13 +542,13 @@ enum AppRoute {
     path: ':${AppRouteParameter.newsId}',
     name: 'news-detail',
   ),
-  organizationNews(
-    path: '/organization/news',
-    name: 'organization-news',
-  ),
-  organizationNewsCreate(
+  newsCreate(
     path: 'create',
-    name: 'organization-news-create',
+    name: 'news-create',
+  ),
+  newsUpdate(
+    path: 'update',
+    name: 'news-update',
   ),
 
   chats(
@@ -663,7 +671,7 @@ enum AppRoute {
     name: 'activity-my',
   ),
   activity(
-    path: '/activity/:activityId',
+    path: '/activity/:${AppRouteParameter.activityId}',
     name: 'activity',
   ),
 

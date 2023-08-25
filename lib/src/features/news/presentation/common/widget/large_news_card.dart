@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
+import 'package:the_helper/src/common/extension/string.dart';
+import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/news/domain/news.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
@@ -24,11 +26,12 @@ class LargeNewsCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 12),
         child: InkWell(
           onTap: () {
-            context.goNamed(AppRoute.newsDetail.name, pathParameters: {
+            context.pushNamed(AppRoute.newsDetail.name, pathParameters: {
               AppRouteParameter.newsId: news.id.toString(),
             });
           },
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
@@ -87,6 +90,7 @@ class LargeNewsCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
@@ -139,6 +143,12 @@ class LargeNewsCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Label(
+                      labelText: news.type.name.capitalize(),
                     ),
                   ],
                 ),

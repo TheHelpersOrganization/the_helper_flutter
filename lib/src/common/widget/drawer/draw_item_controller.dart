@@ -80,7 +80,7 @@ final List<DrawerItemModel> moderator = [
     icon: Icons.work_outline,
   ),
   const DrawerItemModel(
-    route: AppRoute.organizationNews,
+    route: AppRoute.news,
     title: 'Organization News',
     icon: Icons.newspaper_outlined,
   ),

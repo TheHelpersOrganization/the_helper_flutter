@@ -6,8 +6,11 @@ final Set<String> _showingSnackbar = {};
 
 const shiftSnackbarName = 'shift';
 const myShiftSnackbarName = 'myShift';
+const rateShiftSnackbarName = 'rateShift';
 const roleAssignmentSnackbarName = 'roleAssignment';
 const transferOwnershipSnackbarName = 'transferOwnership';
+const createNewsSnackbarName = 'createNews';
+const deleteNewsSnackbarName = 'deleteNews';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(

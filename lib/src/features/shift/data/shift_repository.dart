@@ -4,6 +4,7 @@ import 'package:the_helper/src/features/shift/domain/attendance.dart';
 import 'package:the_helper/src/features/shift/domain/create_shift.dart';
 import 'package:the_helper/src/features/shift/domain/list_attendance.dart';
 import 'package:the_helper/src/features/shift/domain/many_query_response.dart';
+import 'package:the_helper/src/features/shift/domain/rate_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
@@ -236,6 +237,17 @@ class ShiftRepository {
   }) async {
     final res = await client.put(
       '/shifts/$shiftId/volunteers/check-out',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer> rateShift({
+    required int shiftId,
+    required RateShift data,
+  }) async {
+    final res = await client.post(
+      '/shifts/$shiftId/volunteers/rate',
+      data: data.toJson(),
     );
     return ShiftVolunteer.fromJson(res.data['data']);
   }
