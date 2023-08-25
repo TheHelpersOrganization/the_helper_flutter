@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/account_ranking_item.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/activity_ranking_item.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/admin_data_holder.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/admin_line_chart.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/organization_ranking_item.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -15,7 +13,6 @@ import '../../../profile/data/profile_repository.dart';
 import '../controllers/admin_home_controller.dart';
 import '../widgets/admin_data_card.dart';
 import '../widgets/home_welcome_section.dart';
-import '../widgets/pending_request_data.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({

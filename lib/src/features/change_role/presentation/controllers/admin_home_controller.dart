@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
 import 'package:the_helper/src/features/activity/domain/activity_log.dart';
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
