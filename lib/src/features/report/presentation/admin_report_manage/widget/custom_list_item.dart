@@ -128,6 +128,8 @@ class CustomListItem extends ConsumerWidget {
         return const Text('Organization',style: TextStyle(fontWeight: FontWeight.bold));
       case ReportType.activity:
         return const Text('Activity',style: TextStyle(fontWeight: FontWeight.bold));
+      case ReportType.news:
+        return const Text('News',style: TextStyle(fontWeight: FontWeight.bold));
     }
     return const Text('Unknown',style: TextStyle(fontWeight: FontWeight.bold));
   }

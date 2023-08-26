@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
+import '../../activity/domain/activity_log.dart';
 import '../data/account_repository.dart';
 import '../data/account_request_repository.dart';
 import '../domain/account.dart';
@@ -44,6 +46,14 @@ class AccountService {
   }) async {
     final request = await accountRequestRepository.getAll(query: query);
     return request.length;
+  }
+
+  Future<ActivityLog> getLog({
+    ActivityLogQuery? query,
+  }) async {
+    ActivityLog log = await accountRepository.getLog(query: query);
+
+    return log;
   }
 }
 

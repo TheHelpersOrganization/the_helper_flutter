@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log.dart';
+import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/features/organization/data/admin_organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 
@@ -44,6 +46,14 @@ class AdminOrganizationService {
         query:
             const AdminOrganizationQuery(status: OrganizationStatus.pending));
     return orgs.length;
+  }
+
+  Future<ActivityLog> getLog({
+    ActivityLogQuery? query,
+  }) async {
+    ActivityLog log = await organizationRepository.getLog(query: query);
+
+    return log;
   }
 }
 

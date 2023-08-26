@@ -46,7 +46,7 @@ class AppDrawerDropDown extends ConsumerWidget {
               title: item.title,
               icon: Icons.radio_button_off,
               isSub: true,
-              enabled: item.enabled ?? false,
+              enabled: item.enabled ?? true,
               path: item.route?.path,
               onTap: () {
                 context.goNamed(item.route != null

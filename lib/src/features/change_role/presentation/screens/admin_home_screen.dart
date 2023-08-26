@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/admin_data_holder.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/account_ranking_item.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/activity_ranking_item.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/admin_line_chart.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/organization_ranking_item.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../common/screens/error_screen.dart';
@@ -12,7 +13,6 @@ import '../../../profile/data/profile_repository.dart';
 import '../controllers/admin_home_controller.dart';
 import '../widgets/admin_data_card.dart';
 import '../widgets/home_welcome_section.dart';
-import '../widgets/pending_request_data.dart';
 
 class AdminView extends ConsumerWidget {
   const AdminView({
@@ -24,157 +24,270 @@ class AdminView extends ConsumerWidget {
     final email = ref.watch(authServiceProvider).value!.account.email;
     final userName = ref.watch(profileProvider);
     final adminData = ref.watch(adminHomeControllerProvider);
-    final requestData = ref.watch(adminRequestProvider);
     final chartData = ref.watch(chartDataProvider);
+
+    final selectedChartFilter = ref.watch(chartFilterProvider);
+    final openRanking = ref.watch(openRankingProvider);
+    final segmentValue = ref.watch(segmentValueProvider);
 
     return userName.when(
         error: (_, __) => const ErrorScreen(),
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
-        data: (data) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              child: Column(
-                children: [
-                  // Hello section
-                  HomeWelcomeSection(
-                    volunteerName: data.lastName ?? data.username ?? email,
-                  ),
-
-                  const SizedBox(height: 15),
-                  adminData.when(
-                    loading: () => AdminDataHolder(
-                      itemCount: 2,
-                      itemWidth: context.mediaQuery.size.width * 0.3,
-                      itemHeight: 80,
-                    ),
-                    error: (_, __) => const ErrorScreen(),
-                    data: (data) => Row(children: [
-                      Expanded(
-                        flex: 1,
-                        child: AdminDataCard(
-                          title: 'Accounts',
-                          icon: Icons.account_circle_outlined,
-                          data: data.account,
-                          onTap: () =>
-                              context.goNamed(AppRoute.accountManage.name),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: AdminDataCard(
-                          title: 'Organization',
-                          icon: Icons.work_outline_outlined,
-                          data: data.organization,
-                          onTap: () =>
-                              context.goNamed(AppRoute.organizationAdminManage.name),
-                        ),
-                      ),
-                    ]),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
+        data: (data) => SingleChildScrollView(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                child: Column(
+                  children: [
+                    // Hello section
+                    Row(
                       children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        requestData.when(
-                          loading: () => AdminDataHolder(
-                            itemCount: 2,
-                            itemWidth: context.mediaQuery.size.width * 0.3,
-                            itemHeight: 100,
+                        Expanded(
+                          child: HomeWelcomeSection(
+                            volunteerName:
+                                data.lastName ?? data.username ?? email,
                           ),
-                          error: (_, __) {
-                            return const Center(
-                                child: Text(
-                              'There\'s a problem while loading data',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ));
-                          },
-                          data: (data) => Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+                        IconButton.filled(
+                            isSelected: openRanking,
+                            onPressed: () {
+                              ref.read(openRankingProvider.notifier).state =
+                                  !openRanking;
+                            },
+                            icon: const Icon(Icons.star_border))
+                      ],
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    !openRanking
+                        ? Column(
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: PenddingRequestData(
-                                    name: 'User',
-                                    icon: Icons.verified_user,
-                                    count: data.account,
-                                    height: 100,
-                                    width: 100,
-                                    onTap: () => context.goNamed(
-                                        AppRoute.accountRequestManage.name)),
+                              const Divider(),
+
+                              const SizedBox(
+                                height: 15,
                               ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  ChoiceChip(
+                                    label: const Text('This year'),
+                                    selected: selectedChartFilter == 0,
+                                    onSelected: (value) {
+                                      ref
+                                          .read(chartFilterProvider.notifier)
+                                          .state = 0;
+                                    },
+                                  ),
+                                  ChoiceChip(
+                                    label: const Text('Last year'),
+                                    selected: selectedChartFilter == 1,
+                                    onSelected: (value) {
+                                      ref
+                                          .read(chartFilterProvider.notifier)
+                                          .state = 1;
+                                    },
+                                  ),
+                                  ChoiceChip(
+                                    label: const Text('All time'),
+                                    selected: selectedChartFilter == 2,
+                                    onSelected: (value) {
+                                      ref
+                                          .read(chartFilterProvider.notifier)
+                                          .state = 2;
+                                    },
+                                  )
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 5,
+                                    width: 20,
+                                    color: Colors.blue,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text('Activity'),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Container(
+                                    height: 5,
+                                    width: 20,
+                                    color: Colors.orange,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text('Account'),
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  Container(
+                                    height: 5,
+                                    width: 20,
+                                    color: Colors.redAccent,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Text('Organization'),
+                                ],
+                              ),
+
+                              const SizedBox(height: 15),
+                              // chart data
+                              chartData.when(
+                                error: (_, __) => const ErrorScreen(),
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                data: (data) => Container(
+                                  height: 300,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: AdminLineChart(
+                                    accountData: data.account,
+                                    organizationData: data.organization,
+                                    activityData: data.activity,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(
+                            color: Theme.of(context).canvasColor,
+                            height: 380,
+                            child: Column(
+                              children: [
+                                SegmentedButton(
+                                  segments: const [
+                                    ButtonSegment(
+                                        value: 0, label: Text('Account')),
+                                    ButtonSegment(
+                                        value: 1, label: Text('Organization')),
+                                    ButtonSegment(
+                                        value: 2, label: Text('Activity'))
+                                  ],
+                                  selected: segmentValue,
+                                  onSelectionChanged: (p0) {
+                                    ref
+                                        .read(segmentValueProvider.notifier)
+                                        .state = p0;
+                                  },
+                                ),
+                                const SizedBox(height: 15),
+                                const Text('Ranking'),
+                                const SizedBox(height: 15),
+                                const Expanded(child: Column(children: [
+                                  AccountRankingItem(),
+                                  OrganizationRankingItem(),
+                                  ActivityRankingItem()
+                                ],))
+                              ],
+                            ),
+                          ),
+
+                    // color line info
+
+                    const SizedBox(
+                      height: 15,
+                    ),
+
+                    adminData.when(
+                      error: (_, __) => const ErrorScreen(),
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      data: (data) => Column(
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.account,
+                                title: 'Total account',
+                                icon: Icons.account_circle,
+                                onTap:() => context.goNamed(AppRoute.accountManage.name),
+                              )),
                               const SizedBox(
                                 width: 10,
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: PenddingRequestData(
-                                    name: 'Report',
-                                    icon: Icons.verified_user,
-                                    count: data.report,
-                                    height: 100,
-                                    width: 100,
-                                    onTap: () => context
-                                        .goNamed(AppRoute.reportManage.name)),
-                              ),
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.organization,
+                                title: 'Total organization',
+                                icon: Icons.work,
+                                onTap:() => context.goNamed(AppRoute.organizationAdminManage.name),
+                              )),
                             ],
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text('Pending request',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge
-                                  ?.copyWith(color: Colors.white)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Activities data',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: chartData.when(
-                      loading: () => AdminDataHolder(
-                        itemCount: 1,
-                        itemWidth: context.mediaQuery.size.width * 0.8,
-                        itemHeight: 250,
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.activity,
+                                title: 'Total activity',
+                                icon: Icons.volunteer_activism,
+                                onTap:() => context.goNamed(AppRoute.activityManage.name),
+                              )),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.report,
+                                title: 'Pending report',
+                                icon: Icons.report_problem,
+                                onTap:() => context.goNamed(AppRoute.reportManage.name),
+                              )),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.accountRequest,
+                                title: 'Account request',
+                                icon: Icons.verified,
+                                onTap:() => context.goNamed(AppRoute.accountRequestManage.name),
+                              )),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Flexible(
+                                  child: AdminDataCard(
+                                data: data.organizationRequest,
+                                title: 'Organization request',
+                                icon: Icons.assured_workload,
+                                onTap:() => context.goNamed(AppRoute.organizationRequestsManage.name),
+                              )),
+                            ],
+                          ),
+                        ],
                       ),
-                      error: (_, __) => const ErrorScreen(),
-                    data: (data) => AdminLineChart(data: data,))
-                    ,
-                  )),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ));
   }
