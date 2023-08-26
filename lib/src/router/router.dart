@@ -564,6 +564,10 @@ enum AppRoute {
     path: ':chatId',
     name: 'chat',
   ),
+  chatGroupCreate(
+    path: 'group/create',
+    name: 'chat-group-create',
+  ),
 
   // Todo: notification crud
   notifications(

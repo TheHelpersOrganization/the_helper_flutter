@@ -20,10 +20,10 @@ class ProfileRepository {
   final Dio client;
   final String url;
 
-  Future<List<Profile>> getProfiles(GetProfilesData data) async {
+  Future<List<Profile>> getProfiles(GetProfilesData? data) async {
     final List<dynamic> res = (await client.get(
       '/profiles',
-      queryParameters: data.toJson(),
+      queryParameters: data?.toJson(),
     ))
         .data['data'];
     return res.map((e) => Profile.fromJson(e)).toList();

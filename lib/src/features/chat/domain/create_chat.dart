@@ -8,6 +8,7 @@ class CreateChat with _$CreateChat {
   @JsonSerializable(includeIfNull: false)
   factory CreateChat({
     required int to,
+    int? avatar,
     String? initialMessage,
   }) = _CreateChat;
 

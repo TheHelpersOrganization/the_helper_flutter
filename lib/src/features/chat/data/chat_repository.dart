@@ -1,10 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
+import 'package:the_helper/src/features/chat/domain/chat_add_participants.dart';
+import 'package:the_helper/src/features/chat/domain/chat_group_make_owner.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message_query.dart';
 import 'package:the_helper/src/features/chat/domain/chat_query.dart';
+import 'package:the_helper/src/features/chat/domain/chat_remove_participant.dart';
 import 'package:the_helper/src/features/chat/domain/create_chat.dart';
+import 'package:the_helper/src/features/chat/domain/create_chat_group.dart';
+import 'package:the_helper/src/features/chat/domain/update_chat_group.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 class ChatRepository {
@@ -74,6 +79,69 @@ class ChatRepository {
     );
     final dynamic data = res.data['data'];
     return Chat.fromJson(data);
+  }
+
+  Future<Chat> createChatGroup(
+    CreateChatGroup data,
+  ) async {
+    final res = await client.post(
+      '/chats/groups',
+      data: data.toJson(),
+    );
+    final dynamic resData = res.data['data'];
+    return Chat.fromJson(resData);
+  }
+
+  Future<Chat> updateChatGroup(
+    UpdateChatGroup data,
+  ) async {
+    final res = await client.put(
+      '/chats',
+      data: data.toJson(),
+    );
+    final dynamic resData = res.data['data'];
+    return Chat.fromJson(resData);
+  }
+
+  Future<void> leaveChatGroup({
+    required int chatId,
+  }) async {
+    await client.post('/chats/groups/leave', data: {
+      'chatId': chatId,
+    });
+  }
+
+  Future<Chat> addChatGroupParticipants(
+    ChatAddParticipants data,
+  ) async {
+    final res = await client.post(
+      '/chats/groups/participants',
+      data: data.toJson(),
+    );
+    final resData = res.data['data'];
+    return Chat.fromJson(resData);
+  }
+
+  Future<Chat> removeChatGroupParticipant(
+    ChatRemoveParticipant data,
+  ) async {
+    final res = await client.delete(
+      '/chats/groups/participants',
+      data: data.toJson(),
+    );
+    final resData = res.data['data'];
+    return Chat.fromJson(resData);
+  }
+
+  Future<Chat> makeOwner(
+    ChatGroupMakeOwner data,
+  ) async {
+    final res = await client.post(
+      '/chats/groups/make-owner',
+      data: data.toJson(),
+    );
+    final resData = res.data['data'];
+    return Chat.fromJson(resData);
   }
 }
 

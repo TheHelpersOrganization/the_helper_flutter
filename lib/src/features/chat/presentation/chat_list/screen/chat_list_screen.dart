@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
@@ -12,7 +13,8 @@ import 'package:the_helper/src/features/change_role/application/role_service.dar
 import 'package:the_helper/src/features/change_role/domain/user_role.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_list/controller/chat_list_controller.dart';
-import 'package:the_helper/src/features/chat/presentation/widget/chat_card.dart';
+import 'package:the_helper/src/features/chat/presentation/common/widget/chat_card.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class ChatListScreen extends ConsumerWidget {
   const ChatListScreen({super.key});
@@ -32,7 +34,7 @@ class ChatListScreen extends ConsumerWidget {
         error: (error, stackTrace) => CustomErrorWidget(
           onRetry: () => ref.refresh(chatListSocketProvider),
         ),
-        data: (data) => NestedScrollView(
+        data: (socket) => NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
               leading: showSearch
@@ -75,17 +77,26 @@ class ChatListScreen extends ConsumerWidget {
                       ],
                     ),
               floating: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    ref.read(showSearchProvider.notifier).state = !showSearch;
-                  },
-                  icon: const Icon(Icons.search),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-              ],
+              actions: showSearch
+                  ? null
+                  : [
+                      IconButton(
+                        onPressed: () {
+                          context.pushNamed(AppRoute.chatGroupCreate.name);
+                        },
+                        icon: const Icon(Icons.group_add_outlined),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          ref.read(showSearchProvider.notifier).state =
+                              !showSearch;
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                    ],
             ),
           ],
           body: RiverPagedBuilder<int, Chat>.autoDispose(

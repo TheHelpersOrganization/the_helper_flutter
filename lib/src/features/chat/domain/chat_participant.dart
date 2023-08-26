@@ -8,6 +8,8 @@ class ChatParticipant with _$ChatParticipant {
   @JsonSerializable(includeIfNull: false)
   factory ChatParticipant({
     required int id,
+    required int chatId,
+    required int participantId,
     required String email,
     String? username,
     String? phoneNumber,

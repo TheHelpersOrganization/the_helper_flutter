@@ -17,7 +17,7 @@ enum AppEnvironment {
 @Envied(path: '.env', obfuscate: true)
 abstract class AppEnv {
   @EnviedField(defaultValue: 'development')
-  static final APP_ENV = _AppEnv.APP_ENV;
+  static final String APP_ENV = _AppEnv.APP_ENV;
 }
 
 abstract class AppConfig {
