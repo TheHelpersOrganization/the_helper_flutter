@@ -1,0 +1,43 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+  
+variables:
+  tag: '$(Build.BuildId)'
+
+steps:
+- task: SSH@0
+  name: 'TestVMConnection'
+  displayName: 'Test VM Connection'
+  inputs:
+    sshEndpoint: 'TheHelpersBackend'
+    runOptions: 'commands'
+    commands: 'ls'
+    readyTimeout: '20000'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker Hub'
+    repository: 'cyberproton/the-helpers-flutter'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
+    addPipelineData: false
+    addBaseImageData: false
+  env:
+    DOCKER_BUILDKIT: 1
+    CI: true
+- task: SSH@0
+  name: 'DeployToVM'
+  displayName: 'Deploy to VM'
+  inputs:
+    sshEndpoint: 'TheHelpersBackend'
+    runOptions: 'inline'
+    inline: |
+      docker ps -a -q --filter "name=frontend" | grep -q . && docker stop frontend && docker rm -fv frontend
+      docker pull cyberproton/the-helpers-flutter:latest
+      docker run --name frontend --env-file=.env -p 80:80 -tid cyberproton/the-helpers-flutter
+    readyTimeout: '20000'

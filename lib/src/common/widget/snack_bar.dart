@@ -15,6 +15,8 @@ SnackBar errorSnackBarFromException(Object error) {
   } else if (error is String) {
     message = error;
   }
+  // Print all error now
+  message = error.toString();
   return SnackBar(
     content: Row(
       children: [
