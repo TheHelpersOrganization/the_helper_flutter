@@ -11,6 +11,10 @@ const roleAssignmentSnackbarName = 'roleAssignment';
 const transferOwnershipSnackbarName = 'transferOwnership';
 const createNewsSnackbarName = 'createNews';
 const deleteNewsSnackbarName = 'deleteNews';
+const createChatGroupSnackbarName = 'createChatGroup';
+const chatGroupParticipantAddSnackbarName = 'chatGroupParticipantAdd';
+const chatGroupParticipantRemoveSnackbarName = 'chatGroupParticipantRemove';
+const chatGroupMakeOwnerSnackbarName = 'chatGroupMakeOwner';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(

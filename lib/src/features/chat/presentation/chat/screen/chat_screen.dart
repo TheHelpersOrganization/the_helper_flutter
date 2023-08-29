@@ -12,9 +12,12 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
+import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_manage/screen/chat_group_participant_screen.dart';
+import 'package:the_helper/src/features/chat/presentation/common/widget/chat_avatar.dart';
 import 'package:the_helper/src/features/report/presentation/submit_report/screen/submit_report_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';
@@ -73,83 +76,116 @@ class ChatScreen extends ConsumerWidget {
       ),
       child: Scaffold(
         appBar: chatDataState.maybeWhen(
-            data: (chat) {
-              if (chat == null) {
-                return null;
-              }
-              final otherProfile =
-                  chat.participants!.firstWhere((e) => e.id != myId);
-              final otherName = getChatParticipantName(otherProfile);
-              return AppBar(
-                title: Row(
-                  children: [
-                    getBackendCircleAvatarOrCharacter(
-                      otherProfile.avatarId,
-                      getChatParticipantName(otherProfile),
-                      radius: 16,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      getChatParticipantName(otherProfile),
+          data: (chat) {
+            if (chat == null) {
+              return null;
+            }
+            final otherProfile =
+                chat.participants!.firstWhere((e) => e.id != myId);
+            final otherName = getChatParticipantName(otherProfile);
+            return AppBar(
+              title: Row(
+                children: [
+                  ChatAvatar(chat: chat, myId: myId),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      chat.getDisplayName(myId: myId),
                       style: context.theme.textTheme.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                  ],
-                ),
-                actions: [
-                  PopupMenuButton(
-                    position: PopupMenuPosition.under,
-                    icon: const Icon(Icons.more_vert),
-                    onSelected: (value) {
-                      if (value == 'profile') {
-                        context.pushNamed(
-                          AppRoute.otherProfile.name,
-                          pathParameters: {
-                            'userId': otherProfile.id.toString(),
+                  ),
+                ],
+              ),
+              actions: [
+                PopupMenuButton(
+                  position: PopupMenuPosition.under,
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (value) {
+                    if (value == 'participant') {
+                      context.navigator.push(
+                        MaterialPageRoute(
+                          builder: (context) => ChatGroupParticipantScreen(
+                            chatId: chat.id,
+                            myId: myId,
+                          ),
+                        ),
+                      );
+                    } else if (value == 'profile') {
+                      context.pushNamed(
+                        AppRoute.otherProfile.name,
+                        pathParameters: {
+                          'userId': otherProfile.id.toString(),
+                        },
+                      );
+                    } else if (value == 'report') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return SubmitReportScreen(
+                              id: otherProfile.id,
+                              name: otherProfile.username.toString(),
+                              entityType: ReportType.account,
+                              avatarId: otherProfile.avatarId,
+                              subText: otherProfile.email,
+                            );
                           },
-                        );
-                      } else if (value == 'report') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return SubmitReportScreen(
-                                id: otherProfile.id,
-                                name: otherProfile.username.toString(),
-                                entityType: ReportType.account,
-                                avatarId: otherProfile.avatarId,
-                                subText: otherProfile.email,
-                              );
-                            },
+                        ),
+                      );
+                    } else if (value == 'block') {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmationDialog(
+                          titleText: 'Block $otherName?',
+                          content: const Text(
+                            'You will no longer receive messages from this user.',
                           ),
-                        );
-                      } else if (value == 'block') {
-                        showDialog(
-                          context: context,
-                          builder: (context) => ConfirmationDialog(
-                            titleText: 'Block $otherName?',
-                            content: const Text(
-                              'You will no longer receive messages from this user.',
+                          confirmText: 'Block',
+                          onConfirm: () {
+                            context.pop();
+                            ref
+                                .read(blockChatControllerProvider.notifier)
+                                .blockChat(chatId);
+                          },
+                        ),
+                      );
+                    } else if (value == 'unblock') {
+                      showUnblockDialog(
+                        context: context,
+                        targetName: otherName,
+                        controller: ref.read(
+                          unblockChatControllerProvider.notifier,
+                        ),
+                      );
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    if (chat.isGroup) ...[
+                      const PopupMenuItem(
+                        value: 'edit',
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit_outlined),
+                            SizedBox(width: 8),
+                            Text('Edit'),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 'participant',
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.group_outlined,
                             ),
-                            confirmText: 'Block',
-                            onConfirm: () {
-                              context.pop();
-                              ref
-                                  .read(blockChatControllerProvider.notifier)
-                                  .blockChat(chatId);
-                            },
-                          ),
-                        );
-                      } else if (value == 'unblock') {
-                        showUnblockDialog(
-                          context: context,
-                          targetName: otherName,
-                          controller: ref.read(
-                            unblockChatControllerProvider.notifier,
-                          ),
-                        );
-                      }
-                    },
-                    itemBuilder: (context) => [
+                            SizedBox(width: 8),
+                            Text('Participants'),
+                          ],
+                        ),
+                      ),
+                    ] else
                       const PopupMenuItem(
                         value: 'profile',
                         child: Row(
@@ -162,6 +198,7 @@ class ChatScreen extends ConsumerWidget {
                           ],
                         ),
                       ),
+                    if (!chat.isGroup)
                       const PopupMenuItem(
                         value: 'report',
                         child: Row(
@@ -172,44 +209,65 @@ class ChatScreen extends ConsumerWidget {
                           ],
                         ),
                       ),
-                      if (!chat.isBlocked)
+                    if (!chat.isGroup && !chat.isBlocked)
+                      const PopupMenuItem(
+                        value: 'block',
+                        child: Row(
+                          children: [
+                            Icon(Icons.block),
+                            SizedBox(width: 8),
+                            Text('Block'),
+                          ],
+                        ),
+                      ),
+                    if (!chat.isGroup && chat.isBlocked)
+                      const PopupMenuItem(
+                        value: 'unblock',
+                        child: Row(
+                          children: [
+                            Icon(Icons.block),
+                            SizedBox(width: 8),
+                            Text('Unblock'),
+                          ],
+                        ),
+                      ),
+                    if (chat.isGroup) ...[
+                      const PopupMenuItem(
+                        value: 'leave',
+                        child: Row(
+                          children: [
+                            Icon(Icons.exit_to_app_outlined),
+                            SizedBox(width: 8),
+                            Text('Leave'),
+                          ],
+                        ),
+                      ),
+                      if (chat.ownerId == myId)
                         const PopupMenuItem(
-                          value: 'block',
+                          value: 'delete',
                           child: Row(
                             children: [
-                              Icon(Icons.block),
+                              Icon(Icons.delete_outline),
                               SizedBox(width: 8),
-                              Text('Block'),
-                            ],
-                          ),
-                        )
-                      else
-                        const PopupMenuItem(
-                          value: 'unblock',
-                          child: Row(
-                            children: [
-                              Icon(Icons.block),
-                              SizedBox(width: 8),
-                              Text('Unblock'),
+                              Text('Delete'),
                             ],
                           ),
                         ),
                     ],
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                ],
-              );
-            },
-            orElse: () => null),
+                  ],
+                )
+              ],
+            );
+          },
+          orElse: () => null,
+        ),
         body: chatDataState.when(
           skipLoadingOnRefresh: false,
           data: (chat) {
             if (chat == null) {
               return const DevelopingScreen();
             }
-
+            //return ChatGroupParticipantScreen(chatId: chat.id, myId: myId);
             final otherProfile =
                 chat.participants?.firstWhere((e) => e.id != myId);
             final myProfile =
@@ -227,7 +285,7 @@ class ChatScreen extends ConsumerWidget {
                   scrollController: scrollController,
                 ),
                 itemBuilder: (context, chatMessage, index) {
-                  final isMe = chatMessage.sender == myId;
+                  final isMe = chatMessage.sender == myProfile!.participantId;
                   final previous = index == 0
                       ? null
                       : chatListState.records?.elementAtOrNull(index - 1);
@@ -279,7 +337,7 @@ class ChatScreen extends ConsumerWidget {
                         if (isMe)
                           if (previousIsNotMe)
                             getBackendCircleAvatarOrCharacter(
-                              myProfile?.avatarId,
+                              myProfile.avatarId,
                               getChatParticipantName(myProfile),
                               radius: 18,
                             )

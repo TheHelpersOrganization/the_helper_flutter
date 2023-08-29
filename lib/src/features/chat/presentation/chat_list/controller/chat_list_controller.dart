@@ -67,7 +67,6 @@ class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
                 include: [ChatQueryInclude.message],
                 name: searchPattern.trim() == '' ? null : searchPattern.trim(),
                 messageLimit: 1,
-                hasMessage: true,
               ),
             );
           },
@@ -78,18 +77,21 @@ class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
     if (!mounted) {
       return;
     }
-
     final oldChats = state.records;
     if (oldChats == null) {
       return;
     }
     // If chat has no message, do not update
-    if (chat.messages!.isEmpty) {
+    if (!chat.isGroup && chat.messages!.isEmpty) {
       return;
     }
     final oldChatIndex =
         oldChats.indexWhere((element) => element.id == chat.id);
     if (oldChatIndex < 0) {
+      // If chat is in search mode, do not update
+      if (searchPattern.trim() != '') {
+        return;
+      }
       state = state.copyWith(records: [chat, ...oldChats]);
       return;
     }

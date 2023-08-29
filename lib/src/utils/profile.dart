@@ -1,9 +1,18 @@
 import 'package:the_helper/src/features/chat/domain/chat_participant.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 
-String getProfileName(Profile? profile) {
+String getProfileName(Profile? profile, {bool? singularName}) {
   if (profile == null) {
     return 'Unknown Name';
+  }
+  if (singularName != true &&
+      profile.firstName != null &&
+      profile.lastName != null) {
+    return '${profile.firstName} ${profile.lastName}';
+  } else if (profile.lastName != null) {
+    return profile.lastName!;
+  } else if (profile.firstName != null) {
+    return profile.firstName!;
   }
   String name = profile.username ??
       profile.email ??
@@ -12,9 +21,18 @@ String getProfileName(Profile? profile) {
   return name;
 }
 
-String getChatParticipantName(ChatParticipant? profile) {
+String getChatParticipantName(ChatParticipant? profile, {bool? singularName}) {
   if (profile == null) {
     return 'Unknown Name';
+  }
+  if (singularName != true &&
+      profile.firstName != null &&
+      profile.lastName != null) {
+    return '${profile.firstName} ${profile.lastName}';
+  } else if (profile.lastName != null) {
+    return profile.lastName!;
+  } else if (profile.firstName != null) {
+    return profile.firstName!;
   }
   String name = profile.username ?? profile.email;
   return name;
