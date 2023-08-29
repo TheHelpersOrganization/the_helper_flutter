@@ -285,7 +285,7 @@ class ChatScreen extends ConsumerWidget {
                   scrollController: scrollController,
                 ),
                 itemBuilder: (context, chatMessage, index) {
-                  final isMe = chatMessage.sender == myId;
+                  final isMe = chatMessage.sender == myProfile!.participantId;
                   final previous = index == 0
                       ? null
                       : chatListState.records?.elementAtOrNull(index - 1);
@@ -337,7 +337,7 @@ class ChatScreen extends ConsumerWidget {
                         if (isMe)
                           if (previousIsNotMe)
                             getBackendCircleAvatarOrCharacter(
-                              myProfile?.avatarId,
+                              myProfile.avatarId,
                               getChatParticipantName(myProfile),
                               radius: 18,
                             )
