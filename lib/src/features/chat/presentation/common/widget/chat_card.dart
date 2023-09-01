@@ -7,8 +7,8 @@ import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_list/controller/chat_list_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/common/widget/chat_avatar.dart';
 import 'package:the_helper/src/router/router.dart';
-import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
 
 class ChatCard extends ConsumerWidget {
@@ -22,22 +22,21 @@ class ChatCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final myId = ref.watch(authServiceProvider).asData!.value!.account.id;
-    final other = chat.participants?.firstWhere((e) => e.id != myId);
-
-    final name = getChatParticipantName(other);
+    final creator = chat.participants!
+        .firstWhere((element) => element.id == chat.createdBy);
+    final name = chat.getDisplayName(myId: myId);
     final lastMessage = chat.messages?.firstOrNull?.message;
 
     final unread =
         chat.participants?.firstWhere((element) => element.id == myId).read !=
             true;
 
-    final chatListNotifier = ref.read(chatListPagedNotifierProvider.notifier);
     final chatListSocket = ref.watch(chatListSocketProvider).asData?.value;
 
     return ListTile(
-      leading: getBackendCircleAvatarOrCharacter(
-        other?.avatarId,
-        name.characters.firstOrNull,
+      leading: ChatAvatar(
+        myId: myId,
+        chat: chat,
       ),
       trailing: Text(
         chat.updatedAt.formatDayMonth(),
@@ -61,7 +60,11 @@ class ChatCard extends ConsumerWidget {
                 fontWeight: unread ? FontWeight.bold : null,
               ),
             )
-          : null,
+          : chat.isGroup
+              ? Text(
+                  'Group created by ${myId == creator.id ? 'you' : getChatParticipantName(creator)}',
+                )
+              : null,
       onTap: () {
         //chatListNotifier.markChatAsRead(chat.id, myId);
         chatListSocket?.emit('read-chat', chat.id);
