@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../../activity/domain/activity_log.dart';
 import '../data/account_repository.dart';
 import '../data/account_request_repository.dart';
 import '../domain/account.dart';
+import '../domain/account_log_query.dart';
 import '../domain/account_query.dart';
+import '../domain/account_request_log_query.dart';
 import '../domain/account_request_query.dart';
 
 part 'account_service.g.dart';
@@ -32,27 +34,17 @@ class AccountService {
     return accounts;
   }
 
-  Future<int> getCount({
-    AccountQuery? query,
+  Future<DataLog> getLog({
+    AccountLogQuery? query,
   }) async {
-    final accounts = await accountRepository.getAll(
-      query: query,
-    );
-    return accounts.length;
+    DataLog log = await accountRepository.getLog(query: query);
+    return log;
   }
 
-  Future<int> getRequestCount({
-    AccountRequestQuery? query,
+  Future<DataLog> getRequestLog({
+    AccountRequestLogQuery? query,
   }) async {
-    final request = await accountRequestRepository.getAll(query: query);
-    return request.length;
-  }
-
-  Future<ActivityLog> getLog({
-    ActivityLogQuery? query,
-  }) async {
-    ActivityLog log = await accountRepository.getLog(query: query);
-
+    DataLog log = await accountRequestRepository.getLog(query: query);
     return log;
   }
 }

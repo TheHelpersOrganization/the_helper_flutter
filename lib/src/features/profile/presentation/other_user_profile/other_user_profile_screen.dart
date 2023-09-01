@@ -13,6 +13,7 @@ import 'package:the_helper/src/features/profile/presentation/profile/profile_det
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
+import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
 import './profile_verified_status.dart';
 import '../../../report/domain/report_query.dart';

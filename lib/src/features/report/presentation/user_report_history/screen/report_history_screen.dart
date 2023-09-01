@@ -7,6 +7,7 @@ import 'package:the_helper/src/features/report/presentation/user_report_history/
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
 import '../../../domain/report_query.dart';
+import '../../../domain/report_query_parameter_classes.dart';
 import '../controller/report_history_screen_controller.dart';
 import '../widget/custom_list.dart';
 

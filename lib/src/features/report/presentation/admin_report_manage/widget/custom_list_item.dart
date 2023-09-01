@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/report/domain/report_query.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../../utils/domain_provider.dart';
+import '../../../domain/report_query_parameter_classes.dart';
 
 class CustomListItem extends ConsumerWidget {
   final ReportModel data;

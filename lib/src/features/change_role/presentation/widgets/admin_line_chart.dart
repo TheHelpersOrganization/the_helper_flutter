@@ -1,50 +1,32 @@
 import 'dart:math';
-
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
-import 'package:the_helper/src/features/activity/domain/activity_count.dart';
-import 'package:the_helper/src/features/activity/domain/activity_log.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
+import 'package:the_helper/src/common/domain/data_monthly_log.dart';
+import 'package:the_helper/src/common/screens/error_screen.dart';
+// import 'package:fpdart/fpdart.dart';
 
 import '../controllers/admin_home_controller.dart';
 
-class AdminLineChart extends ConsumerWidget {
+class AdminLineChart extends ConsumerStatefulWidget {
   const AdminLineChart({
     super.key,
-    required this.accountData,
-    required this.activityData,
-    required this.organizationData,
   });
 
-  final ActivityLog accountData;
-  final ActivityLog activityData;
-  final ActivityLog organizationData;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var dateNow = DateTime.now();
-    final filterValue = ref.watch(chartFilterProvider);
-    List<ActivityCount> activityCount = activityData.monthly
-        .filter((e) => e.year == (dateNow.year - filterValue))
-        .toList();
-    List<ActivityCount> accountCount = accountData.monthly
-        .filter((e) => e.year == (dateNow.year - filterValue))
-        .toList();
-    List<ActivityCount> orgCount = organizationData.monthly
-        .filter((e) => e.year == (dateNow.year - filterValue))
-        .toList();
-    // final activityCount = activityData.monthly;
+  ConsumerState<AdminLineChart> createState() => _AdminLineChartState();
+}
 
+class _AdminLineChartState extends ConsumerState<AdminLineChart> {
+  int filterValue = 0;
+
+  double _getMaxValue(List<int> totalData) {
     var maxValue = 50;
 
-    final totalData = activityCount + accountCount + orgCount;
     if (totalData.isNotEmpty) {
-      for (var i in totalData) {
-        if (i.count > maxValue) {
-          maxValue = i.count;
-        }
-      }
+      maxValue = totalData.max;
     }
 
     var firstDigit = (maxValue / 10).floor();
@@ -60,7 +42,14 @@ class AdminLineChart extends ConsumerWidget {
     }
 
     final chartMaxY = (ceilValue * pow(10, k)).toDouble();
+    return chartMaxY;
+  }
 
+  List<LineChartBarData> _getMonthLineData({
+    required DataLog activityCount,
+    required DataLog accountCount,
+    required DataLog orgCount,
+  }) {
     List<LineChartBarData> lineData = [
       // Activity
       LineChartBarData(
@@ -71,7 +60,7 @@ class AdminLineChart extends ConsumerWidget {
         isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
-        spots: activityCount
+        spots: activityCount.monthly
             .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
             .toList(),
       ),
@@ -85,7 +74,7 @@ class AdminLineChart extends ConsumerWidget {
         isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
-        spots: accountCount
+        spots: accountCount.monthly
             .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
             .toList(),
       ),
@@ -99,59 +88,228 @@ class AdminLineChart extends ConsumerWidget {
         isStrokeCapRound: true,
         dotData: const FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
-        spots: orgCount
+        spots: orgCount.monthly
             .map((e) => FlSpot(e.month.toDouble() - 1, e.count.toDouble()))
             .toList(),
       ),
     ];
 
-    return LineChart(LineChartData(
-        minX: 0,
-        maxX: 11,
-        minY: 0,
-        maxY: chartMaxY,
-        titlesData: LineTitles.getTitleData(chartMaxY),
-        gridData: FlGridData(
-          show: false,
-          drawVerticalLine: true,
-          drawHorizontalLine: true,
-          horizontalInterval: maxValue * 0.1,
-          verticalInterval: 1,
-          getDrawingHorizontalLine: (value) {
-            return const FlLine(
-              // color: Colors.white10,
-              strokeWidth: 1,
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return const FlLine(
-              // color: Colors.white10,
-              strokeWidth: 1,
-            );
-          },
-        ),
-        borderData: FlBorderData(
-            show: true,
-            border: const Border(
-              // left: BorderSide(
-              //   color: Colors.black,
-              //   width: 1,
-              // ),
-              bottom: BorderSide(
-                color: Colors.black,
-                width: 1,
+    return lineData;
+  }
+
+  List<LineChartBarData> _getYearLineData({
+    required DataLog activityCount,
+    required DataLog accountCount,
+    required DataLog orgCount,
+  }) {
+    List<LineChartBarData> lineData = [
+      // Activity
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.blue,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: activityCount.yearly
+            .map((e) => FlSpot(e.year.toDouble() - 1, e.count.toDouble()))
+            .toList(),
+      ),
+
+      // account
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.orange,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: accountCount.yearly
+            .map((e) => FlSpot(e.year.toDouble() - 1, e.count.toDouble()))
+            .toList(),
+      ),
+
+      // org
+      LineChartBarData(
+        isCurved: true,
+        curveSmoothness: 0,
+        color: Colors.redAccent,
+        barWidth: 3,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: true),
+        belowBarData: BarAreaData(show: false),
+        spots: orgCount.yearly
+            .map((e) => FlSpot(e.year.toDouble() - 1, e.count.toDouble()))
+            .toList(),
+      ),
+    ];
+
+    return lineData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    filterValue = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chartData = ref.watch(adminChartDataProvider(filterValue));
+
+    return chartData.when(
+        error: (_, __) => const ErrorScreen(),
+        loading: () => const Center(
+              child: CircularProgressIndicator(),
+            ),
+        data: (data) {
+          // print(data.account.yearly);
+          // print('###########');
+          // print(data.activity.yearly);
+          // print('###########');
+          // print(data.organization.yearly);
+          List<int> valueHolder;
+          if (filterValue == 2) {
+            var dataList = data.account.yearly +
+                data.activity.yearly +
+                data.organization.yearly;
+            valueHolder = dataList.map((e) => e.count).toList();
+          } else {
+            var dataList = data.account.monthly +
+                data.activity.monthly +
+                data.organization.monthly;
+            valueHolder = dataList.map((e) => e.count).toList();
+          }
+
+          final chartMaxY = _getMaxValue(valueHolder);
+          return Column(
+            children: [
+              const SizedBox(
+                height: 15,
               ),
-            )),
-        lineTouchData: LineTouchData(
-            touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.black.withOpacity(0.6),
-        )),
-        lineBarsData: lineData));
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ChoiceChip(
+                    label: const Text('This year'),
+                    selected: filterValue == 0,
+                    onSelected: (value) {
+                      setState(() {
+                        filterValue = 0;
+                      });
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('Last year'),
+                    selected: filterValue == 1,
+                    onSelected: (value) {
+                      setState(() {
+                        filterValue = 1;
+                      });
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('All time'),
+                    selected: filterValue == 2,
+                    onSelected: (value) {
+                      setState(() {
+                        filterValue = 2;
+                      });
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: Colors.blue,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Activity'),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: Colors.orange,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Account'),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: Colors.redAccent,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Organization'),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Container(
+                height: 300,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: LineChart(
+                    duration: const Duration(milliseconds: 250),
+                    LineChartData(
+                        minX: 0,
+                        maxX: 11,
+                        minY: 0,
+                        maxY: chartMaxY,
+                        titlesData:
+                            LineTitles.getTitleData(chartMaxY, filterValue),
+                        borderData: FlBorderData(
+                            show: true,
+                            border: const Border(
+                              // left: BorderSide(
+                              //   color: Colors.black,
+                              //   width: 1,
+                              // ),
+                              bottom: BorderSide(
+                                color: Colors.black,
+                                width: 1,
+                              ),
+                            )),
+                        lineTouchData: LineTouchData(
+                            touchTooltipData: LineTouchTooltipData(
+                          tooltipBgColor: Colors.black.withOpacity(0.6),
+                        )),
+                        lineBarsData: filterValue == 2
+                            ? _getYearLineData(
+                                activityCount: data.activity,
+                                accountCount: data.account,
+                                orgCount: data.organization)
+                            : _getMonthLineData(
+                                activityCount: data.activity,
+                                accountCount: data.account,
+                                orgCount: data.organization))),
+              ),
+            ],
+          );
+        });
   }
 }
 
 class LineTitles {
-  static getTitleData(double maxValue) => FlTitlesData(
+  static getTitleData(double maxValue, int filterValue) => FlTitlesData(
         show: true,
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -159,12 +317,14 @@ class LineTitles {
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        bottomTitles: const AxisTitles(
+        bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
             interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
+            getTitlesWidget: filterValue == 2
+                ? bottomTitleYearWidgets
+                : bottomTitleMonthWidgets,
           ),
         ),
         leftTitles: AxisTitles(
@@ -177,7 +337,7 @@ class LineTitles {
         ),
       );
 
-  static Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  static Widget bottomTitleMonthWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 10,
@@ -231,32 +391,22 @@ class LineTitles {
     );
   }
 
+  static Widget bottomTitleYearWidgets(double value, TitleMeta meta) {
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(value.toInt().toString(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 10,
+          )),
+    );
+  }
+
   static Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 9,
     );
-    // String text;
-    // switch (value.toInt()) {
-    //   case 1:
-    //     text = '100';
-    //     break;
-    //   case 2:
-    //     text = '200';
-    //     break;
-    //   case 3:
-    //     text = '300';
-    //     break;
-    //   case 4:
-    //     text = '400';
-    //     break;
-    //   case 5:
-    //     text = '500';
-    //     break;
-    //   default:
-    //     return Container();
-    // }
-
     return Text(value.toInt().toString(),
         style: style, textAlign: TextAlign.left);
   }

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/activity/application/activity_volunteer_service.dart';
 import 'package:the_helper/src/features/activity/data/activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
@@ -13,7 +14,6 @@ import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
-import '../domain/activity_log.dart';
 import '../domain/activity_log_query.dart';
 
 part 'activity_service.g.dart';
@@ -104,19 +104,10 @@ class ActivityService {
     return activities;
   }
 
-  Future<int> getCount({
-    ActivityQuery? query,
-  }) async {
-    List<Activity> activities =
-        await activityRepository.getActivities(query: query);
-
-    return activities.length;
-  }
-
-  Future<ActivityLog> getLog({
+  Future<DataLog> getLog({
     ActivityLogQuery? query,
   }) async {
-    ActivityLog log = await activityRepository.getLog(query: query);
+    DataLog log = await activityRepository.getLog(query: query);
 
     return log;
   }

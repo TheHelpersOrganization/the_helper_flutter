@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/account_ranking_item.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/activity_ranking_item.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/admin_line_chart.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/admin_ranking_view.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/organization_ranking_item.dart';
 import 'package:the_helper/src/router/router.dart';
 
@@ -14,21 +15,38 @@ import '../controllers/admin_home_controller.dart';
 import '../widgets/admin_data_card.dart';
 import '../widgets/home_welcome_section.dart';
 
-class AdminView extends ConsumerWidget {
+class AdminView extends ConsumerStatefulWidget {
   const AdminView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AdminView> createState() => _AdminViewState();
+}
+
+class _AdminViewState extends ConsumerState<AdminView>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int tabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController =
+        TabController(length: 2, vsync: this, initialIndex: tabIndex);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final email = ref.watch(authServiceProvider).value!.account.email;
     final userName = ref.watch(profileProvider);
-    final adminData = ref.watch(adminHomeControllerProvider);
-    final chartData = ref.watch(chartDataProvider);
-
-    final selectedChartFilter = ref.watch(chartFilterProvider);
-    final openRanking = ref.watch(openRankingProvider);
-    final segmentValue = ref.watch(segmentValueProvider);
+    final adminData = ref.watch(adminHomeDataProvider);
 
     return userName.when(
         error: (_, __) => const ErrorScreen(),
@@ -50,156 +68,44 @@ class AdminView extends ConsumerWidget {
                                 data.lastName ?? data.username ?? email,
                           ),
                         ),
-                        IconButton.filled(
-                            isSelected: openRanking,
-                            onPressed: () {
-                              ref.read(openRankingProvider.notifier).state =
-                                  !openRanking;
-                            },
-                            icon: const Icon(Icons.star_border))
+                        SegmentedButton(
+                          segments: const [
+                            ButtonSegment(value: 0, label: Text('Overview')),
+                            ButtonSegment(value: 1, label: Text('Ranking')),
+                          ],
+                          selected: {tabIndex},
+                          onSelectionChanged: (p0) {
+                            int newIndex = p0.first;
+                            _tabController.animateTo(newIndex);
+                            setState(() {
+                              tabIndex = newIndex;
+                            });
+                          },
+                        ),
+                        // IconButton.filled(
+                        //     isSelected: openRanking,
+                        //     onPressed: () {
+                        //       ref.read(openRankingProvider.notifier).state =
+                        //           !openRanking;
+                        //     },
+                        //     icon: const Icon(Icons.star_border))
                       ],
                     ),
 
                     const SizedBox(height: 15),
+                    const Divider(),
 
-                    !openRanking
-                        ? Column(
-                            children: [
-                              const Divider(),
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  ChoiceChip(
-                                    label: const Text('This year'),
-                                    selected: selectedChartFilter == 0,
-                                    onSelected: (value) {
-                                      ref
-                                          .read(chartFilterProvider.notifier)
-                                          .state = 0;
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    label: const Text('Last year'),
-                                    selected: selectedChartFilter == 1,
-                                    onSelected: (value) {
-                                      ref
-                                          .read(chartFilterProvider.notifier)
-                                          .state = 1;
-                                    },
-                                  ),
-                                  ChoiceChip(
-                                    label: const Text('All time'),
-                                    selected: selectedChartFilter == 2,
-                                    onSelected: (value) {
-                                      ref
-                                          .read(chartFilterProvider.notifier)
-                                          .state = 2;
-                                    },
-                                  )
-                                ],
-                              ),
-
-                              const SizedBox(
-                                height: 15,
-                              ),
-
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 5,
-                                    width: 20,
-                                    color: Colors.blue,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  const Text('Activity'),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Container(
-                                    height: 5,
-                                    width: 20,
-                                    color: Colors.orange,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  const Text('Account'),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Container(
-                                    height: 5,
-                                    width: 20,
-                                    color: Colors.redAccent,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  const Text('Organization'),
-                                ],
-                              ),
-
-                              const SizedBox(height: 15),
-                              // chart data
-                              chartData.when(
-                                error: (_, __) => const ErrorScreen(),
-                                loading: () => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                data: (data) => Container(
-                                  height: 300,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: AdminLineChart(
-                                    accountData: data.account,
-                                    organizationData: data.organization,
-                                    activityData: data.activity,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(
-                            color: Theme.of(context).canvasColor,
-                            height: 380,
-                            child: Column(
-                              children: [
-                                SegmentedButton(
-                                  segments: const [
-                                    ButtonSegment(
-                                        value: 0, label: Text('Account')),
-                                    ButtonSegment(
-                                        value: 1, label: Text('Organization')),
-                                    ButtonSegment(
-                                        value: 2, label: Text('Activity'))
-                                  ],
-                                  selected: segmentValue,
-                                  onSelectionChanged: (p0) {
-                                    ref
-                                        .read(segmentValueProvider.notifier)
-                                        .state = p0;
-                                  },
-                                ),
-                                const SizedBox(height: 15),
-                                const Text('Ranking'),
-                                const SizedBox(height: 15),
-                                const Expanded(child: Column(children: [
-                                  AccountRankingItem(),
-                                  OrganizationRankingItem(),
-                                  ActivityRankingItem()
-                                ],))
-                              ],
-                            ),
-                          ),
+                    SizedBox(
+                      height: 450,
+                      child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        controller: _tabController,
+                        children: const [
+                          AdminLineChart(),
+                          AdminRankingView()
+                        ],
+                      ),
+                    ),
 
                     // color line info
 
@@ -221,7 +127,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.account,
                                 title: 'Total account',
                                 icon: Icons.account_circle,
-                                onTap:() => context.goNamed(AppRoute.accountManage.name),
+                                onTap: () => context
+                                    .goNamed(AppRoute.accountManage.name),
                               )),
                               const SizedBox(
                                 width: 10,
@@ -231,7 +138,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.organization,
                                 title: 'Total organization',
                                 icon: Icons.work,
-                                onTap:() => context.goNamed(AppRoute.organizationAdminManage.name),
+                                onTap: () => context.goNamed(
+                                    AppRoute.organizationAdminManage.name),
                               )),
                             ],
                           ),
@@ -245,7 +153,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.activity,
                                 title: 'Total activity',
                                 icon: Icons.volunteer_activism,
-                                onTap:() => context.goNamed(AppRoute.activityManage.name),
+                                onTap: () => context
+                                    .goNamed(AppRoute.activityManage.name),
                               )),
                               const SizedBox(
                                 width: 10,
@@ -255,7 +164,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.report,
                                 title: 'Pending report',
                                 icon: Icons.report_problem,
-                                onTap:() => context.goNamed(AppRoute.reportManage.name),
+                                onTap: () =>
+                                    context.goNamed(AppRoute.reportManage.name),
                               )),
                             ],
                           ),
@@ -269,7 +179,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.accountRequest,
                                 title: 'Account request',
                                 icon: Icons.verified,
-                                onTap:() => context.goNamed(AppRoute.accountRequestManage.name),
+                                onTap: () => context.goNamed(
+                                    AppRoute.accountRequestManage.name),
                               )),
                               const SizedBox(
                                 width: 10,
@@ -279,7 +190,8 @@ class AdminView extends ConsumerWidget {
                                 data: data.organizationRequest,
                                 title: 'Organization request',
                                 icon: Icons.assured_workload,
-                                onTap:() => context.goNamed(AppRoute.organizationRequestsManage.name),
+                                onTap: () => context.goNamed(
+                                    AppRoute.organizationRequestsManage.name),
                               )),
                             ],
                           ),
