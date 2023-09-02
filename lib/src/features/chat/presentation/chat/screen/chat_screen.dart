@@ -18,6 +18,7 @@ import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_c
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_group_manage/screen/chat_group_participant_screen.dart';
 import 'package:the_helper/src/features/chat/presentation/common/widget/chat_avatar.dart';
+import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 import 'package:the_helper/src/features/report/presentation/submit_report/screen/submit_report_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';

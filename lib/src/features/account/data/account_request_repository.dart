@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
 
 import 'package:the_helper/src/features/account/domain/account_request.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
+
+import '../domain/account_request_log_query.dart';
 
 part 'account_request_repository.g.dart';
 
@@ -61,6 +64,14 @@ class AccountRequestRepository {
   }) async {
     final res = await client.put('/account-verifications/$requestId/unblock');
     return AccountRequestModel.fromJson(res.data['data']);
+  }
+
+  Future<DataLog> getLog({
+    AccountRequestLogQuery? query,
+  }) async {
+    final res =
+        await client.get('/accounts/count', queryParameters: query?.toJson());
+    return DataLog.fromJson(res.data['data']);
   }
 }
 

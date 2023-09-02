@@ -1,13 +1,21 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
-import 'package:the_helper/src/features/activity/domain/activity_log.dart';
+
+import 'package:the_helper/src/features/account/domain/account_log_query.dart';
+
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
+
+import 'package:the_helper/src/features/organization/domain/organization_log_query.dart';
+import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 
 import '../../../activity/application/activity_service.dart';
 import '../../../organization/application/admin_organization_service.dart';
 import '../../../report/application/report_service.dart';
 
-class AdminHomeDataManage {
+part 'admin_home_controller.g.dart';
+
+class AdminHomeDataModel {
   final int account;
   final int organization;
   final int activity;
@@ -15,7 +23,7 @@ class AdminHomeDataManage {
   final int organizationRequest;
   final int report;
 
-  AdminHomeDataManage({
+  AdminHomeDataModel({
     required this.account,
     required this.organization,
     required this.activity,
@@ -25,99 +33,129 @@ class AdminHomeDataManage {
   });
 }
 
-class AdminChartData {
-  final ActivityLog account;
-  final ActivityLog organization;
-  final ActivityLog activity;
+class AdminChartDataModel {
+  final DataLog account;
+  final DataLog organization;
+  final DataLog activity;
 
-  AdminChartData({
+  AdminChartDataModel({
     required this.account,
     required this.organization,
     required this.activity,
   });
 }
 
-final chartFilterProvider = StateProvider.autoDispose<int>((ref) => 0);
-final openRankingProvider = StateProvider.autoDispose<bool>((ref) => false);
-final segmentValueProvider = StateProvider.autoDispose<Set<int>>((ref) => {0});
+@riverpod
+class AdminHomeData extends _$AdminHomeData {
+  @override
+  FutureOr<AdminHomeDataModel> build() async {
+    return _fetchData();
+  }
 
-final accountCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(accountServiceProvider).getCount());
+  Future<AdminHomeDataModel> _fetchData() async {
+    final accountData = await ref.watch(accountServiceProvider).getLog();
+    final organizationData = await ref
+        .watch(adminOrganizationServiceProvider)
+        .getLog(
+            query: OrganizationLogQuery(status: OrganizationStatus.verified));
+    final activityData = await ref.watch(activityServiceProvider).getLog();
 
-final activityCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(accountServiceProvider).getCount());
+    final accountRequest =
+        await ref.watch(accountServiceProvider).getRequestLog();
+    final reportData = await ref.watch(reportServiceProvider).getLog();
+    final organizationRequest = await ref
+        .watch(adminOrganizationServiceProvider)
+        .getLog(
+            query: OrganizationLogQuery(status: OrganizationStatus.pending));
+    return AdminHomeDataModel(
+      account: accountData.total,
+      organization: organizationData.total,
+      activity: activityData.total,
+      accountRequest: accountRequest.total,
+      organizationRequest: organizationRequest.total,
+      report: reportData.total,
+    );
+  }
+}
 
-final organizationCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(adminOrganizationServiceProvider).getCount());
+@riverpod
+class AdminChartData extends _$AdminChartData {
+  @override
+  FutureOr<AdminChartDataModel> build(int filter) async {
+    switch (filter) {
+      case 1:
+        return _getLastYear();
+      case 2:
+        return _getAllTime();
+      default:
+        return _getThisYear();
+    }
+  }
 
-final accountRequestCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(accountServiceProvider).getRequestCount());
+  Future<AdminChartDataModel> _getThisYear() async {
+    final timeNow = DateTime.now();
+    final startTime = DateTime(timeNow.year).millisecondsSinceEpoch;
+    print(startTime);
 
-final organizationRequestCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(adminOrganizationServiceProvider).getRequestCount());
+    final accountData = await ref
+        .watch(accountServiceProvider)
+        .getLog(query: AccountLogQuery(startTime: startTime));
+    final organizationData = await ref
+        .watch(adminOrganizationServiceProvider)
+        .getLog(
+            query: OrganizationLogQuery(
+                status: OrganizationStatus.verified, startTime: startTime));
+    final activityData = await ref
+        .watch(activityServiceProvider)
+        .getLog(query: ActivityLogQuery(startTime: startTime));
 
-final reportCountProvider = FutureProvider.autoDispose<int>(
-    (ref) => ref.watch(reportServiceProvider).getCount());
+    print(activityData.monthly);
 
-final chartActivityProvider = FutureProvider.autoDispose<ActivityLog>((ref) {
-  final end = DateTime.now();
-  final start = DateTime(end.year);
-  return ref.watch(activityServiceProvider).getLog(
-          query: ActivityLogQuery(
-        startDate: start,
-        // endDate: end
-      ));
-});
+    return AdminChartDataModel(
+        account: accountData,
+        organization: organizationData,
+        activity: activityData);
+  }
 
-final chartAccountProvider = FutureProvider.autoDispose<ActivityLog>((ref) {
-  final end = DateTime.now();
-  final start = DateTime(end.year);
-  return ref.watch(accountServiceProvider).getLog(
-          query: ActivityLogQuery(
-        startDate: start,
-        // endDate: end
-      ));
-});
+  Future<AdminChartDataModel> _getLastYear() async {
+    final timeNow = DateTime.now();
+    final startTime = DateTime(timeNow.year - 1).millisecondsSinceEpoch;
+    final endTime = DateTime(timeNow.year - 1, 12).millisecondsSinceEpoch;
+    print(startTime);
+    print(endTime);
 
-final chartOrganizationProvider =
-    FutureProvider.autoDispose<ActivityLog>((ref) {
-  final end = DateTime.now();
-  final start = DateTime(end.year);
-  return ref.watch(adminOrganizationServiceProvider).getLog(
-          query: ActivityLogQuery(
-        startDate: start,
-        // endDate: end
-      ));
-});
+    final accountData = await ref
+        .watch(accountServiceProvider)
+        .getLog(query: AccountLogQuery(startTime: startTime, endTime: endTime));
+    final organizationData = await ref
+        .watch(adminOrganizationServiceProvider)
+        .getLog(
+            query: OrganizationLogQuery(
+                status: OrganizationStatus.verified,
+                startTime: startTime,
+                endTime: endTime));
+    final activityData = await ref.watch(activityServiceProvider).getLog(
+        query: ActivityLogQuery(startTime: startTime, endTime: endTime));
 
-final chartDataProvider =
-    FutureProvider.autoDispose<AdminChartData>((ref) async {
-  final accountData = await ref.watch(chartAccountProvider.future);
-  final organizationData = await ref.watch(chartOrganizationProvider.future);
-  final activityData = await ref.watch(chartActivityProvider.future);
+    print(activityData.monthly);
 
-  return AdminChartData(
-      account: accountData,
-      organization: organizationData,
-      activity: activityData);
-});
+    return AdminChartDataModel(
+        account: accountData,
+        organization: organizationData,
+        activity: activityData);
+  }
 
-final adminHomeControllerProvider =
-    FutureProvider.autoDispose<AdminHomeDataManage>((ref) async {
-  final accountData = await ref.watch(accountCountProvider.future);
-  final organizationData = await ref.watch(organizationCountProvider.future);
-  final activityData = await ref.watch(activityCountProvider.future);
+  Future<AdminChartDataModel> _getAllTime() async {
+    final accountData = await ref.watch(accountServiceProvider).getLog();
+    final organizationData = await ref
+        .watch(adminOrganizationServiceProvider)
+        .getLog(
+            query: OrganizationLogQuery(status: OrganizationStatus.verified));
+    final activityData = await ref.watch(activityServiceProvider).getLog();
 
-  final accountRequest = await ref.watch(accountRequestCountProvider.future);
-  final reportData = await ref.watch(reportCountProvider.future);
-  final organizationRequest =
-      await ref.watch(organizationRequestCountProvider.future);
-
-  return AdminHomeDataManage(
-      account: accountData,
-      organization: organizationData,
-      activity: activityData,
-      accountRequest: accountRequest,
-      organizationRequest: organizationRequest,
-      report: reportData);
-});
+    return AdminChartDataModel(
+        account: accountData,
+        organization: organizationData,
+        activity: activityData);
+  }
+}

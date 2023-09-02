@@ -6,6 +6,7 @@ import 'package:the_helper/src/features/report/domain/request_message.dart';
 
 import '../../../../file/data/file_repository.dart';
 import '../../../domain/report_query.dart';
+import '../../../domain/report_query_parameter_classes.dart';
 
 part 'submit_report_screen_controller.g.dart';
 

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/common/converter/converter.dart';
 
 import '../../organization_member/domain/organization_member_status.dart';
 import 'organization_status.dart';
@@ -16,6 +17,13 @@ class OrganizationQuery with _$OrganizationQuery {
     bool? joined,
     OrganizationStatus? status,
     OrganizationMemberStatus? memberStatus,
+    @CommaSeparatedIntsConverter() List<int>? skill,
+    String? locality,
+    String? region,
+    String? country,
+    double? lat,
+    double? lng,
+    double? radius,
   }) = _OrganizationQuery;
 
   factory OrganizationQuery.fromJson(Map<String, dynamic> json) =>

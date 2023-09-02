@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
-import 'package:the_helper/src/features/activity/domain/activity_log.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/activity/domain/update_activity.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
@@ -105,12 +105,12 @@ class ActivityRepository {
     return Activity.fromJson(res.data['data']);
   }
 
-  Future<ActivityLog> getLog({
+  Future<DataLog> getLog({
     ActivityLogQuery? query,
   }) async {
     final res =
         await client.get('/activities/count', queryParameters: query?.toJson());
-    return ActivityLog.fromJson(res.data['data']);
+    return DataLog.fromJson(res.data['data']);
   }
 }
 

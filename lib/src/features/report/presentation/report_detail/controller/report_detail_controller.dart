@@ -3,6 +3,8 @@ import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
 
+import '../../../domain/report_query_parameter_classes.dart';
+
 part 'report_detail_controller.g.dart';
 
 @riverpod
