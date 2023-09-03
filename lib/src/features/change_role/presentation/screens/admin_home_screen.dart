@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/account_ranking_item.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/activity_ranking_item.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/admin_line_chart.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/admin_ranking_view.dart';
-import 'package:the_helper/src/features/change_role/presentation/widgets/organization_ranking_item.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/admin_home/admin_data_holder.dart';
+
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../common/screens/error_screen.dart';
 import '../../../authentication/application/auth_service.dart';
 import '../../../profile/data/profile_repository.dart';
 import '../controllers/admin_home_controller.dart';
-import '../widgets/admin_data_card.dart';
+
+import '../widgets/admin_home/admin_data_card.dart';
+import '../widgets/admin_home/admin_line_chart.dart';
+import '../widgets/admin_home/admin_ranking_view.dart';
 import '../widgets/home_welcome_section.dart';
 
 class AdminView extends ConsumerStatefulWidget {
@@ -82,13 +83,6 @@ class _AdminViewState extends ConsumerState<AdminView>
                             });
                           },
                         ),
-                        // IconButton.filled(
-                        //     isSelected: openRanking,
-                        //     onPressed: () {
-                        //       ref.read(openRankingProvider.notifier).state =
-                        //           !openRanking;
-                        //     },
-                        //     icon: const Icon(Icons.star_border))
                       ],
                     ),
 
@@ -96,14 +90,11 @@ class _AdminViewState extends ConsumerState<AdminView>
                     const Divider(),
 
                     SizedBox(
-                      height: 450,
+                      height: 480,
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
                         controller: _tabController,
-                        children: const [
-                          AdminLineChart(),
-                          AdminRankingView()
-                        ],
+                        children: const [AdminLineChart(), AdminRankingView()],
                       ),
                     ),
 
@@ -115,8 +106,20 @@ class _AdminViewState extends ConsumerState<AdminView>
 
                     adminData.when(
                       error: (_, __) => const ErrorScreen(),
-                      loading: () => const Center(
-                        child: CircularProgressIndicator(),
+                      loading: () => Center(
+                        child: Column(
+                          children: [
+                            for (var i = 0; i < 3; i++)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: AdminDataHolder(
+                                    itemCount: 2,
+                                    itemWidth:
+                                        context.mediaQuery.size.width * 0.38,
+                                    itemHeight: 80),
+                              )
+                          ],
+                        ),
                       ),
                       data: (data) => Column(
                         children: [

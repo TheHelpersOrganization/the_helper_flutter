@@ -6,7 +6,6 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
-import 'package:the_helper/src/features/report/domain/report_query.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../../../../../utils/domain_provider.dart';

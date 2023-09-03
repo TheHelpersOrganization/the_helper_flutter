@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
-import 'package:the_helper/src/common/domain/data_monthly_log.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
-// import 'package:fpdart/fpdart.dart';
 
-import '../controllers/admin_home_controller.dart';
+import '../../controllers/admin_home_controller.dart';
+import 'admin_data_holder.dart';
+// import 'package:fpdart/fpdart.dart';
 
 class AdminLineChart extends ConsumerStatefulWidget {
   const AdminLineChart({
@@ -159,152 +160,155 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
   Widget build(BuildContext context) {
     final chartData = ref.watch(adminChartDataProvider(filterValue));
 
-    return chartData.when(
-        error: (_, __) => const ErrorScreen(),
-        loading: () => const Center(
-              child: CircularProgressIndicator(),
+    return Column(
+      children: [
+        const SizedBox(
+          height: 15,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ChoiceChip(
+              label: const Text('This year'),
+              selected: filterValue == 0,
+              onSelected: (value) {
+                setState(() {
+                  filterValue = 0;
+                });
+              },
             ),
-        data: (data) {
-          // print(data.account.yearly);
-          // print('###########');
-          // print(data.activity.yearly);
-          // print('###########');
-          // print(data.organization.yearly);
-          List<int> valueHolder;
-          if (filterValue == 2) {
-            var dataList = data.account.yearly +
-                data.activity.yearly +
-                data.organization.yearly;
-            valueHolder = dataList.map((e) => e.count).toList();
-          } else {
-            var dataList = data.account.monthly +
-                data.activity.monthly +
-                data.organization.monthly;
-            valueHolder = dataList.map((e) => e.count).toList();
-          }
+            ChoiceChip(
+              label: const Text('Last year'),
+              selected: filterValue == 1,
+              onSelected: (value) {
+                setState(() {
+                  filterValue = 1;
+                });
+              },
+            ),
+            ChoiceChip(
+              label: const Text('All time'),
+              selected: filterValue == 2,
+              onSelected: (value) {
+                setState(() {
+                  filterValue = 2;
+                });
+              },
+            )
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 5,
+              width: 20,
+              color: Colors.blue,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text('Activity'),
+            const SizedBox(
+              width: 15,
+            ),
+            Container(
+              height: 5,
+              width: 20,
+              color: Colors.orange,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text('Account'),
+            const SizedBox(
+              width: 15,
+            ),
+            Container(
+              height: 5,
+              width: 20,
+              color: Colors.redAccent,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            const Text('Organization'),
+          ],
+        ),
+        const SizedBox(height: 15),
+        chartData.when(
+            error: (_, __) => const ErrorScreen(),
+            loading: () => Expanded(
+                  child: Center(
+                    child: AdminDataHolder(
+                      itemCount: 1,
+                      itemWidth: context.mediaQuery.size.width * 0.8,
+                      itemHeight: 350,
+                    ),
+                  ),
+                ),
+            data: (data) {
+              List<int> valueHolder;
+              if (filterValue == 2) {
+                var dataList = data.account.yearly +
+                    data.activity.yearly +
+                    data.organization.yearly;
+                valueHolder = dataList.map((e) => e.count).toList();
+              } else {
+                var dataList = data.account.monthly +
+                    data.activity.monthly +
+                    data.organization.monthly;
+                valueHolder = dataList.map((e) => e.count).toList();
+              }
 
-          final chartMaxY = _getMaxValue(valueHolder);
-          return Column(
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ChoiceChip(
-                    label: const Text('This year'),
-                    selected: filterValue == 0,
-                    onSelected: (value) {
-                      setState(() {
-                        filterValue = 0;
-                      });
-                    },
-                  ),
-                  ChoiceChip(
-                    label: const Text('Last year'),
-                    selected: filterValue == 1,
-                    onSelected: (value) {
-                      setState(() {
-                        filterValue = 1;
-                      });
-                    },
-                  ),
-                  ChoiceChip(
-                    label: const Text('All time'),
-                    selected: filterValue == 2,
-                    onSelected: (value) {
-                      setState(() {
-                        filterValue = 2;
-                      });
-                    },
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 5,
-                    width: 20,
-                    color: Colors.blue,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  const Text('Activity'),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    height: 5,
-                    width: 20,
-                    color: Colors.orange,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  const Text('Account'),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    height: 5,
-                    width: 20,
-                    color: Colors.redAccent,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  const Text('Organization'),
-                ],
-              ),
-              const SizedBox(height: 15),
-              Container(
-                height: 300,
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: LineChart(
-                    duration: const Duration(milliseconds: 250),
-                    LineChartData(
-                        minX: 0,
-                        maxX: 11,
-                        minY: 0,
-                        maxY: chartMaxY,
-                        titlesData:
-                            LineTitles.getTitleData(chartMaxY, filterValue),
-                        borderData: FlBorderData(
-                            show: true,
-                            border: const Border(
-                              // left: BorderSide(
-                              //   color: Colors.black,
-                              //   width: 1,
-                              // ),
-                              bottom: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                              ),
-                            )),
-                        lineTouchData: LineTouchData(
-                            touchTooltipData: LineTouchTooltipData(
-                          tooltipBgColor: Colors.black.withOpacity(0.6),
-                        )),
-                        lineBarsData: filterValue == 2
-                            ? _getYearLineData(
-                                activityCount: data.activity,
-                                accountCount: data.account,
-                                orgCount: data.organization)
-                            : _getMonthLineData(
-                                activityCount: data.activity,
-                                accountCount: data.account,
-                                orgCount: data.organization))),
-              ),
-            ],
-          );
-        });
+              final chartMaxY = _getMaxValue(valueHolder);
+              return Expanded(
+                child: Container(
+                  // height: 300,
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: LineChart(
+                      duration: const Duration(milliseconds: 250),
+                      LineChartData(
+                          minX: 0,
+                          maxX: 11,
+                          minY: 0,
+                          maxY: chartMaxY,
+                          titlesData:
+                              LineTitles.getTitleData(chartMaxY, filterValue),
+                          borderData: FlBorderData(
+                              show: true,
+                              border: const Border(
+                                // left: BorderSide(
+                                //   color: Colors.black,
+                                //   width: 1,
+                                // ),
+                                bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 1,
+                                ),
+                              )),
+                          lineTouchData: LineTouchData(
+                              touchTooltipData: LineTouchTooltipData(
+                            tooltipBgColor: Colors.black.withOpacity(0.6),
+                          )),
+                          lineBarsData: filterValue == 2
+                              ? _getYearLineData(
+                                  activityCount: data.activity,
+                                  accountCount: data.account,
+                                  orgCount: data.organization)
+                              : _getMonthLineData(
+                                  activityCount: data.activity,
+                                  accountCount: data.account,
+                                  orgCount: data.organization))),
+                ),
+              );
+            }),
+      ],
+    );
   }
 }
 
