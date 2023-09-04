@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
@@ -5,6 +6,12 @@ import 'package:the_helper/src/features/account/application/account_service.dart
 import 'package:the_helper/src/features/account/domain/account_log_query.dart';
 
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
+import 'package:the_helper/src/features/admin_analytic/data/analytic_repository.dart';
+import 'package:the_helper/src/features/admin_analytic/domain/account_analytic_model.dart';
+import 'package:the_helper/src/features/admin_analytic/domain/activity_analytic_model.dart';
+import 'package:the_helper/src/features/admin_analytic/domain/organization_analytic_model.dart';
+import 'package:the_helper/src/features/admin_analytic/domain/rank_query.dart';
+import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 
 import 'package:the_helper/src/features/organization/domain/organization_log_query.dart';
 import 'package:the_helper/src/features/organization/domain/organization_status.dart';
@@ -44,6 +51,22 @@ class AdminChartDataModel {
     required this.activity,
   });
 }
+
+class AdminRankingDataModel {
+  final List<AccountAnalyticModel>? account;
+  final List<OrganizationAnalyticModel>? organization;
+  final List<ActivityAnalyticModel>? activity;
+
+  AdminRankingDataModel({
+    this.account,
+    this.organization,
+    this.activity,
+  });
+}
+
+final isAccountLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
+final isOrganizationLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
+final isActivityLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
 
 @riverpod
 class AdminHomeData extends _$AdminHomeData {
@@ -95,7 +118,6 @@ class AdminChartData extends _$AdminChartData {
   Future<AdminChartDataModel> _getThisYear() async {
     final timeNow = DateTime.now();
     final startTime = DateTime(timeNow.year).millisecondsSinceEpoch;
-    print(startTime);
 
     final accountData = await ref
         .watch(accountServiceProvider)
@@ -109,8 +131,6 @@ class AdminChartData extends _$AdminChartData {
         .watch(activityServiceProvider)
         .getLog(query: ActivityLogQuery(startTime: startTime));
 
-    print(activityData.monthly);
-
     return AdminChartDataModel(
         account: accountData,
         organization: organizationData,
@@ -121,8 +141,6 @@ class AdminChartData extends _$AdminChartData {
     final timeNow = DateTime.now();
     final startTime = DateTime(timeNow.year - 1).millisecondsSinceEpoch;
     final endTime = DateTime(timeNow.year - 1, 12).millisecondsSinceEpoch;
-    print(startTime);
-    print(endTime);
 
     final accountData = await ref
         .watch(accountServiceProvider)
@@ -136,8 +154,6 @@ class AdminChartData extends _$AdminChartData {
                 endTime: endTime));
     final activityData = await ref.watch(activityServiceProvider).getLog(
         query: ActivityLogQuery(startTime: startTime, endTime: endTime));
-
-    print(activityData.monthly);
 
     return AdminChartDataModel(
         account: accountData,
@@ -154,6 +170,45 @@ class AdminChartData extends _$AdminChartData {
     final activityData = await ref.watch(activityServiceProvider).getLog();
 
     return AdminChartDataModel(
+        account: accountData,
+        organization: organizationData,
+        activity: activityData);
+  }
+}
+
+@riverpod
+class AdminRankingData extends _$AdminRankingData {
+  @override
+  FutureOr<AdminRankingDataModel> build(int filter) async {
+    return _fetchData(filter);
+  }
+
+  Future<AdminRankingDataModel> _fetchData(int filter) async {
+    final adminRankingRepo = ref.watch(adminAnalyticRepositoryProvider);
+    List<ActivityAnalyticModel> tempList = [];
+    const query = RankQuery();
+    
+    final accountData = filter == 0
+        ? await adminRankingRepo.getAccountsRank(query: query)
+        : null;
+    final organizationData = filter == 1
+        ? await adminRankingRepo.getOrganizationsRank(query: query)
+        : null;
+    List<ActivityAnalyticModel> activityData = filter == 2
+        ? await adminRankingRepo.getActivitiesRank(query: query)
+        : [];
+
+    for (var i in activityData) {
+      final orgData = await ref
+          .watch(organizationRepositoryProvider)
+          .getById(i.organizationId!);
+      tempList.add(i.copyWith(
+          organizationLogo: orgData.logo, organizationName: orgData.name));
+    }
+
+    activityData = tempList;
+
+    return AdminRankingDataModel(
         account: accountData,
         organization: organizationData,
         activity: activityData);

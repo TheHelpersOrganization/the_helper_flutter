@@ -14,6 +14,7 @@ class AdminOrganization with _$AdminOrganization {
   @JsonSerializable(includeIfNull: false)
   factory AdminOrganization({
     int? id,
+    required int ownerId,
     required OrganizationStatus status,
     @Default(false) bool isDisabled,
     required String name,
