@@ -133,7 +133,7 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
                   child: Center(
                     child: AdminDataHolder(
                       itemCount: 1,
-                      itemWidth: context.mediaQuery.size.width * 0.8,
+                      itemWidth: context.mediaQuery.size.width * 0.9,
                       itemHeight: 350,
                     ),
                   ),

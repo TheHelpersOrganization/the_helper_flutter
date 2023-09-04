@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
@@ -62,6 +63,10 @@ class AdminRankingDataModel {
     this.activity,
   });
 }
+
+final isAccountLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
+final isOrganizationLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
+final isActivityLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
 
 @riverpod
 class AdminHomeData extends _$AdminHomeData {

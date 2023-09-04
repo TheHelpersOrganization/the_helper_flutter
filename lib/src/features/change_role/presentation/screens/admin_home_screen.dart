@@ -12,7 +12,7 @@ import '../../../profile/data/profile_repository.dart';
 import '../controllers/admin_home_controller.dart';
 
 import '../widgets/admin_home/admin_data_card.dart';
-import '../widgets/admin_home/admin_line_chart.dart';
+import '../widgets/admin_home/admin_linechart_view.dart';
 import '../widgets/admin_home/admin_ranking_view.dart';
 import '../widgets/home_welcome_section.dart';
 
@@ -94,7 +94,7 @@ class _AdminViewState extends ConsumerState<AdminView>
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
                         controller: _tabController,
-                        children: const [AdminLineChart(), AdminRankingView()],
+                        children: const [AdminLineChartView(), AdminRankingView()],
                       ),
                     ),
 

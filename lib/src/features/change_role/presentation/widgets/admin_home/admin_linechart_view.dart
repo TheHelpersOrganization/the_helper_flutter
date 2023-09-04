@@ -4,23 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
+import 'package:the_helper/src/common/domain/data_yearly_log.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/admin_home/swipeable_chart.dart';
 
 import '../../controllers/admin_home_controller.dart';
 import 'admin_data_holder.dart';
+import 'admin_linechart.dart';
 // import 'package:fpdart/fpdart.dart';
 
-class AdminLineChart extends ConsumerStatefulWidget {
-  const AdminLineChart({
+class AdminLineChartView extends ConsumerStatefulWidget {
+  const AdminLineChartView({
     super.key,
   });
 
   @override
-  ConsumerState<AdminLineChart> createState() => _AdminLineChartState();
+  ConsumerState<AdminLineChartView> createState() => _AdminLineChartViewState();
 }
 
-class _AdminLineChartState extends ConsumerState<AdminLineChart> {
+class _AdminLineChartViewState extends ConsumerState<AdminLineChartView> {
   int filterValue = 0;
 
   double _getMaxValue(List<int> totalData) {
@@ -46,14 +49,28 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
     return chartMaxY;
   }
 
+  double _getMinYear(List<DataYearlyLog> data) {
+    int min = DateTime.now().year;
+    for (var i in data) {
+      if (i.year < min) {
+        min = i.year;
+      }
+    }
+    return min.toDouble();
+  }
+
   List<LineChartBarData> _getMonthLineData({
     required DataLog activityCount,
     required DataLog accountCount,
     required DataLog orgCount,
+    required bool showActivity,
+    required bool showAccount,
+    required bool showOrganization,
   }) {
     List<LineChartBarData> lineData = [
       // Activity
       LineChartBarData(
+        show: showActivity,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.blue,
@@ -68,6 +85,7 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
 
       // account
       LineChartBarData(
+        show: showAccount,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.orange,
@@ -82,6 +100,7 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
 
       // org
       LineChartBarData(
+        show: showOrganization,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.redAccent,
@@ -102,10 +121,14 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
     required DataLog activityCount,
     required DataLog accountCount,
     required DataLog orgCount,
+    required bool showActivity,
+    required bool showAccount,
+    required bool showOrganization,
   }) {
     List<LineChartBarData> lineData = [
       // Activity
       LineChartBarData(
+        show: showActivity,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.blue,
@@ -120,6 +143,7 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
 
       // account
       LineChartBarData(
+        show: showAccount,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.orange,
@@ -134,6 +158,7 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
 
       // org
       LineChartBarData(
+        show: showOrganization,
         isCurved: true,
         curveSmoothness: 0,
         color: Colors.redAccent,
@@ -159,6 +184,9 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
   @override
   Widget build(BuildContext context) {
     final chartData = ref.watch(adminChartDataProvider(filterValue));
+    final showAccount = ref.watch(isAccountLineSeenProvider);
+    final showOrganization = ref.watch(isOrganizationLineSeenProvider);
+    final showActivity = ref.watch(isActivityLineSeenProvider);
 
     return Column(
       children: [
@@ -204,39 +232,69 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: 5,
-              width: 20,
-              color: Colors.blue,
+            InkWell(
+              onTap: () {
+                ref.read(isActivityLineSeenProvider.notifier).state =
+                    !showActivity;
+              },
+              child: Row(
+                children: [
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: showActivity ? Colors.blue : Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Activity'),
+                ],
+              ),
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            const Text('Activity'),
             const SizedBox(
               width: 15,
             ),
-            Container(
-              height: 5,
-              width: 20,
-              color: Colors.orange,
+            InkWell(
+              onTap: () {
+                ref.read(isAccountLineSeenProvider.notifier).state =
+                    !showAccount;
+              },
+              child: Row(
+                children: [
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: showAccount ? Colors.orange : Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Account'),
+                ],
+              ),
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            const Text('Account'),
             const SizedBox(
               width: 15,
             ),
-            Container(
-              height: 5,
-              width: 20,
-              color: Colors.redAccent,
+            InkWell(
+              onTap: () {
+                ref.read(isOrganizationLineSeenProvider.notifier).state =
+                    !showOrganization;
+              },
+              child: Row(
+                children: [
+                  Container(
+                    height: 5,
+                    width: 20,
+                    color: showOrganization ? Colors.redAccent : Colors.grey,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  const Text('Organization'),
+                ],
+              ),
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            const Text('Organization'),
           ],
         ),
         const SizedBox(height: 15),
@@ -246,7 +304,7 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
                   child: Center(
                     child: AdminDataHolder(
                       itemCount: 1,
-                      itemWidth: context.mediaQuery.size.width * 0.8,
+                      itemWidth: context.mediaQuery.size.width * 0.9,
                       itemHeight: 350,
                     ),
                   ),
@@ -266,152 +324,47 @@ class _AdminLineChartState extends ConsumerState<AdminLineChart> {
               }
 
               final chartMaxY = _getMaxValue(valueHolder);
+              final chartMinX = _getMinYear(data.account.yearly +
+                  data.activity.yearly +
+                  data.organization.yearly);
+              final chartMaxX = DateTime.now().year.toDouble();
               return Expanded(
                 child: Container(
-                  // height: 300,
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: LineChart(
-                      duration: const Duration(milliseconds: 250),
-                      LineChartData(
-                          minX: 0,
-                          maxX: 11,
-                          minY: 0,
-                          maxY: chartMaxY,
-                          titlesData:
-                              LineTitles.getTitleData(chartMaxY, filterValue),
-                          borderData: FlBorderData(
-                              show: true,
-                              border: const Border(
-                                // left: BorderSide(
-                                //   color: Colors.black,
-                                //   width: 1,
-                                // ),
-                                bottom: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                ),
-                              )),
-                          lineTouchData: LineTouchData(
-                              touchTooltipData: LineTouchTooltipData(
-                            tooltipBgColor: Colors.black.withOpacity(0.6),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: filterValue == 2
+                        ? SwipeableChart(
+                            minX: chartMinX,
+                            maxX: chartMaxX,
+                            yearNumShow: 4,
+                            builder: (minX, maxX) {
+                              return AdminLineChart(
+                                chartMinX: minX,
+                                chartMaxX: maxX,
+                                chartMaxY: chartMaxY,
+                                filterValue: filterValue,
+                                lineData: _getYearLineData(
+                                    activityCount: data.activity,
+                                    showActivity: showActivity,
+                                    accountCount: data.account,
+                                    showAccount: showAccount,
+                                    orgCount: data.organization,
+                                    showOrganization: showOrganization),
+                              );
+                            })
+                        : AdminLineChart(
+                            chartMaxY: chartMaxY,
+                            filterValue: filterValue,
+                            lineData: _getMonthLineData(
+                                activityCount: data.activity,
+                                showActivity: showActivity,
+                                accountCount: data.account,
+                                showAccount: showAccount,
+                                orgCount: data.organization,
+                                showOrganization: showOrganization),
                           )),
-                          lineBarsData: filterValue == 2
-                              ? _getYearLineData(
-                                  activityCount: data.activity,
-                                  accountCount: data.account,
-                                  orgCount: data.organization)
-                              : _getMonthLineData(
-                                  activityCount: data.activity,
-                                  accountCount: data.account,
-                                  orgCount: data.organization))),
-                ),
               );
             }),
       ],
     );
-  }
-}
-
-class LineTitles {
-  static getTitleData(double maxValue, int filterValue) => FlTitlesData(
-        show: true,
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: filterValue == 2
-                ? bottomTitleYearWidgets
-                : bottomTitleMonthWidgets,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: maxValue / 5,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-          ),
-        ),
-      );
-
-  static Widget bottomTitleMonthWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 10,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('JAN', style: style);
-        break;
-      case 1:
-        text = const Text('FEB', style: style);
-        break;
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 3:
-        text = const Text('APR', style: style);
-        break;
-      case 4:
-        text = const Text('MAY', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 6:
-        text = const Text('JUL', style: style);
-        break;
-      case 7:
-        text = const Text('AUG', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      case 9:
-        text = const Text('OCT', style: style);
-        break;
-      case 10:
-        text = const Text('NOV', style: style);
-        break;
-      case 11:
-        text = const Text('DEC', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  static Widget bottomTitleYearWidgets(double value, TitleMeta meta) {
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: Text(value.toInt().toString(),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 10,
-          )),
-    );
-  }
-
-  static Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 9,
-    );
-    return Text(value.toInt().toString(),
-        style: style, textAlign: TextAlign.left);
   }
 }
