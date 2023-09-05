@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/admin_home/admin_data_holder.dart';
 
 import 'package:the_helper/src/router/router.dart';
@@ -61,29 +62,25 @@ class _AdminViewState extends ConsumerState<AdminView>
                 child: Column(
                   children: [
                     // Hello section
-                    Row(
-                      children: [
-                        Expanded(
-                          child: HomeWelcomeSection(
-                            volunteerName:
-                                data.lastName ?? data.username ?? email,
-                          ),
-                        ),
-                        SegmentedButton(
-                          segments: const [
-                            ButtonSegment(value: 0, label: Text('Overview')),
-                            ButtonSegment(value: 1, label: Text('Ranking')),
-                          ],
-                          selected: {tabIndex},
-                          onSelectionChanged: (p0) {
-                            int newIndex = p0.first;
-                            _tabController.animateTo(newIndex);
-                            setState(() {
-                              tabIndex = newIndex;
-                            });
-                          },
-                        ),
+                    HomeWelcomeSection(
+                      volunteerName: data.lastName ?? data.username ?? email,
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    SegmentedButton(
+                      segments: const [
+                        ButtonSegment(value: 0, label: Text('Overview')),
+                        ButtonSegment(value: 1, label: Text('Ranking')),
                       ],
+                      selected: {tabIndex},
+                      onSelectionChanged: (p0) {
+                        int newIndex = p0.first;
+                        _tabController.animateTo(newIndex);
+                        setState(() {
+                          tabIndex = newIndex;
+                        });
+                      },
                     ),
 
                     const SizedBox(height: 15),
@@ -94,7 +91,10 @@ class _AdminViewState extends ConsumerState<AdminView>
                       child: TabBarView(
                         physics: const NeverScrollableScrollPhysics(),
                         controller: _tabController,
-                        children: const [AdminLineChartView(), AdminRankingView()],
+                        children: const [
+                          AdminLineChartView(),
+                          AdminRankingView()
+                        ],
                       ),
                     ),
 
@@ -105,13 +105,14 @@ class _AdminViewState extends ConsumerState<AdminView>
                     ),
 
                     adminData.when(
-                      error: (_, __) => const ErrorScreen(),
+                      error: (_, __) => const CustomErrorWidget(),
                       loading: () => Center(
                         child: Column(
                           children: [
                             for (var i = 0; i < 3; i++)
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: AdminDataHolder(
                                     itemCount: 2,
                                     itemWidth:

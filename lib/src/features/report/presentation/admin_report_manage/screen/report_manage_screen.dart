@@ -6,7 +6,6 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
-import '../../../domain/report_query.dart';
 import '../../../domain/report_query_parameter_classes.dart';
 import '../controller/report_manage_screen_controller.dart';
 import '../widget/custom_list.dart';
@@ -114,7 +113,7 @@ class ReportManageScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Row(
+                    Wrap(
                       children: [
                         FilterChip(
                           label: const Text('Account'),

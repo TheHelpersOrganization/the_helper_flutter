@@ -6,7 +6,6 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
 import '../../../../../common/extension/image.dart';
-import '../../../../report/domain/report_query.dart';
 import '../../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../../../data/organization_repository.dart';
 import '../../../domain/organization.dart';

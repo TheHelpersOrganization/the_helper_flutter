@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
-import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 
 import '../../../utils/dio.dart';
 import '../domain/admin_organization.dart';

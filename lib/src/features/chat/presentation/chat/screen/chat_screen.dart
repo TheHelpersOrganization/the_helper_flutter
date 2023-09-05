@@ -24,7 +24,6 @@ import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
 
-import '../../../../report/domain/report_query.dart';
 
 class ChatScreen extends ConsumerWidget {
   final int chatId;
