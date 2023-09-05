@@ -86,21 +86,18 @@ class AdminHomeData extends _$AdminHomeData {
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.verified));
     final activityData = await ref.watch(activityServiceProvider).getLog();
-    print('a');
+
 
     final accountRequest =
         await ref.watch(accountServiceProvider).getRequestLog();
-        print('b');
+
     final reportData = await ref.watch(reportServiceProvider).getLog();
-    print('c');
+
     final organizationRequest = await ref
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.pending));
 
-    print(accountRequest);
-    print(reportData);
-    print(organizationRequest);
     return AdminHomeDataModel(
       account: accountData.total,
       organization: organizationData.total,
