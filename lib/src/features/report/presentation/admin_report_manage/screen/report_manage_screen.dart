@@ -114,6 +114,7 @@ class ReportManageScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     Wrap(
+                      runSpacing: 4.0,
                       children: [
                         FilterChip(
                           label: const Text('Account'),
