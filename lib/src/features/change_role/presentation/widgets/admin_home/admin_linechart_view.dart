@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/common/domain/data_yearly_log.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/admin_home/swipeable_chart.dart';
 
 import '../../controllers/admin_home_controller.dart';
@@ -299,7 +299,7 @@ class _AdminLineChartViewState extends ConsumerState<AdminLineChartView> {
         ),
         const SizedBox(height: 15),
         chartData.when(
-            error: (_, __) => const ErrorScreen(),
+            error: (_, __) => const CustomErrorWidget(),
             loading: () => Expanded(
                   child: Center(
                     child: AdminDataHolder(

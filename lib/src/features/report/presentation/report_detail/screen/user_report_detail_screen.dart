@@ -13,7 +13,6 @@ import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
 import '../../../domain/report_model.dart';
-import '../../../domain/report_query.dart';
 import '../../../domain/report_query_parameter_classes.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';

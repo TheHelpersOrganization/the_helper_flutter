@@ -13,7 +13,6 @@ import '../../../../../common/widget/button/primary_button.dart';
 import '../../../../../common/widget/error_widget.dart';
 
 import '../../../domain/report_model.dart';
-import '../../../domain/report_query.dart';
 import '../../../domain/report_query_parameter_classes.dart';
 import '../../widget/avatar_watcher.dart';
 import '../controller/report_detail_controller.dart';
@@ -111,7 +110,7 @@ class ReportDetailScreen extends ConsumerWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
-                                reportedName!,
+                                reportedName,
                                 style: Theme.of(context).textTheme.labelLarge,
                               ),
                             ),

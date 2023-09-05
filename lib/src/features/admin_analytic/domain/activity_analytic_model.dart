@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/activity/domain/activity_me.dart';
 import 'package:the_helper/src/features/activity/domain/activity_status.dart';
-import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 

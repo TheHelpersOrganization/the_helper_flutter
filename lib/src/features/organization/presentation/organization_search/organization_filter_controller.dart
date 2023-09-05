@@ -7,8 +7,6 @@ import 'package:the_helper/src/features/location/data/location_repository.dart';
 import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/features/location/domain/reverse_geocode.dart';
 import 'package:the_helper/src/features/location/domain/reverse_geocode_query.dart';
-import 'package:the_helper/src/features/organization/data/organization_repository.dart';
-import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 

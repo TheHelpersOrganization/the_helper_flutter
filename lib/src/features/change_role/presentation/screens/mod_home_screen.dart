@@ -7,6 +7,7 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/alert.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
 
@@ -183,7 +184,7 @@ class ModView extends ConsumerWidget {
                     itemWidth: context.mediaQuery.size.width * 0.7,
                     itemHeight: 380,
                   ),
-                  error: (_, __) => const ErrorScreen(),
+                  error: (_, __) => const CustomErrorWidget(),
                   data: (data) => data.isEmpty
                       ? EmptyListWidget(
                           description: const [

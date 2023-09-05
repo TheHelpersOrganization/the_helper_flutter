@@ -6,7 +6,6 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/report/presentation/user_report_history/widget/sort_modal.dart';
 
 import '../../../../../common/widget/search_bar/debounce_search_bar.dart';
-import '../../../domain/report_query.dart';
 import '../../../domain/report_query_parameter_classes.dart';
 import '../controller/report_history_screen_controller.dart';
 import '../widget/custom_list.dart';

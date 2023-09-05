@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
-import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 import '../domain/account_log_query.dart';

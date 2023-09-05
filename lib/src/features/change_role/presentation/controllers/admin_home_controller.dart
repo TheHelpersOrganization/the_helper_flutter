@@ -6,6 +6,7 @@ import 'package:the_helper/src/features/account/application/account_service.dart
 import 'package:the_helper/src/features/account/domain/account_log_query.dart';
 
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
+import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/admin_analytic/data/analytic_repository.dart';
 import 'package:the_helper/src/features/admin_analytic/domain/account_analytic_model.dart';
 import 'package:the_helper/src/features/admin_analytic/domain/activity_analytic_model.dart';
@@ -64,9 +65,12 @@ class AdminRankingDataModel {
   });
 }
 
-final isAccountLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
-final isOrganizationLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
-final isActivityLineSeenProvider = StateProvider.autoDispose<bool>((ref) => true);
+final isAccountLineSeenProvider =
+    StateProvider.autoDispose<bool>((ref) => true);
+final isOrganizationLineSeenProvider =
+    StateProvider.autoDispose<bool>((ref) => true);
+final isActivityLineSeenProvider =
+    StateProvider.autoDispose<bool>((ref) => true);
 
 @riverpod
 class AdminHomeData extends _$AdminHomeData {
@@ -83,13 +87,17 @@ class AdminHomeData extends _$AdminHomeData {
             query: OrganizationLogQuery(status: OrganizationStatus.verified));
     final activityData = await ref.watch(activityServiceProvider).getLog();
 
+
     final accountRequest =
         await ref.watch(accountServiceProvider).getRequestLog();
+
     final reportData = await ref.watch(reportServiceProvider).getLog();
+
     final organizationRequest = await ref
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.pending));
+
     return AdminHomeDataModel(
       account: accountData.total,
       organization: organizationData.total,
@@ -117,7 +125,7 @@ class AdminChartData extends _$AdminChartData {
 
   Future<AdminChartDataModel> _getThisYear() async {
     final timeNow = DateTime.now();
-    final startTime = DateTime(timeNow.year).millisecondsSinceEpoch;
+    final startTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
     final accountData = await ref
         .watch(accountServiceProvider)
@@ -139,8 +147,8 @@ class AdminChartData extends _$AdminChartData {
 
   Future<AdminChartDataModel> _getLastYear() async {
     final timeNow = DateTime.now();
-    final startTime = DateTime(timeNow.year - 1).millisecondsSinceEpoch;
-    final endTime = DateTime(timeNow.year - 1, 12).millisecondsSinceEpoch;
+    final startTime = DateTime.utc(timeNow.year - 1).millisecondsSinceEpoch;
+    final endTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
     final accountData = await ref
         .watch(accountServiceProvider)
@@ -153,7 +161,10 @@ class AdminChartData extends _$AdminChartData {
                 startTime: startTime,
                 endTime: endTime));
     final activityData = await ref.watch(activityServiceProvider).getLog(
-        query: ActivityLogQuery(startTime: startTime, endTime: endTime));
+        query: ActivityLogQuery(
+            status: [ActivityStatus.completed, ActivityStatus.ongoing],
+            startTime: startTime,
+            endTime: endTime));
 
     return AdminChartDataModel(
         account: accountData,
@@ -187,7 +198,7 @@ class AdminRankingData extends _$AdminRankingData {
     final adminRankingRepo = ref.watch(adminAnalyticRepositoryProvider);
     List<ActivityAnalyticModel> tempList = [];
     const query = RankQuery();
-    
+
     final accountData = filter == 0
         ? await adminRankingRepo.getAccountsRank(query: query)
         : null;
