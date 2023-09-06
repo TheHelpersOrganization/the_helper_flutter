@@ -10,17 +10,19 @@ import 'package:the_helper/src/common/widget/no_data_found.dart';
 import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/volunteer_list_tile.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/controller/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/screen/shift_volunteer_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/widget/volunteer_list_tile.dart';
 
 // final selectedItemsProvider = StateProvider<List<bool>>((ref) => []);
 
 class ShiftVolunteerTab extends ConsumerWidget {
+  final Shift shift;
   final ShiftStatus shiftStatus;
   // final String tabTitle;
   final TabElement tabElement;
   const ShiftVolunteerTab({
+    required this.shift,
     required this.shiftStatus,
     required this.tabElement,
     super.key,
@@ -137,9 +139,12 @@ class ShiftVolunteerTab extends ConsumerWidget {
                 tabElement.arg,
               ),
               firstPageKey: 0,
-              itemBuilder: (BuildContext context, ShiftVolunteer item,
-                      int index) =>
-                  VolunteerListTile(volunteer: item, shiftStatus: shiftStatus),
+              itemBuilder:
+                  (BuildContext context, ShiftVolunteer item, int index) =>
+                      VolunteerListTile(
+                          shift: shift,
+                          volunteer: item,
+                          shiftStatus: shiftStatus),
               pagedBuilder: (PagingController<int?, ShiftVolunteer> controller,
                       PagedChildBuilderDelegate<ShiftVolunteer> builder) =>
                   PagedSliverList(

@@ -17,6 +17,7 @@ import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_pa
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_skill_list.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_title.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_volunteer_description.dart';
+import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_warning/shift_warning.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 class ShiftScreen extends ConsumerWidget {
@@ -118,6 +119,7 @@ class ShiftScreen extends ConsumerWidget {
             builder: (buildContext) => JoinShiftDialog(
               activityId: activityId,
               shiftId: shiftId,
+              shift: activityAndShiftState.value?.shift,
             ),
           );
         };
@@ -160,6 +162,7 @@ class ShiftScreen extends ConsumerWidget {
                     ShiftVolunteerDescription(
                       shift: shift,
                     ),
+                    ShiftWarning(shift: shift),
                     ShiftDescription(
                       description: shift.description,
                     ),

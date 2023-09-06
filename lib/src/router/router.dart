@@ -40,7 +40,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/screen/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/chat_routes.dart';
@@ -489,6 +489,7 @@ abstract class AppRouteParameter {
   static const profileId = 'userId';
   static const organizationId = 'orgId';
   static const activityId = 'activityId';
+  static const shiftId = 'shiftId';
   static const newsId = 'newsId';
 }
 
@@ -747,7 +748,7 @@ enum AppRoute {
     name: 'shifts',
   ),
   shift(
-    path: 'shift/:shiftId',
+    path: 'shift/:${AppRouteParameter.shiftId}',
     name: 'shift',
   ),
 

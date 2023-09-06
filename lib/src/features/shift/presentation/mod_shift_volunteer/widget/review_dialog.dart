@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/controller/shift_volunteer_controller.dart';
 
 class ReviewDialog extends ConsumerWidget {
   final ShiftVolunteer volunteer;
