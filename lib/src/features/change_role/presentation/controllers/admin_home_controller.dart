@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
+import 'package:the_helper/src/common/domain/data_monthly_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
 
 import 'package:the_helper/src/features/account/domain/account_log_query.dart';
@@ -85,8 +87,9 @@ class AdminHomeData extends _$AdminHomeData {
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.verified));
-    final activityData = await ref.watch(activityServiceProvider).getLog();
-
+    final activityData = await ref
+        .watch(activityServiceProvider)
+        .getLog(query: ActivityLogQuery(status: [ActivityStatus.ongoing]));
 
     final accountRequest =
         await ref.watch(accountServiceProvider).getRequestLog();
@@ -127,17 +130,31 @@ class AdminChartData extends _$AdminChartData {
     final timeNow = DateTime.now();
     final startTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
-    final accountData = await ref
+    final accountRes = await ref
         .watch(accountServiceProvider)
         .getLog(query: AccountLogQuery(startTime: startTime));
-    final organizationData = await ref
+    final organizationRes = await ref
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(
                 status: OrganizationStatus.verified, startTime: startTime));
-    final activityData = await ref
-        .watch(activityServiceProvider)
-        .getLog(query: ActivityLogQuery(startTime: startTime));
+    final activityRes = await ref.watch(activityServiceProvider).getLog(
+        query: ActivityLogQuery(
+            status: [ActivityStatus.completed, ActivityStatus.ongoing],
+            startTime: startTime));
+
+    DataLog accountData = accountRes.copyWith(
+        monthly:
+            accountRes.monthly.filter((t) => t.year == timeNow.year).toList());
+
+    DataLog organizationData = organizationRes.copyWith(
+        monthly: organizationRes.monthly
+            .filter((t) => t.year == timeNow.year)
+            .toList());
+
+    DataLog activityData = activityRes.copyWith(
+        monthly:
+            activityRes.monthly.filter((t) => t.year == timeNow.year).toList());
 
     return AdminChartDataModel(
         account: accountData,
@@ -148,23 +165,36 @@ class AdminChartData extends _$AdminChartData {
   Future<AdminChartDataModel> _getLastYear() async {
     final timeNow = DateTime.now();
     final startTime = DateTime.utc(timeNow.year - 1).millisecondsSinceEpoch;
-    final endTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
-    final accountData = await ref
+    final accountRes = await ref
         .watch(accountServiceProvider)
-        .getLog(query: AccountLogQuery(startTime: startTime, endTime: endTime));
-    final organizationData = await ref
-        .watch(adminOrganizationServiceProvider)
-        .getLog(
-            query: OrganizationLogQuery(
-                status: OrganizationStatus.verified,
-                startTime: startTime,
-                endTime: endTime));
-    final activityData = await ref.watch(activityServiceProvider).getLog(
-        query: ActivityLogQuery(
-            status: [ActivityStatus.completed, ActivityStatus.ongoing],
-            startTime: startTime,
-            endTime: endTime));
+        .getLog(query: AccountLogQuery(startTime: startTime));
+    final organizationRes =
+        await ref.watch(adminOrganizationServiceProvider).getLog(
+                query: OrganizationLogQuery(
+              status: OrganizationStatus.verified,
+              startTime: startTime,
+            ));
+    final activityRes = await ref.watch(activityServiceProvider).getLog(
+            query: ActivityLogQuery(
+          status: [ActivityStatus.completed, ActivityStatus.ongoing],
+          startTime: startTime,
+        ));
+
+    DataLog accountData = accountRes.copyWith(
+        monthly: accountRes.monthly
+            .filter((t) => t.year == (timeNow.year - 1))
+            .toList());
+
+    DataLog organizationData = organizationRes.copyWith(
+        monthly: organizationRes.monthly
+            .filter((t) => t.year == (timeNow.year - 1))
+            .toList());
+
+    DataLog activityData = activityRes.copyWith(
+        monthly: activityRes.monthly
+            .filter((t) => t.year == (timeNow.year - 1))
+            .toList());
 
     return AdminChartDataModel(
         account: accountData,
