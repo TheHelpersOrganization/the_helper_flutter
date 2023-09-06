@@ -40,6 +40,8 @@ class ShiftVolunteer with _$ShiftVolunteer {
     required DateTime updatedAt,
     Profile? profile,
     MinimalShift? shift,
+    bool? hasOverlappingShift,
+    bool? hasTravelingConstrainedShift,
   }) = _ShiftVolunteer;
 
   factory ShiftVolunteer.fromJson(Map<String, dynamic> json) =>

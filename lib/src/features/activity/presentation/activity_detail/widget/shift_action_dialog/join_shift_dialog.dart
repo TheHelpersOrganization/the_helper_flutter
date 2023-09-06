@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/controller/activity_controller.dart';
+import 'package:the_helper/src/features/shift/domain/shift.dart';
 
 class JoinShiftDialog extends ConsumerWidget {
   final int activityId;
   final int shiftId;
+  final Shift? shift;
   final String? shiftName;
 
   const JoinShiftDialog({
@@ -13,10 +15,14 @@ class JoinShiftDialog extends ConsumerWidget {
     required this.activityId,
     required this.shiftId,
     this.shiftName,
+    required this.shift,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final hasOverlappingShift = shift?.overlaps?.isNotEmpty ?? false;
+    final shiftName = this.shiftName ?? shift?.name;
+
     return AlertDialog(
       title: const Text('Join shift'),
       content: Column(
@@ -36,9 +42,17 @@ class JoinShiftDialog extends ConsumerWidget {
               : const Text(
                   'Do you want to join this shift?',
                 ),
+          const SizedBox(height: 12),
           const Text(
             'You registration will be waiting for approval by manager of this shift.',
           ),
+          if (hasOverlappingShift) ...[
+            const SizedBox(height: 12),
+            const Text(
+              'This shift working hours overlaps with other shifts you have registered. If any of these shifts are approved, other overlapping shifts will be automatically cancelled.',
+              style: TextStyle(color: Colors.deepOrange),
+            ),
+          ]
         ],
       ),
       actions: [

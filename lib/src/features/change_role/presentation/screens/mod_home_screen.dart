@@ -177,12 +177,12 @@ class ModView extends ConsumerWidget {
                 height: 16,
               ),
               SizedBox(
-                height: 380.0,
+                height: 385.0,
                 child: ongoingActivites.when(
                   loading: () => ActivityListPlaceholder(
                     itemCount: 2,
                     itemWidth: context.mediaQuery.size.width * 0.7,
-                    itemHeight: 380,
+                    itemHeight: 385,
                   ),
                   error: (_, __) => const CustomErrorWidget(),
                   data: (data) => data.isEmpty

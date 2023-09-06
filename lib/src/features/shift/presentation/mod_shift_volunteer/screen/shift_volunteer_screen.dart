@@ -7,8 +7,8 @@ import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer_arg.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_tab.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/controller/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/widget/shift_volunteer_tab.dart';
 import 'package:the_helper/src/utils/shift.dart';
 
 class TabElement {
@@ -196,6 +196,7 @@ class ShiftVolunteerScreen extends ConsumerWidget {
                       children: tabs
                           .map(
                             (tab) => ShiftVolunteerTab(
+                              shift: shift,
                               shiftStatus: shiftStatus!,
                               tabElement: tab,
                             ),

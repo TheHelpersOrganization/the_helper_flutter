@@ -2,8 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
+import 'package:the_helper/src/features/shift/domain/overlapping_shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_me.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/traveling_constrained_shift.dart';
 
 import 'shift_manager.dart';
 import 'shift_skill.dart';
@@ -37,6 +39,8 @@ class Shift with _$Shift {
     ShiftVolunteer? myShiftVolunteer,
     ShiftMe? me,
     Activity? activity,
+    List<OverlappingShift>? overlaps,
+    List<TravelingConstrainedShift>? travelingConstrainedShifts,
   }) = _Shift;
 
   factory Shift.fromJson(Map<String, dynamic> json) => _$ShiftFromJson(json);
