@@ -24,7 +24,7 @@ class ModActivityEditManagerScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final extendedActivityState = ref.watch(getActivityProvider(activityId));
     final updateState = ref.watch(updateActivityControllerProvider);
-    final selectedManagers = ref.watch(selectedManagersProvider);
+    final selectedManagers = ref.watch(selectedManagerIdsProvider);
 
     ref.listen<AsyncValue>(
       updateActivityControllerProvider,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/activity/domain/create_activity.dart';
 import 'package:the_helper/src/features/activity/domain/mod_activity_query.dart';
 import 'package:the_helper/src/features/activity/domain/update_activity.dart';
 import 'package:the_helper/src/utils/dio.dart';
@@ -26,7 +27,7 @@ class ModActivityRepository {
 
   Future<Activity> createActivity({
     required int organizationId,
-    required Activity activity,
+    required CreateActivity activity,
   }) async {
     final res = await client.post(
       '/mod/organizations/$organizationId/activities/',

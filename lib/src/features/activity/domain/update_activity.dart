@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
+import 'package:the_helper/src/features/location/domain/location.dart';
 
 part 'update_activity.freezed.dart';
 part 'update_activity.g.dart';
@@ -12,7 +13,8 @@ class UpdateActivity with _$UpdateActivity {
     String? description,
     int? thumbnail,
     List<int>? activityManagerIds,
-    List<Contact>? contacts,
+    Location? location,
+    List<int>? contacts,
   }) = _UpdateActivity;
 
   factory UpdateActivity.fromJson(Map<String, dynamic> json) =>

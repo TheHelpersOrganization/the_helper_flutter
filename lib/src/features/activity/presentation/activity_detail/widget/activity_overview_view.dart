@@ -34,19 +34,21 @@ class ActivityOverviewView extends StatelessWidget {
         const SizedBox(
           height: 48,
         ),
+        if (hasShift) ...[
+          ActivityParticipant(activity: activity),
+          const SizedBox(
+            height: 12,
+          ),
+        ],
+        ActivityDateLocation(activity: activity),
+        const SizedBox(
+          height: 48,
+        ),
         if (hasShift)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ActivityParticipant(activity: activity),
-              const SizedBox(
-                height: 12,
-              ),
-              ActivityDateLocation(activity: activity),
-              const SizedBox(
-                height: 48,
-              ),
               ActivitySkill(activity: activity),
               const SizedBox(
                 height: 48,

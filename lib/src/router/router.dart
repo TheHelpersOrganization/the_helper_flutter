@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/activity/presentation/admin_manage/scree
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_contact_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_location_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_manager_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
@@ -126,6 +127,16 @@ final routes = [
                     final activityId =
                         int.parse(state.pathParameters['activityId']!);
                     return ModActivityEditBasicScreen(activityId: activityId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.activityEditLocation.path,
+                  name: AppRoute.activityEditLocation.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModActivityEditLocationScreen(
+                        activityId: activityId);
                   },
                 ),
                 GoRoute(
@@ -692,6 +703,10 @@ enum AppRoute {
   activityEdit(
     path: 'edit',
     name: 'activity-edit',
+  ),
+  activityEditLocation(
+    path: 'edit/location',
+    name: 'activity-edit-location',
   ),
   activityEditContact(
     path: 'edit/contacts',
