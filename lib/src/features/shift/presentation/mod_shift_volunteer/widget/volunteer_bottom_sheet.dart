@@ -7,8 +7,8 @@ import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/review_dialog.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/controller/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/widget/review_dialog.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
@@ -62,7 +62,7 @@ class VolunteerBottomSheet extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
               onTap: () {
-                context.goNamed(
+                context.pushNamed(
                   AppRoute.otherProfile.name,
                   pathParameters: {
                     'userId': profile.id.toString(),
@@ -96,11 +96,47 @@ class VolunteerBottomSheet extends ConsumerWidget {
               subtitle: (subtitle != null) ? Text(subtitle) : null,
             ),
           ),
-          // ListTile(
-          //   leading: const Icon(Icons.account_circle_outlined),
-          //   title: const Text('View Profile'),
-
-          // ),
+          if (volunteer.meetSkillRequirements == false ||
+              volunteer.hasTravelingConstrainedShift == true)
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(
+                        Icons.warning,
+                        color: Colors.deepOrange,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Volunteer may not be suitable for this shift',
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  if (volunteer.meetSkillRequirements == false)
+                    const Text(
+                      '- Volunteer does not meet skill requirements',
+                      style: TextStyle(color: Colors.deepOrange),
+                    ),
+                  if (volunteer.hasTravelingConstrainedShift == true)
+                    const Text(
+                      '- Volunteer has registered for another shift that may not have enough time to travel to this shift',
+                      style: TextStyle(color: Colors.deepOrange),
+                    ),
+                ],
+              ),
+            ),
           if (shiftStatus == ShiftStatus.ongoing ||
               shiftStatus == ShiftStatus.completed) ...[
             // if (volunteer.checkedIn ?? false)
@@ -260,7 +296,7 @@ class VolunteerBottomSheet extends ConsumerWidget {
               title: (volunteer.reviewNote == null ||
                       volunteer.reviewNote!.isEmpty)
                   ? const Text(
-                      "Didn't reviwed yet!",
+                      "Didn't reviewed yet!",
                       style: TextStyle(fontStyle: FontStyle.italic),
                     )
                   : Text(
@@ -314,8 +350,52 @@ class VolunteerBottomSheet extends ConsumerWidget {
                   builder: (context) => Consumer(
                     builder: (context, ref, _) => ConfirmationDialog(
                       titleText: "Approve this volunteer",
-                      content:
-                          const Text("Do you want to approve this volunteer?"),
+                      contentColumnChildren: [
+                        const Text("Do you want to approve this volunteer?"),
+                        if (volunteer.meetSkillRequirements == false ||
+                            volunteer.hasTravelingConstrainedShift == true)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.warning,
+                                      color: Colors.deepOrange,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'Volunteer may not be suitable for this shift',
+                                        style:
+                                            TextStyle(color: Colors.deepOrange),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 4,
+                                ),
+                                if (volunteer.meetSkillRequirements == false)
+                                  const Text(
+                                    '- Volunteer does not meet skill requirements',
+                                    style: TextStyle(color: Colors.deepOrange),
+                                  ),
+                                if (volunteer.hasTravelingConstrainedShift ==
+                                    true)
+                                  const Text(
+                                    '- Volunteer has registered for another shift that may not have enough time to travel to this shift',
+                                    style: TextStyle(color: Colors.deepOrange),
+                                  ),
+                              ],
+                            ),
+                          ),
+                      ],
                       onConfirm: () {
                         context.pop();
                         ref

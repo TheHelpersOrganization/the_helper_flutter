@@ -116,7 +116,8 @@ class _ModActivityManagementState
                     if (context.canPop()) {
                       context.pop();
                     } else {
-                      context.goNamed(AppRoute.organizationActivityListManagement.name);
+                      context.goNamed(
+                          AppRoute.organizationActivityListManagement.name);
                     }
                   },
                 ),
@@ -133,6 +134,16 @@ class _ModActivityManagementState
                                 child: const Text('Edit basic info'),
                                 onTap: () => context.pushNamed(
                                   AppRoute.activityEdit.name,
+                                  pathParameters: {
+                                    'activityId': activityId.toString()
+                                  },
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: const Text('Edit location'),
+                                onTap: () => context.pushNamed(
+                                  AppRoute.activityEditLocation.name,
                                   pathParameters: {
                                     'activityId': activityId.toString()
                                   },

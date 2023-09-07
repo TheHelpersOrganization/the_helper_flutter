@@ -10,13 +10,12 @@ class ContactRepository {
 
   ContactRepository({required this.client});
 
-  Future<List<Contact>> getOfId({
-    ContactQuery? query
-  }) async {
+  Future<List<Contact>> getContacts({ContactQuery? query}) async {
     final List<dynamic> res = (await client.get(
       '/contacts',
       queryParameters: query?.toJson(),
-    )).data['data'];
+    ))
+        .data['data'];
     return res.map((e) => Contact.fromJson(e)).toList();
   }
 

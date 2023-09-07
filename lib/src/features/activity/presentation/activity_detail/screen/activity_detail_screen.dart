@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
-import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
 import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
@@ -13,6 +13,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/wi
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/joined_shift_notification/activity_joined_shift_notification.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/widget/joined_shift_notification/activity_no_joined_shift_notification.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 enum TabType {
@@ -125,9 +126,16 @@ class _ActivityDetailScreenState extends ConsumerState<ActivityDetailScreen>
               .toList();
 
           return CustomSliverScrollView(
-            appBar: const CustomSliverAppBar(
-              showBackButton: true,
-              actions: [],
+            appBar: SliverAppBar(
+              leading: BackButton(
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.goNamed(AppRoute.activitySearch.name);
+                  }
+                },
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(12),

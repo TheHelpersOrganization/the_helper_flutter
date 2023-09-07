@@ -5,16 +5,19 @@ import 'package:the_helper/src/common/extension/widget.dart';
 import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/review_dialog.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/volunteer_bottom_sheet.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/controller/shift_volunteer_controller.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/widget/review_dialog.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/widget/volunteer_bottom_sheet.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
 
 class VolunteerListTile extends ConsumerWidget {
+  final Shift shift;
   final ShiftVolunteer volunteer;
   final ShiftStatus shiftStatus;
+
   const VolunteerListTile({
+    required this.shift,
     required this.volunteer,
     required this.shiftStatus,
     super.key,
@@ -80,7 +83,9 @@ class VolunteerListTile extends ConsumerWidget {
       labels += [Label(labelText: volunteer.status.name.toUpperCase())];
     }
     if (shiftStatus == ShiftStatus.pending) {
-      if (volunteer.meetSkillRequirements ?? false) {
+      if ((volunteer.meetSkillRequirements ?? false) &&
+          //(volunteer.hasOverlappingShift == true) &&
+          (volunteer.hasTravelingConstrainedShift != false)) {
         labels += [
           Label(
             labelText: 'SUITABLE',
@@ -154,14 +159,20 @@ class VolunteerListTile extends ConsumerWidget {
             : ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  ...profile.skills.map(
+                  ...profile.skills
+                      .where((element) =>
+                          shift.shiftSkills
+                              ?.any((sk) => sk.skill?.id == element.id) ==
+                          true)
+                      .map(
                     (skill) {
                       if (skill.hours! > 0) {
                         return Chip(
                           labelPadding: const EdgeInsets.only(right: 8),
                           padding: const EdgeInsets.symmetric(horizontal: 2),
                           avatar: const Icon(Icons.wb_sunny_outlined),
-                          label: Text('${skill.name} - ${f.format(skill.hours)} h'),
+                          label: Text(
+                              '${skill.name} - ${f.format(skill.hours)} h'),
                         );
                       }
                     },

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
-import 'package:the_helper/src/common/widget/search_bar/debounce_search_bar.dart';
+import 'package:the_helper/src/common/widget/search_bar/river_debounce_search_bar.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/controller/mod_activity_creation_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_manager/selected_managers.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_manager/unselected_managers.dart';
@@ -18,6 +18,7 @@ class ActivityManagerSelectionView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchPattern = ref.watch(activityManagerSearchPatternProvider);
     final activityManagersState = ref.watch(activityManagersProvider);
 
     return Scaffold(
@@ -40,11 +41,14 @@ class ActivityManagerSelectionView extends ConsumerWidget {
                   width: 12,
                 ),
               ],
-              bottom: const PreferredSize(
-                preferredSize: Size.fromHeight(84),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(90),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  child: DebounceSearchBar(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  child: RiverDebounceSearchBar.autoDispose(
+                    provider: activityManagerSearchPatternProvider,
+                  ),
                 ),
               ),
             ),
@@ -72,6 +76,7 @@ class ActivityManagerSelectionView extends ConsumerWidget {
                   ),
                   UnselectedManagers(
                     managers: data.managers,
+                    searchPattern: searchPattern,
                     myAccount: data.account,
                     initialManagers: initialManagers,
                   ),

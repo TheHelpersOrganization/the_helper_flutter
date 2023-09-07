@@ -38,12 +38,11 @@ final getActivityAndShiftProvider =
               ShiftQueryInclude.shiftSkill,
               ShiftQueryInclude.shiftManager,
               ShiftQueryInclude.myShiftVolunteer,
+              ShiftQueryInclude.shiftOverlaps,
+              ShiftQueryInclude.travelingConstrainedShifts,
             ],
           ),
         );
-    if (shift == null) {
-      return null;
-    }
     final activity = await ref
         .watch(activityServiceProvider)
         .getActivityById(id: shift.activityId);

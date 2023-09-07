@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/shift/domain/attendance.dart';
 import 'package:the_helper/src/features/shift/domain/list_attendance.dart';
 import 'package:the_helper/src/features/shift/domain/many_query_response.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer_arg.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
@@ -48,6 +49,10 @@ class ShiftVolunteerListPagedNotifier
                     ? searchPattern!.trim()
                     : null,
                 active: true,
+                include: [
+                  ShiftVolunteerQueryInclude.overlappingCheck,
+                  ShiftVolunteerQueryInclude.travelingConstrainedCheck,
+                ],
               ),
             );
           },
@@ -240,4 +245,11 @@ class ChangeVolunteersStatusController
 
 @riverpod
 Future<Shift> getShift(GetShiftRef ref, {required int shiftId}) =>
-    ref.watch(shiftRepositoryProvider).getShiftById(id: shiftId);
+    ref.watch(shiftRepositoryProvider).getShiftById(
+          id: shiftId,
+          query: const ShiftQuery(
+            include: [
+              ShiftQueryInclude.shiftSkill,
+            ],
+          ),
+        );

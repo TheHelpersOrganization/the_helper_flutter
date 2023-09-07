@@ -13,6 +13,8 @@ class ShiftQueryInclude {
   static const shiftVolunteer = 'shiftVolunteer';
   static const myShiftVolunteer = 'myShiftVolunteer';
   static const activity = 'activity';
+  static const shiftOverlaps = 'shiftOverlaps';
+  static const travelingConstrainedShifts = 'travelingConstrainedShifts';
 }
 
 class ShiftQuerySort {

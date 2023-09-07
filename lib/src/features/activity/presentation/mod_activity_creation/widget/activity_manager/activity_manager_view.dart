@@ -19,7 +19,7 @@ class ActivityManagerView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activityManagersState = ref.watch(activityManagersProvider);
     final selectedManagers =
-        ref.watch(selectedManagersProvider) ?? initialManagers;
+        ref.watch(selectedManagerIdsProvider) ?? initialManagers;
 
     return Column(
       children: [
@@ -81,7 +81,7 @@ class ActivityManagerView extends ConsumerWidget {
                       color: Colors.red,
                       onPressed: () {
                         selectedManagers.remove(manager.accountId);
-                        ref.read(selectedManagersProvider.notifier).state = {
+                        ref.read(selectedManagerIdsProvider.notifier).state = {
                           ...selectedManagers
                         };
                       },

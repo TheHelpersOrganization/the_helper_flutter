@@ -49,7 +49,7 @@ class ShiftVolunteerDescription extends StatelessWidget {
       );
     } else {
       return const SizedBox(
-        height: 24,
+        height: 12,
       );
     }
   }

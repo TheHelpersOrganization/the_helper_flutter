@@ -25,14 +25,20 @@ String getChatParticipantName(ChatParticipant? profile, {bool? singularName}) {
   if (profile == null) {
     return 'Unknown Name';
   }
-  if (singularName != true &&
-      profile.firstName != null &&
-      profile.lastName != null) {
-    return '${profile.firstName} ${profile.lastName}';
-  } else if (profile.lastName != null) {
-    return profile.lastName!;
-  } else if (profile.firstName != null) {
-    return profile.firstName!;
+  // if (singularName != true &&
+  //     profile.firstName != null &&
+  //     profile.lastName != null) {
+  //   return '${profile.firstName} ${profile.lastName}';
+  // } else if (profile.lastName != null) {
+  //   return profile.lastName!;
+  // } else if (singularName != true && profile.firstName != null) {
+  //   return profile.firstName!;
+  // }
+  if (profile.lastName != null) {
+    if (singularName == true) {
+      return profile.lastName!;
+    }
+    return '${profile.firstName ?? ''} ${profile.lastName}';
   }
   String name = profile.username ?? profile.email;
   return name;

@@ -11,7 +11,10 @@ import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/controller/mod_activity_creation_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_basic_view.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_contact/activity_contact_view.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_contact/controller/activity_contact_controller.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_location/activity_location_view.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_manager/activity_manager_view.dart';
+import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 import 'package:the_helper/src/utils/step.dart';
@@ -24,25 +27,31 @@ class ModActivityCreationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activityManagersState = ref.watch(activityManagersProvider);
-    final activityManagerSelection = ref.watch(selectedManagersProvider);
+    final activityManagerSelection = ref.watch(selectedManagerIdsProvider);
     final createActivityState = ref.watch(createActivityControllerProvider);
     final currentStep = ref.watch(currentStepProvider);
     final steps = [
       StepView(
         title: const Text('Basic'),
         content: ActivityBasicView(formKey: _formKey),
+        //content: ActivityLocationView(),
       ),
       const StepView(
-        title: Text('Contacts'),
-        content: ActivityContactView(),
+        title: Text('Location'),
+        content: ActivityLocationView(),
       ),
       const StepView(
         title: Text('Managers'),
         content: ActivityManagerView(),
       ),
+      const StepView(
+        title: Text('Contacts'),
+        content: ActivityContactView(),
+      ),
     ];
     final isLastPage = currentStep == steps.length - 1;
-    final selectedContacts = ref.watch(selectedContactsProvider);
+    final selectedContacts = ref.watch(selectedContactsIdProvider);
+    final place = ref.watch(placeProvider);
 
     ref.listen<AsyncValue>(
       createActivityControllerProvider,
@@ -51,9 +60,7 @@ class ModActivityCreationScreen extends ConsumerWidget {
       },
     );
 
-    return LoadingOverlay(
-      loadingOverlayType: LoadingOverlayType.custom,
-      opacity: 0.8,
+    return LoadingOverlay.customDarken(
       isLoading: createActivityState.isLoading,
       indicator: const LoadingDialog(
         titleText: 'Creating activity',
@@ -128,7 +135,11 @@ class ModActivityCreationScreen extends ConsumerWidget {
                               thumbnailData: thumbnail,
                               activityManagerIds:
                                   activityManagerSelection?.toList(),
-                              contacts: selectedContacts,
+                              contacts: selectedContacts?.toList(),
+                              location: Location(
+                                latitude: place!.latitude,
+                                longitude: place.longitude,
+                              ),
                             );
                       },
                       child: Text(isLastPage ? 'Create' : 'Next'),

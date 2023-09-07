@@ -88,6 +88,7 @@ class ShiftBottomBar extends StatelessWidget {
           builder: (buildContext) => JoinShiftDialog(
             activityId: activityId,
             shiftId: shiftId,
+            shift: shift,
           ),
         );
       };

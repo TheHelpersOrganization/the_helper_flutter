@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/activity/presentation/admin_manage/scree
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/screen/mod_activity_creation_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_basic_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_contact_screen.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_location_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/screen/mod_activity_edit_manager_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_list_management/screen/mod_activity_list_management_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/screen/mod_activity_management_screen.dart';
@@ -40,7 +41,7 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_contact_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/screen/shift_volunteer_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/chat_routes.dart';
@@ -126,6 +127,16 @@ final routes = [
                     final activityId =
                         int.parse(state.pathParameters['activityId']!);
                     return ModActivityEditBasicScreen(activityId: activityId);
+                  },
+                ),
+                GoRoute(
+                  path: AppRoute.activityEditLocation.path,
+                  name: AppRoute.activityEditLocation.name,
+                  builder: (context, state) {
+                    final activityId =
+                        int.parse(state.pathParameters['activityId']!);
+                    return ModActivityEditLocationScreen(
+                        activityId: activityId);
                   },
                 ),
                 GoRoute(
@@ -489,7 +500,9 @@ abstract class AppRouteParameter {
   static const profileId = 'userId';
   static const organizationId = 'orgId';
   static const activityId = 'activityId';
+  static const shiftId = 'shiftId';
   static const newsId = 'newsId';
+  static const chatId = 'chatId';
 }
 
 enum AppRoute {
@@ -560,7 +573,7 @@ enum AppRoute {
     name: 'initial-chat',
   ),
   chat(
-    path: ':chatId',
+    path: ':${AppRouteParameter.chatId}',
     name: 'chat',
   ),
   chatGroupCreate(
@@ -691,6 +704,10 @@ enum AppRoute {
     path: 'edit',
     name: 'activity-edit',
   ),
+  activityEditLocation(
+    path: 'edit/location',
+    name: 'activity-edit-location',
+  ),
   activityEditContact(
     path: 'edit/contacts',
     name: 'activity-edit-contact',
@@ -747,7 +764,7 @@ enum AppRoute {
     name: 'shifts',
   ),
   shift(
-    path: 'shift/:shiftId',
+    path: 'shift/:${AppRouteParameter.shiftId}',
     name: 'shift',
   ),
 

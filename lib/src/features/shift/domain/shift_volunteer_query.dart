@@ -9,6 +9,8 @@ part 'shift_volunteer_query.g.dart';
 class ShiftVolunteerQueryInclude {
   static const String shift = 'shift';
   static const String profile = 'profile';
+  static const String overlappingCheck = 'overlappingCheck';
+  static const String travelingConstrainedCheck = 'travelingConstrainedCheck';
 }
 
 @freezed
@@ -20,7 +22,8 @@ class ShiftVolunteerQuery with _$ShiftVolunteerQuery {
     int? activityId,
     bool? mine,
     String? name,
-    @CommaSeparatedShiftVolunteerStatusConverter() List<ShiftVolunteerStatus>? status,
+    @CommaSeparatedShiftVolunteerStatusConverter()
+    List<ShiftVolunteerStatus>? status,
     int? limit,
     int? offset,
     bool? active,

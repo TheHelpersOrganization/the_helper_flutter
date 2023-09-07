@@ -21,7 +21,7 @@ class SelectedManagers extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedManagers =
-        ref.watch(selectedManagersProvider) ?? initialManagers;
+        ref.watch(selectedManagerIdsProvider) ?? initialManagers;
 
     return selectedManagers?.isNotEmpty != true
         ? const SizedBox.shrink()
@@ -49,22 +49,28 @@ class SelectedManagers extends ConsumerWidget {
                               selectedManagers.contains(manager.accountId);
                           if (value == true) {
                             selectedManagers.remove(manager.accountId);
-                            ref.read(selectedManagersProvider.notifier).state =
-                                {...selectedManagers};
+                            ref
+                                .read(selectedManagerIdsProvider.notifier)
+                                .state = {...selectedManagers};
                           } else {
-                            ref.read(selectedManagersProvider.notifier).update(
-                                (state) => {...state ?? [], manager.accountId});
+                            ref
+                                .read(selectedManagerIdsProvider.notifier)
+                                .update((state) =>
+                                    {...state ?? [], manager.accountId});
                           }
                         },
                         isChecked: selectedManagers.contains(manager.accountId),
                         onCheck: (value) {
                           if (value == true) {
-                            ref.read(selectedManagersProvider.notifier).update(
-                                (state) => {...state ?? [], manager.accountId});
+                            ref
+                                .read(selectedManagerIdsProvider.notifier)
+                                .update((state) =>
+                                    {...state ?? [], manager.accountId});
                           } else {
                             selectedManagers.remove(manager.accountId);
-                            ref.read(selectedManagersProvider.notifier).state =
-                                {...selectedManagers};
+                            ref
+                                .read(selectedManagerIdsProvider.notifier)
+                                .state = {...selectedManagers};
                           }
                         },
                       );

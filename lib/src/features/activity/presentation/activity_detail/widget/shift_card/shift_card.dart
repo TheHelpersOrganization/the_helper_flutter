@@ -83,6 +83,7 @@ class ShiftCard extends StatelessWidget {
             activityId: shift.activityId,
             shiftId: shift.id,
             shiftName: shift.name,
+            shift: shift,
           ),
         );
       };
@@ -164,8 +165,37 @@ class ShiftCard extends StatelessWidget {
                 )
               else
                 const SizedBox(
-                  height: 24,
+                  height: 12,
                 ),
+              if (shift.status == ShiftStatus.pending &&
+                  (shift.overlaps?.isNotEmpty == true ||
+                      shift.travelingConstrainedShifts?.isNotEmpty ==
+                          true)) ...[
+                Tooltip(
+                  //showDuration: const Duration(seconds: 5),
+                  triggerMode: TooltipTriggerMode.tap,
+                  message: 'This shift may not be suitable for you because:'
+                      '${shift.overlaps?.isNotEmpty == true ? '\n- Its working hours overlaps with ${shift.overlaps!.length} other shift(s)' : ''}'
+                      '${shift.travelingConstrainedShifts?.isNotEmpty == true ? '\n- You have registered for ${shift.travelingConstrainedShifts!.length} shift(s) that may not provide enough time to travel between this shift and other registered shift(s)' : ''}',
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'This shift may not be suitable for you',
+                          style: TextStyle(color: Colors.deepOrange),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Icon(Icons.help_outline),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+              ],
               Row(
                 children: [
                   Expanded(

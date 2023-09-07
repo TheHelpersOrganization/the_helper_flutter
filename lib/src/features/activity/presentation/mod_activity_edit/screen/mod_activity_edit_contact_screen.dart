@@ -7,8 +7,8 @@ import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/features/activity/domain/update_activity.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/controller/activity_controller.dart';
-import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/controller/mod_activity_creation_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_contact/activity_contact_view.dart';
+import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_contact/controller/activity_contact_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/controller/mod_activity_edit_controller.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
@@ -24,7 +24,7 @@ class ModActivityEditContactScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final activityState = ref.watch(getActivityProvider(activityId));
     final updateActivityState = ref.watch(updateActivityControllerProvider);
-    final selectedContacts = ref.watch(selectedContactsProvider);
+    final selectedContacts = ref.watch(selectedContactsIdProvider);
 
     ref.listen<AsyncValue>(
       updateActivityControllerProvider,
@@ -68,7 +68,8 @@ class ModActivityEditContactScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: ActivityContactView(
-                    initialContacts: data.contacts,
+                    initialContacts: data.contacts?.map((e) => e.id!).toSet(),
+                    activityId: activityId,
                   ),
                 ),
               );
@@ -102,7 +103,7 @@ class ModActivityEditContactScreen extends ConsumerWidget {
                           child: FilledButton(
                             onPressed: () {
                               final update = UpdateActivity(
-                                contacts: selectedContacts,
+                                contacts: selectedContacts?.toList(),
                               );
                               ref
                                   .read(

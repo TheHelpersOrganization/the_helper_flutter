@@ -50,6 +50,8 @@ final getActivityAndShiftsProvider =
             activityId: activityId,
             include: [
               ShiftQueryInclude.shiftSkill,
+              ShiftQueryInclude.shiftOverlaps,
+              ShiftQueryInclude.travelingConstrainedShifts,
             ],
           ),
         );

@@ -32,10 +32,19 @@ class ManagerListTile extends StatelessWidget {
         ),
       ),
       onTap: onTap,
-      trailing: Checkbox(
-        value: isChecked,
-        onChanged: onCheck,
-      ),
+      trailing: isChecked
+          ? IconButton(
+              onPressed: onTap,
+              icon: const Icon(
+                Icons.delete_outline,
+                color: Colors.red,
+              ),
+            )
+          : TextButton.icon(
+              onPressed: onTap,
+              icon: const Icon(Icons.add_outlined),
+              label: const Text('Add'),
+            ),
       minVerticalPadding: 16,
       contentPadding: contentPadding,
     );
