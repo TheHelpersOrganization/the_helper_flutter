@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/extension/string.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/controller/mod_activity_creation_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_manager/activity_manager_list_tile.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
@@ -10,24 +11,35 @@ class UnselectedManagers extends ConsumerWidget {
   final List<OrganizationMember> managers;
   final Account myAccount;
   final Set<int>? initialManagers;
+  final String? searchPattern;
 
   const UnselectedManagers({
     super.key,
     required this.managers,
     required this.myAccount,
+    this.searchPattern,
     this.initialManagers,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedManagers =
-        ref.watch(selectedManagersProvider) ?? initialManagers;
+        ref.watch(selectedManagerIdsProvider) ?? initialManagers;
 
     final unselectedManagers = managers
-        .where((manager) =>
-            selectedManagers == null ||
-            !selectedManagers.contains(manager.accountId))
+        .where((manager) => (selectedManagers == null ||
+            !selectedManagers.contains(manager.accountId)))
         .toList();
+    if (searchPattern != null && searchPattern!.isNotEmpty) {
+      unselectedManagers.retainWhere((manager) {
+        return manager.profile?.lastName?.containsIgnoreCase(searchPattern!) ==
+                true ||
+            manager.profile?.firstName?.containsIgnoreCase(searchPattern!) ==
+                true ||
+            manager.profile?.username?.containsIgnoreCase(searchPattern!) ==
+                true;
+      });
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -49,13 +61,13 @@ class UnselectedManagers extends ConsumerWidget {
                   selectedManagers.contains(manager.accountId)) {
                 final newSelectedManagers = {...selectedManagers};
                 newSelectedManagers.remove(manager.accountId);
-                ref.read(selectedManagersProvider.notifier).state =
+                ref.read(selectedManagerIdsProvider.notifier).state =
                     newSelectedManagers;
               } else {
                 final Set<int> newSelectedManagers =
                     selectedManagers == null ? {} : {...selectedManagers};
                 newSelectedManagers.add(manager.accountId);
-                ref.read(selectedManagersProvider.notifier).state =
+                ref.read(selectedManagerIdsProvider.notifier).state =
                     newSelectedManagers;
               }
             },
@@ -66,14 +78,14 @@ class UnselectedManagers extends ConsumerWidget {
                 final Set<int> newSelectedManagers =
                     selectedManagers == null ? {} : {...selectedManagers};
                 newSelectedManagers.add(manager.accountId);
-                ref.read(selectedManagersProvider.notifier).state =
+                ref.read(selectedManagerIdsProvider.notifier).state =
                     newSelectedManagers;
               } else {
                 if (selectedManagers == null) {
                   return;
                 }
                 selectedManagers.remove(manager.accountId);
-                ref.read(selectedManagersProvider.notifier).state = {
+                ref.read(selectedManagerIdsProvider.notifier).state = {
                   ...selectedManagers
                 };
               }

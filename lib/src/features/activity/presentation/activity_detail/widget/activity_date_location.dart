@@ -43,7 +43,7 @@ class ActivityDateLocation extends StatelessWidget {
                   ? (endTimeFormat != null
                       ? '$startTimeFormat - $endTimeFormat'
                       : startTimeFormat)
-                  : 'Date not set',
+                  : 'Date not available',
               style: TextStyle(color: context.theme.colorScheme.secondary),
             ),
             fallback: Text(
@@ -51,7 +51,7 @@ class ActivityDateLocation extends StatelessWidget {
                   ? (shortEndTimeFormat != null
                       ? '$shortStartTimeFormat - $shortEndTimeFormat'
                       : shortStartTimeFormat)
-                  : 'Date not set',
+                  : 'Date not available',
               style: TextStyle(color: context.theme.colorScheme.secondary),
             ),
           ),

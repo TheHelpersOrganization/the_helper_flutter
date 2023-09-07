@@ -79,6 +79,7 @@ dependencies:
   logger:
   mocktail: ^1.0.0
   envied: ^0.3.0+3
+  fast_immutable_collections: ^9.1.5
 
 dev_dependencies:
   flutter_test:

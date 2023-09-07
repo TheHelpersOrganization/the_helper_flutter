@@ -17,14 +17,14 @@ class ContactService {
     required int id,
   }) async {
     final contacts =
-        await contactRepository.getOfId(query: ContactQuery(accountId: id));
+        await contactRepository.getContacts(query: ContactQuery(accountId: id));
     return contacts;
   }
 
   Future<List<Contact>> getOfOrg({
     required int id,
   }) async {
-    final contacts = await contactRepository.getOfId(
+    final contacts = await contactRepository.getContacts(
         query: ContactQuery(organizationId: id));
     return contacts;
   }
@@ -39,9 +39,7 @@ class ContactService {
     return res;
   }
 
-  Future<Contact> update({
-    required int id,
-    required Contact contact}) async {
+  Future<Contact> update({required int id, required Contact contact}) async {
     final res = await contactRepository.update(id, contact);
     return res;
   }
