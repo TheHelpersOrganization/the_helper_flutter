@@ -29,12 +29,24 @@ class Chat with _$Chat {
 
 extension ChatX on Chat {
   String getDisplayName({required int myId}) {
-    final others = participants!.where((e) => e.id != myId);
     if (name != null) return name!;
-    return isGroup
-        ? others
-            .map((e) => getChatParticipantName(e, singularName: true))
-            .join(', ')
-        : getChatParticipantName(others.firstOrNull);
+    final others = participants!.where((e) => e.id != myId);
+    if (!isGroup) {
+      return getChatParticipantName(others.firstOrNull);
+    }
+    // Take max 3 names and join them with comma, e.g. "A, B, C, and 2 others"
+    const maxNames = 3;
+    final othersLength = participants!.length;
+    if (othersLength <= maxNames) {
+      return participants!
+          .map((e) => getChatParticipantName(e, singularName: true))
+          .join(', ');
+    }
+    final firstNames = participants!
+        .take(maxNames)
+        .map((e) => getChatParticipantName(e, singularName: true))
+        .join(', ');
+    final remaining = othersLength - maxNames;
+    return '$firstNames, and $remaining other(s)';
   }
 }

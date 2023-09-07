@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_query.dart';
@@ -39,6 +40,11 @@ final chatListSocketProvider = FutureProvider.autoDispose<Socket>(
       chatListNotifier.updateChat(chat);
     }
 
+    socket.on('chat-deleted', (data) {
+      final chat = Chat.fromJson(data);
+      chatListNotifier.removeChat(chat);
+    });
+
     socket.on('chat-created', handleChatCreated);
 
     ref.onDispose(() {
@@ -51,10 +57,12 @@ final chatListSocketProvider = FutureProvider.autoDispose<Socket>(
 );
 
 class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
+  final AutoDisposeStateNotifierProviderRef ref;
   final ChatRepository chatRepository;
   final String searchPattern;
 
   ChatListPagedNotifier({
+    required this.ref,
     required this.chatRepository,
     required this.searchPattern,
   }) : super(
@@ -73,12 +81,21 @@ class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
           nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
         );
 
-  void updateChat(Chat chat) {
+  void updateChat(Chat chat) async {
     if (!mounted) {
       return;
     }
     final oldChats = state.records;
     if (oldChats == null) {
+      return;
+    }
+    // If new chat does not contains my id, remove it from list
+    final myId = (await ref.watch(authServiceProvider.future))!.account.id;
+    if (chat.participantIds?.isEmpty == true ||
+        chat.participantIds?.contains(myId) != true) {
+      state = state.copyWith(
+        records: oldChats.where((element) => element.id != chat.id).toList(),
+      );
       return;
     }
     // If chat has no message, do not update
@@ -104,12 +121,30 @@ class ChatListPagedNotifier extends PagedNotifier<int, Chat> {
       state = state.copyWith(records: [chat, ...oldChats]);
     }
   }
+
+  void removeChat(Chat chat) async {
+    if (!mounted) {
+      return;
+    }
+    final oldChats = state.records;
+    if (oldChats == null) {
+      return;
+    }
+    final oldChatIndex =
+        oldChats.indexWhere((element) => element.id == chat.id);
+    if (oldChatIndex < 0) {
+      return;
+    }
+    oldChats.removeAt(oldChatIndex);
+    state = state.copyWith(records: [...oldChats]);
+  }
 }
 
 final chatListPagedNotifierProvider = StateNotifierProvider.autoDispose<
     ChatListPagedNotifier, PagedState<int, Chat>>(
   (ref) {
     return ChatListPagedNotifier(
+      ref: ref,
       searchPattern: ref.watch(searchPatternProvider),
       chatRepository: ref.watch(chatRepositoryProvider),
     );

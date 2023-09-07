@@ -15,6 +15,9 @@ const createChatGroupSnackbarName = 'createChatGroup';
 const chatGroupParticipantAddSnackbarName = 'chatGroupParticipantAdd';
 const chatGroupParticipantRemoveSnackbarName = 'chatGroupParticipantRemove';
 const chatGroupMakeOwnerSnackbarName = 'chatGroupMakeOwner';
+const chatGroupUpdateSnackbarName = 'chatGroupUpdate';
+const chatGroupLeaveSnackbarName = 'chatGroupLeave';
+const chatGroupDeleteSnackbarName = 'chatGroupDelete';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(

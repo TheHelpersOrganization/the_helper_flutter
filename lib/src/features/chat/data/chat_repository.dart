@@ -5,11 +5,13 @@ import 'package:the_helper/src/features/chat/domain/chat_add_participants.dart';
 import 'package:the_helper/src/features/chat/domain/chat_group_make_owner.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message_query.dart';
+import 'package:the_helper/src/features/chat/domain/chat_participant_query.dart';
 import 'package:the_helper/src/features/chat/domain/chat_query.dart';
 import 'package:the_helper/src/features/chat/domain/chat_remove_participant.dart';
 import 'package:the_helper/src/features/chat/domain/create_chat.dart';
 import 'package:the_helper/src/features/chat/domain/create_chat_group.dart';
 import 'package:the_helper/src/features/chat/domain/update_chat_group.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 class ChatRepository {
@@ -43,6 +45,17 @@ class ChatRepository {
       return null;
     }
     return Chat.fromJson(data);
+  }
+
+  Future<List<Profile>> getChatParticipants({
+    ChatParticipantQuery? query,
+  }) async {
+    final res = await client.get(
+      '/chats/participants',
+      queryParameters: query?.toJson(),
+    );
+    final List<dynamic> resList = res.data['data'];
+    return resList.map((e) => Profile.fromJson(e)).toList();
   }
 
   Future<List<ChatMessage>> getChatMessages({

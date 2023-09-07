@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
@@ -37,14 +39,28 @@ class ChatData {
 }
 
 class ChatNotifier extends AutoDisposeFamilyAsyncNotifier<Chat?, int> {
+  late GoRouter _router;
+  late int _myId;
+
   @override
   FutureOr<Chat?> build(int arg) async {
+    _router = ref.watch(routerProvider);
     final repo = ref.watch(chatRepositoryProvider);
     final chat = await repo.getChatById(id: arg);
+    _myId = (await ref.watch(authServiceProvider.future))!.account.id;
     return chat;
   }
 
-  setChat(Chat chat) {
+  Future<void> setChat(Chat chat) async {
+    if (chat.participantIds?.isEmpty == true ||
+        chat.participantIds?.contains(_myId) != true) {
+      if (_router.canPop()) {
+        _router.pop();
+      } else {
+        _router.goNamed(AppRoute.chats.name);
+      }
+      return;
+    }
     state = AsyncValue.data(chat);
   }
 }
@@ -67,6 +83,7 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
     final scrollController = ref.read(scrollControllerProvider);
 
     final socket = ref.watch(socketProvider);
+    final router = ref.watch(routerProvider);
 
     final completer = Completer();
     socket.emitWithAck('join-chat', '', ack: (data) {
@@ -95,6 +112,18 @@ final chatSocketProvider = FutureProvider.autoDispose.family<Socket?, int>(
         return;
       }
       chatNotifier.setChat(chat);
+    });
+
+    socket.on('chat-deleted', (data) {
+      final chat = Chat.fromJson(data);
+      if (chat.id != chatId) {
+        return;
+      }
+      if (router.canPop()) {
+        router.pop();
+      } else {
+        router.goNamed(AppRoute.chats.name);
+      }
     });
 
     ref.onDispose(() {

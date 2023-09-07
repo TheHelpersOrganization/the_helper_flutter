@@ -6,7 +6,7 @@ import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/features/chat/domain/chat_group_make_owner.dart';
 import 'package:the_helper/src/features/chat/domain/chat_participant.dart';
 import 'package:the_helper/src/features/chat/domain/chat_remove_participant.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/controller/chat_group_participants_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/controller/chat_group_participants_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/profile.dart';
 

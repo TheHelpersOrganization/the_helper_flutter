@@ -7,9 +7,9 @@ import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_participant.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/controller/chat_group_participants_controller.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/screen/chat_group_participant_add_screen.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/widget/chat_group_participant_bottom_sheet.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/controller/chat_group_participants_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/screen/chat_group_participant_add_screen.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/widget/chat_group_participant_bottom_sheet.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
@@ -80,15 +80,16 @@ class ChatGroupParticipantScreen extends ConsumerWidget {
             style: context.theme.textTheme.titleMedium,
           ),
           actions: [
-            TextButton.icon(
-              onPressed: () => context.navigator.push(MaterialPageRoute(
-                builder: (context) => ChatGroupParticipantAddScreen(
-                  chatId: chatId,
-                ),
-              )),
-              icon: const Icon(Icons.add),
-              label: const Text('Add'),
-            ),
+            if (chatDataState.valueOrNull?.ownerId == myId)
+              TextButton.icon(
+                onPressed: () => context.navigator.push(MaterialPageRoute(
+                  builder: (context) => ChatGroupParticipantAddScreen(
+                    chatId: chatId,
+                  ),
+                )),
+                icon: const Icon(Icons.add),
+                label: const Text('Add'),
+              ),
           ],
         ),
         body: chatDataState.when(

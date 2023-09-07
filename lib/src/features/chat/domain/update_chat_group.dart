@@ -7,6 +7,7 @@ part 'update_chat_group.g.dart';
 class UpdateChatGroup with _$UpdateChatGroup {
   @JsonSerializable(includeIfNull: false)
   factory UpdateChatGroup({
+    required int chatId,
     String? name,
     int? avatar,
   }) = _UpdateChatGroup;
