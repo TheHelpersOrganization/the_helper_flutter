@@ -7,7 +7,7 @@ import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/common/widget/search_bar/river_debounce_search_bar.dart';
 import 'package:the_helper/src/features/chat/domain/chat_add_participants.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/controller/chat_group_participants_add_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/controller/chat_group_participants_add_controller.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';

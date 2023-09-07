@@ -15,15 +15,17 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/chat/controller/group_chat_controller.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
-import 'package:the_helper/src/features/chat/presentation/chat_group_manage/screen/chat_group_participant_screen.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_edit/screen/chat_group_edit_screen.dart';
+import 'package:the_helper/src/features/chat/presentation/chat_group_participant/screen/chat_group_participant_screen.dart';
 import 'package:the_helper/src/features/chat/presentation/common/widget/chat_avatar.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 import 'package:the_helper/src/features/report/presentation/submit_report/screen/submit_report_screen.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/async_value_ui.dart';
 import 'package:the_helper/src/utils/image.dart';
 import 'package:the_helper/src/utils/profile.dart';
-
 
 class ChatScreen extends ConsumerWidget {
   final int chatId;
@@ -68,9 +70,32 @@ class ChatScreen extends ConsumerWidget {
     final blockChatControllerState = ref.watch(blockChatControllerProvider);
     final unblockChatControllerState = ref.watch(unblockChatControllerProvider);
 
+    final leaveGroupChatControllerState = ref.watch(
+      leaveGroupChatControllerProvider,
+    );
+    ref.listen(leaveGroupChatControllerProvider, (previous, next) {
+      next.showSnackbarOnSuccess(context,
+          content: const Text('Left chat successfully'),
+          name: chatGroupLeaveSnackbarName);
+      next.showSnackbarOnError(context, name: chatGroupLeaveSnackbarName);
+    });
+
+    final deleteChatGroupControllerState =
+        ref.watch(deleteChatGroupControllerProvider);
+    ref.listen(deleteChatGroupControllerProvider, (previous, next) {
+      next.showSnackbarOnSuccess(
+        context,
+        content: const Text('Chat deleted successfully'),
+        name: chatGroupDeleteSnackbarName,
+      );
+      next.showSnackbarOnError(context, name: chatGroupDeleteSnackbarName);
+    });
+
     return LoadingOverlay.customDarken(
       isLoading: blockChatControllerState.isLoading ||
-          unblockChatControllerState.isLoading,
+          unblockChatControllerState.isLoading ||
+          leaveGroupChatControllerState.isLoading ||
+          deleteChatGroupControllerState.isLoading,
       indicator: const LoadingDialog(
         titleText: 'Please wait',
       ),
@@ -157,6 +182,48 @@ class ChatScreen extends ConsumerWidget {
                         targetName: otherName,
                         controller: ref.read(
                           unblockChatControllerProvider.notifier,
+                        ),
+                      );
+                    } else if (value == 'edit') {
+                      context.navigator.push(
+                        MaterialPageRoute(
+                          builder: (context) => ChatGroupEditScreen(
+                            chatId: chat.id,
+                          ),
+                        ),
+                      );
+                    } else if (value == 'leave') {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmationDialog(
+                          titleText: 'Leave chat?',
+                          content: const Text(
+                            'Are you sure you want to leave this chat? You will not be able to rejoin unless being added again.',
+                          ),
+                          onConfirm: () {
+                            context.pop();
+                            ref
+                                .read(leaveGroupChatControllerProvider.notifier)
+                                .leaveGroupChat(chatId: chatId);
+                          },
+                        ),
+                      );
+                    } else if (value == 'delete') {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmationDialog(
+                          titleText: 'Delete chat?',
+                          content: const Text(
+                            'Are you sure you want to delete this chat?',
+                          ),
+                          showActionCanNotBeUndoneText: true,
+                          onConfirm: () {
+                            context.pop();
+                            ref
+                                .read(
+                                    deleteChatGroupControllerProvider.notifier)
+                                .deleteChatGroup(chatId: chatId);
+                          },
                         ),
                       );
                     }

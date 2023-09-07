@@ -491,6 +491,7 @@ abstract class AppRouteParameter {
   static const activityId = 'activityId';
   static const shiftId = 'shiftId';
   static const newsId = 'newsId';
+  static const chatId = 'chatId';
 }
 
 enum AppRoute {
@@ -561,7 +562,7 @@ enum AppRoute {
     name: 'initial-chat',
   ),
   chat(
-    path: ':chatId',
+    path: ':${AppRouteParameter.chatId}',
     name: 'chat',
   ),
   chatGroupCreate(

@@ -5,9 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/chat/data/chat_repository.dart';
 import 'package:the_helper/src/features/chat/domain/chat_add_participants.dart';
+import 'package:the_helper/src/features/chat/domain/chat_participant_query.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
-import 'package:the_helper/src/features/profile/data/profile_repository.dart';
-import 'package:the_helper/src/features/profile/domain/get_profiles_data.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
@@ -25,10 +24,8 @@ final availableParticipantsProvider =
   final selectedProfiles = ref.watch(selectedProfilesProvider);
   final myId = (await ref.watch(authServiceProvider.future))!.account.id;
 
-  if (searchPattern.isEmpty) return [];
-
-  return ref.watch(profileRepositoryProvider).getProfiles(
-        GetProfilesData(
+  return ref.watch(chatRepositoryProvider).getChatParticipants(
+        query: ChatParticipantQuery(
           excludeId: [
             ...selectedProfiles.map((e) => e.id!),
             ...chatParticipants,
