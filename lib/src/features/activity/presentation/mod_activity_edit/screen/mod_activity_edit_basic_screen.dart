@@ -79,73 +79,79 @@ class ModActivityEditBasicScreen extends ConsumerWidget {
             },
           ),
         ),
-        bottomNavigationBar: activityState.isLoading
-            ? null
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(
-                    height: 1,
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            flex: 2,
-                            // Can skip skill step and manager step
-                            child: TextButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              child: const Text('Cancel'),
-                            )),
-                        Expanded(
-                          flex: 3,
-                          child: FilledButton(
+        bottomNavigationBar: activityState.maybeWhen(
+          orElse: () => null,
+          data: (activity) {
+            if (activity == null) {
+              return null;
+            }
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(
+                  height: 1,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          // Can skip skill step and manager step
+                          child: TextButton(
                             onPressed: () {
-                              if (!formKey.currentState!.saveAndValidate()) {
-                                return;
-                              }
-
-                              final name =
-                                  formKey.currentState!.fields['name']!.value;
-                              final description = formKey
-                                  .currentState!.fields['description']!.value;
-                              final thumbnailValue = formKey
-                                  .currentState!.fields['thumbnail']!.value;
-                              Uint8List? thumbnail;
-                              if (thumbnailValue != null) {
-                                thumbnail =
-                                    (thumbnailValue as List<dynamic>).isNotEmpty
-                                        ? thumbnailValue[0]
-                                        : null;
-                              }
-
-                              final update = UpdateActivity(
-                                name: name,
-                                description: description,
-                              );
-                              ref
-                                  .read(
-                                      updateActivityControllerProvider.notifier)
-                                  .updateActivity(
-                                    activityId: activityId,
-                                    activity: update,
-                                    thumbnailData: thumbnail,
-                                  );
+                              context.pop();
                             },
-                            child: const Text(
-                              'Save',
-                            ),
+                            child: const Text('Cancel'),
+                          )),
+                      Expanded(
+                        flex: 3,
+                        child: FilledButton(
+                          onPressed: () {
+                            if (!formKey.currentState!.saveAndValidate()) {
+                              return;
+                            }
+
+                            final name =
+                                formKey.currentState!.fields['name']!.value;
+                            final description = formKey
+                                .currentState!.fields['description']!.value;
+                            final thumbnailValue = formKey
+                                .currentState!.fields['thumbnail']!.value;
+                            Uint8List? thumbnail;
+                            if (thumbnailValue != null) {
+                              thumbnail =
+                                  (thumbnailValue as List<dynamic>).isNotEmpty
+                                      ? thumbnailValue[0]
+                                      : null;
+                            }
+
+                            final update = UpdateActivity(
+                              name: name,
+                              description: description,
+                            );
+                            ref
+                                .read(updateActivityControllerProvider.notifier)
+                                .updateActivity(
+                                  organizationId: activity.organizationId!,
+                                  activityId: activityId,
+                                  activity: update,
+                                  thumbnailData: thumbnail,
+                                );
+                          },
+                          child: const Text(
+                            'Save',
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

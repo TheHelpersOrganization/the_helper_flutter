@@ -32,7 +32,10 @@ class ActivityLocationView extends ConsumerWidget {
           if (initialLocation != null && !hasEditedLocation)
             Text(getAddress(initialLocation))
           else
-            RiverLocationAutocompleteField.autoDispose(provider: placeProvider),
+            RiverLocationAutocompleteField.autoDispose(
+              provider: placeProvider,
+              maxComponents: 2,
+            ),
           const SizedBox(
             height: 12,
           ),
@@ -49,7 +52,6 @@ class ActivityLocationView extends ConsumerWidget {
               if (place == null) {
                 return;
               }
-              print(place);
               ref.read(placeProvider.notifier).state = place;
               ref.read(hasEditedLocationProvider.notifier).state = true;
             },

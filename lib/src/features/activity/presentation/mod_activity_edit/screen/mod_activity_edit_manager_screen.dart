@@ -23,6 +23,7 @@ class ModActivityEditManagerScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final extendedActivityState = ref.watch(getActivityProvider(activityId));
+    final activity = extendedActivityState.asData?.value;
     final updateState = ref.watch(updateActivityControllerProvider);
     final selectedManagers = ref.watch(selectedManagerIdsProvider);
 
@@ -75,7 +76,7 @@ class ModActivityEditManagerScreen extends ConsumerWidget {
             },
           ),
         ),
-        bottomNavigationBar: extendedActivityState.isLoading
+        bottomNavigationBar: activity == null
             ? null
             : Column(
                 mainAxisSize: MainAxisSize.min,
@@ -108,7 +109,10 @@ class ModActivityEditManagerScreen extends ConsumerWidget {
                                   .read(
                                       updateActivityControllerProvider.notifier)
                                   .updateActivity(
-                                      activityId: activityId, activity: update);
+                                    organizationId: activity.organizationId!,
+                                    activityId: activityId,
+                                    activity: update,
+                                  );
                             },
                             child: const Text(
                               'Save',
