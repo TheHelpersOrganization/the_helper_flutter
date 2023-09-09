@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
@@ -17,6 +18,9 @@ class NotificationService {
   final GoRouter router;
   final AuthService authService;
   final FirebaseMessaging firebaseMessaging;
+  final localNotifications = FlutterLocalNotificationsPlugin();
+  var _nextNotificationId = 0;
+  int get nextNotificationId => _nextNotificationId++;
 
   NotificationService({
     required this.router,

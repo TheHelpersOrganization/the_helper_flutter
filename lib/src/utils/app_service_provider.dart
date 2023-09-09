@@ -22,7 +22,7 @@ class AppService {
 
 final appServiceProvider = FutureProvider((ref) async {
   final authServiceFuture = await ref.watch(authServiceProvider.future);
-  final firebaseAppFuture = await ref.watch(firebaseProvider.future);
+  final firebaseApp = ref.watch(firebaseProvider);
   final firebaseMessagingFuture =
       await ref.watch(firebaseMessagingProvider.future);
   final notificationService =
@@ -30,7 +30,7 @@ final appServiceProvider = FutureProvider((ref) async {
 
   return AppService(
     accountToken: authServiceFuture,
-    firebaseApp: firebaseAppFuture,
+    firebaseApp: firebaseApp,
     firebaseMessaging: firebaseMessagingFuture,
     notificationService: notificationService,
   );

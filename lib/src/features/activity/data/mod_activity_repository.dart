@@ -37,11 +37,12 @@ class ModActivityRepository {
   }
 
   Future<Activity> updateActivity({
+    required int organizationId,
     required int activityId,
     required UpdateActivity activity,
   }) async {
     final res = await client.put(
-      '/activities/$activityId',
+      '/mod/organizations/$organizationId/activities/$activityId',
       data: activity.toJson(),
     );
     return Activity.fromJson(res.data['data']);

@@ -65,6 +65,7 @@ class LocationPickerScreen extends ConsumerWidget {
                 }
                 final place = PlaceDetails(
                   formattedAddress: reverseGeocode.formattedAddress,
+                  addressComponents: reverseGeocode.addressComponents,
                   latitude: currentPlace.latitude,
                   longitude: currentPlace.longitude,
                 );

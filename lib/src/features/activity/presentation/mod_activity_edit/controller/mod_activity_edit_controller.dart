@@ -20,6 +20,7 @@ class UpdateActivityController extends StateNotifier<AsyncValue<void>> {
   }) : super(const AsyncData(null));
 
   Future<void> updateActivity({
+    required int organizationId,
     required int activityId,
     required UpdateActivity activity,
     Uint8List? thumbnailData,
@@ -46,6 +47,7 @@ class UpdateActivityController extends StateNotifier<AsyncValue<void>> {
         thumbnail != null ? activity.copyWith(thumbnail: thumbnail) : activity;
     final res = await guardAsyncValue(
       () => activityRepository.updateActivity(
+        organizationId: organizationId,
         activityId: activityId,
         activity: update,
       ),

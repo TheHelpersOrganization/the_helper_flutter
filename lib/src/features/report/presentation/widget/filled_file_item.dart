@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/file/domain/file_model.dart';
+import 'package:the_helper/src/features/file/service/file_service.dart';
 
 import '../../../../common/domain/file_info.dart';
 
@@ -112,7 +114,15 @@ class FilledFileItem extends ConsumerWidget {
               Icons.download,
               color: Colors.black54,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              ref.read(fileServiceProvider).downloadFileAndNotify(
+                    fileModel: FileModel(
+                      id: data.id!,
+                      name: data.name,
+                      mimetype: data.mimetype,
+                    ),
+                  );
+            },
           ),
           const SizedBox(
             width: 8,
