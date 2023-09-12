@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/activity/presentation/activity_detail/co
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/controller/mod_activity_creation_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_location/activity_location_view.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_edit/controller/mod_activity_edit_controller.dart';
+import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
@@ -24,6 +25,7 @@ class ModActivityEditLocationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activityState = ref.watch(getActivityProvider(activityId));
+    final activity = activityState.asData?.value;
     final updateActivityState = ref.watch(updateActivityControllerProvider);
     final place = ref.watch(placeProvider);
     final hasEditedLocation = ref.watch(hasEditedLocationProvider);
@@ -109,16 +111,26 @@ class ModActivityEditLocationScreen extends ConsumerWidget {
                           onPressed: () {
                             var location = data.location;
                             if (hasEditedLocation) {
-                              location = place?.toLocationFromFormattedAddress(
-                                  maxComponent: 2);
+                              location = place?.toLocationFromAddressComponents(
+                                maxComponents: 2,
+                              );
                             }
+                            final testLocation = Location(
+                              latitude: 10.762622,
+                              longitude: 106.660172,
+                              country: 'VN',
+                              region: 'Thành phố Hồ Chí Minh',
+                            );
                             final update = UpdateActivity(
                               location: location,
                             );
                             ref
                                 .read(updateActivityControllerProvider.notifier)
                                 .updateActivity(
-                                    activityId: activityId, activity: update);
+                                  organizationId: data.organizationId!,
+                                  activityId: activityId,
+                                  activity: update,
+                                );
                           },
                           child: const Text(
                             'Save',

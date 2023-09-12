@@ -23,6 +23,7 @@ class ModActivityEditContactScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activityState = ref.watch(getActivityProvider(activityId));
+    final activity = activityState.asData?.value;
     final updateActivityState = ref.watch(updateActivityControllerProvider);
     final selectedContacts = ref.watch(selectedContactsIdProvider);
 
@@ -76,7 +77,7 @@ class ModActivityEditContactScreen extends ConsumerWidget {
             },
           ),
         ),
-        bottomNavigationBar: activityState.isLoading
+        bottomNavigationBar: activity == null
             ? null
             : Column(
                 mainAxisSize: MainAxisSize.min,
@@ -109,7 +110,10 @@ class ModActivityEditContactScreen extends ConsumerWidget {
                                   .read(
                                       updateActivityControllerProvider.notifier)
                                   .updateActivity(
-                                      activityId: activityId, activity: update);
+                                    organizationId: activity.organizationId!,
+                                    activityId: activityId,
+                                    activity: update,
+                                  );
                             },
                             child: const Text(
                               'Save',
