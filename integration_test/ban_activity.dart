@@ -29,7 +29,10 @@ Future<void> banActivity(WidgetTester tester) async {
 
   // choose activity manage
   final activitiesManageOption =
-      find.widgetWithText(ListTile, 'Activities mamage');
+      find.widgetWithText(ListTile, 'Activities manage');
+  await tester.dragUntilVisible(
+      activitiesManageOption, drawer, const Offset(0, -500));
+  await tester.pump();
   expect(activitiesManageOption, findsOneWidget);
   await tester.tap(activitiesManageOption);
   await tester.pumpAndSettle();
@@ -50,8 +53,8 @@ Future<void> banActivity(WidgetTester tester) async {
   // choose an activity
   final newActivityItem = find.byType(ActivityListItem);
   expect(newActivityItem, findsWidgets);
-  final choosenItem = newActivityItem.first;
-  print(choosenItem.toString());
+  Text choosenItem = tester.firstWidget(find.descendant(
+      of: find.byType(ActivityListItem), matching: find.byType(Text)));
 
   await tester.tap(newActivityItem.first);
 
@@ -65,8 +68,18 @@ Future<void> banActivity(WidgetTester tester) async {
 
   await tester.tap(banOption);
   await tester.pumpAndSettle();
-  // modal loading
-  // page reload
+
   // filter banned activity
+  final filterBannedChip = find.widgetWithText(FilterChip, 'Banned');
+  expect(filterBannedChip, findsOneWidget);
+
+  await tester.tap(filterBannedChip);
+  await tester.pumpAndSettle();
+  
   // see the same activity in the list
+  final bannedActivity = find.widgetWithText(ActivityListItem, choosenItem.data.toString());
+  await tester.dragUntilVisible(
+      bannedActivity, activitiesManageScreen, const Offset(0, -500));
+  await tester.pump();
+  expect(bannedActivity, findsOneWidget);
 }
