@@ -77,7 +77,7 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, Activity> {
             return activityRepository.getActivities(
               query: ActivityQuery(
                 limit: limit,
-                offset: page * limit,
+                // offset: page * limit,
                 name: searchPattern,
                 status: [tabStatus],
                 isDisabled: filterSelected ? banned : null,

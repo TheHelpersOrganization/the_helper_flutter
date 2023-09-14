@@ -241,7 +241,11 @@ class _ActivityListItemState extends ConsumerState<ActivityListItem> {
                                       : NetworkImage(getImageUrl(org.logo!)),
                                 ),
                               ),
-                              Text(org.name),
+                              Expanded(
+                                child: Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  org.name),
+                              ),
                             ],
                           ),
                         ],
