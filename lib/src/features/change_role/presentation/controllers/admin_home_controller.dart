@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/common/domain/data_log.dart';
+import 'package:the_helper/src/common/domain/data_monthly_log.dart';
+import 'package:the_helper/src/common/domain/data_yearly_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
 
 import 'package:the_helper/src/features/account/domain/account_log_query.dart';
@@ -85,8 +88,9 @@ class AdminHomeData extends _$AdminHomeData {
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.verified));
-    final activityData = await ref.watch(activityServiceProvider).getLog();
-
+    final activityData = await ref
+        .watch(activityServiceProvider)
+        .getLog(query: ActivityLogQuery(status: [ActivityStatus.ongoing]));
 
     final accountRequest =
         await ref.watch(accountServiceProvider).getRequestLog();
@@ -127,17 +131,27 @@ class AdminChartData extends _$AdminChartData {
     final timeNow = DateTime.now();
     final startTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
-    final accountData = await ref
+    final accountRes = await ref
         .watch(accountServiceProvider)
         .getLog(query: AccountLogQuery(startTime: startTime));
-    final organizationData = await ref
+    final organizationRes = await ref
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(
                 status: OrganizationStatus.verified, startTime: startTime));
-    final activityData = await ref
-        .watch(activityServiceProvider)
-        .getLog(query: ActivityLogQuery(startTime: startTime));
+    final activityRes = await ref.watch(activityServiceProvider).getLog(
+        query: ActivityLogQuery(
+            status: [ActivityStatus.completed, ActivityStatus.ongoing],
+            startTime: startTime));
+
+    DataLog accountData =
+        arrangeMonthlyDataLog(timeNow: timeNow, data: accountRes);
+
+    DataLog organizationData =
+        arrangeMonthlyDataLog(timeNow: timeNow, data: organizationRes);
+
+    DataLog activityData =
+        arrangeMonthlyDataLog(timeNow: timeNow, data: activityRes);
 
     return AdminChartDataModel(
         account: accountData,
@@ -148,23 +162,30 @@ class AdminChartData extends _$AdminChartData {
   Future<AdminChartDataModel> _getLastYear() async {
     final timeNow = DateTime.now();
     final startTime = DateTime.utc(timeNow.year - 1).millisecondsSinceEpoch;
-    final endTime = DateTime.utc(timeNow.year).millisecondsSinceEpoch;
 
-    final accountData = await ref
+    final accountRes = await ref
         .watch(accountServiceProvider)
-        .getLog(query: AccountLogQuery(startTime: startTime, endTime: endTime));
-    final organizationData = await ref
-        .watch(adminOrganizationServiceProvider)
-        .getLog(
-            query: OrganizationLogQuery(
-                status: OrganizationStatus.verified,
-                startTime: startTime,
-                endTime: endTime));
-    final activityData = await ref.watch(activityServiceProvider).getLog(
-        query: ActivityLogQuery(
-            status: [ActivityStatus.completed, ActivityStatus.ongoing],
-            startTime: startTime,
-            endTime: endTime));
+        .getLog(query: AccountLogQuery(startTime: startTime));
+    final organizationRes =
+        await ref.watch(adminOrganizationServiceProvider).getLog(
+                query: OrganizationLogQuery(
+              status: OrganizationStatus.verified,
+              startTime: startTime,
+            ));
+    final activityRes = await ref.watch(activityServiceProvider).getLog(
+            query: ActivityLogQuery(
+          status: [ActivityStatus.completed, ActivityStatus.ongoing],
+          startTime: startTime,
+        ));
+
+    DataLog accountData = arrangeMonthlyDataLog(
+        timeNow: DateTime(timeNow.year - 1, 12), data: accountRes);
+
+    DataLog organizationData = arrangeMonthlyDataLog(
+        timeNow: DateTime(timeNow.year - 1, 12), data: organizationRes);
+
+    DataLog activityData = arrangeMonthlyDataLog(
+        timeNow: DateTime(timeNow.year - 1, 12), data: activityRes);
 
     return AdminChartDataModel(
         account: accountData,
@@ -173,17 +194,81 @@ class AdminChartData extends _$AdminChartData {
   }
 
   Future<AdminChartDataModel> _getAllTime() async {
-    final accountData = await ref.watch(accountServiceProvider).getLog();
-    final organizationData = await ref
+    final timeNow = DateTime.now();
+    final accountRes = await ref.watch(accountServiceProvider).getLog();
+    final organizationRes = await ref
         .watch(adminOrganizationServiceProvider)
         .getLog(
             query: OrganizationLogQuery(status: OrganizationStatus.verified));
-    final activityData = await ref.watch(activityServiceProvider).getLog();
+    final activityRes = await ref.watch(activityServiceProvider).getLog(
+            query: ActivityLogQuery(
+          status: [ActivityStatus.completed, ActivityStatus.ongoing],
+        ));
+
+    int timeMin = timeNow.year;
+    for (var i in (accountRes.yearly + organizationRes.yearly + activityRes.yearly)) {
+      if (i.year < timeMin) {
+        timeMin = i.year;
+      }
+    }
+
+    final accountData =
+        arrangeYearlyDataLog(data: accountRes, timeNow: timeNow, timeMin: timeMin);
+
+    final organizationData =
+        arrangeYearlyDataLog(data: organizationRes, timeNow: timeNow, timeMin: timeMin);
+
+    final activityData =
+        arrangeYearlyDataLog(data: activityRes, timeNow: timeNow, timeMin: timeMin);
+
+
 
     return AdminChartDataModel(
         account: accountData,
         organization: organizationData,
         activity: activityData);
+  }
+
+  DataLog arrangeMonthlyDataLog({
+    required DateTime timeNow,
+    required DataLog data,
+  }) {
+    DataLog filtereddData = data.copyWith(
+        monthly: data.monthly.filter((t) => t.year == timeNow.year).toList());
+
+    DataLog dummyLog = DataLog(total: 0, monthly: [
+      for (var i = timeNow.month; i > 0; i--)
+        DataMonthlyLog(month: i, year: timeNow.year)
+    ]);
+
+    List<DataMonthlyLog> newList = filtereddData.monthly +
+        dummyLog.monthly
+            .where(
+                (a) => filtereddData.monthly.every((b) => a.month != b.month))
+            .toList();
+
+    newList.sort(((a, b) => a.month.compareTo(b.month)));
+
+    return filtereddData.copyWith(monthly: newList);
+  }
+
+  DataLog arrangeYearlyDataLog({
+    required DateTime timeNow,
+    required DataLog data,
+    required int timeMin,
+  }) {
+    DataLog dummyLog = DataLog(total: 0, yearly: [
+      for (var i = timeNow.year; i >= timeMin; i--) DataYearlyLog(year: i)
+    ]);
+
+    List<DataYearlyLog> newList = data.yearly +
+        dummyLog.yearly
+            .where((a) => data.yearly.every((b) => a.year != b.year))
+            .toList();
+
+    newList.sort(((a, b) => a.year.compareTo(b.year)));
+
+    return data.copyWith(yearly: newList);
   }
 }
 

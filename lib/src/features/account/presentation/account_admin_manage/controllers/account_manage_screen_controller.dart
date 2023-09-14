@@ -65,7 +65,7 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, AccountModel> {
             return accountRepository.getAll(
               query: AccountQuery(
                   limit: limit,
-                  offset: page * limit,
+                  // offset: page * limit,
                   email: searchPattern,
                   isBanned: tabStatus != 0,
                   isVerified: filterSelected ? verified : null),
@@ -78,9 +78,14 @@ class ScrollPagingControlNotifier extends PagedNotifier<int, AccountModel> {
 
 final scrollPagingControlNotifier = StateNotifierProvider.autoDispose
     .family<ScrollPagingControlNotifier, PagedState<int, AccountModel>, int>(
-        (ref, index) => ScrollPagingControlNotifier(
-            accountRepository: ref.watch(accountRepositoryProvider),
-            tabStatus: index,
-            searchPattern: ref.watch(searchPatternProvider),
-            filterSelected: ref.watch(filterSelectedProvider),
-            verified: ref.watch(verifiedProvider)));
+        (ref, index) {
+  final searchPattern = ref.watch(searchPatternProvider);
+  final filterSelected = ref.watch(filterSelectedProvider);
+  final verified = ref.watch(verifiedProvider);
+  return ScrollPagingControlNotifier(
+      accountRepository: ref.watch(accountRepositoryProvider),
+      tabStatus: index,
+      searchPattern: searchPattern,
+      filterSelected: filterSelected,
+      verified: verified);
+});

@@ -3,7 +3,10 @@ import 'package:integration_test/integration_test.dart';
 import 'package:the_helper/main.dart' as app;
 
 import 'search_activities.dart';
+import 'switch_role.dart';
 import 'sign_in_test.dart';
+import 'ban_activity.dart';
+import 'unban_activity.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +17,23 @@ void main() {
       await tester.pumpAndSettle();
       await signIn(tester);
       await searchActivities(tester);
+    });
+  });
+
+  group('admin-activities test', () {
+    testWidgets('ban activity', (tester) async {
+      app.main();
+      await tester.pumpAndSettle();
+      await signIn(tester);
+      await switchRole(tester);
+      await banActivity(tester);
+    });
+    testWidgets('unban activity', (tester) async {
+      app.main();
+      await tester.pumpAndSettle();
+      await signIn(tester);
+      await switchRole(tester);
+      await unbanActivity(tester);
     });
   });
 }

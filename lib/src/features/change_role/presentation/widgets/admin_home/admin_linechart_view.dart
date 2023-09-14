@@ -299,7 +299,7 @@ class _AdminLineChartViewState extends ConsumerState<AdminLineChartView> {
         ),
         const SizedBox(height: 15),
         chartData.when(
-            error: (_, __) => const CustomErrorWidget(),
+            error: (er, __)  {print(er); return const CustomErrorWidget();},
             loading: () => Expanded(
                   child: Center(
                     child: AdminDataHolder(

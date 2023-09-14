@@ -68,7 +68,7 @@ class CustomListItem extends ConsumerWidget {
                             height: 5,
                           ),
                           Text(
-                            data.description ?? '',
+                            data.description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),

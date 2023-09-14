@@ -32,7 +32,7 @@ class AccountList extends StatelessWidget {
           return BannedAccountListItem(data: item, tabIndex: tabIndex);
         }
       },
-      limit: 5,
+      // limit: 5,
       pullToRefresh: true,
       firstPageErrorIndicatorBuilder: (context, controller) =>
           CustomErrorWidget(
