@@ -4,8 +4,6 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/search_bar/river_debounce_search_bar.dart';
 import 'package:the_helper/src/features/news/domain/news_query.dart';
 import 'package:the_helper/src/features/news/presentation/news_list/controller/news_list_mod_controller.dart';
-import 'package:the_helper/src/features/news/presentation/news_list/widget/moderator/app_bar/news_status_filter.dart';
-import 'package:the_helper/src/features/news/presentation/news_list/widget/moderator/app_bar/news_type_filter.dart';
 
 class OrganizationNewsListAppBar extends ConsumerWidget {
   const OrganizationNewsListAppBar({super.key});
@@ -68,20 +66,6 @@ class OrganizationNewsListAppBar extends ConsumerWidget {
               ),
             ]
           : null,
-      bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(90),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              NewsStatusFilter(),
-              SizedBox(height: 8),
-              NewsTypeFilter(),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
