@@ -19,7 +19,7 @@ class SafeScreen extends ConsumerWidget {
         return const ErrorScreen();
       },
       loading: () => const SplashScreen(
-        enableIndicator: true,
+        enableIndicator: false,
       ),
     );
   }

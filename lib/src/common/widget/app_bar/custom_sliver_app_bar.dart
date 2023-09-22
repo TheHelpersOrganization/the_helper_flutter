@@ -33,8 +33,6 @@ class CustomSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      iconTheme: const IconThemeData(color: Colors.black),
-      backgroundColor: Colors.transparent,
       title: title ??
           (titleText == null
               ? null

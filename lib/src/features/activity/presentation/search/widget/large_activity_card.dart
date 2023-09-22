@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
@@ -25,12 +25,12 @@ class LargeActivityCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // print(activity);
+    final realWidth = width ?? context.mediaQuery.size.width * 0.7;
     return SizedBox(
-      width: width ?? context.mediaQuery.size.width * 0.7,
+      width: realWidth,
       height: height ?? 385,
       child: Card(
-        clipBehavior: Clip.hardEdge,
+        //clipBehavior: Clip.hardEdge,
         child: InkWell(
           onTap: () {
             context.pushNamed(AppRoute.activity.name, pathParameters: {
@@ -48,12 +48,14 @@ class LargeActivityCard extends ConsumerWidget {
                     child: activity.thumbnail != null
                         ? CachedNetworkImage(
                             imageUrl: getImageUrl(activity.thumbnail!),
-                            width: context.mediaQuery.size.width * 0.7,
+                            width: realWidth,
+                            memCacheWidth: realWidth.toInt(),
+                            memCacheHeight: 150,
                             fit: BoxFit.cover,
                           )
                         : SvgPicture.asset(
                             'assets/images/role_volunteer.svg',
-                            width: context.mediaQuery.size.width * 0.7,
+                            width: realWidth,
                             fit: BoxFit.cover,
                           ),
                   ),

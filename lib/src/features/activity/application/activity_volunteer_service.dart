@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:the_helper/src/features/activity/data/activity_volunteer_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
+import 'package:the_helper/src/features/activity/domain/activity_volunteer_query.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
-import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/utils/dio.dart';
 
 part 'activity_volunteer_service.g.dart';
@@ -19,24 +19,12 @@ class ActivityVolunteerService {
     required this.profileRepository,
   });
 
-  Future<List<ActivityVolunteer>> getActivityVolunteers(
-      {required int activityId}) async {
+  Future<List<ActivityVolunteer>> getActivityVolunteers({
+    ActivityVolunteerQuery? query,
+  }) async {
     List<ActivityVolunteer> activityVolunteers =
-        await activityVolunteerRepository.getActivityVolunteers(
-            activityId: activityId);
-    List<Profile> profiles = await Future.wait(
-      activityVolunteers.map(
-        (e) async => await profileRepository.getProfileById(
-          e.accountId,
-        ),
-      ),
-    );
-
-    List<ActivityVolunteer> res = [];
-    for (int i = 0; i < activityVolunteers.length; i++) {
-      res.add(activityVolunteers[i].copyWith(profile: profiles[i]));
-    }
-    return res;
+        await activityVolunteerRepository.getActivityVolunteers(query: query);
+    return activityVolunteers;
   }
 }
 

@@ -18,6 +18,7 @@ class ActivityVolunteer with _$ActivityVolunteer {
   @JsonSerializable(includeIfNull: false)
   factory ActivityVolunteer({
     int? id,
+    int? activityId,
     required int shiftId,
     required int accountId,
     required ActivityVolunteerStatus status,

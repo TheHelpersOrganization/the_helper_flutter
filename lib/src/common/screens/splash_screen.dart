@@ -20,6 +20,8 @@ class SplashScreen extends StatelessWidget {
               'assets/images/logo.png',
               width: 128,
               height: 128,
+              cacheHeight: 128,
+              cacheWidth: 128,
               gaplessPlayback: true,
             ),
             enableIndicator
