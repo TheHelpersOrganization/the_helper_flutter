@@ -8,7 +8,8 @@ class AppDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Theme.of(context).canvasColor,
       padding: const EdgeInsets.only(
         top: 12,
         bottom: 12,
