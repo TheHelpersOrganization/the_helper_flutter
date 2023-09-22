@@ -44,6 +44,7 @@ class ActivityCardFooter extends StatelessWidget {
 
 class CustomAvatarStack extends StatelessWidget {
   final List<ActivityVolunteer> volunteers;
+
   const CustomAvatarStack({
     super.key,
     required this.volunteers,
@@ -59,9 +60,19 @@ class CustomAvatarStack extends StatelessWidget {
     return AvatarStack(
       height: 36,
       avatars: avatarIds
-          .map((avatarId) => avatarId == null
-              ? Image.asset('assets/images/logo.png').image
-              : Image.network(getImageUrl(avatarId)).image)
+          .map(
+            (avatarId) => avatarId == null
+                ? Image.asset(
+                    'assets/images/logo.png',
+                    cacheWidth: 36,
+                    cacheHeight: 36,
+                  ).image
+                : Image.network(
+                    getImageUrl(avatarId),
+                    cacheWidth: 36,
+                    cacheHeight: 36,
+                  ).image,
+          )
           .toList(),
     );
   }
