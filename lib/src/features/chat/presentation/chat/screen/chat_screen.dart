@@ -16,7 +16,9 @@ import 'package:the_helper/src/features/chat/domain/chat.dart';
 import 'package:the_helper/src/features/chat/domain/chat_message.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/group_chat_controller.dart';
+import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_block_alert.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_bar.dart';
+import 'package:the_helper/src/features/chat/presentation/chat/widget/chat_message_card.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_group_edit/screen/chat_group_edit_screen.dart';
 import 'package:the_helper/src/features/chat/presentation/chat_group_participant/screen/chat_group_participant_screen.dart';
 import 'package:the_helper/src/features/chat/presentation/common/widget/chat_avatar.dart';
@@ -340,99 +342,119 @@ class ChatScreen extends ConsumerWidget {
             final myProfile =
                 chat.participants?.firstWhere((e) => e.id == myId);
 
-            return Padding(
-              padding: const EdgeInsets.all(12),
-              child: RiverPagedBuilder<int, ChatMessage>.autoDispose(
-                firstPageKey: 0,
-                provider: chatMessageListPagedNotifierProvider(chatId),
-                pagedBuilder: (controller, builder) => PagedListView(
-                  reverse: true,
-                  pagingController: controller,
-                  builderDelegate: builder,
-                  scrollController: scrollController,
-                ),
-                itemBuilder: (context, chatMessage, index) {
-                  final isMe = chatMessage.sender == myProfile!.participantId;
-                  final previous = index == 0
-                      ? null
-                      : chatListState.records?.elementAtOrNull(index - 1);
-                  final previousIsNotMe =
-                      previous?.sender != chatMessage.sender;
+            return Column(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: RiverPagedBuilder<int, ChatMessage>.autoDispose(
+                      firstPageKey: 0,
+                      provider: chatMessageListPagedNotifierProvider(chatId),
+                      pagedBuilder: (controller, builder) => PagedListView(
+                        reverse: true,
+                        pagingController: controller,
+                        builderDelegate: builder,
+                        scrollController: scrollController,
+                      ),
+                      itemBuilder: (context, chatMessage, index) {
+                        final isMe =
+                            chatMessage.sender == myProfile!.participantId;
+                        final previous = index == 0
+                            ? null
+                            : chatListState.records?.elementAtOrNull(index - 1);
+                        final previousIsNotMe =
+                            previous?.sender != chatMessage.sender;
 
-                  final widget = Padding(
-                    padding: EdgeInsets.only(
-                      bottom: previousIsNotMe ? 36 : 4,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: isMe
-                          ? MainAxisAlignment.end
-                          : MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        if (!isMe)
-                          if (previousIsNotMe)
-                            getBackendCircleAvatarOrCharacter(
-                              otherProfile?.avatarId,
-                              getChatParticipantName(otherProfile),
-                              radius: 18,
-                            )
-                          else
-                            const SizedBox(width: 36),
-                        Card(
-                          color: isMe ? context.theme.primaryColor : null,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 16,
+                        final widget = Padding(
+                          padding: EdgeInsets.only(
+                            bottom: previousIsNotMe ? 36 : 4,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth:
-                                    MediaQuery.of(context).size.width * 0.6,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: isMe
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if (!isMe)
+                                if (previousIsNotMe)
+                                  getBackendCircleAvatarOrCharacter(
+                                    otherProfile?.avatarId,
+                                    getChatParticipantName(otherProfile),
+                                    radius: 18,
+                                  )
+                                else
+                                  const SizedBox(width: 36),
+                              ChatMessageCard(
+                                chatMessage: chatMessage,
+                                color: isMe ? context.theme.primaryColor : null,
+                                textColor: isMe ? Colors.white : null,
                               ),
-                              child: SelectableText(
-                                chatMessage.message,
-                                //overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                  color: isMe ? Colors.white : null,
-                                ),
-                              ),
-                            ),
+                              if (isMe)
+                                if (previousIsNotMe)
+                                  getBackendCircleAvatarOrCharacter(
+                                    myProfile.avatarId,
+                                    getChatParticipantName(myProfile),
+                                    radius: 18,
+                                  )
+                                else
+                                  const SizedBox(width: 36),
+                            ],
                           ),
+                        );
+
+                        return widget;
+                      },
+                      limit: 20,
+                      pullToRefresh: true,
+                      firstPageErrorIndicatorBuilder: (context, controller) =>
+                          CustomErrorWidget(
+                        onRetry: () => controller.retryLastFailedRequest(),
+                      ),
+                      newPageErrorIndicatorBuilder: (context, controller) =>
+                          CustomErrorWidget(
+                        onRetry: () => controller.retryLastFailedRequest(),
+                      ),
+                      noItemsFoundIndicatorBuilder: (context, _) => const Align(
+                        alignment: Alignment.bottomCenter,
+                        child: NoDataFound.simple(
+                          contentSubtitle:
+                              'Send the first message to start the chat',
                         ),
-                        if (isMe)
-                          if (previousIsNotMe)
-                            getBackendCircleAvatarOrCharacter(
-                              myProfile.avatarId,
-                              getChatParticipantName(myProfile),
-                              radius: 18,
-                            )
-                          else
-                            const SizedBox(width: 36),
-                      ],
+                      ),
                     ),
-                  );
-
-                  return widget;
-                },
-                limit: 20,
-                pullToRefresh: true,
-                firstPageErrorIndicatorBuilder: (context, controller) =>
-                    CustomErrorWidget(
-                  onRetry: () => controller.retryLastFailedRequest(),
-                ),
-                newPageErrorIndicatorBuilder: (context, controller) =>
-                    CustomErrorWidget(
-                  onRetry: () => controller.retryLastFailedRequest(),
-                ),
-                noItemsFoundIndicatorBuilder: (context, _) => const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: NoDataFound.simple(
-                    contentSubtitle: 'Send the first message to start the chat',
                   ),
                 ),
-              ),
+                chatControllerState.maybeWhen(
+                  orElse: () => const SizedBox.shrink(),
+                  data: (_) {
+                    final chat = chatDataState.asData?.value;
+                    final socket = chatSocketState.asData?.value;
+                    if (chat == null || socket == null) {
+                      return const SizedBox.shrink();
+                    }
+                    final otherProfile =
+                        chat.participants!.firstWhere((e) => e.id != myId);
+                    final otherName = getChatParticipantName(otherProfile);
+                    if (chat.isBlocked) {
+                      return ChatBlockAlert(
+                        chat: chat,
+                        myId: myId,
+                        onUnblock: () {
+                          showUnblockDialog(
+                            context: context,
+                            targetName: otherName,
+                            controller: ref.read(
+                              unblockChatControllerProvider.notifier,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return ChatMessageBar(chatId: chatId);
+                  },
+                ),
+              ],
             );
           },
           error: (_, __) => Center(
@@ -443,60 +465,6 @@ class ChatScreen extends ConsumerWidget {
           loading: () => const Center(
             child: CircularProgressIndicator(),
           ),
-        ),
-        bottomNavigationBar: chatControllerState.maybeWhen(
-          orElse: () => null,
-          data: (_) {
-            final chat = chatDataState.asData?.value;
-            final socket = chatSocketState.asData?.value;
-            if (chat == null || socket == null) {
-              return null;
-            }
-            final otherProfile =
-                chat.participants!.firstWhere((e) => e.id != myId);
-            final otherName = getChatParticipantName(otherProfile);
-            if (chat.isBlocked) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Text(
-                      chat.blockedBy == myId
-                          ? 'You have blocked this user. Unblock to send messages.'
-                          : 'You have been blocked. You cannot send messages to this user.',
-                      style: TextStyle(
-                        color: context.theme.colorScheme.error,
-                      ),
-                    ),
-                  ),
-                  if (chat.blockedBy == myId)
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                        bottom: 12,
-                      ),
-                      child: OutlinedButton(
-                        onPressed: () {
-                          showUnblockDialog(
-                            context: context,
-                            targetName: otherName,
-                            controller: ref.read(
-                              unblockChatControllerProvider.notifier,
-                            ),
-                          );
-                        },
-                        child: const Text('Unblock'),
-                      ),
-                    ),
-                ],
-              );
-            }
-            return ChatMessageBar(chatId: chatId);
-          },
         ),
       ),
     );

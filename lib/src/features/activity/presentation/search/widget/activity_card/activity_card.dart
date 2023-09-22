@@ -1,16 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/router/router.dart';
+import 'package:the_helper/src/utils/cache_provider.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 import 'package:the_helper/src/utils/location.dart';
 
-class ActivityCard extends StatelessWidget {
+class ActivityCard extends ConsumerWidget {
   final Activity activity;
   final double? height;
   final VoidCallback? onTap;
@@ -23,7 +25,7 @@ class ActivityCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final dateTime = activity.startTime;
     String slots = activity.joinedParticipants.toString();
     if (activity.maxParticipants != null) {
@@ -60,6 +62,7 @@ class ActivityCard extends StatelessWidget {
                         errorWidget: (context, error, stackTrace) =>
                             SvgPicture.asset(
                                 'assets/images/role_volunteer.svg'),
+                        cacheManager: ref.read(cacheManagerProvider),
                       )
                     : SvgPicture.asset(
                         'assets/images/role_volunteer.svg',

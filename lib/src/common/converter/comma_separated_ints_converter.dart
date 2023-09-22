@@ -20,3 +20,18 @@ class CommaSeparatedIntsConverter
     return object.join(',');
   }
 }
+
+class NonNullCommaSeparatedIntsConverter
+    implements JsonConverter<List<int>, String> {
+  const NonNullCommaSeparatedIntsConverter();
+
+  @override
+  fromJson(String json) {
+    return json.split(',').map((e) => int.parse(e)).toList();
+  }
+
+  @override
+  toJson(List<int> object) {
+    return object.join(',');
+  }
+}
