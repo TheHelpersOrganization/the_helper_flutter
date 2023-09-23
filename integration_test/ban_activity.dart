@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -6,7 +5,6 @@ import 'package:the_helper/src/common/widget/bottom_sheet/custom_modal_botton_sh
 import 'package:the_helper/src/common/widget/label.dart';
 import 'package:the_helper/src/features/activity/presentation/admin_manage/screens/activity_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/admin_manage/widgets/activity_list_item.dart';
-import 'utils.dart';
 
 Future<void> banActivity(WidgetTester tester) async {
   // home

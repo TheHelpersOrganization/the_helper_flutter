@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:the_helper/src/features/activity/domain/activity_me.dart';
-import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
 import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 
 import 'activity_status.dart';
@@ -31,7 +31,7 @@ class Activity with _$Activity {
     int? maxParticipants,
     int? joinedParticipants,
     Organization? organization,
-    List<ActivityVolunteer>? volunteers,
+    List<ShiftVolunteer>? volunteers,
     List<Skill>? skills,
     ActivityMe? me,
   }) = _Activity;

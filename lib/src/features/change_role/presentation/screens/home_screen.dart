@@ -72,7 +72,7 @@ class HomeScreen extends ConsumerWidget {
             drawer: const AppDrawer(),
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverAppBar(),
+                const SliverAppBar(),
                 // CustomSliverAppBar(
                 //   title: Row(
                 //     mainAxisAlignment: MainAxisAlignment.center,

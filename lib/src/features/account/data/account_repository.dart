@@ -34,7 +34,7 @@ class AccountRepository {
     final query = AccountQuery(ids: [id]);
     final List<dynamic> res = (await client.get(
       '/admin/accounts',
-      queryParameters: query?.toJson(),
+      queryParameters: query.toJson(),
     ))
         .data['data'];
     return res.map((e) => AccountModel.fromJson(e)).toList().first;

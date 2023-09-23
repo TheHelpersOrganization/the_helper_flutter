@@ -7,10 +7,12 @@ import 'package:the_helper/src/features/activity/data/activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_include.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
-import 'package:the_helper/src/features/activity/domain/activity_volunteer_query.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization/domain/organization_query.dart';
+import 'package:the_helper/src/features/shift/application/mod_shift_volunteer_service.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer_query.dart';
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
@@ -25,6 +27,7 @@ class ActivityService {
   final ActivityRepository activityRepository;
   final ActivityVolunteerService activityVolunteerService;
   final SkillRepository skillRepository;
+  final ModShiftVolunteerService shiftService;
 
   const ActivityService({
     required this.client,
@@ -32,6 +35,7 @@ class ActivityService {
     required this.activityRepository,
     required this.activityVolunteerService,
     required this.skillRepository,
+    required this.shiftService,
   });
 
   Future<List<Activity>> getSuggestedActivities({
@@ -56,22 +60,19 @@ class ActivityService {
           .toList();
     }
     if (include?.volunteers == true) {
-      final volunteers = await activityVolunteerService.getActivityVolunteers(
-        query: ActivityVolunteerQuery(
-          activityId: activities.map((e) => e.id!).toList(),
-          include: [
-            ActivityVolunteerQueryInclude.profile,
-          ],
-          limitPerActivity: 7,
-        ),
-      );
+      List<ShiftVolunteer> volunteers = [];
+      for (var i in activities) {
+        final res = await shiftService.getShiftVolunteers(
+            query: ShiftVolunteerQuery(activityId: i.id));
+
+        res.map((e) => volunteers.add(e.copyWith(activityId: i.id)));
+      }
 
       activities = activities
           .mapIndexed((index, element) => element.copyWith(
-                volunteers: volunteers
-                    .where((v) => v.activityId! == element.id)
-                    .toList(),
-              ))
+              volunteers: volunteers
+                  .where((v) => v.activityId! == element.id)
+                  .toList()))
           .toList();
     }
     return activities;
@@ -100,22 +101,19 @@ class ActivityService {
     }
 
     if (include?.volunteers == true) {
-      final volunteers = await activityVolunteerService.getActivityVolunteers(
-        query: ActivityVolunteerQuery(
-          activityId: activities.map((e) => e.id!).toList(),
-          limitPerActivity: 7,
-          include: [
-            ActivityVolunteerQueryInclude.profile,
-          ],
-        ),
-      );
+      List<ShiftVolunteer> volunteers = [];
+      for (var i in activities) {
+        final res = await shiftService.getShiftVolunteers(
+            query: ShiftVolunteerQuery(activityId: i.id));
+
+        res.map((e) => volunteers.add(e.copyWith(activityId: i.id)));
+      }
 
       activities = activities
           .mapIndexed((index, element) => element.copyWith(
-                volunteers: volunteers
-                    .where((v) => v.activityId! == element.id)
-                    .toList(),
-              ))
+              volunteers: volunteers
+                  .where((v) => v.activityId! == element.id)
+                  .toList()))
           .toList();
     }
 
@@ -155,10 +153,10 @@ class ActivityService {
 @riverpod
 ActivityService activityService(ActivityServiceRef ref) {
   return ActivityService(
-    client: ref.watch(dioProvider),
-    organizationRepository: ref.watch(organizationRepositoryProvider),
-    activityRepository: ref.watch(activityRepositoryProvider),
-    activityVolunteerService: ref.watch(activityVolunteerServiceProvider),
-    skillRepository: ref.watch(skillRepositoryProvider),
-  );
+      client: ref.watch(dioProvider),
+      organizationRepository: ref.watch(organizationRepositoryProvider),
+      activityRepository: ref.watch(activityRepositoryProvider),
+      activityVolunteerService: ref.watch(activityVolunteerServiceProvider),
+      skillRepository: ref.watch(skillRepositoryProvider),
+      shiftService: ref.watch(modShiftVolunteerServiceProvider));
 }

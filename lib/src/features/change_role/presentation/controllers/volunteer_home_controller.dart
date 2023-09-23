@@ -43,12 +43,11 @@ final upcomingActivitiesProvider =
             DateTime.now().add(const Duration(days: 7))
           ],
         ),
-        // include: ActivityInclude(
-        //   organization: true,
-        //   volunteers: true,
-        // ),
+        include: ActivityInclude(
+          organization: true,
+          volunteers: true,
+        ),
       );
-  print(res);
   return res;
 });
 

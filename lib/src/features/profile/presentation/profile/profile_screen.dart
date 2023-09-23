@@ -2,7 +2,6 @@ import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
 import 'package:the_helper/src/common/extension/image.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
