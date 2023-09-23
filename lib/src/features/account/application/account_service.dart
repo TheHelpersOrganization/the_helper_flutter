@@ -32,6 +32,13 @@ class AccountService {
     return accounts;
   }
 
+  Future<AccountModel> getById({
+    required int id,
+  }) async {
+    final accounts = await accountRepository.getById(id);
+    return accounts;
+  }
+
   Future<DataLog> getLog({
     AccountLogQuery? query,
   }) async {

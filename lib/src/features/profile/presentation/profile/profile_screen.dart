@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
 import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
@@ -33,7 +34,7 @@ class ProfileScreen extends ConsumerWidget {
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
-      error: (error, __) => Text('Error: $error'),
+      error: (error, __) => const ErrorScreen(),
       data: (profile) {
         return Scaffold(
           drawer: const AppDrawer(),
@@ -72,8 +73,9 @@ class ProfileScreen extends ConsumerWidget {
                         context),
                     sliver: SliverPersistentHeader(
                       pinned: true,
-                      delegate: TabBarDelegate(
+                      delegate: _TabBarDelegate(
                         tabBar: const TabBar(
+                          isScrollable: true,
                           tabs: [
                             Tab(
                               text: 'Overview',
@@ -82,7 +84,7 @@ class ProfileScreen extends ConsumerWidget {
                               text: 'Activity',
                             ),
                             Tab(
-                              text: 'Organization',
+                              text: 'Organizations',
                             ),
                             Tab(
                               text: 'Contact',
@@ -105,48 +107,6 @@ class ProfileScreen extends ConsumerWidget {
                   ProfileContactsTab(contacts: contacts),
                 ],
               ),
-              // body: Column(
-              //   children: [
-              //     Material(
-              //       color: Theme.of(context).colorScheme.surface,
-              //       child: TabBar(
-              //         labelColor: Theme.of(context).colorScheme.primary,
-              //         unselectedLabelColor:
-              //             Theme.of(context).colorScheme.onSurfaceVariant,
-              //         indicatorColor: Theme.of(context).colorScheme.primary,
-              //         // indicatorWeight: 1,
-              //         tabs: const [
-              //           Tab(
-              //             text: 'Overview',
-              //           ),
-              //           Tab(
-              //             text: 'Activites',
-              //           ),
-              //           Tab(
-              //             text: 'Organizatons',
-              //           ),
-              //           Tab(
-              //             text: 'Detail',
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //     Expanded(
-              //       child: TabBarView(
-              //         children: [
-              //           ProfileOverview(
-              //             skills: profile.skills,
-              //             interestedList: profile.interestedSkills,
-              //           ),
-              //           const Scaffold(body: Center(child: Text('activities'))),
-              //           const Scaffold(
-              //               body: Center(child: Text('Organizations'))),
-              //           const Scaffold(body: Center(child: Text('Detail'))),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ),
           ),
         );
@@ -159,10 +119,10 @@ class ProfileScreen extends ConsumerWidget {
     return Column(
       children: [
         Container(
-          height: 300,
+          height: 150,
           decoration: BoxDecoration(
             border: Border.all(
-              width: 8,
+              width: 4,
               color: Theme.of(context).primaryColor,
             ),
             shape: BoxShape.circle,
@@ -179,9 +139,12 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
         // TODO: Should replace when reimplement profileService
-        Text(
-          profile.username!,
-          style: Theme.of(context).textTheme.displayLarge,
+        Padding(
+          padding: const EdgeInsets.only(top: 24),
+          child: Text(
+            profile.username!,
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
         ),
         ProfileVerifiedStatus(
           verified: account.isAccountVerified,
@@ -212,5 +175,32 @@ class ProfileScreen extends ConsumerWidget {
         )
       ],
     );
+  }
+}
+
+class _TabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
+
+  _TabBarDelegate({
+    required this.tabBar,
+  });
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => kMinInteractiveDimension;
+
+  @override
+  double get minExtent => kMinInteractiveDimension;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }

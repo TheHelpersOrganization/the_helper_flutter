@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/image.dart';
+import 'package:the_helper/src/common/screens/error_screen.dart';
+import 'package:the_helper/src/common/widget/error_widget.dart';
+import 'package:the_helper/src/features/account/application/account_service.dart';
+import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/chat/domain/create_chat.dart';
@@ -19,6 +23,7 @@ import './profile_verified_status.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
 import 'profile_overview_tab.dart';
+import 'profile_verified_controller.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
@@ -32,7 +37,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider(id: userId));
     final orgs = ref.watch(profileOrganizationControllerProvider);
-    final account = ref.watch(authServiceProvider).value!.account;
+    final account = ref.watch(profileVerifiedControllerProvider(userId));
     final createChatState = ref.watch(createChatControllerProvider);
     // final profile = profileService.getProfile();
     return profile.when(
@@ -41,11 +46,8 @@ class OtherUserProfileScreen extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (error, __) => Scaffold(
-        body: Text('Error: $error'),
-      ),
+      error: (error, __) => const ErrorScreen(),
       data: (profile) {
-        print(profile);
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -149,7 +151,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
   Widget _profileHeaderWidget(
     BuildContext context,
     Profile profile,
-    Account account,
+    AsyncValue<AccountModel> account,
     VoidCallback? onChatButtonPressed,
   ) {
     return Column(
@@ -182,9 +184,12 @@ class OtherUserProfileScreen extends ConsumerWidget {
             style: Theme.of(context).textTheme.displaySmall,
           ),
         ),
-        ProfileVerifiedStatus(
-          verified: account.isAccountVerified,
-        ),
+        account.when(
+          loading: () => const SizedBox(),
+          error: (_, __) => const CustomErrorWidget(),
+          data: (data) => ProfileVerifiedStatus(
+          verified: data.isAccountVerified,
+        )),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Wrap(

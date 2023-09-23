@@ -31,8 +31,13 @@ class AccountRepository {
   }
 
   Future<AccountModel> getById(int id) async {
-    final res = await client.get('/something/$id');
-    return AccountModel.fromJson(res.data['data']);
+    final query = AccountQuery(ids: [id]);
+    final List<dynamic> res = (await client.get(
+      '/admin/accounts',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => AccountModel.fromJson(e)).toList().first;
   }
 
   Future<void> create(AccountModel account) async {
