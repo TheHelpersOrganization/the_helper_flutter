@@ -238,9 +238,9 @@ class VolunteerView extends ConsumerWidget {
                     itemHeight: 380,
                   ),
                   error: (_, __) {
-                    print(__);
-                    print(_);
-                    return const ErrorScreen();
+                    // print(__);
+                    // print(_);
+                    return const CustomErrorWidget();
                   },
                   data: (upcomingActivities) => upcomingActivities.isEmpty
                       ? Center(

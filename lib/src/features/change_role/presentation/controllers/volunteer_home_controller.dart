@@ -33,8 +33,9 @@ final suggestedActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
       ),
 );
 
-final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
-  (ref) => ref.watch(activityServiceProvider).getActivities(
+final upcomingActivitiesProvider =
+    FutureProvider.autoDispose<List<Activity>>((ref) async {
+  final res = await ref.watch(activityServiceProvider).getActivities(
         query: ActivityQuery(
           limit: 5,
           startTime: [
@@ -42,12 +43,14 @@ final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>(
             DateTime.now().add(const Duration(days: 7))
           ],
         ),
-        include: ActivityInclude(
-          organization: true,
-          volunteers: true,
-        ),
-      ),
-);
+        // include: ActivityInclude(
+        //   organization: true,
+        //   volunteers: true,
+        // ),
+      );
+  print(res);
+  return res;
+});
 
 final volunteerShiftProvider = FutureProvider.autoDispose<List<Shift>>(
   (ref) => ref.watch(shiftRepositoryProvider).getShifts(
