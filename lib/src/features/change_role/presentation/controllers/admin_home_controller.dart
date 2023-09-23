@@ -59,12 +59,14 @@ class AdminChartDataModel {
 class AdminRankingDataModel {
   final List<AccountAnalyticModel>? account;
   final List<OrganizationAnalyticModel>? organization;
-  final List<ActivityAnalyticModel>? activity;
+  final List<ActivityAnalyticModel>? activityByJoined;
+  final List<ActivityAnalyticModel>? activityByRating;
 
   AdminRankingDataModel({
     this.account,
     this.organization,
-    this.activity,
+    this.activityByJoined,
+    this.activityByRating,
   });
 }
 
@@ -74,6 +76,8 @@ final isOrganizationLineSeenProvider =
     StateProvider.autoDispose<bool>((ref) => true);
 final isActivityLineSeenProvider =
     StateProvider.autoDispose<bool>((ref) => true);
+final showToolTip = StateProvider.autoDispose<int>((ref) => -1);
+final sortByTrending = StateProvider.autoDispose<bool>((ref) => false);
 
 @riverpod
 class AdminHomeData extends _$AdminHomeData {
@@ -206,22 +210,21 @@ class AdminChartData extends _$AdminChartData {
         ));
 
     int timeMin = timeNow.year;
-    for (var i in (accountRes.yearly + organizationRes.yearly + activityRes.yearly)) {
+    for (var i
+        in (accountRes.yearly + organizationRes.yearly + activityRes.yearly)) {
       if (i.year < timeMin) {
         timeMin = i.year;
       }
     }
 
-    final accountData =
-        arrangeYearlyDataLog(data: accountRes, timeNow: timeNow, timeMin: timeMin);
+    final accountData = arrangeYearlyDataLog(
+        data: accountRes, timeNow: timeNow, timeMin: timeMin);
 
-    final organizationData =
-        arrangeYearlyDataLog(data: organizationRes, timeNow: timeNow, timeMin: timeMin);
+    final organizationData = arrangeYearlyDataLog(
+        data: organizationRes, timeNow: timeNow, timeMin: timeMin);
 
-    final activityData =
-        arrangeYearlyDataLog(data: activityRes, timeNow: timeNow, timeMin: timeMin);
-
-
+    final activityData = arrangeYearlyDataLog(
+        data: activityRes, timeNow: timeNow, timeMin: timeMin);
 
     return AdminChartDataModel(
         account: accountData,
@@ -281,7 +284,8 @@ class AdminRankingData extends _$AdminRankingData {
 
   Future<AdminRankingDataModel> _fetchData(int filter) async {
     final adminRankingRepo = ref.watch(adminAnalyticRepositoryProvider);
-    List<ActivityAnalyticModel> tempList = [];
+    List<ActivityAnalyticModel> tempList0 = [];
+    List<ActivityAnalyticModel> tempList1 = [];
     const query = RankQuery();
 
     final accountData = filter == 0
@@ -290,23 +294,36 @@ class AdminRankingData extends _$AdminRankingData {
     final organizationData = filter == 1
         ? await adminRankingRepo.getOrganizationsRank(query: query)
         : null;
-    List<ActivityAnalyticModel> activityData = filter == 2
-        ? await adminRankingRepo.getActivitiesRank(query: query)
+    List<ActivityAnalyticModel> activityDataByJoined = filter == 2
+        ? await adminRankingRepo.getActivitiesRankByJoined(query: query)
+        : [];
+    List<ActivityAnalyticModel> activityDataByRating = filter == 3
+        ? await adminRankingRepo.getActivitiesRankByRating(query: query)
         : [];
 
-    for (var i in activityData) {
+    for (var i in activityDataByJoined) {
       final orgData = await ref
           .watch(organizationRepositoryProvider)
           .getById(i.organizationId!);
-      tempList.add(i.copyWith(
+      tempList0.add(i.copyWith(
           organizationLogo: orgData.logo, organizationName: orgData.name));
     }
 
-    activityData = tempList;
+    activityDataByJoined = tempList0;
+
+    for (var i in activityDataByRating) {
+      final orgData = await ref
+          .watch(organizationRepositoryProvider)
+          .getById(i.organizationId!);
+      tempList1.add(i.copyWith(
+          organizationLogo: orgData.logo, organizationName: orgData.name));
+    }
+    activityDataByRating = tempList1;
 
     return AdminRankingDataModel(
         account: accountData,
         organization: organizationData,
-        activity: activityData);
+        activityByJoined: activityDataByJoined,
+        activityByRating: activityDataByRating);
   }
 }

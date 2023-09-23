@@ -1,7 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../controllers/admin_home_controller.dart';
 
-class AdminLineChart extends StatelessWidget {
+class AdminLineChart extends ConsumerWidget {
   const AdminLineChart(
       {super.key,
       required this.lineData,
@@ -17,7 +19,15 @@ class AdminLineChart extends StatelessWidget {
   final int filterValue;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final toolTipIndex = ref.watch(showToolTip);
+    final newLineData = lineData.map(
+      (e) {
+        return e.copyWith(
+            showingIndicators: toolTipIndex != -1 ? [toolTipIndex] : []);
+      },
+    ).toList();
+
     return LineChart(
         duration: const Duration(milliseconds: 250),
         LineChartData(
@@ -26,6 +36,14 @@ class AdminLineChart extends StatelessWidget {
             minY: 0,
             maxY: chartMaxY,
             titlesData: LineTitles.getTitleData(chartMaxY, filterValue),
+            showingTooltipIndicators: [
+              if (toolTipIndex != -1)
+                ShowingTooltipIndicators([
+                  LineBarSpot(lineData[0], 0, lineData[0].spots[toolTipIndex]),
+                  LineBarSpot(lineData[1], 0, lineData[1].spots[toolTipIndex]),
+                  LineBarSpot(lineData[2], 0, lineData[2].spots[toolTipIndex])
+                ])
+            ],
             borderData: FlBorderData(
                 show: true,
                 border: const Border(
@@ -35,13 +53,28 @@ class AdminLineChart extends StatelessWidget {
                   ),
                 )),
             lineTouchData: LineTouchData(
-                touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Colors.black.withOpacity(0.6),
-            )),
+              touchTooltipData: LineTouchTooltipData(
+                tooltipBgColor: Colors.black.withOpacity(0.6),
+              ),
+              handleBuiltInTouches: false,
+              touchCallback: (event, response) {
+                if (response != null &&
+                    response.lineBarSpots != null &&
+                    event is FlTapUpEvent) {
+                  final x = response.lineBarSpots!.first.spotIndex;
+                  final isShowing = toolTipIndex == x;
+                  if (isShowing) {
+                    ref.read(showToolTip.notifier).state = -1;
+                  } else {
+                    ref.read(showToolTip.notifier).state = x;
+                  }
+                }
+              },
+            ),
             clipData: chartMinX != null
                 ? const FlClipData.horizontal()
                 : const FlClipData.none(),
-            lineBarsData: lineData));
+            lineBarsData: newLineData));
   }
 }
 
@@ -50,8 +83,7 @@ class LineTitles {
         show: true,
         rightTitles: AxisTitles(
           sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (_, __) => const Text('')),
+              showTitles: true, getTitlesWidget: (_, __) => const Text('')),
         ),
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),

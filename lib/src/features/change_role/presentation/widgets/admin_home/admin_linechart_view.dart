@@ -187,6 +187,7 @@ class _AdminLineChartViewState extends ConsumerState<AdminLineChartView> {
     final showAccount = ref.watch(isAccountLineSeenProvider);
     final showOrganization = ref.watch(isOrganizationLineSeenProvider);
     final showActivity = ref.watch(isActivityLineSeenProvider);
+    final showingToolTip = ref.watch(showToolTip);
 
     return Column(
       children: [

@@ -5,15 +5,15 @@ import 'package:the_helper/src/features/admin_analytic/domain/activity_analytic_
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-class ActivityRankingItem extends StatelessWidget {
+class ActivityRankingByRatingItem extends StatelessWidget {
   final ActivityAnalyticModel data;
 
-  const ActivityRankingItem({super.key, required this.data});
+  const ActivityRankingByRatingItem({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     var f = NumberFormat.compact(locale: "en_US");
-    final joined = f.format(data.joinedParticipants!);
+    final ratingCount = f.format(data.ratingCount!);
     return Flexible(
       flex: 1,
       child: Padding(
@@ -66,17 +66,34 @@ class ActivityRankingItem extends StatelessWidget {
                                       getImageUrl(data.organizationLogo!)),
                             ),
                           ),
-                          Text(data.organizationName ?? 'Unknow'),
+                          Expanded(
+                            child: Text(
+                              data.organizationName ?? 'Unknow',
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                Text(
-                  '$joined participants',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.green, fontWeight: FontWeight.bold),
-                ),
+                Column(mainAxisSize: MainAxisSize.min, children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        data.rating.toString(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(width: 3,),
+                      const Icon(Icons.star,color: Colors.grey),
+                    ],
+                  ),
+                  Text(
+                    '$ratingCount reviews',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  )
+                ])
               ],
             ),
           )),

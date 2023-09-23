@@ -37,11 +37,22 @@ class AdminAnalyticRepository {
     return res.map((e) => OrganizationAnalyticModel.fromJson(e)).toList();
   }
 
-  Future<List<ActivityAnalyticModel>> getActivitiesRank({
+  Future<List<ActivityAnalyticModel>> getActivitiesRankByJoined({
     RankQuery? query,
   }) async {
     final List<dynamic> res = (await client.get(
       '/analytics/rankings/activities',
+      queryParameters: query?.toJson(),
+    ))
+        .data['data'];
+    return res.map((e) => ActivityAnalyticModel.fromJson(e)).toList();
+  }
+
+  Future<List<ActivityAnalyticModel>> getActivitiesRankByRating({
+    RankQuery? query,
+  }) async {
+    final List<dynamic> res = (await client.get(
+      '/analytics/rankings/activities/ratings',
       queryParameters: query?.toJson(),
     ))
         .data['data'];

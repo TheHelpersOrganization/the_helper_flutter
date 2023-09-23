@@ -11,13 +11,14 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
+
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
 import './profile_verified_status.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../profile/profile_organization_controller.dart';
+import 'profile_overview_tab.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
@@ -44,6 +45,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
         body: Text('Error: $error'),
       ),
       data: (profile) {
+        print(profile);
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
