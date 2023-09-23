@@ -5,9 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
-import 'package:the_helper/src/common/extension/date_time.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
-import 'package:the_helper/src/common/widget/alert.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
@@ -15,6 +13,9 @@ import 'package:the_helper/src/features/authentication/application/auth_service.
 import 'package:the_helper/src/features/change_role/presentation/controllers/volunteer_home_controller.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/home_welcome_section.dart';
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_analytics.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_home/email_verification_alert.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_home/ongoing_shift_alert.dart';
+import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_home/upcoming_shift_alert.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -48,12 +49,6 @@ class VolunteerView extends ConsumerWidget {
         )
         .sortWithDate((instance) => instance.startTime)
         .firstOrNull;
-    final timeDisplay = upcomingShift?.startTime.isToday == true
-        ? '${upcomingShift?.startTime.formatHourSecond()} Today'
-        : upcomingShift?.startTime.isTomorrow == true
-            ? '${upcomingShift?.startTime.formatHourSecond()} Tomorrow'
-            : upcomingShift?.startTime.formatDayMonthYearBulletHourMinute() ??
-                '';
 
     final volunteerData = ref.watch(volunteerStatusProvider);
     return profile.when(
@@ -71,109 +66,21 @@ class VolunteerView extends ConsumerWidget {
               ),
               isEmailVerified
                   ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 14),
-                      child: Alert(
-                        leading: const Icon(
-                          Icons.info_outline,
-                        ),
-                        message: const Text(
-                            'Verify your account \'s email now to use other features'),
-                        action: IconButton(
-                          onPressed: () {
-                            context.goNamed(AppRoute.accountVerification.name);
-                          },
-                          icon: const Icon(Icons.navigate_next_outlined),
-                        ),
-                      ),
+                  : const Padding(
+                      padding: EdgeInsets.only(top: 14),
+                      child: EmailVerificationAlert(),
                     ),
               if (ongoingShift != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 14, bottom: 24),
-                  child: Alert(
-                    leading: const Icon(
-                      Icons.info_outline,
-                    ),
-                    message: Text.rich(
-                      TextSpan(
-                        text: 'You have an ongoing shift ',
-                        children: [
-                          TextSpan(
-                            text: ongoingShift.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const TextSpan(text: ' now'),
-                        ],
-                      ),
-                      maxLines: 2,
-                    ),
-                    action: IconButton(
-                      onPressed: () {
-                        context.goNamed(AppRoute.shift.name, pathParameters: {
-                          'activityId': ongoingShift.activityId.toString(),
-                          'shiftId': ongoingShift.id.toString(),
-                        });
-                      },
-                      icon: const Icon(Icons.navigate_next_outlined),
-                    ),
+                  child: OngoingShiftAlert(
+                    ongoingShift: ongoingShift,
                   ),
                 )
               else if (upcomingShift != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 14, bottom: 24),
-                  child: Alert(
-                    leading: const Icon(
-                      Icons.info_outline,
-                    ),
-                    message: Wrap(
-                      spacing: 2,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            text: 'Shift ',
-                            children: [
-                              TextSpan(
-                                text: upcomingShift.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            text: 'is starting soon at ',
-                            children: [
-                              const WidgetSpan(
-                                child: Icon(
-                                  Icons.access_time_outlined,
-                                  size: 16,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' $timeDisplay',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    action: IconButton(
-                      onPressed: () {
-                        context.goNamed(AppRoute.shift.name, pathParameters: {
-                          'activityId': upcomingShift.activityId.toString(),
-                          'shiftId': upcomingShift.id.toString(),
-                        });
-                      },
-                      icon: const Icon(Icons.navigate_next_outlined),
-                    ),
-                  ),
+                  child: UpcomingShiftAlert(upcomingShift: upcomingShift),
                 )
               else
                 const SizedBox(
@@ -285,11 +192,12 @@ class VolunteerView extends ConsumerWidget {
                           ),
                         )
                       : ListView.builder(
-                          shrinkWrap: true,
+                          //shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: upcomingActivities.length,
                           itemBuilder: (BuildContext context, int index) =>
                               LargeActivityCard(
+                                  width: 300,
                                   activity: upcomingActivities[index]),
                         ),
                 ),
@@ -327,7 +235,7 @@ class VolunteerView extends ConsumerWidget {
                   ),
                   error: (_, __) => const CustomErrorWidget(),
                   data: (suggestedActivities) => ListView.builder(
-                    shrinkWrap: true,
+                    // shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemCount: suggestedActivities.length,
                     itemBuilder: (BuildContext context, int index) =>

@@ -13,6 +13,8 @@ class OrganizationQuery with _$OrganizationQuery {
   const factory OrganizationQuery({
     @Default(100) int limit,
     @Default(0) int offset,
+    @CommaSeparatedIntsConverter() List<int>? id,
+    @CommaSeparatedIntsConverter() List<int>? excludeId,
     String? name,
     bool? joined,
     OrganizationStatus? status,

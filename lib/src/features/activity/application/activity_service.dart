@@ -7,9 +7,10 @@ import 'package:the_helper/src/features/activity/data/activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/domain/activity_include.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
-import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
+import 'package:the_helper/src/features/activity/domain/activity_volunteer_query.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
+import 'package:the_helper/src/features/organization/domain/organization_query.dart';
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 import 'package:the_helper/src/utils/dio.dart';
@@ -40,28 +41,36 @@ class ActivityService {
     List<Activity> activities =
         await activityRepository.getSuggestedActivities(query: query);
     if (include?.organization == true) {
-      List<Organization> organizations = await Future.wait(
-        activities.map(
-          (e) async => await organizationRepository.getById(e.organizationId!),
+      List<int> orgIds = activities.map((e) => e.organizationId!).toList();
+      List<Organization> organizations = await organizationRepository.getAll(
+        query: OrganizationQuery(
+          id: orgIds,
         ),
       );
       activities = activities
-          .mapIndexed((index, element) => element.copyWith(
-                organization: organizations[index],
+          .mapIndexed((index, activity) => activity.copyWith(
+                organization: organizations.firstWhere(
+                  (org) => org.id == activity.organizationId,
+                ),
               ))
           .toList();
     }
     if (include?.volunteers == true) {
-      List<List<ActivityVolunteer>> activityVolunteers = await Future.wait(
-        activities.map(
-          (e) async => await activityVolunteerService.getActivityVolunteers(
-            activityId: e.id!,
-          ),
+      final volunteers = await activityVolunteerService.getActivityVolunteers(
+        query: ActivityVolunteerQuery(
+          activityId: activities.map((e) => e.id!).toList(),
+          include: [
+            ActivityVolunteerQueryInclude.profile,
+          ],
+          limitPerActivity: 7,
         ),
       );
+
       activities = activities
           .mapIndexed((index, element) => element.copyWith(
-                volunteers: activityVolunteers[index],
+                volunteers: volunteers
+                    .where((v) => v.activityId! == element.id)
+                    .toList(),
               ))
           .toList();
     }
@@ -75,28 +84,37 @@ class ActivityService {
     List<Activity> activities =
         await activityRepository.getActivities(query: query);
     if (include?.organization == true) {
-      List<Organization> organizations = await Future.wait(
-        activities.map(
-          (e) async => await organizationRepository.getById(e.organizationId!),
+      List<int> orgIds = activities.map((e) => e.organizationId!).toList();
+      List<Organization> organizations = await organizationRepository.getAll(
+        query: OrganizationQuery(
+          id: orgIds,
         ),
       );
       activities = activities
-          .mapIndexed((i, a) => a.copyWith(organization: organizations[i]))
+          .mapIndexed((index, activity) => activity.copyWith(
+                organization: organizations.firstWhere(
+                  (org) => org.id == activity.organizationId,
+                ),
+              ))
           .toList();
     }
 
     if (include?.volunteers == true) {
-      List<List<ActivityVolunteer>> activityVolunteers = await Future.wait(
-        activities.map(
-          (e) async => await activityVolunteerService.getActivityVolunteers(
-            activityId: e.id!,
-          ),
+      final volunteers = await activityVolunteerService.getActivityVolunteers(
+        query: ActivityVolunteerQuery(
+          activityId: activities.map((e) => e.id!).toList(),
+          limitPerActivity: 7,
+          include: [
+            ActivityVolunteerQueryInclude.profile,
+          ],
         ),
       );
 
       activities = activities
           .mapIndexed((index, element) => element.copyWith(
-                volunteers: activityVolunteers[index],
+                volunteers: volunteers
+                    .where((v) => v.activityId! == element.id)
+                    .toList(),
               ))
           .toList();
     }

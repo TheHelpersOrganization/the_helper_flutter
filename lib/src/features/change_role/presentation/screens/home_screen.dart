@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/common/widget/app_bar/custom_sliver_app_bar.dart';
-import 'package:the_helper/src/common/widget/custom_sliver_scroll_view.dart';
 //Widgets
 import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/common/widget/label.dart';
@@ -23,6 +22,46 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final role = ref.watch(roleServiceProvider);
 
+    return Scaffold(
+      drawer: const AppDrawer(),
+      body: role.when(
+          loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+          error: (_, __) => const ErrorScreen(),
+          data: (role) {
+            return NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                CustomSliverAppBar(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Home'),
+                      const SizedBox(width: 12),
+                      if (role == Role.admin)
+                        Label(
+                          labelText: 'Admin',
+                          color: context.theme.primaryColor,
+                        ),
+                      if (role == Role.moderator)
+                        const Label(
+                          labelText: 'Moderator',
+                          color: Colors.orange,
+                        ),
+                      if (role == Role.volunteer)
+                        const Label(
+                          labelText: 'Volunteer',
+                          color: Colors.purple,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+              body: getHomeScreen(role),
+            );
+          }),
+    );
+
     return role.when(
         loading: () => const Center(
               child: CircularProgressIndicator(),
@@ -31,31 +70,34 @@ class HomeScreen extends ConsumerWidget {
         data: (role) {
           return Scaffold(
             drawer: const AppDrawer(),
-            body: CustomSliverScrollView(
-              appBar: CustomSliverAppBar(
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Home'),
-                    const SizedBox(width: 12),
-                    if (role == Role.admin)
-                      Label(
-                        labelText: 'Admin',
-                        color: context.theme.primaryColor,
-                      ),
-                    if (role == Role.moderator)
-                      const Label(
-                        labelText: 'Moderator',
-                        color: Colors.orange,
-                      ),
-                    if (role == Role.volunteer)
-                      const Label(
-                        labelText: 'Volunteer',
-                        color: Colors.purple,
-                      ),
-                  ],
-                ),
-              ),
+            body: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(),
+                // CustomSliverAppBar(
+                //   title: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       const Text('Home'),
+                //       const SizedBox(width: 12),
+                //       if (role == Role.admin)
+                //         Label(
+                //           labelText: 'Admin',
+                //           color: context.theme.primaryColor,
+                //         ),
+                //       if (role == Role.moderator)
+                //         const Label(
+                //           labelText: 'Moderator',
+                //           color: Colors.orange,
+                //         ),
+                //       if (role == Role.volunteer)
+                //         const Label(
+                //           labelText: 'Volunteer',
+                //           color: Colors.purple,
+                //         ),
+                //     ],
+                //   ),
+                // ),
+              ],
               body: getHomeScreen(role),
             ),
             //body: const VolunteerView(),
