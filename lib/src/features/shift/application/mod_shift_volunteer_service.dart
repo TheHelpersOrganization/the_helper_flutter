@@ -48,6 +48,14 @@ class ModShiftVolunteerService {
     final shifts = await shiftRepository.getShifts(query: query);
     return shifts;
   }
+
+  Future<List<ShiftVolunteer>> getShiftVolunteers({
+    ShiftVolunteerQuery? query,
+  }) async {
+    List<ShiftVolunteer> volunteers =
+        await shiftRepository.getShiftVolunteers(query: query);
+    return volunteers;
+  }
 }
 
 @riverpod

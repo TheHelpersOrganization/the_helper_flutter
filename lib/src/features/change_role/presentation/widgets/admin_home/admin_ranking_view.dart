@@ -5,9 +5,11 @@ import 'package:the_helper/src/common/screens/error_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/controllers/admin_home_controller.dart';
 
 import 'account_ranking_item.dart';
-import 'activity_ranking_item.dart';
+import 'activity_ranking_by_joined_item.dart';
+import 'activity_ranking_by_rating_item.dart';
 import 'admin_data_holder.dart';
 import 'organization_ranking_item.dart';
+import 'sort_modal.dart';
 
 class AdminRankingView extends ConsumerStatefulWidget {
   const AdminRankingView({
@@ -30,7 +32,13 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
             .map((e) => OrganizationRankingItem(data: e))
             .toList();
       case 2:
-        return data.activity!.map((e) => ActivityRankingItem(data: e)).toList();
+        return data.activityByJoined!
+            .map((e) => ActivityRankingByJoinedItem(data: e))
+            .toList();
+      case 3:
+        return data.activityByRating!
+            .map((e) => ActivityRankingByRatingItem(data: e))
+            .toList();
       default:
         return [const SizedBox()];
     }
@@ -57,12 +65,22 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
 
       case 2:
         return Text(
-          'Treddning activities',
+          'Most participated activities',
           style: Theme.of(context)
               .textTheme
               .titleMedium
               ?.copyWith(color: Colors.blueAccent),
         );
+
+      case 3:
+        return Text(
+          'Top rating activities',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(color: Colors.blueAccent),
+        );
+
       default:
         return Text(
           'N/A',
@@ -72,6 +90,12 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
               ?.copyWith(color: Colors.blueAccent),
         );
     }
+  }
+
+  void setStateCallBack(int value) {
+    setState(() {
+      filterValue = value;
+    });
   }
 
   @override
@@ -94,7 +118,7 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
           children: [
             ChoiceChip(
               label: const Text('Activity'),
-              selected: filterValue == 2,
+              selected: filterValue == 2 || filterValue == 3,
               onSelected: (value) {
                 setState(() {
                   filterValue = 2;
@@ -124,20 +148,41 @@ class _AdminRankingViewState extends ConsumerState<AdminRankingView> {
         const SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [rankingTitle],
+          children: [
+            InkWell(
+              onTap: () {
+                if (filterValue > 1) {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => SortOptionModal(
+                            filterValue: filterValue,
+                            callBackFunction: setStateCallBack,
+                          ));
+                }
+              },
+              splashFactory: filterValue < 2 ? NoSplash.splashFactory : null,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  rankingTitle,
+                  if (filterValue > 1) const Icon(Icons.arrow_drop_down)
+                ],
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 15),
         rankingData.when(
           error: (_, __) => const ErrorScreen(),
           loading: () => Expanded(
-                  child: Center(
-                    child: AdminDataHolder(
-                      itemCount: 1,
-                      itemWidth: context.mediaQuery.size.width * 0.9,
-                      itemHeight: 350,
-                    ),
-                  ),
-                ),
+            child: Center(
+              child: AdminDataHolder(
+                itemCount: 1,
+                itemWidth: context.mediaQuery.size.width * 0.9,
+                itemHeight: 350,
+              ),
+            ),
+          ),
           data: (data) => Expanded(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -12,6 +12,7 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
       title: 'The Helper',
+      builder: (BuildContext context, child) => SafeArea(child: child!),
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(

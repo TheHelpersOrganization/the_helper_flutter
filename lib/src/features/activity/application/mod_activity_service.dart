@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/activity/data/mod_activity_repository.dart';
 import 'package:the_helper/src/features/activity/domain/activity.dart';
@@ -42,12 +41,12 @@ class ModActivityService {
       ),
     );
 
-    activities = activities
-        .mapIndexed((index, element) => element.copyWith(
-              volunteers:
-                  volunteers.where((v) => v.activityId! == element.id).toList(),
-            ))
-        .toList();
+    // activities = activities
+    //     .mapIndexed((index, element) => element.copyWith(
+    //           volunteers:
+    //               volunteers.where((v) => v.activityId! == element.id).toList(),
+    //         ))
+    //     .toList();
 
     return activities;
   }

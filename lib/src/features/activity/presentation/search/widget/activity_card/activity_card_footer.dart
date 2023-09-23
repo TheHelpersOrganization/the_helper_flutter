@@ -1,10 +1,10 @@
 import 'package:avatar_stack/avatar_stack.dart';
 import 'package:flutter/material.dart';
-import 'package:the_helper/src/features/activity/domain/activity_volunteer.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
 class ActivityCardFooter extends StatelessWidget {
-  final List<ActivityVolunteer>? volunteers;
+  final List<ShiftVolunteer>? volunteers;
   final int joinedParticipants;
   final int? maxParticipants;
 
@@ -43,7 +43,7 @@ class ActivityCardFooter extends StatelessWidget {
 }
 
 class CustomAvatarStack extends StatelessWidget {
-  final List<ActivityVolunteer> volunteers;
+  final List<ShiftVolunteer> volunteers;
 
   const CustomAvatarStack({
     super.key,

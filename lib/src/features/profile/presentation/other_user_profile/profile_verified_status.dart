@@ -10,7 +10,7 @@ class ProfileVerifiedStatus extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return !verified ? const VerifiedStatus() : const SizedBox.shrink();
+    return verified ? const VerifiedStatus() : const SizedBox.shrink();
   }
 }
 

@@ -24,6 +24,8 @@ class ActivityAnalyticModel with _$ActivityAnalyticModel {
     DateTime? endTime,
     Location? location,
     List<Contact>? contacts,
+    @Default(0) double? rating,
+    @Default(0) int? ratingCount,
     int? maxParticipants,
     @Default(0) int? joinedParticipants,
     ActivityMe? me,

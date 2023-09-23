@@ -19,6 +19,7 @@ class ShiftVolunteer with _$ShiftVolunteer {
   @JsonSerializable(includeIfNull: false)
   const factory ShiftVolunteer({
     required int id,
+    int? activityId,
     required int shiftId,
     required int accountId,
     bool? checkedIn,
