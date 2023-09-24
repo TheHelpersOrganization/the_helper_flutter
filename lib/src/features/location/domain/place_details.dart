@@ -22,6 +22,37 @@ class PlaceDetails with _$PlaceDetails {
 }
 
 extension PlaceDetailsX on PlaceDetails {
+  Location toLocation() {
+    final components = addressComponents == null
+        ? <AddressComponent>[]
+        : [...addressComponents!];
+    String? country;
+    if (components.isNotEmpty) {
+      country = components.removeLast().shortName;
+    }
+    String? region;
+    if (components.isNotEmpty) {
+      region = components.removeLast().longName;
+    }
+    String? locality;
+    if (components.isNotEmpty) {
+      locality = components.removeLast().longName;
+    }
+    String? addressLine1;
+    if (components.isNotEmpty) {
+      addressLine1 = components.map((e) => e.longName).join(', ');
+    }
+
+    return Location(
+      addressLine1: addressLine1,
+      locality: locality,
+      region: region,
+      country: country,
+      latitude: latitude,
+      longitude: longitude,
+    );
+  }
+
   Location toLocationFromFormattedAddress({int? maxComponents}) {
     var components = formattedAddress?.split(', ');
     if (components == null) {

@@ -74,6 +74,8 @@ class ModShiftEditBasicScreen extends ConsumerWidget {
                   child: ShiftCreationBasicView(
                     formKey: formKey,
                     initialShift: data.shift,
+                    activityId: activityId,
+                    activity: data.activity,
                   ),
                 ),
               );

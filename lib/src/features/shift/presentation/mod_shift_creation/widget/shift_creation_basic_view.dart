@@ -4,6 +4,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/activity/domain/activity.dart';
+import 'package:the_helper/src/features/location/domain/location.dart';
 import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/features/location/presentation/location_picker/screen/location_picker_screen.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
@@ -11,11 +13,15 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/co
 
 class ShiftCreationBasicView extends ConsumerWidget {
   final GlobalKey<FormBuilderState> formKey;
+  final int activityId;
+  final Activity activity;
   final Shift? initialShift;
 
   const ShiftCreationBasicView({
     super.key,
     required this.formKey,
+    required this.activityId,
+    required this.activity,
     this.initialShift,
   });
 
@@ -25,7 +31,8 @@ class ShiftCreationBasicView extends ConsumerWidget {
     final startDate = ref.watch(startDateProvider);
     final locationTextEditingController =
         ref.watch(locationTextEditingControllerProvider);
-    final place = ref.watch(placeProvider);
+    final PlaceDetails? place = ref.watch(placeProvider);
+    final Location? activityLocation = activity.location;
 
     return FormBuilder(
       key: formKey,
@@ -88,6 +95,13 @@ class ShiftCreationBasicView extends ConsumerWidget {
           const SizedBox(
             height: 12,
           ),
+          Text(
+            'Shift location must be located within the city/province of activity location: ${activity.location?.formattedAddress}',
+            style: TextStyle(color: context.theme.colorScheme.secondary),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
           FormBuilderTextField(
             name: 'location',
             controller: locationTextEditingController,
@@ -101,10 +115,17 @@ class ShiftCreationBasicView extends ConsumerWidget {
               ),
               helperText: 'Manually type in or select a location on map',
               helperMaxLines: 2,
+              errorMaxLines: 2,
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
               FormBuilderValidators.maxLength(1000),
+              (text) {
+                if (activity.location!.contains(place!.toLocation())) {
+                  return null;
+                }
+                return 'Shift location must be located within the city/province of activity location';
+              },
             ]),
           ),
           const SizedBox(
