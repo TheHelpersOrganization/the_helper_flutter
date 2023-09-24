@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/features/activity/data/activity_repository.dart';
+import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
@@ -16,6 +18,13 @@ import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
+
+final activityProvider = FutureProvider.autoDispose.family<Activity, int>(
+  (ref, activityId) async {
+    final activityRepo = ref.watch(activityRepositoryProvider);
+    return activityRepo.getActivityById(id: activityId);
+  },
+);
 
 final getSkillsProvider = FutureProvider.autoDispose<List<Skill>>((ref) async {
   final skillRepo = ref.watch(skillRepositoryProvider);

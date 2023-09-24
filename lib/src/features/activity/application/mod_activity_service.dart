@@ -26,15 +26,18 @@ class ModActivityService {
       organizationId: organizationId,
       query: query,
     );
+    if (activities.isEmpty) {
+      return activities;
+    }
     final organization = await organizationRepository.getById(
       organizationId,
     );
     activities =
         activities.map((e) => e.copyWith(organization: organization)).toList();
-
+    final activityIds = activities.map((e) => e.id!).toList();
     final volunteers = await activityVolunteerService.getActivityVolunteers(
       query: ActivityVolunteerQuery(
-        activityId: activities.map((e) => e.id!).toList(),
+        activityId: activityIds,
         include: [
           ActivityVolunteerQueryInclude.profile,
         ],
