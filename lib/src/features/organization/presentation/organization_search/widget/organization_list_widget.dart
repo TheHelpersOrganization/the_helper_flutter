@@ -5,13 +5,19 @@ import 'package:skeletons/skeletons.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/common/widget/no_data_found.dart';
+import 'package:the_helper/src/features/organization/domain/organization_query.dart';
 
-import '../../domain/organization.dart';
+import '../../../domain/organization.dart';
+import '../controller/organization_search_controller.dart';
 import 'organization_card.dart';
-import 'organization_search_controller.dart';
 
 class OrganizationListWidget extends ConsumerWidget {
-  const OrganizationListWidget({super.key});
+  final OrganizationQuery? organizationQuery;
+
+  const OrganizationListWidget({
+    super.key,
+    this.organizationQuery,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

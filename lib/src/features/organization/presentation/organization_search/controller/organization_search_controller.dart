@@ -1,14 +1,18 @@
-
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/riverpod_infinite_scroll/riverpod_infinite_scroll.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
+import 'package:the_helper/src/utils/paging.dart';
 
-import '../../domain/organization.dart';
-import '../../domain/organization_query.dart';
+import '../../../domain/organization.dart';
+import '../../../domain/organization_query.dart';
 import 'organization_filter_controller.dart';
 
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
 final hasUsedSearchProvider = StateProvider.autoDispose((ref) => false);
+final searchControllerProvider = ChangeNotifierProvider.autoDispose(
+  (ref) => TextEditingController(),
+);
 
 class OrganizationListPagedNotifier extends PagedNotifier<int, Organization> {
   final OrganizationRepository organizationRepo;
@@ -21,17 +25,19 @@ class OrganizationListPagedNotifier extends PagedNotifier<int, Organization> {
     required this.query,
   }) : super(
           load: (page, limit) {
+            int? cursor = page == 0 ? null : page;
             final q = query ?? const OrganizationQuery();
             return organizationRepo.getAll(
               query: q.copyWith(
                 limit: limit,
-                offset: page*limit,
+                cursor: cursor,
                 name: searchPattern,
-                joined: false
+                joined: false,
+                include: [OrganizationInclude.numberOfActivities],
               ),
             );
           },
-          nextPageKeyBuilder: NextPageKeyBuilderDefault.mysqlPagination,
+          nextPageKeyBuilder: cursorBasedPaginationNextKeyBuilder,
           printStackTrace: true,
         );
 }

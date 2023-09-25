@@ -12,7 +12,7 @@ import 'package:the_helper/src/features/location/presentation/location_picker/sc
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/utils/location.dart';
 
-import '../organization_filter_controller.dart';
+import '../controller/organization_filter_controller.dart';
 
 class OrganizationFilterLocation extends ConsumerWidget {
   const OrganizationFilterLocation({super.key});

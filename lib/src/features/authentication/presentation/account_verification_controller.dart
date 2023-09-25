@@ -78,7 +78,7 @@ class ResendOtpCountdown extends AutoDisposeNotifier<int> {
       _timer?.cancel();
       _timer = null;
     });
-    return 5;
+    return 0;
   }
 
   void reset() {

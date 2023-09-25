@@ -26,7 +26,7 @@ import 'package:the_helper/src/features/organization/presentation/admin_manage/s
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_search/organization_search_screen.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_search/screen/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_success_screen.dart';
 import 'package:the_helper/src/features/organization_member/presentation/member_mangement/screen/organization_member_management_screen.dart';

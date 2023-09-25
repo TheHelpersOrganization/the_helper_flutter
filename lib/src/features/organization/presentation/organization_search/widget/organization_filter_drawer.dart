@@ -3,12 +3,12 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 
-
-import '../../domain/organization_query.dart';
-import 'filter_widget/organization_filter_location.dart';
-import 'filter_widget/organization_filter_skill.dart';
-import 'organization_filter_controller.dart';
+import '../../../domain/organization_query.dart';
+import '../controller/organization_filter_controller.dart';
+import '../filter_widget/organization_filter_location.dart';
+import '../filter_widget/organization_filter_skill.dart';
 
 final formKey = GlobalKey<FormBuilderState>();
 
@@ -17,8 +17,6 @@ class OrganizationFilterDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isMarkedToReset = ref.watch(isMarkedToResetProvider);
-
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
@@ -63,13 +61,21 @@ class OrganizationFilterDrawer extends ConsumerWidget {
                       flex: 1,
                       child: TextButton(
                         onPressed: () {
-                          ref.invalidate(selectedSkillsProvider);
-                          ref.invalidate(radiusTextEditingControllerProvider);
-                          ref.invalidate(isLocationFilterSimpleModeProvider);
-                          ref.invalidate(placeProvider);
-                          ref.invalidate(selectedLocationProvider);
-                          ref.read(isMarkedToResetProvider.notifier).state =
-                              true;
+                          showDialog(
+                            useRootNavigator: false,
+                            context: context,
+                            builder: (context) => ConfirmationDialog(
+                              titleText: 'Reset filter',
+                              content: const Text(
+                                'Are you sure you want to reset the filter?',
+                              ),
+                              onConfirm: () {
+                                ref.invalidate(organizationQueryProvider);
+                                context.pop();
+                                context.pop();
+                              },
+                            ),
+                          );
                         },
                         child: const Text('Reset'),
                       ),
@@ -80,14 +86,6 @@ class OrganizationFilterDrawer extends ConsumerWidget {
                       child: FilledButton(
                         onPressed: () {
                           if (formKey.currentState?.saveAndValidate() != true) {
-                            return;
-                          }
-                          if (isMarkedToReset) {
-                            ref.read(isMarkedToResetProvider.notifier).state =
-                                false;
-                            ref.read(organizationQueryProvider.notifier).state =
-                                null;
-                            context.pop();
                             return;
                           }
                           final selectedSkills =

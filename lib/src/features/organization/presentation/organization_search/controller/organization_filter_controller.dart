@@ -10,7 +10,7 @@ import 'package:the_helper/src/features/location/domain/reverse_geocode_query.da
 import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 
-import '../../domain/organization_query.dart';
+import '../../../domain/organization_query.dart';
 
 enum LocationType {
   locality,
@@ -53,22 +53,26 @@ final organizationQueryProvider = StateProvider.autoDispose<OrganizationQuery?>(
     return null;
   },
 );
-final isMarkedToResetProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 final skillsProvider = FutureProvider.autoDispose(
   (ref) => ref.watch(skillRepositoryProvider).getSkills(),
 );
 
-final selectedSkillsProvider = StateProvider<Set<Skill>>((ref) => {});
+final selectedSkillsProvider = StateProvider<Set<Skill>>((ref) {
+  return {};
+});
 
 final radiusTextEditingControllerProvider =
     ChangeNotifierProvider<TextEditingController>(
   (ref) => TextEditingController(),
 );
 final isLocationFilterSimpleModeProvider = StateProvider<bool>((ref) => true);
-final placeProvider = StateProvider<PlaceDetails?>((ref) => null);
-final selectedLocationProvider =
-    StateProvider<LocationFilterData?>((ref) => null);
+final placeProvider = StateProvider<PlaceDetails?>((ref) {
+  return null;
+});
+final selectedLocationProvider = StateProvider<LocationFilterData?>((ref) {
+  return null;
+});
 
 final defaultLocation = Position(
   latitude: 10.762622,
