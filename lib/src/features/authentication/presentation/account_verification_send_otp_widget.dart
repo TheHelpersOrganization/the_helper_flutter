@@ -20,13 +20,13 @@ class AccountVerificationSendOtpWidget extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("Don't receive the code?"),
-          RichText(
-            text: TextSpan(
+          Text.rich(
+            TextSpan(
               text: isWaitingForOtp
                   ? 'Send again in ${resendOtpCountdown}s'
                   : 'Send again',
               style: isWaitingForOtp
-                  ? null
+                  ? TextStyle(color: context.theme.disabledColor)
                   : TextStyle(color: context.theme.primaryColor),
               recognizer: isWaitingForOtp
                   ? null
