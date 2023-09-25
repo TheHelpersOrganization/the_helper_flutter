@@ -17,6 +17,7 @@ class ActivityManagers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(managers);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

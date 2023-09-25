@@ -47,7 +47,6 @@ class NewsCreateBottomBar extends ConsumerWidget {
 
                     final String title = formData['title'];
 
-                    print(isThumbnailChanged);
                     Uint8List? thumbnailData;
                     int? thumbnailId;
                     if (isThumbnailChanged) {

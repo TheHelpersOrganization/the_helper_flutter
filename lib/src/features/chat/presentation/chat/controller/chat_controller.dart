@@ -305,7 +305,7 @@ class CreateChatController extends AutoDisposeAsyncNotifier<void> {
     ref.onDispose(() => _key = null);
   }
 
-  Future<void> createChat(CreateChat data) async {
+  Future<void> createChat(CreateChat data, {bool? pushChatScreen}) async {
     if (state.isLoading) {
       return;
     }
@@ -323,8 +323,8 @@ class CreateChatController extends AutoDisposeAsyncNotifier<void> {
     }
     state = const AsyncValue.data(null);
     final chat = res.asData?.value;
-    if (chat != null) {
-      ref.watch(routerProvider).goNamed(AppRoute.chat.name, pathParameters: {
+    if (chat != null && pushChatScreen == true) {
+      ref.watch(routerProvider).pushNamed(AppRoute.chat.name, pathParameters: {
         'chatId': chat.id.toString(),
       });
     }

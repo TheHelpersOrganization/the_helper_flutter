@@ -102,57 +102,6 @@ class _QuillEditorScreenState extends State<QuillEditorScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                quill.ToggleStyleButton(
-                  controller: controller,
-                  attribute: const quill.BoldAttribute(),
-                  icon: Icons.format_bold,
-                ),
-                quill.ToggleStyleButton(
-                  controller: controller,
-                  attribute: const quill.ItalicAttribute(),
-                  icon: Icons.format_italic_outlined,
-                ),
-                quill.ToggleStyleButton(
-                  controller: controller,
-                  attribute: const quill.UnderlineAttribute(),
-                  icon: Icons.format_underline,
-                ),
-                quill.ColorButton(
-                  controller: controller,
-                  icon: Icons.format_color_text,
-                  background: false,
-                ),
-                quill.SelectAlignmentButton(
-                  controller: controller,
-                  showLeftAlignment: true,
-                  showRightAlignment: true,
-                  showCenterAlignment: true,
-                  showJustifyAlignment: false,
-                ),
-                ImageButton(
-                  icon: Icons.image,
-                  controller: controller,
-                  onImagePickCallback: _onImagePickCallback,
-                  webImagePickImpl: _webImagePickImpl,
-                ),
-                quill.LinkStyleButton(
-                  controller: controller,
-                  icon: Icons.link,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
       body: Column(
         children: [
           quill.QuillToolbar.basic(
@@ -184,7 +133,58 @@ class _QuillEditorScreenState extends State<QuillEditorScreen> {
               child: quill.QuillEditor.basic(
                 controller: controller,
                 readOnly: false, // true for view only mode
+                embedBuilders: FlutterQuillEmbeds.builders(),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    quill.ToggleStyleButton(
+                      controller: controller,
+                      attribute: const quill.BoldAttribute(),
+                      icon: Icons.format_bold,
+                    ),
+                    quill.ToggleStyleButton(
+                      controller: controller,
+                      attribute: const quill.ItalicAttribute(),
+                      icon: Icons.format_italic_outlined,
+                    ),
+                    quill.ToggleStyleButton(
+                      controller: controller,
+                      attribute: const quill.UnderlineAttribute(),
+                      icon: Icons.format_underline,
+                    ),
+                    quill.ColorButton(
+                      controller: controller,
+                      icon: Icons.format_color_text,
+                      background: false,
+                    ),
+                    quill.SelectAlignmentButton(
+                      controller: controller,
+                      showLeftAlignment: true,
+                      showRightAlignment: true,
+                      showCenterAlignment: true,
+                      showJustifyAlignment: false,
+                    ),
+                    ImageButton(
+                      icon: Icons.image,
+                      controller: controller,
+                      onImagePickCallback: _onImagePickCallback,
+                    ),
+                    quill.LinkStyleButton(
+                      controller: controller,
+                      icon: Icons.link,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

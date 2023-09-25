@@ -1,12 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'contact.g.dart';
 part 'contact.freezed.dart';
+part 'contact.g.dart';
 
 @freezed
 class Contact with _$Contact {
   factory Contact({
     int? id,
+    int? accountId,
     required String name,
     String? phoneNumber,
     String? email,

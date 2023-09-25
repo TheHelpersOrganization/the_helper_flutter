@@ -34,7 +34,7 @@ class FileRepository {
       ),
     });
     final response = await client.post('/files/upload', data: formData);
-    return FileModel.fromMap(response.data['data']);
+    return FileModel.fromJson(response.data['data']);
   }
 
   Future<FileModel> uploadWithPlatformFile(PlatformFile file) async {
@@ -53,7 +53,7 @@ class FileRepository {
       ),
     });
     final response = await client.post('/files/upload', data: formData);
-    return FileModel.fromMap(response.data['data']);
+    return FileModel.fromJson(response.data['data']);
   }
 
   Future<FileModel> uploadWithBytes(Uint8List data) async {
@@ -65,7 +65,7 @@ class FileRepository {
       ),
     });
     final response = await client.post('/files/upload', data: formData);
-    return FileModel.fromMap(response.data['data']);
+    return FileModel.fromJson(response.data['data']);
   }
 
   Future<LocalFile> getDownloadPath({

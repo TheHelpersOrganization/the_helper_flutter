@@ -192,7 +192,10 @@ class _ActivityDetailScreenState extends ConsumerState<ActivityDetailScreen>
   Widget getTabAt(TabType tabType, ExtendedActivity extendedActivity) {
     switch (tabType) {
       case TabType.overview:
-        return ActivityOverviewView(activity: extendedActivity.activity);
+        return ActivityOverviewView(
+          activity: extendedActivity.activity,
+          managerProfiles: extendedActivity.managerProfiles,
+        );
       case TabType.shifts:
         return ActivityShiftView(
           shifts: extendedActivity.shifts,

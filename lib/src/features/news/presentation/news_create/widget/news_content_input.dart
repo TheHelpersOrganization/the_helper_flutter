@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/screens/quill_editor_screen.dart';
@@ -41,8 +42,8 @@ class _NewsContentInputState extends ConsumerState<NewsContentInput>
     }
     final quillController = ref.read(quillControllerProvider.notifier);
     if (initialContent.contentFormat == NewsContentFormat.delta) {
-      quillController.document =
-          quill.Document.fromJson(jsonDecode(initialContent.content));
+      final json = jsonDecode(initialContent.content);
+      quillController.document = quill.Document.fromJson(json);
     } else {
       quillController.document = quill.Document()
         ..insert(0, initialContent.content);
@@ -89,6 +90,7 @@ class _NewsContentInputState extends ConsumerState<NewsContentInput>
         quill.QuillEditor.basic(
           controller: quillController,
           readOnly: true,
+          embedBuilders: FlutterQuillEmbeds.builders(),
         ),
       ],
     );

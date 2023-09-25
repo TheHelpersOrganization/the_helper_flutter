@@ -12,7 +12,6 @@ import 'package:the_helper/src/features/profile/domain/profile.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
-
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
@@ -93,7 +92,10 @@ class OtherUserProfileScreen extends ConsumerWidget {
                                       .read(
                                           createChatControllerProvider.notifier)
                                       .createChat(
-                                        CreateChat(to: userId),
+                                        CreateChat(
+                                          to: userId,
+                                        ),
+                                        pushChatScreen: true,
                                       );
                                 },
                         )
@@ -182,11 +184,11 @@ class OtherUserProfileScreen extends ConsumerWidget {
           ),
         ),
         account.when(
-          loading: () => const SizedBox(),
-          error: (_, __) => const CustomErrorWidget(),
-          data: (data) => ProfileVerifiedStatus(
-          verified: data.isAccountVerified,
-        )),
+            loading: () => const SizedBox(),
+            error: (_, __) => const CustomErrorWidget(),
+            data: (data) => ProfileVerifiedStatus(
+                  verified: data.isAccountVerified,
+                )),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Wrap(

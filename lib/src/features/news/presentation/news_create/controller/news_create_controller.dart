@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:the_helper/src/features/activity/domain/minimal_activity.dart';
 import 'package:the_helper/src/features/file/data/file_repository.dart';
+import 'package:the_helper/src/features/file/domain/file_model.dart';
 import 'package:the_helper/src/features/news/data/news_repository.dart';
 import 'package:the_helper/src/features/news/domain/create_news.dart';
 import 'package:the_helper/src/features/news/domain/news.dart';
@@ -83,6 +85,19 @@ class CreateNewsController extends AutoDisposeAsyncNotifier<void> {
     _newsRepository = ref.watch(newsRepositoryProvider);
   }
 
+  Future<void> replaceLocalImagesWithRemoteImages(List<dynamic> content) async {
+    for (var operation in content) {
+      if (operation['insert'] is Map &&
+          operation['insert'].containsKey('image') &&
+          operation['insert']['image'] != "" &&
+          !Uri.parse(operation['insert']['image']).isAbsolute) {
+        String oldImagePath = await operation['insert']['image'];
+        FileModel fileModel = await _fileRepository.upload(XFile(oldImagePath));
+        operation['insert']['image'] = fileModel.asImageUrl;
+      }
+    }
+  }
+
   Future<void> createNews({
     required NewsType type,
     required String title,
@@ -114,6 +129,8 @@ class CreateNewsController extends AutoDisposeAsyncNotifier<void> {
         thumbnailId = id;
       }
     }
+
+    await replaceLocalImagesWithRemoteImages(content);
 
     final res = await guardAsyncValue(
       () => _newsRepository.createNews(
@@ -169,6 +186,8 @@ class CreateNewsController extends AutoDisposeAsyncNotifier<void> {
         thumbnailId = id;
       }
     }
+
+    await replaceLocalImagesWithRemoteImages(content);
 
     final res = await guardAsyncValue(
       () => _newsRepository.updateNews(
