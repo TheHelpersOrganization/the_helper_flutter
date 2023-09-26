@@ -10,6 +10,8 @@ import 'package:the_helper/src/common/widget/alert.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_list_placeholder.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/large_activity_card.dart';
+import 'package:the_helper/src/features/organization/application/current_organization_service.dart';
+import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 
 import '../../../../router/router.dart';
 import '../../../profile/data/profile_repository.dart';
@@ -26,6 +28,8 @@ class ModView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final email = ref.watch(authServiceProvider).value!.account.email;
+    final currentOrganizationState =
+        ref.watch(currentOrganizationServiceProvider);
     final profile = ref.watch(profileProvider);
     final ongoingActivites = ref.watch(ongoingActivitiesProvider);
     final upcomingActivitiesState = ref.watch(upcomingActivitiesProvider);
@@ -49,6 +53,45 @@ class ModView extends ConsumerWidget {
             ? '${upcomingShift?.startTime.formatHourSecond()} Tomorrow'
             : upcomingShift?.startTime.formatDayMonthYearBulletHourMinute() ??
                 '';
+
+    if (currentOrganizationState.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (currentOrganizationState.valueOrNull?.status !=
+        OrganizationStatus.verified) {
+      if (currentOrganizationState.valueOrNull?.status ==
+          OrganizationStatus.pending) {
+        return const Padding(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            children: [
+              Text('Your organization is being verified'),
+            ],
+          ),
+        );
+      } else if (currentOrganizationState.valueOrNull?.status ==
+          OrganizationStatus.rejected) {
+        return const Padding(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            children: [
+              Text('Your organization is has been rejected'),
+            ],
+          ),
+        );
+      }
+      return const Padding(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Text('Your organization registration has been cancelled'),
+          ],
+        ),
+      );
+    }
 
     return profile.when(
       error: (_, __) => const ErrorScreen(),

@@ -27,7 +27,7 @@ class Organization with _$Organization {
     List<Contact>? contacts,
     int? numberOfMembers,
     List<OrganizationMember>? myMembers,
-    required bool hasJoined,
+    bool? hasJoined,
     int? numberOfActivities,
   }) = _Organization;
 

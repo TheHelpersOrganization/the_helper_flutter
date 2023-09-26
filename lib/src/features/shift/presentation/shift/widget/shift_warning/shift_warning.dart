@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_warning/overlapping_shift_bottom_sheet.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/widget/shift_warning/traveling_constrained_shift_bottom_sheet.dart';
 
@@ -15,6 +16,7 @@ class ShiftWarning extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (shift.status != ShiftStatus.pending ||
+        shift.myShiftVolunteer?.status == ShiftVolunteerStatus.approved ||
         (shift.overlaps?.isNotEmpty != true &&
             shift.travelingConstrainedShifts?.isNotEmpty != true)) {
       return const SizedBox();

@@ -477,12 +477,12 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: FilledButton(
-                    onPressed: data.hasJoined
+                    onPressed: data.hasJoined!
                         ? null
                         : () {
                             showJoinDialog();
                           },
-                    child: data.hasJoined
+                    child: data.hasJoined!
                         ? const Text('Joined')
                         : const Text('Join'),
                   ),
@@ -517,7 +517,7 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                             ],
                           ),
                         ),
-                        if (data.hasJoined)
+                        if (data.hasJoined!)
                           const PopupMenuItem(
                             value: 1,
                             child: Row(
