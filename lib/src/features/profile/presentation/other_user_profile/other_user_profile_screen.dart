@@ -1,5 +1,6 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/image.dart';
@@ -9,17 +10,19 @@ import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/chat/domain/create_chat.dart';
 import 'package:the_helper/src/features/chat/presentation/chat/controller/chat_controller.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
-import 'package:the_helper/src/features/profile/presentation/profile/profile_detail_tab.dart';
+import 'other_profile_activity_tab.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_contacts_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
 import './profile_verified_status.dart';
 import '../../../report/presentation/submit_report/screen/submit_report_screen.dart';
-import '../profile/profile_organization_controller.dart';
+import 'other_profile_org_controller.dart';
 import 'profile_overview_tab.dart';
 import 'profile_verified_controller.dart';
+
+import 'other_profile_contact_controller.dart';
 
 class OtherUserProfileScreen extends ConsumerWidget {
   final int userId;
@@ -32,9 +35,11 @@ class OtherUserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider(id: userId));
-    final orgs = ref.watch(profileOrganizationControllerProvider);
+    final orgs = ref.watch(profileOrganizationControllerProvider(id: userId));
     final account = ref.watch(profileVerifiedControllerProvider(userId));
     final createChatState = ref.watch(createChatControllerProvider);
+
+    final contacts = ref.watch(profileContactControllerProvider(userId: userId));
     // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Scaffold(
@@ -115,13 +120,13 @@ class OtherUserProfileScreen extends ConsumerWidget {
                               text: 'Overview',
                             ),
                             Tab(
-                              text: 'Activities',
+                              text: 'Activity',
                             ),
                             Tab(
-                              text: 'Organizatons',
+                              text: 'Organizations',
                             ),
                             Tab(
-                              text: 'Detail',
+                              text: 'Contact',
                             ),
                           ],
                         ),
@@ -135,9 +140,9 @@ class OtherUserProfileScreen extends ConsumerWidget {
                   ProfileOverviewTab(
                     profile: profile,
                   ),
-                  const ProfileActivityTab(),
+                  OtherProfileActivityTab(id: userId),
                   ProfileOrganizationTab(orgs: orgs),
-                  ProfileDetailTab(profile: profile),
+                  ProfileContactsTab(contacts: contacts,),
                 ],
               ),
             ),
@@ -240,7 +245,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
             child: ExpandableText(
               profile.bio!,
               maxLines: 4,
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSecondary,
               ),

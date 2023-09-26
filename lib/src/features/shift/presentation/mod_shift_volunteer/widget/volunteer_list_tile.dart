@@ -48,40 +48,41 @@ class VolunteerListTile extends ConsumerWidget {
           )
         ];
       }
-      if (volunteer.isCheckInVerified ?? false) {
-        labels += [
-          const Label(
-            labelText: 'VERIFIED CHECK-IN',
-          ),
-        ];
-      } else {
-        labels += [
-          Label(
-            labelText: 'UNVERIFIED CHECK-IN',
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ];
-      }
-      if (volunteer.isCheckOutVerified ?? false) {
-        labels += [
-          const Label(
-            labelText: 'VERIFIED CHECK-OUT',
-          ),
-        ];
-      } else {
-        labels += [
-          Label(
-            labelText: 'UNVERIFIED CHECK-OUT',
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ];
-      }
+      // if (volunteer.isCheckInVerified ?? false) {
+      //   labels += [
+      //     const Label(
+      //       labelText: 'VERIFIED CHECK-IN',
+      //     ),
+      //   ];
+      // } else {
+      //   labels += [
+      //     Label(
+      //       labelText: 'UNVERIFIED CHECK-IN',
+      //       color: Theme.of(context).colorScheme.secondary,
+      //     ),
+      //   ];
+      // }
+      // if (volunteer.isCheckOutVerified ?? false) {
+      //   labels += [
+      //     const Label(
+      //       labelText: 'VERIFIED CHECK-OUT',
+      //     ),
+      //   ];
+      // } else {
+      //   labels += [
+      //     Label(
+      //       labelText: 'UNVERIFIED CHECK-OUT',
+      //       color: Theme.of(context).colorScheme.secondary,
+      //     ),
+      //   ];
+      // }
 
       //   badges += ['']
       // }
-    } else {
-      labels += [Label(labelText: volunteer.status.name.toUpperCase())];
-    }
+    } 
+    // else {
+    //   labels += [Label(labelText: volunteer.status.name.toUpperCase())];
+    // }
     if (shiftStatus == ShiftStatus.pending) {
       if ((volunteer.meetSkillRequirements ?? false) &&
           //(volunteer.hasOverlappingShift == true) &&

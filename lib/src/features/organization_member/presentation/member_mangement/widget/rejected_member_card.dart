@@ -173,9 +173,12 @@ class _MemberCardState extends ConsumerState<RejectedMemberCard> {
             size: 18,
           ),
           const SizedBox(width: 4),
-          Text(
-            ' Rejected at $dateOfRejection',
-            //style: context.theme.textTheme.bodySmall,
+          Flexible(
+            child: Text(
+              'Rejected at $dateOfRejection',
+              maxLines: 2,
+              //style: context.theme.textTheme.bodySmall,
+            ),
           ),
         ],
       ),

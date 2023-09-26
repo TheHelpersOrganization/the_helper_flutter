@@ -182,9 +182,11 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
                 size: 18,
               ),
               const SizedBox(width: 4),
-              Text(
-                'Joined at $joinedAt',
-                //style: context.theme.textTheme.bodySmall,
+              Flexible(
+                child: Text(
+                  'Joined at $joinedAt',
+                  //style: context.theme.textTheme.bodySmall,
+                ),
               ),
             ],
           ),

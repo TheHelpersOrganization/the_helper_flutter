@@ -15,64 +15,90 @@ class ProfileOverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final skills = profile.skills;
-    final Widget skillsWidget = skills.isEmpty
-        ? const SizedBox()
-        : Column(
-            children: [
-              Text(
-                'SKILLS',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              ...skills
-                  .map(
-                    
-                    (skill) => Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Chip(
-                                avatar: Icon(SkillIcons[skill.name]),
-                                label: Text(skill.name)),
-                            (skill.hours! >= 1)
-                                ? Text('${skill.hours.toString()} hours')
-                                : Text('${skill.hours.toString()} hour')
-                          ]),
-                    ),
-                  )
-                  .toList(),
-            ],
-          );
-    final interestedList = profile.interestedSkills;
-    final Widget interestedWidget = interestedList.isEmpty
-        ? const Center(
-            child: Text(
-              "Edit your profile to add activity type you interested in",
-            ),
-          )
-        : Column(
-            children: [
-              Text(
-                'INTERESTED',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                crossAxisAlignment: WrapCrossAlignment.center,
+    final Widget skillsWidget = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            'SKILLS',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        skills.isEmpty
+            ? const Center(
+                child: Text(
+                  "Empty!",
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              )
+            : Column(
                 children: [
-                  ...interestedList
+                  ...skills
                       .map(
-                        (interested) => Chip(
-                          avatar: Icon(SkillIcons[interested.name]),
-                          label: Text(interested.name),
+                        (skill) => Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Chip(
+                                    avatar: Icon(SkillIcons[skill.name]),
+                                    label: Text(skill.name)),
+                                (skill.hours! >= 1)
+                                    ? Text('${skill.hours.toString()} hours')
+                                    : Text('${skill.hours.toString()} hour')
+                              ]),
                         ),
                       )
                       .toList(),
                 ],
-              )
-            ],
-          );
+              ),
+        const Divider(),
+      ],
+    );
+    final interestedList = profile.interestedSkills;
+    final Widget interestedWidget = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(
+            'INTERESTED',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: interestedList.isEmpty
+              ? const Center(
+                  child: Text(
+                    "Empty!",
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                )
+              : Wrap(
+                  spacing: 8.0,
+                  runSpacing: 4.0,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    ...interestedList
+                        .map(
+                          (interested) => Chip(
+                            avatar: Icon(SkillIcons[interested.name]),
+                            label: Text(interested.name),
+                          ),
+                        )
+                        .toList(),
+                    const Divider(),
+                  ],
+                ),
+        ),
+      ],
+    );
     return SafeArea(
       child: CustomScrollView(
         primary: true,
@@ -84,14 +110,33 @@ class ProfileOverviewTab extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.all(8),
             sliver: SliverToBoxAdapter(
-              child: Column(children: [
-                skillsWidget,
-                interestedWidget,
-              ]),
+              child: Column(
+                children: [
+                  skillsWidget,
+                  interestedWidget,
+                ],
+              ),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.all(8),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      "BRIEF INFORMATION",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.all(4),
             sliver: SliverFixedExtentList(
               itemExtent: 48.0,
               delegate: SliverChildListDelegate([
@@ -107,7 +152,8 @@ class ProfileOverviewTab extends StatelessWidget {
                     value:
                         DateFormat('dd-MM-yyyy').format(profile.dateOfBirth!)),
                 DetailListTile(
-                    label: 'Gender', value: profile.gender ?? 'Unknown'),
+                    label: 'Gender',
+                    value: profile.gender?.toUpperCase() ?? 'Unknown'),
               ]),
             ),
           ),

@@ -152,7 +152,7 @@ class ChangeVolunteerStatusController
             shiftId: volunteer.shiftId,
             volunteerId: volunteer.id,
             attendance: Attendance(
-              checkedIn: checkIn ? !checkedIn : checkedOut,
+              checkedIn: checkIn ? !checkedIn : checkedIn,
               checkedOut: !checkIn ? !checkedOut : checkedOut,
             ),
           );

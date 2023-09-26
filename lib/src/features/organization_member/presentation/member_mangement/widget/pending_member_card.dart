@@ -211,9 +211,12 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
             size: 18,
           ),
           const SizedBox(width: 4),
-          Text(
-            ' Request at $pendingAt',
-            //style: context.theme.textTheme.bodySmall,
+          Flexible(
+            child: Text(
+              'Request at $pendingAt',
+              //style: context.theme.textTheme.bodySmall,
+              maxLines: 2,
+            ),
           ),
         ],
       ),

@@ -96,8 +96,9 @@ class VolunteerBottomSheet extends ConsumerWidget {
               subtitle: (subtitle != null) ? Text(subtitle) : null,
             ),
           ),
-          if (volunteer.meetSkillRequirements == false ||
-              volunteer.hasTravelingConstrainedShift == true)
+          if (shiftStatus == ShiftStatus.pending &&
+              (volunteer.meetSkillRequirements == false ||
+                  volunteer.hasTravelingConstrainedShift == true))
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(

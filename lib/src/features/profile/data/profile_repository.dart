@@ -60,7 +60,7 @@ class ProfileRepository {
 
   Future<Profile> getProfileById(int id) async {
     final response = await client.get(
-      '/profiles/$id',
+      '/profiles/$id?includes=interested-skills,skills',
     );
     return Profile.fromJson(response.data['data']);
   }

@@ -173,8 +173,11 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
             size: 18,
           ),
           const SizedBox(width: 4),
-          Text(
-            ' Removed at $dateOfRejection',
+          Flexible(
+            child: Text(
+              'Removed at $dateOfRejection',
+              maxLines: 2,
+            ),
           ),
         ],
       ),

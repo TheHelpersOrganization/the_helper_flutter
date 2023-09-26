@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/activity/domain/mod_activity_query.dart';
 
 import '../../../../activity/application/mod_activity_service.dart';
@@ -23,6 +24,7 @@ Future<List<Activity>> organizationActivityController(
   final List<Activity> activities = await service.getActivitiesWithOrganization(
       organizationId: id,
       query: ModActivityQuery(
+        status: [ActivityStatus.completed],
         limit: size,
         offset: page * size,
       ));

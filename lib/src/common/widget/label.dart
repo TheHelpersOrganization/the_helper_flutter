@@ -41,11 +41,14 @@ class Label extends StatelessWidget {
                   style: labelStyle ??
                       context.theme.textTheme.labelSmall?.copyWith(
                           color: context.theme.colorScheme.onPrimary),
+                  overflow: TextOverflow.ellipsis,
                 ),
             if (trailing != null) trailing,
-          ].sizedBoxSpacing(SizedBox(
-            width: spacing,
-          )),
+          ].sizedBoxSpacing(
+            SizedBox(
+              width: spacing,
+            ),
+          ),
         ),
       ),
     );
