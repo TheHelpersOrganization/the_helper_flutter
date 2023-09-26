@@ -2,33 +2,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
+import 'package:the_helper/src/features/organization/domain/organization_query.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-import '../../domain/organization.dart';
-import 'organization_join_controller.dart';
+import '../../../domain/organization.dart';
+import '../controller/organization_join_controller.dart';
 
 class OrganizationCard extends ConsumerStatefulWidget {
   final Organization organization;
+  final OrganizationQuery? organizationQuery;
 
-  const OrganizationCard({super.key, required this.organization});
+  const OrganizationCard({
+    super.key,
+    required this.organization,
+    this.organizationQuery,
+  });
 
   String getAddress() {
     final locations = organization.locations;
-    final location =
-        locations == null || locations.isEmpty ? null : locations[0];
-    final String address;
-    if (location == null) {
-      address = 'Unknown';
-    } else {
+    final locationSize = locations?.length;
+    if (locations == null || locations.isEmpty) {
+      return 'Unknown';
+    }
+    if (locationSize == 1) {
+      final location = locations[0];
+      final String address;
       final fullAddress = [
         location.locality,
         location.region,
         location.country,
       ].whereType<String>().join(', ');
       address = fullAddress.isNotEmpty ? fullAddress : 'Unknown';
+
+      return address;
+    } else {
+      // More than 1 location
+      // Find the common country and region
+      final String address;
+      final country = locations[0].country!;
+      final region = locations[0].region;
+      final isSameCountry = locations.every((location) {
+        return location.country == country;
+      });
+      final isSameRegion = locations.every((location) {
+        return location.region == region;
+      });
+      if (isSameCountry && isSameRegion) {
+        address = '$region, $country';
+      } else if (isSameCountry) {
+        address = '$locationSize locations in $country';
+      } else {
+        address = 'International';
+      }
+
+      return address;
     }
-    return address;
   }
 
   @override
@@ -43,79 +73,35 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
 
     return showDialog(
       context: context,
-      builder: (dialogContext) => SimpleDialog(
-        title: Row(
-          children: [
-            const Expanded(
-              child: Text('Join Organization'),
-            ),
-            IconButton(
-              onPressed: () {
-                dialogContext.pop();
-              },
-              icon: const Icon(
-                Icons.close,
-              ),
-            ),
-          ],
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 24,
-        ),
-        children: [
-          RichText(
-            text: TextSpan(
-              text: 'Do you want to join ',
-              children: [
-                TextSpan(
-                  text: organization.name,
-                  style: TextStyle(
-                    color: dialogContext.theme.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Row(
+      builder: (dialogContext) => ConfirmationDialog(
+        titleText: 'Join Organization',
+        content: Text.rich(
+          TextSpan(
+            text: 'Do you want to join ',
             children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    dialogContext.pop();
-                  },
-                  child: const Text('Cancel'),
+              TextSpan(
+                text: organization.name,
+                style: TextStyle(
+                  color: dialogContext.theme.primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                flex: 2,
-                child: FilledButton(
-                  onPressed: () async {
-                    dialogContext.pop();
-                    _showJoinLoadingDialog();
-                    final res = await organizationJoinController.join(
-                      organization.id,
-                    );
-                    if (context.mounted) {
-                      context.pop();
-                      if (res != null) {
-                        _showJoinSuccessDialog();
-                      }
-                    }
-                  },
-                  child: const Text('Join'),
-                ),
-              )
             ],
           ),
-        ],
+        ),
+        onConfirm: () async {
+          dialogContext.pop();
+          _showJoinLoadingDialog();
+          final res = await organizationJoinController.join(
+            organization.id,
+          );
+          if (context.mounted) {
+            context.pop();
+            if (res != null) {
+              _showJoinSuccessDialog();
+            }
+          }
+        },
       ),
     );
   }
@@ -317,8 +303,8 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                       ),
                       Text(
                         organization.numberOfMembers != null
-                            ? '${organization.numberOfMembers} member(s)'
-                            : '? member(s)',
+                            ? ' ${organization.numberOfMembers} member(s)'
+                            : ' ? member(s)',
                         style: context.theme.textTheme.bodySmall?.copyWith(
                           color: context.theme.primaryColor,
                         ),
@@ -337,7 +323,9 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                         size: 18,
                       ),
                       Text(
-                        '1K activities',
+                        organization.numberOfActivities == null
+                            ? ' ? activity(s)'
+                            : ' ${organization.numberOfActivities} activity(s)',
                         style: context.theme.textTheme.bodySmall?.copyWith(
                           color: context.theme.primaryColor,
                         ),

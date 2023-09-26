@@ -18,6 +18,7 @@ import 'package:the_helper/src/features/change_role/presentation/widgets/volunte
 import 'package:the_helper/src/features/change_role/presentation/widgets/volunteer_home/upcoming_shift_alert.dart';
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../widgets/volunteer_analytics_main_card.dart';
@@ -125,12 +126,20 @@ class VolunteerView extends ConsumerWidget {
                     'Upcoming Activities',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'See more',
+                  if (upcomingActivitiesState.valueOrNull?.isNotEmpty == true)
+                    TextButton(
+                      onPressed: () {
+                        context.goNamed(
+                          AppRoute.activityMy.name,
+                          queryParameters: {
+                            'tab': MyShiftScreenTabType.upcoming.name,
+                          },
+                        );
+                      },
+                      child: const Text(
+                        'See more',
+                      ),
                     ),
-                  ),
                 ],
               ),
               const SizedBox(

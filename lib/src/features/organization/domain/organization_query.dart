@@ -7,12 +7,18 @@ import 'organization_status.dart';
 part 'organization_query.freezed.dart';
 part 'organization_query.g.dart';
 
+class OrganizationInclude {
+  static const String files = 'file';
+  static const String numberOfActivities = 'numberOfActivities';
+}
+
 @freezed
 class OrganizationQuery with _$OrganizationQuery {
   @JsonSerializable(includeIfNull: false)
   const factory OrganizationQuery({
-    @Default(100) int limit,
-    @Default(0) int offset,
+    int? limit,
+    int? offset,
+    int? cursor,
     @CommaSeparatedIntsConverter() List<int>? id,
     @CommaSeparatedIntsConverter() List<int>? excludeId,
     String? name,
@@ -26,6 +32,7 @@ class OrganizationQuery with _$OrganizationQuery {
     double? lat,
     double? lng,
     double? radius,
+    @CommaSeparatedStringsConverter() List<String>? include,
   }) = _OrganizationQuery;
 
   factory OrganizationQuery.fromJson(Map<String, dynamic> json) =>

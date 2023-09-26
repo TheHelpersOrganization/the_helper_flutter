@@ -9,8 +9,8 @@ import '../../../../../common/extension/image.dart';
 import '../../../../report/presentation/submit_report/screen/submit_report_screen.dart';
 import '../../../data/organization_repository.dart';
 import '../../../domain/organization.dart';
-import '../../organization_search/organization_join_controller.dart';
-import '../../organization_search/organization_leave_controller.dart';
+import '../../organization_search/controller/organization_join_controller.dart';
+import '../../organization_search/controller/organization_leave_controller.dart';
 
 class OrganizationHeaderWidget extends ConsumerStatefulWidget {
   final Organization organization;
@@ -459,9 +459,12 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
             Container(
                 height: bannerHeight,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: ImageX.backend(data.banner!).image,
-                      fit: BoxFit.cover),
+                  color: context.theme.primaryColor,
+                  image: data.banner == null
+                      ? null
+                      : DecorationImage(
+                          image: ImageX.backend(data.banner!).image,
+                          fit: BoxFit.cover),
                 )),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -6,7 +6,7 @@ import 'package:the_helper/src/features/skill/data/skill_repository.dart';
 import 'package:the_helper/src/features/skill/domain/skill.dart';
 import 'package:the_helper/src/features/skill/domain/skill_query.dart';
 
-import '../organization_filter_controller.dart';
+import '../controller/organization_filter_controller.dart';
 
 class OrganizationFilterSkill extends ConsumerStatefulWidget {
   const OrganizationFilterSkill({super.key});
@@ -16,7 +16,8 @@ class OrganizationFilterSkill extends ConsumerStatefulWidget {
       _OrganizationFilterSkillState();
 }
 
-class _OrganizationFilterSkillState extends ConsumerState<OrganizationFilterSkill> {
+class _OrganizationFilterSkillState
+    extends ConsumerState<OrganizationFilterSkill> {
   final controller = TextEditingController();
 
   @override
