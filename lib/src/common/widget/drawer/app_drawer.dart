@@ -135,6 +135,17 @@ class AppDrawer extends ConsumerWidget {
             path: AppRoute.organizationTransferOwnership.path,
             enabled: isEmailVerified,
           ),
+        if (userRole == Role.admin &&
+                accountData?.roles.contains(Role.superadmin) == true ||
+            accountData?.roles.contains(Role.operator) == true)
+          AppDrawerItem(
+            title: 'Admins manage',
+            icon: Icons.admin_panel_settings_outlined,
+            isSub: false,
+            onTap: () => context.goNamed(AppRoute.accountAdminGrant.name),
+            path: AppRoute.accountAdminGrant.path,
+            enabled: isEmailVerified,
+          ),
         if (roles.length > 1 || joinedOrganizations?.isNotEmpty == true)
           AppDrawerItem(
             title: 'Change Role',

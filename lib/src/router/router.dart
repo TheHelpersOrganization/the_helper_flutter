@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/screens/safe_screen.dart';
 import 'package:the_helper/src/common/screens/screen404.dart';
+import 'package:the_helper/src/features/account/presentation/account_admin_grant/screen/account_admin_grant_screen.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_detail_screen.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/screens/account_request_manage_screen.dart';
 import 'package:the_helper/src/features/activity/presentation/activity_detail/screen/activity_detail_screen.dart';
@@ -358,6 +359,11 @@ final routes = [
               ),
             ),
           ]),
+      GoRoute(
+        path: AppRoute.accountAdminGrant.path,
+        name: AppRoute.accountAdminGrant.name,
+        builder: (_, __) => const AccountAdminGrantScreen(),
+      ),
       ...accountRoutes,
       profileRoutes,
       newsRoutes,
@@ -557,6 +563,10 @@ enum AppRoute {
   accountVerificationCompleted(
     path: '/account/verification-completed',
     name: 'account-verification-completed',
+  ),
+  accountAdminGrant(
+    path: '/account/grant-admin',
+    name: 'account-admin-grant',
   ),
 
   news(

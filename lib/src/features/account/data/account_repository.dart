@@ -80,6 +80,16 @@ class AccountRepository {
         await client.get('/accounts/count', queryParameters: query?.toJson());
     return DataLog.fromJson(res.data['data']);
   }
+
+  Future<AccountModel> grantAdmin(int id) async {
+    final res = await client.post('/admin/accounts/$id/grant-admin');
+    return AccountModel.fromJson(res.data['data']);
+  }
+
+  Future<AccountModel> revokeAdmin(int id) async {
+    final res = await client.post('/admin/accounts/$id/revoke-admin');
+    return AccountModel.fromJson(res.data['data']);
+  }
 }
 
 // final accountRepositoryProvider =

@@ -45,146 +45,98 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             padding: const EdgeInsets.all(12),
             child: Form(
               key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Welcome',
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Sign in to your account',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: TextFormField(
-                      controller: emailController,
-                      onFieldSubmitted: (e) {
-                        ref.read(loginControllerProvider.notifier).signIn(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                      },
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.mail),
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter email',
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Welcome',
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: TextFormField(
-                      obscureText: passwordVisible,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      controller: passwordController,
-                      onFieldSubmitted: (e) {
-                        ref.read(loginControllerProvider.notifier).signIn(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                      },
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            ref
-                                .read(passwordVisibilityProvider.notifier)
-                                .state = !passwordVisible;
-                          },
-                          icon: Icon(
-                            passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                        ),
-                        prefixIcon: const Icon(Icons.key),
-                        border: const OutlineInputBorder(),
-                        hintText: 'Enter password',
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Sign in to your account',
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () {
-                        context.goNamed(AppRoute.resetPassword.name);
-                      },
-                      child: const Text('Forgot password?'),
+                    const SizedBox(
+                      height: 32,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: PrimaryButton(
-                            isLoading: false,
-                            loadingText: "Logging in...",
-                            onPressed: () {
-                              ref.read(loginControllerProvider.notifier).signIn(
-                                    emailController.text,
-                                    passwordController.text,
-                                  );
-                            },
-                            child: const Text('Sign In'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              minimumSize: Size(
-                                  0, context.mediaQuery.size.height * 0.06),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen(),
-                                ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: TextFormField(
+                        controller: emailController,
+                        onFieldSubmitted: (e) {
+                          ref.read(loginControllerProvider.notifier).signIn(
+                                emailController.text,
+                                passwordController.text,
                               );
+                        },
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.mail),
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter email',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: TextFormField(
+                        obscureText: passwordVisible,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        controller: passwordController,
+                        onFieldSubmitted: (e) {
+                          ref.read(loginControllerProvider.notifier).signIn(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                        },
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(passwordVisibilityProvider.notifier)
+                                  .state = !passwordVisible;
                             },
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 8),
-                              child: Text('Sign Up Now'),
+                            icon: Icon(
+                              passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                           ),
+                          prefixIcon: const Icon(Icons.key),
+                          border: const OutlineInputBorder(),
+                          hintText: 'Enter password',
                         ),
-                        if (AppConfig.isDevelopment) ...[
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          const Row(
-                            children: <Widget>[
-                              Expanded(child: Divider()),
-                              Text("Development Only"),
-                              Expanded(child: Divider()),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          context.goNamed(AppRoute.resetPassword.name);
+                        },
+                        child: const Text('Forgot password?'),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: PrimaryButton(
@@ -194,60 +146,117 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ref
                                     .read(loginControllerProvider.notifier)
                                     .signIn(
-                                      "hquan310@gmail.com",
-                                      "123456",
+                                      emailController.text,
+                                      passwordController.text,
                                     );
                               },
-                              child: const Text('Login with Default Account'),
+                              child: const Text('Sign In'),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                PrimaryButton(
-                                  isLoading: false,
-                                  loadingText: "Logging in...",
-                                  onPressed: () {
-                                    final volunteerId =
-                                        volunteerIdTextEditingController.text
-                                            .trim();
-                                    ref
-                                        .read(loginControllerProvider.notifier)
-                                        .signIn(
-                                          'volunteer$volunteerId@thehelpers.me',
-                                          "123456",
-                                        );
-                                  },
-                                  child: const Text('Login as Volunteer'),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: FormBuilderTextField(
-                                    name: 'volunteerId',
-                                    controller:
-                                        volunteerIdTextEditingController,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                      ),
-                                      hintText: 'Enter volunteer id',
-                                    ),
-                                    validator: FormBuilderValidators.integer(),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: Size(
+                                    0, context.mediaQuery.size.height * 0.06),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegisterScreen(),
                                   ),
-                                ),
-                              ],
+                                );
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: Text('Sign Up Now'),
+                              ),
                             ),
                           ),
-                        ]
-                      ],
+                          if (AppConfig.isDevelopment) ...[
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            const Row(
+                              children: <Widget>[
+                                Expanded(child: Divider()),
+                                Text("Development Only"),
+                                Expanded(child: Divider()),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: PrimaryButton(
+                                isLoading: false,
+                                loadingText: "Logging in...",
+                                onPressed: () {
+                                  ref
+                                      .read(loginControllerProvider.notifier)
+                                      .signIn(
+                                        "hquan310@gmail.com",
+                                        "123456",
+                                      );
+                                },
+                                child: const Text('Login with Default Account'),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PrimaryButton(
+                                    isLoading: false,
+                                    loadingText: "Logging in...",
+                                    onPressed: () {
+                                      final volunteerId =
+                                          volunteerIdTextEditingController.text
+                                              .trim();
+                                      ref
+                                          .read(
+                                              loginControllerProvider.notifier)
+                                          .signIn(
+                                            'volunteer$volunteerId@thehelpers.me',
+                                            "123456",
+                                          );
+                                    },
+                                    child: const Text('Login as Volunteer'),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                    child: FormBuilderTextField(
+                                      name: 'volunteerId',
+                                      controller:
+                                          volunteerIdTextEditingController,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                        ),
+                                        hintText: 'Enter volunteer id',
+                                      ),
+                                      validator:
+                                          FormBuilderValidators.integer(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

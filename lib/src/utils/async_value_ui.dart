@@ -18,6 +18,8 @@ const chatGroupMakeOwnerSnackbarName = 'chatGroupMakeOwner';
 const chatGroupUpdateSnackbarName = 'chatGroupUpdate';
 const chatGroupLeaveSnackbarName = 'chatGroupLeave';
 const chatGroupDeleteSnackbarName = 'chatGroupDelete';
+const grantAdminSnackbarName = 'grantAdmin';
+const revokeAdminSnackbarName = 'revokeAdmin';
 
 extension AsyncValueUI on AsyncValue {
   void showSnackbarOnError(

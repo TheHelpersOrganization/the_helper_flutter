@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/profile/domain/profile.dart';
 
 import 'account_ban.dart';
 import 'account_verification.dart';
@@ -19,6 +20,7 @@ class AccountModel with _$AccountModel {
     required DateTime updatedAt,
     List<AccountVerificationModel>? verificationList,
     List<AccountBanModel>? banList,
+    Profile? profile,
   }) = _AccountModel;
 
   factory AccountModel.fromJson(Map<String, dynamic> json) =>
