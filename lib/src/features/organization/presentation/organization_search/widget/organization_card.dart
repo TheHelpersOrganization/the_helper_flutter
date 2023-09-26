@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/features/organization/domain/organization_query.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
@@ -72,79 +73,35 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
 
     return showDialog(
       context: context,
-      builder: (dialogContext) => SimpleDialog(
-        title: Row(
-          children: [
-            const Expanded(
-              child: Text('Join Organization'),
-            ),
-            IconButton(
-              onPressed: () {
-                dialogContext.pop();
-              },
-              icon: const Icon(
-                Icons.close,
-              ),
-            ),
-          ],
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 24,
-        ),
-        children: [
-          RichText(
-            text: TextSpan(
-              text: 'Do you want to join ',
-              children: [
-                TextSpan(
-                  text: organization.name,
-                  style: TextStyle(
-                    color: dialogContext.theme.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Row(
+      builder: (dialogContext) => ConfirmationDialog(
+        titleText: 'Join Organization',
+        content: Text.rich(
+          TextSpan(
+            text: 'Do you want to join ',
             children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    dialogContext.pop();
-                  },
-                  child: const Text('Cancel'),
+              TextSpan(
+                text: organization.name,
+                style: TextStyle(
+                  color: dialogContext.theme.primaryColor,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                flex: 2,
-                child: FilledButton(
-                  onPressed: () async {
-                    dialogContext.pop();
-                    _showJoinLoadingDialog();
-                    final res = await organizationJoinController.join(
-                      organization.id,
-                    );
-                    if (context.mounted) {
-                      context.pop();
-                      if (res != null) {
-                        _showJoinSuccessDialog();
-                      }
-                    }
-                  },
-                  child: const Text('Join'),
-                ),
-              )
             ],
           ),
-        ],
+        ),
+        onConfirm: () async {
+          dialogContext.pop();
+          _showJoinLoadingDialog();
+          final res = await organizationJoinController.join(
+            organization.id,
+          );
+          if (context.mounted) {
+            context.pop();
+            if (res != null) {
+              _showJoinSuccessDialog();
+            }
+          }
+        },
       ),
     );
   }

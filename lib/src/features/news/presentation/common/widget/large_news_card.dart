@@ -102,10 +102,12 @@ class LargeNewsCard extends StatelessWidget {
                           radius: 12,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          organization?.name ?? 'Unknown organization',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                        Expanded(
+                          child: Text(
+                            organization?.name ?? 'Unknown organization',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),

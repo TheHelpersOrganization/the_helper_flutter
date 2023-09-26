@@ -8,45 +8,48 @@ import 'package:the_helper/src/features/shift/application/mod_shift_volunteer_se
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/domain/shift_query.dart';
 
-final ongoingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>((ref) async {
+final ongoingActivitiesProvider =
+    FutureProvider.autoDispose<List<Activity>>((ref) async {
   final orgId = await ref
       .watch(modOrganizationServiceProvider)
       .getCurrentOrganizationId();
-  return ref
-      .watch(modActivityServiceProvider)
-      .getActivitiesWithOrganization(
-        organizationId: orgId!,
-        query: ModActivityQuery(
-          limit: 5,
-          status: [ActivityStatus.ongoing]
-        )
-    );
+  return ref.watch(modActivityServiceProvider).getActivitiesWithOrganization(
+      organizationId: orgId!,
+      query: ModActivityQuery(limit: 5, status: [ActivityStatus.ongoing]));
 });
 
-final upcomingActivitiesProvider = FutureProvider.autoDispose<List<Activity>>((ref) async {
+final upcomingActivitiesProvider =
+    FutureProvider.autoDispose<List<Activity>>((ref) async {
   final orgId = await ref
       .watch(modOrganizationServiceProvider)
       .getCurrentOrganizationId();
-  return ref
-      .watch(modActivityServiceProvider)
-      .getActivitiesWithOrganization(
-        organizationId: orgId!,
-        query: ModActivityQuery(
-          limit: 5,
-          startTime: [
-            // DateTime.now().millisecondsSinceEpoch,
-            DateTime.now().add(const Duration(days: 7)).millisecondsSinceEpoch
-          ]
-        ),
-      );
+  final activities =
+      await ref.watch(modActivityServiceProvider).getActivitiesWithOrganization(
+            organizationId: orgId!,
+            query: ModActivityQuery(limit: 5, startTime: [
+              // DateTime.now().millisecondsSinceEpoch,
+              DateTime.now().add(const Duration(days: 7)).millisecondsSinceEpoch
+            ]),
+          );
+
+  // return activities
+  //     .map(
+  //       (e) => e.copyWith(
+  //         volunteers: volunteers
+  //             .where(
+  //               (v) => v.activityId == e.id,
+  //             )
+  //             .toList(),
+  //       ),
+  //     )
+  //     .toList();
+
+  return activities;
 });
 
-final managerShiftProvider = FutureProvider.autoDispose<List<Shift>>((ref) =>
-    ref
-        .watch(modShiftVolunteerServiceProvider)
-        .getShifts(
-          query: const ShiftQuery(
-            status: [ShiftStatus.pending, ShiftStatus.ongoing],
-            isShiftManager: true,
-          )
-        ));
+final managerShiftProvider = FutureProvider.autoDispose<List<Shift>>(
+    (ref) => ref.watch(modShiftVolunteerServiceProvider).getShifts(
+            query: const ShiftQuery(
+          status: [ShiftStatus.pending, ShiftStatus.ongoing],
+          isShiftManager: true,
+        )));

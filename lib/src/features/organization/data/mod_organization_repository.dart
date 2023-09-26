@@ -34,12 +34,12 @@ class ModOrganizationRepository {
 
   Future<Organization> create(OrganizationRequestModel organization) async {
     final res =
-        await client.post('/organizations', data: organization.toJson());
+        await client.post('/mod/organizations', data: organization.toJson());
     return Organization.fromJson(res.data['data']);
   }
 
   Future<void> update(int id, Organization organization) async {
-    await client.put('/organization/$id', data: organization.toJson());
+    await client.put('/mod/organization/$id', data: organization.toJson());
   }
 }
 

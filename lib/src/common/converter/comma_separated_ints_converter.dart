@@ -26,12 +26,12 @@ class NonNullCommaSeparatedIntsConverter
   const NonNullCommaSeparatedIntsConverter();
 
   @override
-  fromJson(String json) {
+  List<int> fromJson(String json) {
     return json.split(',').map((e) => int.parse(e)).toList();
   }
 
   @override
-  toJson(List<int> object) {
+  String toJson(List<int> object) {
     return object.join(',');
   }
 }

@@ -57,7 +57,7 @@ final volunteerShiftProvider = FutureProvider.autoDispose<List<Shift>>(
           status: [ShiftStatus.pending, ShiftStatus.ongoing],
           myJoinStatus: [
             ShiftVolunteerStatus.approved,
-            ShiftVolunteerStatus.pending
+            //ShiftVolunteerStatus.pending
           ],
         ),
       ),

@@ -25,7 +25,7 @@ import 'package:the_helper/src/features/change_role/presentation/screens/home_sc
 import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_request_manage_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/my/my_organization_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_detail/screen/organization_detail_screen.dart';
-import 'package:the_helper/src/features/organization/presentation/organization_registration/organization_registration.dart';
+import 'package:the_helper/src/features/organization/presentation/organization_registration/screen/organization_registration.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_search/screen/organization_search_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/organization_transfer_ownership/screen/organization_transfer_ownership_success_screen.dart';
@@ -412,7 +412,7 @@ final organizationRoutes = [
   GoRoute(
     path: AppRoute.organizationRegistration.path,
     name: AppRoute.organizationRegistration.name,
-    builder: (_, __) => const OrganizationRegistrationScreen(),
+    builder: (_, __) => OrganizationRegistrationScreen(),
   ),
   GoRoute(
     path: AppRoute.organizationTransferOwnership.path,
@@ -468,7 +468,19 @@ final activityRoutes = [
   GoRoute(
     path: AppRoute.activityMy.path,
     name: AppRoute.activityMy.name,
-    builder: (_, __) => const MyShiftScreen(),
+    builder: (_, state) {
+      final tab = state.uri.queryParameters['tab'];
+      if (tab != null) {
+        final type = MyShiftScreenTabType.values.firstWhere(
+          (e) => e.name == tab,
+          orElse: () => MyShiftScreenTabType.ongoing,
+        );
+        return MyShiftScreen(
+          tabType: type,
+        );
+      }
+      return const MyShiftScreen();
+    },
   ),
   GoRoute(
     path: AppRoute.activity.path,
