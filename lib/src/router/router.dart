@@ -43,7 +43,10 @@ import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_manager_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_edit/screen/mod_shift_edit_skill_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/screen/shift_volunteer_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/my_shift/screen/check_in_out_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/qr_generator/screen/qr_generator_screen.dart';
+import 'package:the_helper/src/features/shift/presentation/qr_scanner/screen/scanner_screen.dart';
 import 'package:the_helper/src/features/shift/presentation/shift/screen/shift_screen.dart';
 import 'package:the_helper/src/router/chat_routes.dart';
 import 'package:the_helper/src/router/news_routes.dart';
@@ -211,6 +214,24 @@ final routes = [
                           shiftId: shiftId,
                         );
                       },
+                      routes: [
+                        GoRoute(
+                          path: AppRoute.shiftQR.path,
+                          name: AppRoute.shiftQR.name,
+                          builder: (_, state) {
+                            final activityId = int.parse(
+                              state.pathParameters['activityId']!,
+                            );
+                            final shiftId = int.parse(
+                              state.pathParameters['shiftId']!,
+                            );
+                            return QRGeneratorScreen(
+                              activityId: activityId,
+                              shiftId: shiftId,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -367,6 +388,29 @@ final routes = [
       ...accountRoutes,
       profileRoutes,
       newsRoutes,
+      GoRoute(
+        path: AppRoute.qrScan.path,
+        name: AppRoute.qrScan.name,
+        builder: (context, state) => const ScannerScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.shiftAttendance.path,
+        name: AppRoute.shiftAttendance.name,
+        builder: (context, state) {
+          final shiftId = int.parse(state.pathParameters['shiftId']!);
+          bool? isCheckIn;
+          if (state.pathParameters['checkInOut'] == 'check-in') {
+            isCheckIn = true;
+          } else if (state.pathParameters['checkInOut'] == 'check-out') {
+            isCheckIn = false;
+          }
+
+          return CheckInOutScreen(
+            shiftId: shiftId,
+            isCheckIn: isCheckIn!,
+          );
+        },
+      ),
       ...organizationRoutes,
       ...activityRoutes,
       chatRoutes,
@@ -586,6 +630,11 @@ enum AppRoute {
     name: 'news-update',
   ),
 
+  qrScan(
+    path: '/scan',
+    name: 'qr-scan',
+  ),
+
   chats(
     path: '/chat',
     name: 'chats',
@@ -779,6 +828,10 @@ enum AppRoute {
     path: 'volunteer',
     name: 'shift-volunteer',
   ),
+  shiftQR(
+    path: 'qr',
+    name: 'shift-qr',
+  ),
 
   // shift
   shifts(
@@ -788,6 +841,10 @@ enum AppRoute {
   shift(
     path: 'shift/:${AppRouteParameter.shiftId}',
     name: 'shift',
+  ),
+  shiftAttendance(
+    path: '/attendance/:shiftId/:checkInOut',
+    name: 'shift-attendance',
   ),
 
   //Admin feature

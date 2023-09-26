@@ -81,6 +81,14 @@ dependencies:
   envied: ^0.3.0+3
   fast_immutable_collections: ^9.1.5
   open_file: ^3.3.2
+  qr_flutter: ^4.1.0
+  qr_code_scanner: ^1.0.1
+  image_gallery_saver: ^2.0.3
+  mobile_scanner: ^3.4.1
+  image: ^4.0.17
+  screenshot: ^2.1.0
+
+
 
 dev_dependencies:
   flutter_test:

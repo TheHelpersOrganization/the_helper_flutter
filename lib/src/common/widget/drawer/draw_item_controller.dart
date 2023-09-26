@@ -56,6 +56,11 @@ const List<DrawerItemModel> volunteer = [
     title: 'Create organization',
     icon: Icons.group_add,
   ),
+  DrawerItemModel(
+    route: AppRoute.qrScan,
+    title: 'QR Scanner',
+    icon: Icons.qr_code_scanner,
+  ),
   // DrawerItemModel(
   //   route: AppRoute.report,
   //   title: 'Report',
