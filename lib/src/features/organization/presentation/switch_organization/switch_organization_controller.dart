@@ -20,8 +20,8 @@ final joinedOrganizationProvider = FutureProvider.autoDispose(
 
 class SwitchOrganizationController extends AutoDisposeAsyncNotifier<void> {
   @override
-  FutureOr<void> build() {
-    ref.watch(currentOrganizationServiceProvider);
+  FutureOr<void> build() async {
+    await ref.watch(currentOrganizationServiceProvider.future);
   }
 
   Future<Organization?> switchOrganization(int organizationId) async {

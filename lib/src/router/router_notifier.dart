@@ -7,12 +7,14 @@ import 'package:the_helper/src/router/router.dart';
 // Need to implement Listenable so that GoRouter can listen
 class RouterNotifier extends Notifier<bool> implements Listenable {
   bool _isAuth = false;
+  int? _accountId;
   VoidCallback? _routerListener;
 
   @override
   bool build() {
     final authState = ref.watch(authServiceProvider);
     _isAuth = authState.valueOrNull?.token != null;
+    _accountId = authState.valueOrNull?.account.id;
     // _isAuth = authState.valueOrNull?.token == null;
     ref.listenSelf((_, __) {
       if (!state) return;
@@ -26,21 +28,39 @@ class RouterNotifier extends Notifier<bool> implements Listenable {
   }
 
   /// Redirects the user when our authentication changes
-  String? redirect(BuildContext context, GoRouterState state) {
-    if (!this.state) {
+  String? redirect(BuildContext context, GoRouterState routerState) {
+    if (!state) {
       return null;
     }
 
     // Don't redirect if we're already on the reset password screen
-    if (state.fullPath == AppRoute.resetPassword.path) {
+    if (routerState.fullPath == AppRoute.resetPassword.path) {
       return null;
     }
 
     // Navigate to home if user has logged in
-    final isLoggingIn = state.fullPath == AppRoute.login.path;
+    final isLoggingIn = routerState.fullPath == AppRoute.login.path;
     if (isLoggingIn) return _isAuth ? AppRoute.home.path : null;
 
-    return _isAuth ? null : AppRoute.login.path;
+    // Navigate to login if user has logged out
+    if (!_isAuth) {
+      return AppRoute.login.path;
+    }
+
+    // Navigate to my profile if profile id matches user id
+    final isProfile = routerState.fullPath?.contains(
+            '${AppRoute.profile.path}/${AppRoute.otherProfile.path}') ??
+        false;
+    if (isProfile) {
+      final profileId = routerState.pathParameters[AppRouteParameter.profileId];
+      if (profileId != null &&
+          _accountId != null &&
+          profileId == _accountId.toString()) {
+        return AppRoute.profile.path;
+      }
+    }
+
+    return null;
   }
 
   @override

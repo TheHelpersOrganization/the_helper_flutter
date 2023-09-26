@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -10,7 +13,7 @@ import 'package:the_helper/src/features/shift/presentation/my_shift/controller/m
 import 'package:the_helper/src/features/shift/presentation/my_shift/widget/my_shift_card.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
-enum TabType {
+enum MyShiftScreenTabType {
   ongoing,
   upcoming,
   completed,
@@ -18,7 +21,7 @@ enum TabType {
 }
 
 class TabElement {
-  final TabType type;
+  final MyShiftScreenTabType type;
   final String tabTitle;
   final String? noDataTitle;
   final String? noDataSubtitle;
@@ -33,27 +36,48 @@ class TabElement {
 
 final List<TabElement> tabElements = [
   const TabElement(
-    type: TabType.ongoing,
+    type: MyShiftScreenTabType.ongoing,
     tabTitle: 'Ongoing',
     noDataTitle: 'No shift found',
   ),
   const TabElement(
-    type: TabType.upcoming,
+    type: MyShiftScreenTabType.upcoming,
     tabTitle: 'Upcoming',
     noDataTitle: 'No shift found',
   ),
   const TabElement(
-    type: TabType.completed,
+    type: MyShiftScreenTabType.completed,
     tabTitle: 'Completed',
     noDataTitle: 'No shift found',
   ),
 ];
 
-class MyShiftScreen extends ConsumerWidget {
-  const MyShiftScreen({super.key});
+class MyShiftScreen extends ConsumerStatefulWidget {
+  final MyShiftScreenTabType? tabType;
+
+  const MyShiftScreen({
+    super.key,
+    this.tabType,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyShiftScreen> createState() => _MyShiftScreenState();
+}
+
+class _MyShiftScreenState extends ConsumerState<MyShiftScreen>
+    with AfterLayoutMixin {
+  @override
+  FutureOr<void> afterFirstLayout(BuildContext context) {
+    if (widget.tabType != null) {
+      ref.read(tabTypeProvider.notifier).state = widget.tabType!;
+      ref.read(hasChangedProvider.notifier).state = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final initialTabIndex = tabElements.indexWhere((element) =>
+        element.type == (widget.tabType ?? MyShiftScreenTabType.ongoing));
     final isSearching = ref.watch(isSearchingProvider);
     final searchPattern = ref.watch(searchPatternProvider);
     final pagingController = ref.watch(myActivityPagingControllerProvider);
@@ -116,6 +140,7 @@ class MyShiftScreen extends ConsumerWidget {
     });
 
     return DefaultTabController(
+      initialIndex: initialTabIndex,
       length: tabElements.length,
       child: Builder(
         builder: (context) {
@@ -179,13 +204,13 @@ class MyShiftScreen extends ConsumerWidget {
                         },
                         icon: const Icon(Icons.search_outlined),
                       ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.filter_list),
-                    ),
+                    // IconButton(
+                    //   onPressed: () {},
+                    //   icon: const Icon(Icons.filter_list),
+                    // ),
                   ],
                 ),
-                if (tabType == TabType.upcoming)
+                if (tabType == MyShiftScreenTabType.upcoming)
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

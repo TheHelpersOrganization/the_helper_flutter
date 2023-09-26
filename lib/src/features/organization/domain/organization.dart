@@ -28,6 +28,7 @@ class Organization with _$Organization {
     int? numberOfMembers,
     List<OrganizationMember>? myMembers,
     required bool hasJoined,
+    int? numberOfActivities,
   }) = _Organization;
 
   factory Organization.fromJson(Map<String, dynamic> json) =>

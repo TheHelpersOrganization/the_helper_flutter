@@ -166,7 +166,11 @@ class ModView extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goNamed(
+                        AppRoute.organizationActivityListManagement.name,
+                      );
+                    },
                     child: const Text(
                       'See more',
                     ),
@@ -241,7 +245,7 @@ class ModView extends ConsumerWidget {
                       ? EmptyListWidget(
                           description: const [
                             'Your organization don\'t have any',
-                            'upcomming activities'
+                            'upcoming activities'
                           ],
                           buttonTxt: 'Create one now',
                           onPress: () => context.goNamed(

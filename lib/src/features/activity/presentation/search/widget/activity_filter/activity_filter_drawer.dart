@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/features/activity/domain/activity_query.dart';
 import 'package:the_helper/src/features/activity/presentation/search/controller/activity_filter_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/search/widget/activity_filter/activity_filter_date_range.dart';
@@ -67,17 +68,21 @@ class ActivityFilterDrawer extends ConsumerWidget {
                       flex: 1,
                       child: TextButton(
                         onPressed: () {
-                          // ref.read(activityQueryProvider.notifier).state = null;
-                          ref.invalidate(selectedSkillsProvider);
-                          ref.invalidate(selectedOrganizationsProvider);
-                          ref.invalidate(selectedStartTimeProvider);
-                          ref.invalidate(selectedEndTimeProvider);
-                          ref.invalidate(radiusTextEditingControllerProvider);
-                          ref.invalidate(isLocationFilterSimpleModeProvider);
-                          ref.invalidate(placeProvider);
-                          ref.invalidate(selectedLocationProvider);
-                          ref.read(isMarkedToResetProvider.notifier).state =
-                              true;
+                          showDialog(
+                            useRootNavigator: false,
+                            context: context,
+                            builder: (context) => ConfirmationDialog(
+                              titleText: 'Reset filter',
+                              content: const Text(
+                                'Are you sure you want to reset the filter?',
+                              ),
+                              onConfirm: () {
+                                ref.invalidate(activityQueryProvider);
+                                context.pop();
+                                context.pop();
+                              },
+                            ),
+                          );
                         },
                         child: const Text('Reset'),
                       ),
@@ -90,14 +95,14 @@ class ActivityFilterDrawer extends ConsumerWidget {
                           if (formKey.currentState?.saveAndValidate() != true) {
                             return;
                           }
-                          if (isMarkedToReset) {
-                            ref.read(isMarkedToResetProvider.notifier).state =
-                                false;
-                            ref.read(activityQueryProvider.notifier).state =
-                                null;
-                            context.pop();
-                            return;
-                          }
+                          // if (isMarkedToReset) {
+                          //   ref.read(isMarkedToResetProvider.notifier).state =
+                          //       false;
+                          //   ref.read(activityQueryProvider.notifier).state =
+                          //       null;
+                          //   context.pop();
+                          //   return;
+                          // }
                           final selectedSkills =
                               ref.read(selectedSkillsProvider);
                           final selectedOrganizations =

@@ -14,31 +14,32 @@ import 'package:the_helper/src/utils/async_value.dart';
 final isSearchingProvider = StateProvider.autoDispose((ref) => false);
 final hasChangedProvider = StateProvider.autoDispose((ref) => false);
 final searchPatternProvider = StateProvider.autoDispose<String?>((ref) => null);
-final tabTypeProvider = StateProvider.autoDispose((ref) => TabType.ongoing);
+final tabTypeProvider =
+    StateProvider.autoDispose((ref) => MyShiftScreenTabType.ongoing);
 
 // Quick filter
 final selectedStatusesProvider =
     StateProvider.autoDispose<Set<ShiftVolunteerStatus>>((ref) => {});
 
 final queries = {
-  TabType.ongoing: const ShiftQuery(
+  MyShiftScreenTabType.ongoing: const ShiftQuery(
     status: [ShiftStatus.ongoing],
     myJoinStatus: [ShiftVolunteerStatus.approved],
     sort: [ShiftQuerySort.startTimeAsc],
   ),
-  TabType.upcoming: const ShiftQuery(
+  MyShiftScreenTabType.upcoming: const ShiftQuery(
     status: [ShiftStatus.pending],
     myJoinStatus: [ShiftVolunteerStatus.pending, ShiftVolunteerStatus.approved],
     sort: [ShiftQuerySort.startTimeAsc],
   ),
-  TabType.completed: const ShiftQuery(
+  MyShiftScreenTabType.completed: const ShiftQuery(
     status: [ShiftStatus.completed],
     myJoinStatus: [
       ShiftVolunteerStatus.approved,
     ],
     sort: [ShiftQuerySort.startTimeDesc],
   ),
-  TabType.other: const ShiftQuery(
+  MyShiftScreenTabType.other: const ShiftQuery(
     status: [ShiftStatus.pending, ShiftStatus.ongoing, ShiftStatus.completed],
     myJoinStatus: [
       ShiftVolunteerStatus.rejected,
@@ -75,7 +76,8 @@ final myActivityPagingControllerProvider = Provider.autoDispose((ref) {
 
       final updatedQuery = query.copyWith(
         name: searchPattern?.isNotEmpty == true ? searchPattern : null,
-        myJoinStatus: tabType == TabType.upcoming && selectedStatuses.isNotEmpty
+        myJoinStatus: tabType == MyShiftScreenTabType.upcoming &&
+                selectedStatuses.isNotEmpty
             ? selectedStatuses.toList()
             : query.myJoinStatus,
         include: [

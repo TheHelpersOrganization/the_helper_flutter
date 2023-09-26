@@ -63,9 +63,21 @@ class ActivityService {
       List<ShiftVolunteer> volunteers = [];
       for (var i in activities) {
         final res = await shiftService.getShiftVolunteers(
-            query: ShiftVolunteerQuery(activityId: i.id));
+          query: ShiftVolunteerQuery(
+            activityId: i.id,
+            status: [
+              ShiftVolunteerStatus.pending,
+              ShiftVolunteerStatus.approved
+            ],
+            include: [
+              ShiftVolunteerQueryInclude.profile,
+            ],
+          ),
+        );
 
-        res.map((e) => volunteers.add(e.copyWith(activityId: i.id)));
+        for (var e in res) {
+          volunteers.add(e.copyWith(activityId: i.id));
+        }
       }
 
       activities = activities
@@ -104,9 +116,18 @@ class ActivityService {
       List<ShiftVolunteer> volunteers = [];
       for (var i in activities) {
         final res = await shiftService.getShiftVolunteers(
-            query: ShiftVolunteerQuery(activityId: i.id));
+          query: ShiftVolunteerQuery(
+            activityId: i.id,
+            status: [ShiftVolunteerStatus.approved],
+            include: [
+              ShiftVolunteerQueryInclude.profile,
+            ],
+          ),
+        );
 
-        res.map((e) => volunteers.add(e.copyWith(activityId: i.id)));
+        for (var e in res) {
+          volunteers.add(e.copyWith(activityId: i.id));
+        }
       }
 
       activities = activities
