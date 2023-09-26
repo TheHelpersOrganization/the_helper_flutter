@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/widget/button/notification_button.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   final Widget? title;
@@ -14,6 +15,7 @@ class CustomSliverAppBar extends StatelessWidget {
   final List<Widget>? actions;
   final double? expandedHeight;
   final Widget? flexibleSpace;
+  final bool? showQRButton;
 
   const CustomSliverAppBar({
     super.key,
@@ -28,6 +30,7 @@ class CustomSliverAppBar extends StatelessWidget {
     this.actions,
     this.expandedHeight,
     this.flexibleSpace,
+    this.showQRButton = false,
   });
 
   @override
@@ -55,8 +58,15 @@ class CustomSliverAppBar extends StatelessWidget {
           : leading,
       actions: actions ??
           <Widget>[
+            if (showQRButton == true)
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(AppRoute.qrScan.name);
+                },
+                icon: const Icon(Icons.qr_code_scanner),
+              ),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(right: 8.0),
               child: NotificationButton(),
             ),
           ],

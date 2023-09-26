@@ -55,6 +55,7 @@ class HomeScreen extends ConsumerWidget {
                       ),
                   ],
                 ),
+                showQRButton: role == Role.volunteer,
               ),
               body: getHomeScreen(role),
             ),

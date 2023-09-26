@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
@@ -10,6 +11,7 @@ import 'package:the_helper/src/features/shift/domain/shift_volunteer_arg.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_controller.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_volunteer/shift_volunteer_tab.dart';
 import 'package:the_helper/src/utils/shift.dart';
+import 'package:the_helper/src/router/router.dart';
 
 class TabElement {
   // final List<ShiftVolunteerStatus> status;
@@ -119,6 +121,7 @@ class ShiftVolunteerScreen extends ConsumerWidget {
             child: CircularProgressIndicator(),
           ),
         ),
+
         data: (shift) {
           final tabs = getTabs(shift: shift);
           final shiftStatus = shift.status;
@@ -152,6 +155,18 @@ class ShiftVolunteerScreen extends ConsumerWidget {
                       ),
                     ),
                     actions: [
+                      if (shiftStatus == ShiftStatus.ongoing ||
+                          shiftStatus == ShiftStatus.pending)
+                        IconButton(
+                          icon: const Icon(Icons.qr_code),
+                          onPressed: () => context.goNamed(
+                            AppRoute.shiftQR.name,
+                            pathParameters: {
+                              'activityId': activityId.toString(),
+                              'shiftId': shiftId.toString(),
+                            },
+                          ),
+                        ),
                       if (!isSearching)
                         IconButton(
                           icon: const Icon(Icons.search),

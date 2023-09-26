@@ -232,11 +232,29 @@ class ShiftRepository {
     return ShiftVolunteer.fromJson(res.data['data']);
   }
 
+  Future<ShiftVolunteer> checkInTest({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/test/shifts/$shiftId/volunteers/check-in',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
   Future<ShiftVolunteer> checkOut({
     required int shiftId,
   }) async {
     final res = await client.put(
       '/shifts/$shiftId/volunteers/check-out',
+    );
+    return ShiftVolunteer.fromJson(res.data['data']);
+  }
+
+  Future<ShiftVolunteer> checkOutTest({
+    required int shiftId,
+  }) async {
+    final res = await client.put(
+      '/test/shifts/$shiftId/volunteers/check-out',
     );
     return ShiftVolunteer.fromJson(res.data['data']);
   }
