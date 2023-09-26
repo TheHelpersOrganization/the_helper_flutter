@@ -78,7 +78,7 @@ class ModView extends ConsumerWidget {
           padding: EdgeInsets.all(12),
           child: Column(
             children: [
-              Text('Your organization is has been rejected'),
+              Text('Your organization has been rejected'),
             ],
           ),
         );
