@@ -20,8 +20,8 @@ class VolunteerAnalytics extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var f = NumberFormat.compact(locale: "en_US");
-    return Column(   
-      mainAxisAlignment: MainAxisAlignment.start,   
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           child: VolunteerAnalyticsSecondaryCard(
