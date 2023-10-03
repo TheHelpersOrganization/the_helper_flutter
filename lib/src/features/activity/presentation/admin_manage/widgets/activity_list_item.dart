@@ -150,8 +150,8 @@ class _ActivityListItemState extends ConsumerState<ActivityListItem> {
   Widget build(BuildContext context) {
     Activity data = widget.data;
     final org = ref.watch(getOrganizationProvider(data.organizationId!));
-    final startDate = DateFormat("mm/dd/y").format(data.startTime!);
-    final endDate = DateFormat("mm/dd/y").format(data.endTime!);
+    final startDate = DateFormat("MM/dd/y").format(data.startTime!);
+    final endDate = DateFormat("MM/dd/y").format(data.endTime!);
     return Container(
       decoration: BoxDecoration(
           border:

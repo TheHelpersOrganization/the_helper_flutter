@@ -46,7 +46,7 @@ class ReportDetailScreen extends ConsumerWidget {
           centerTitle: true,
         ),
         body: detail.when(
-            error: (_, __) {
+            error: (er, __) {
               return CustomErrorWidget(
                 onRetry: () {
                   ref.invalidate(reportDetailControllerProvider);
@@ -55,14 +55,15 @@ class ReportDetailScreen extends ConsumerWidget {
             },
             loading: () => const Center(child: CircularProgressIndicator()),
             data: (data) {
-              var dateData = DateFormat("dd-mm-y HH:mm").format(data.createdAt);
+              var dateData = DateFormat("dd-MM-yyyy HH:mm").format(data.createdAt);
 
               final reportedName = data.reportedAccount?.username ??
                   data.reportedAccount?.email ??
                   data.reportedOrganization?.name ??
                   data.reportedOrganization?.email ??
                   data.reportedActivity?.name ??
-                  data.reportedNews?.title ?? 'Unknow';
+                  data.reportedNews?.title ??
+                  'Unknow';
 
               final avatarId = data.reportedAccount?.avatarId ??
                   data.reportedActivity?.thumbnail ??
@@ -258,6 +259,10 @@ class ReportDetailScreen extends ConsumerWidget {
       case ReportType.activity:
         return context.pushNamed(AppRoute.activity.name, pathParameters: {
           'activityId': data.reportedActivity!.id.toString(),
+        });
+      case ReportType.news:
+        return context.pushNamed(AppRoute.newsDetail.name, pathParameters: {
+          'newsId': data.reportedNews!.id.toString(),
         });
     }
     return null;

@@ -15,7 +15,7 @@ class HistoryListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var date = DateFormat('dd/mm/yyyy').format(data.createdAt);
+    var date = DateFormat('dd/MM/yyyy').format(data.createdAt);
     return Container(
       decoration: BoxDecoration(
           border:

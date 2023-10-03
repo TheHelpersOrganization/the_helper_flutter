@@ -23,7 +23,7 @@ class CustomListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile =
         ref.watch(accountProfileServiceProvider(id: data.reporterId));
-    final date = DateFormat("mm/dd/y").format(data.createdAt);
+    final date = DateFormat("MM/dd/y").format(data.createdAt);
     final avatarId = data.reportedAccount?.avatarId ??
         data.reportedActivity?.thumbnail ??
         data.reportedOrganization?.logo;

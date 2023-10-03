@@ -43,7 +43,7 @@ class ReportMessageWidget extends ConsumerWidget {
                     data.sender.username
                   ),
                   Text(
-                    DateFormat("dd-mm-y HH:mm").format(data.createdAt)
+                    DateFormat("dd-MM-y HH:mm").format(data.createdAt)
                   ),
                 ],
               ),

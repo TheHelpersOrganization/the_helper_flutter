@@ -22,7 +22,7 @@ class AccountRequestListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile =
         ref.watch(accountProfileServiceProvider(id: data.accountId!));
-    var date = DateFormat('dd/mm/yyyy').format(data.createdAt);
+    var date = DateFormat('dd/MM/yyyy').format(data.createdAt);
     var fileNum = data.files.length;
 
     return Container(

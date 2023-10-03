@@ -110,6 +110,7 @@ final List<DrawerItemModel> moderator = [
         builder: (context) => const SwitchOrganizationDialog(),
       );
     },
+    enabled: true
   ),
   const DrawerItemModel(
     route: AppRoute.organizationRegistration,
