@@ -59,7 +59,7 @@ class ReportRepository {
   Future<ReportModel> approveReport({
     required int id,
   }) async {
-    final res = await client.post(
+    final res = await client.put(
       '/reports/$id/complete',
     );
     return ReportModel.fromJson(res.data['data']);
@@ -68,7 +68,7 @@ class ReportRepository {
   Future<ReportModel> rejectReport({
     required int id,
   }) async {
-    final res = await client.post(
+    final res = await client.put(
       '/reports/$id/reject',
     );
     return ReportModel.fromJson(res.data['data']);
