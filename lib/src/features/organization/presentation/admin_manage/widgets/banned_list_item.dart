@@ -38,6 +38,9 @@ class _BannedOrganizationListItemState
           content: RichText(
             text: TextSpan(
               text: 'Do you want to unban this organization',
+              style: const TextStyle(
+                color: Colors.black
+              ),
               children: [
                 TextSpan(
                   text: organization.name,

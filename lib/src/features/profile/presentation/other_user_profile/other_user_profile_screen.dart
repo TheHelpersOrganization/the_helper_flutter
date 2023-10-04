@@ -39,7 +39,8 @@ class OtherUserProfileScreen extends ConsumerWidget {
     final account = ref.watch(profileVerifiedControllerProvider(userId));
     final createChatState = ref.watch(createChatControllerProvider);
 
-    final contacts = ref.watch(profileContactControllerProvider(userId: userId));
+    final contacts =
+        ref.watch(profileContactControllerProvider(userId: userId));
     // final profile = profileService.getProfile();
     return profile.when(
       loading: () => const Scaffold(
@@ -142,7 +143,9 @@ class OtherUserProfileScreen extends ConsumerWidget {
                   ),
                   OtherProfileActivityTab(id: userId),
                   ProfileOrganizationTab(orgs: orgs),
-                  ProfileContactsTab(contacts: contacts,),
+                  ProfileContactsTab(
+                    contacts: contacts,
+                  ),
                 ],
               ),
             ),
@@ -214,7 +217,7 @@ class OtherUserProfileScreen extends ConsumerWidget {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return SubmitReportScreen(
-                      id: profile.id!,
+                      id: userId,
                       name: profile.username.toString(),
                       entityType: ReportType.account,
                       avatarId: profile.avatarId,

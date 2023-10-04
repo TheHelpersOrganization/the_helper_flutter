@@ -121,6 +121,7 @@ class OrganizationMemberRoleAssignmentScreen extends ConsumerWidget {
                                   TextSpan(
                                     text:
                                         'Are you sure you want to remove role ',
+                                    style: const TextStyle(color: Colors.black),
                                     children: [
                                       TextSpan(
                                         text: roleName,

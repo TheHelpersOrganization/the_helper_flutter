@@ -38,6 +38,9 @@ class _ActiveOrganizationListItemState
           content: RichText(
             text: TextSpan(
               text: 'Do you want to ban this organization',
+              style: const TextStyle(
+                color: Colors.black
+              ),
               children: [
                 TextSpan(
                   text: organization.name,
