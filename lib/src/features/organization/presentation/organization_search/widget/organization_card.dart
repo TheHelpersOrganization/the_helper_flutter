@@ -78,6 +78,9 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
         content: Text.rich(
           TextSpan(
             text: 'Do you want to join ',
+            style: const TextStyle(
+                color: Colors.black
+              ),
             children: [
               TextSpan(
                 text: organization.name,

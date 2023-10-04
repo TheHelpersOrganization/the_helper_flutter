@@ -60,6 +60,9 @@ class _PendingOrgCardState extends ConsumerState<PendingOrgCard> {
         content: RichText(
           text: TextSpan(
             text: 'Your request to join ',
+            style: const TextStyle(
+                color: Colors.black
+              ),
             children: [
               TextSpan(
                 text: widget.organization.name,
