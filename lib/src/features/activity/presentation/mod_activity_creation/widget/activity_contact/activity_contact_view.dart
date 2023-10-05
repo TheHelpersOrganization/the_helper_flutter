@@ -75,7 +75,7 @@ class ActivityContactView extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Tap "+ Add Contact" to add skill or skip this step',
+                    'Tap "+ Add Contact" to add contact or skip this step',
                     style:
                         TextStyle(color: context.theme.colorScheme.secondary),
                   ),

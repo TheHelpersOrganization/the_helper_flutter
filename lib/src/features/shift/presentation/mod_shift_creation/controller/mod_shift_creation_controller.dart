@@ -61,8 +61,9 @@ final locationTextEditingControllerProvider =
 final placeProvider = StateProvider<PlaceDetails?>((ref) => null);
 
 // Contact
+final searchContactsProvider = StateProvider.autoDispose((ref) => '');
 final selectedContactIdsProvider =
-    StateProvider.autoDispose<List<int>?>((ref) => null);
+    StateProvider.autoDispose<Set<int>?>((ref) => null);
 final selectedContactNameProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 

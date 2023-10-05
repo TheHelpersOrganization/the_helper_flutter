@@ -121,6 +121,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             const CustomSliverAppBar(
               titleText: 'Create Shift',
+              actions: [],
             )
           ],
           body: activityAndMembersState.when(
@@ -219,7 +220,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
                               location ??
                                   Location(addressLine1: locationString),
                             ],
-                            contacts: selectedContacts,
+                            contacts: selectedContacts?.toList(),
                             shiftSkills: selectedSkill
                                 ?.map(
                                   (e) => CreateShiftSkill(

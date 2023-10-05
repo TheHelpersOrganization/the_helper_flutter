@@ -72,7 +72,7 @@ class ModShiftEditContactScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(12),
                   child: ShiftCreationContactView(
                     initialContacts:
-                        data.shift.contacts?.map((e) => e.id!).toList(),
+                        data.shift.contacts?.map((e) => e.id!).toSet(),
                   ),
                 ),
               );
@@ -106,7 +106,7 @@ class ModShiftEditContactScreen extends ConsumerWidget {
                           child: FilledButton(
                             onPressed: () {
                               final shift = UpdateShift(
-                                contacts: selectedContacts,
+                                contacts: selectedContacts?.toList(),
                               );
                               ref
                                   .read(updateShiftControllerProvider.notifier)

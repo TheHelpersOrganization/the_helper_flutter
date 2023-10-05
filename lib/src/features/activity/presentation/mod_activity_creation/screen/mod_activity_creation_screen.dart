@@ -14,7 +14,7 @@ import 'package:the_helper/src/features/activity/presentation/mod_activity_creat
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_contact/controller/activity_contact_controller.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_location/activity_location_view.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_creation/widget/activity_manager/activity_manager_view.dart';
-import 'package:the_helper/src/features/location/domain/location.dart';
+import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 import 'package:the_helper/src/utils/step.dart';
@@ -51,7 +51,7 @@ class ModActivityCreationScreen extends ConsumerWidget {
     ];
     final isLastPage = currentStep == steps.length - 1;
     final selectedContacts = ref.watch(selectedContactsIdProvider);
-    final place = ref.watch(placeProvider);
+    final PlaceDetails? place = ref.watch(placeProvider);
 
     ref.listen<AsyncValue>(
       createActivityControllerProvider,
@@ -136,10 +136,7 @@ class ModActivityCreationScreen extends ConsumerWidget {
                               activityManagerIds:
                                   activityManagerSelection?.toList(),
                               contacts: selectedContacts?.toList(),
-                              location: Location(
-                                latitude: place!.latitude,
-                                longitude: place.longitude,
-                              ),
+                              location: place!.toLocation(),
                             );
                       },
                       child: Text(isLastPage ? 'Create' : 'Next'),

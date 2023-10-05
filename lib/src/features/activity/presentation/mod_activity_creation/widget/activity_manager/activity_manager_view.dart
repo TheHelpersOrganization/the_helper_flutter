@@ -104,7 +104,7 @@ class ActivityManagerView extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Tap "+ Add Manager" to add skill or skip this step',
+                'Tap "+ Add Manager" to add manager or skip this step',
                 style: TextStyle(color: context.theme.colorScheme.secondary),
                 textAlign: TextAlign.center,
               ),

@@ -27,6 +27,7 @@ class UnselectedManagers extends ConsumerWidget {
         .where((manager) =>
             selectedManagers == null ||
             !selectedManagers.contains(manager.accountId))
+        .take(20)
         .toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

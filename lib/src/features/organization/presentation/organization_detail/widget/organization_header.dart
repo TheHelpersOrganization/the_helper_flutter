@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/features/organization_member/domain/organization_member_status.dart';
 import 'package:the_helper/src/features/report/domain/report_query_parameter_classes.dart';
 
 import '../../../../../common/extension/image.dart';
@@ -444,10 +445,25 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
   @override
   Widget build(BuildContext context) {
     final data = widget.organization;
+    final memberStatus = data.myMembers!.firstOrNull;
     final bannerHeight = widget.bannerHeight ?? 200;
     final logoHeight = widget.logoHeight ?? 150;
 
     var topP = bannerHeight - logoHeight / 2;
+
+    final disableJoinButton = data.hasJoined! ||
+        memberStatus?.status == OrganizationMemberStatus.pending.name;
+    print(memberStatus);
+    final String joinButtonText;
+    if (data.hasJoined!) {
+      joinButtonText = 'Joined';
+    } else {
+      if (memberStatus?.status == OrganizationMemberStatus.pending.name) {
+        joinButtonText = 'Needs approval';
+      } else {
+        joinButtonText = 'Join';
+      }
+    }
 
     // List<int?> avatarList = data.myMembers;
     return Stack(
@@ -477,14 +493,12 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: FilledButton(
-                    onPressed: data.hasJoined!
+                    onPressed: disableJoinButton
                         ? null
                         : () {
                             showJoinDialog();
                           },
-                    child: data.hasJoined!
-                        ? const Text('Joined')
-                        : const Text('Join'),
+                    child: Text(joinButtonText),
                   ),
                 ),
                 const SizedBox(

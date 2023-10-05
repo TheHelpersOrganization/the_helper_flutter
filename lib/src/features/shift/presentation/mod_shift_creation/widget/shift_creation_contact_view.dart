@@ -5,10 +5,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/controller/mod_shift_creation_controller.dart';
-import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_contact_view.dart';
+import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/widget/shift_creation_contact/shift_contact_create_view.dart';
 
 class ShiftCreationContactView extends ConsumerWidget {
-  final List<int>? initialContacts;
+  final Set<int>? initialContacts;
 
   const ShiftCreationContactView({
     super.key,
@@ -46,7 +46,7 @@ class ShiftCreationContactView extends ConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ShiftContactView(
+                        builder: (_) => ShiftContactCreateView(
                           initialContacts: initialContacts,
                         ),
                         fullscreenDialog: true,
@@ -66,7 +66,7 @@ class ShiftCreationContactView extends ConsumerWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Tap "+ Add Contact" to add skill or skip this step',
+                'Tap "+ Add Contact" to add contact or skip this step',
                 style: TextStyle(color: context.theme.colorScheme.secondary),
               ),
             ],
@@ -95,9 +95,11 @@ class ShiftCreationContactView extends ConsumerWidget {
                       subtitle: Text(subtitle),
                       trailing: IconButton(
                         onPressed: () {
-                          selectedContacts.removeAt(i);
                           ref.read(selectedContactIdsProvider.notifier).state =
-                              [...selectedContacts];
+                              {
+                            ...selectedContacts
+                                .where((element) => element != contactId)
+                          };
                         },
                         icon: const Icon(
                           Icons.delete_outline,

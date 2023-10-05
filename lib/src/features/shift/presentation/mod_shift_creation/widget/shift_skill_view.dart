@@ -37,7 +37,11 @@ class ShiftSkillView extends ConsumerWidget {
               }
               final formData = _formKey.currentState!.value;
 
-              final skill = formData['skill'];
+              final Skill? skill = formData['skill'];
+
+              if (skill == null) {
+                return;
+              }
 
               if (selectedSkills
                       ?.any((element) => element.skill!.id == skill.id) ==
@@ -69,9 +73,9 @@ class ShiftSkillView extends ConsumerWidget {
                 return;
               }
 
-              final time = formData['hours'];
+              final time = double.parse(formData['hours'].toString());
               final unit = formData['unit'];
-              final hours = unit == 'days' ? time * 24 : time;
+              final hours = unit == 'days' ? time * 24.0 : time;
 
               final List<ShiftSkill> newSelectedSkills =
                   List.from(selectedSkills ?? []);
@@ -123,9 +127,13 @@ class ShiftSkillView extends ConsumerWidget {
                     flex: 2,
                     child: FormBuilderTextField(
                       name: 'hours',
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+\.?\d{0,2}'),
+                        ),
                       ],
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -136,7 +144,6 @@ class ShiftSkillView extends ConsumerWidget {
                         FormBuilderValidators.required(),
                         FormBuilderValidators.min(0, inclusive: false),
                       ]),
-                      valueTransformer: (value) => int.tryParse(value ?? ''),
                     ),
                   ),
                   const SizedBox(width: 8),
