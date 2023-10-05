@@ -6,9 +6,9 @@ import 'package:the_helper/src/features/organization/data/organization_repositor
 import '../../domain/organization.dart';
 
 class OrganizationEditController
-    extends AutoDisposeFamilyAsyncNotifier<Organization, int> {
+    extends AutoDisposeFamilyAsyncNotifier<Organization?, int> {
   @override
-  FutureOr<Organization> build(int arg) async {
+  FutureOr<Organization?> build(int arg) async {
     final org = await ref.watch(organizationRepositoryProvider).getById(arg);
     return org;
   }
@@ -16,4 +16,4 @@ class OrganizationEditController
 
 final organizationEditControllerProvider =
     AutoDisposeAsyncNotifierProviderFamily<OrganizationEditController,
-        Organization, int>(() => OrganizationEditController());
+        Organization?, int>(() => OrganizationEditController());

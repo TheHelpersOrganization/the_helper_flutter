@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/delegate/tabbar_delegate.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -32,13 +33,17 @@ class OrganizationDetailScreen extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (error, __) => Scaffold(
-        body: CustomErrorWidget(
-          onRetry: () => ref.invalidate(
-            getOrganizationProvider(orgId),
+      error: (error, __) {
+        print(__);
+        print(error);
+        return Scaffold(
+          body: CustomErrorWidget(
+            onRetry: () => ref.invalidate(
+              getOrganizationProvider(orgId),
+            ),
           ),
-        ),
-      ),
+        );
+      },
       data: (org) => Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -51,42 +56,49 @@ class OrganizationDetailScreen extends ConsumerWidget {
               }
             },
           ),
-          title: Text('${org.name} Organization'),
+          title: org == null ? null : Text('${org.name} Organization'),
           centerTitle: true,
         ),
-        body: DefaultTabController(
-          length: tabs.length,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, _) {
-              return <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                    [OrganizationHeaderWidget(organization: org)],
-                  ),
+        body: org == null
+            ? Center(
+                child: Text(
+                  'Organization not found',
+                  style: context.theme.textTheme.titleLarge,
                 ),
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverPersistentHeader(
-                    pinned: true,
-                    delegate: TabBarDelegate(
-                      tabBar: const TabBar(
-                        tabs: tabs,
+              )
+            : DefaultTabController(
+                length: tabs.length,
+                child: NestedScrollView(
+                  headerSliverBuilder: (context, _) {
+                    return <Widget>[
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                          [OrganizationHeaderWidget(organization: org)],
+                        ),
                       ),
-                    ),
+                      SliverOverlapAbsorber(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                        sliver: SliverPersistentHeader(
+                          pinned: true,
+                          delegate: TabBarDelegate(
+                            tabBar: const TabBar(
+                              tabs: tabs,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ];
+                  },
+                  body: TabBarView(
+                    children: [
+                      OrganizationOverviewTab(id: orgId),
+                      OrganizationActivityTab(id: orgId),
+                      OrganizationDetailTab(data: org),
+                    ],
                   ),
                 ),
-              ];
-            },
-            body: TabBarView(
-              children: [
-                OrganizationOverviewTab(id: orgId),
-                OrganizationActivityTab(id: orgId),
-                OrganizationDetailTab(data: org),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

@@ -10,6 +10,7 @@ import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/features/location/presentation/location_picker/screen/location_picker_screen.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/mod_shift_creation/controller/mod_shift_creation_controller.dart';
+import 'package:the_helper/src/utils/location.dart';
 
 class ShiftCreationBasicView extends ConsumerWidget {
   final GlobalKey<FormBuilderState> formKey;
@@ -96,7 +97,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
             height: 12,
           ),
           Text(
-            'Shift location must be located within the city/province of activity location: ${activity.location?.formattedAddress}',
+            'Shift location must be located within the city/province of activity location: ${getAddress(activityLocation, componentCount: 2)}',
             style: TextStyle(color: context.theme.colorScheme.secondary),
           ),
           const SizedBox(
@@ -121,7 +122,8 @@ class ShiftCreationBasicView extends ConsumerWidget {
               FormBuilderValidators.required(),
               FormBuilderValidators.maxLength(1000),
               (text) {
-                if (activity.location!.contains(place!.toLocation())) {
+                if (activity.location!
+                    .contains(place!.toLocation(), components: 2)) {
                   return null;
                 }
                 return 'Shift location must be located within the city/province of activity location';

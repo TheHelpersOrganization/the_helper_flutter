@@ -5,9 +5,7 @@ import 'package:the_helper/src/common/domain/data_log.dart';
 import 'package:the_helper/src/common/domain/data_monthly_log.dart';
 import 'package:the_helper/src/common/domain/data_yearly_log.dart';
 import 'package:the_helper/src/features/account/application/account_service.dart';
-
 import 'package:the_helper/src/features/account/domain/account_log_query.dart';
-
 import 'package:the_helper/src/features/activity/domain/activity_log_query.dart';
 import 'package:the_helper/src/features/activity/domain/activity_status.dart';
 import 'package:the_helper/src/features/admin_analytic/data/analytic_repository.dart';
@@ -16,7 +14,6 @@ import 'package:the_helper/src/features/admin_analytic/domain/activity_analytic_
 import 'package:the_helper/src/features/admin_analytic/domain/organization_analytic_model.dart';
 import 'package:the_helper/src/features/admin_analytic/domain/rank_query.dart';
 import 'package:the_helper/src/features/organization/data/organization_repository.dart';
-
 import 'package:the_helper/src/features/organization/domain/organization_log_query.dart';
 import 'package:the_helper/src/features/organization/domain/organization_status.dart';
 
@@ -302,9 +299,9 @@ class AdminRankingData extends _$AdminRankingData {
         : [];
 
     for (var i in activityDataByJoined) {
-      final orgData = await ref
+      final orgData = (await ref
           .watch(organizationRepositoryProvider)
-          .getById(i.organizationId!);
+          .getById(i.organizationId!))!;
       tempList0.add(i.copyWith(
           organizationLogo: orgData.logo, organizationName: orgData.name));
     }
@@ -312,9 +309,9 @@ class AdminRankingData extends _$AdminRankingData {
     activityDataByJoined = tempList0;
 
     for (var i in activityDataByRating) {
-      final orgData = await ref
+      final orgData = (await ref
           .watch(organizationRepositoryProvider)
-          .getById(i.organizationId!);
+          .getById(i.organizationId!))!;
       tempList1.add(i.copyWith(
           organizationLogo: orgData.logo, organizationName: orgData.name));
     }
