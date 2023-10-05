@@ -1,4 +1,7 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:the_helper/src/features/account/application/account_service.dart';
+import 'package:the_helper/src/features/account/domain/account_query.dart';
 import 'package:the_helper/src/features/report/data/report_repository.dart';
 import 'package:the_helper/src/features/report/domain/report_model.dart';
 import 'package:the_helper/src/features/report/domain/report_query.dart';
@@ -22,6 +25,16 @@ class ReportDetailController extends _$ReportDetailController {
           ReportQueryInclude.message,
           ReportQueryInclude.reporter
         ]));
+    if (data.reportedAccount != null && data.reportedAccount!.id == null) {
+      final dataGot = data.reportedAccount!;
+      final targetList = await ref
+          .watch(accountServiceProvider)
+          .getAll(query: AccountQuery(email: dataGot.email));
+      
+      final accountData =
+          data.reportedAccount!.copyWith(id: targetList[0].id);
+      return data.copyWith(reportedAccount: accountData);
+    }
     return data;
   }
 

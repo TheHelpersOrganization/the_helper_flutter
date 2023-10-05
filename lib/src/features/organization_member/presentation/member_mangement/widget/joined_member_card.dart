@@ -38,6 +38,9 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
         content: Text.rich(
           TextSpan(
             text: 'Do you want to remove member ',
+            style: const TextStyle(
+                color: Colors.black
+              ),
             children: [
               TextSpan(
                 text: getMemberName(),

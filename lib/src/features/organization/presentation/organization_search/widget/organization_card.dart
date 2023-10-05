@@ -78,6 +78,9 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
         content: Text.rich(
           TextSpan(
             text: 'Do you want to join ',
+            style: const TextStyle(
+                color: Colors.black
+              ),
             children: [
               TextSpan(
                 text: organization.name,
@@ -250,34 +253,37 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                       const SizedBox(
                         width: 12,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4, bottom: 4),
-                            child: Text(
-                              organization.name,
-                              style:
-                                  context.theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4, bottom: 4),
+                              child: Text(
+                                organization.name,
+                                style:
+                                    context.theme.textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis
                               ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.location_on_outlined,
-                                color: context.theme.colorScheme.secondary,
-                                weight: 100,
-                                size: 18,
-                              ),
-                              Text(
-                                address,
-                                style: context.theme.textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on_outlined,
+                                  color: context.theme.colorScheme.secondary,
+                                  weight: 100,
+                                  size: 18,
+                                ),
+                                Text(
+                                  address,
+                                  style: context.theme.textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

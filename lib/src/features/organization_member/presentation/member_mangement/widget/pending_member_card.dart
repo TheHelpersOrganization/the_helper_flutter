@@ -40,6 +40,9 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
         content: Text.rich(
           TextSpan(
             text: 'Do you want to approve member ',
+            style: const TextStyle(
+                color: Colors.black
+              ),
             children: [
               TextSpan(
                 text: getMemberName(),

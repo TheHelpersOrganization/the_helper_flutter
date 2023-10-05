@@ -55,7 +55,7 @@ class UserReportDetailScreen extends ConsumerWidget {
             },
             loading: () => const Center(child: CircularProgressIndicator()),
             data: (data) {
-              var dateData = DateFormat("dd-mm-y HH:mm").format(data.createdAt);
+              var dateData = DateFormat("dd-MM-yyyy HH:mm").format(data.createdAt);
 
               final reportedName = data.reportedAccount?.username ??
                   data.reportedAccount?.email ??

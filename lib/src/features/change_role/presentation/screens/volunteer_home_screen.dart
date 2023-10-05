@@ -96,7 +96,7 @@ class VolunteerView extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Flexible(
-                      flex: 3,
+                      flex: 4,
                       child: VolunteerAnalyticsMainCard(skillList: data.skills),
                     ),
                     Flexible(

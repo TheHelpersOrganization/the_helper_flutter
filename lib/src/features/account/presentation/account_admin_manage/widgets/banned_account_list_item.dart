@@ -43,6 +43,9 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
           content: Text.rich(
             TextSpan(
               text: 'Do you want to unban this account',
+              style: const TextStyle(
+                color: Colors.black
+              ),
               children: [
                 TextSpan(
                   text: account.email,
@@ -83,6 +86,9 @@ class _BannedAccountListItemState extends ConsumerState<BannedAccountListItem> {
           content: RichText(
             text: TextSpan(
               text: 'Do you want to delete account',
+              style: const TextStyle(
+                color: Colors.black
+              ),
               children: [
                 TextSpan(
                   text: account.email,
