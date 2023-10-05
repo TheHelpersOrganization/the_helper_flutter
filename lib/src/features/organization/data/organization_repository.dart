@@ -34,8 +34,11 @@ class OrganizationRepository {
     return res.map((e) => Organization.fromJson(e)).toList();
   }
 
-  Future<Organization> getById(int id) async {
+  Future<Organization?> getById(int id) async {
     final res = await client.get('/organizations/$id');
+    if (res.data['data'] == null) {
+      return null;
+    }
     return Organization.fromJson(res.data['data']);
   }
 
@@ -66,7 +69,7 @@ OrganizationRepository organizationRepository(OrganizationRepositoryRef ref) =>
     OrganizationRepository(client: ref.watch(dioProvider));
 
 @riverpod
-Future<Organization> getOrganization(
+Future<Organization?> getOrganization(
   GetOrganizationRef ref,
   int organizationId,
 ) =>

@@ -76,7 +76,7 @@ class ActivityCard extends StatelessWidget {
               // Wrap it with flexible to detect overflow
               Flexible(
                 child: AutoSizeText(
-                  getAddress(activity.location),
+                  getAddress(activity.location, componentCount: 2),
                   style: TextStyle(
                     color: context.theme.colorScheme.secondary,
                   ),

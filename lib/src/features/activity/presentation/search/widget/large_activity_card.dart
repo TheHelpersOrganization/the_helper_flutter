@@ -44,7 +44,7 @@ class LargeActivityCard extends ConsumerWidget {
               Stack(
                 children: [
                   SizedBox(
-                    height: 150,
+                    height: 155,
                     child: activity.thumbnail != null
                         ? CachedNetworkImage(
                             imageUrl: getImageUrl(activity.thumbnail!),
@@ -95,7 +95,7 @@ class LargeActivityCard extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(4),
                       child: Text(
-                        getAddress(activity.location),
+                        getAddress(activity.location, componentCount: 2),
                         style: context.theme.textTheme.bodyMedium,
                       ),
                     ),

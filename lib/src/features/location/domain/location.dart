@@ -53,8 +53,8 @@ extension LocationX on Location {
     return address.toString();
   }
 
-  bool contains(Location other) {
-    if (country != null) {
+  bool contains(Location other, {int? components}) {
+    if (country != null && (components == null || components > 0)) {
       final c = country!
           .toLowerCase()
           .replaceAll(RegExp('[^A-Za-z0-9]'), '')
@@ -67,7 +67,7 @@ extension LocationX on Location {
         return false;
       }
     }
-    if (region != null) {
+    if (region != null && (components == null || components > 1)) {
       final r = region!
           .toLowerCase()
           .replaceAll(RegExp('[^A-Za-z0-9]'), '')
@@ -80,7 +80,7 @@ extension LocationX on Location {
         return false;
       }
     }
-    if (locality != null) {
+    if (locality != null && (components == null || components > 2)) {
       final l = locality!
           .toLowerCase()
           .replaceAll(RegExp('[^A-Za-z0-9]'), '')
@@ -93,7 +93,7 @@ extension LocationX on Location {
         return false;
       }
     }
-    if (addressLine1 != null) {
+    if (addressLine1 != null && (components == null || components > 3)) {
       final a =
           addressLine1!.toLowerCase().replaceAll(RegExp('[^A-Za-z0-9]'), '');
       final o = other.addressLine1
@@ -104,7 +104,7 @@ extension LocationX on Location {
         return false;
       }
     }
-    if (addressLine2 != null) {
+    if (addressLine2 != null && (components == null || components > 4)) {
       final a =
           addressLine2!.toLowerCase().replaceAll(RegExp('[^A-Za-z0-9]'), '');
       final o = other.addressLine2
