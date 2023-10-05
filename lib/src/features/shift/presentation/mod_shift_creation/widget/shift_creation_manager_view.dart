@@ -64,7 +64,7 @@ class ShiftCreationManagerView extends ConsumerWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Tap "+ Add Manager" to add skill or skip this step',
+                    'Tap "+ Add Manager" to add manager or skip this step',
                     style:
                         TextStyle(color: context.theme.colorScheme.secondary),
                     textAlign: TextAlign.center,
@@ -96,10 +96,10 @@ class ShiftCreationManagerView extends ConsumerWidget {
                                     : null,
                             leading: CircleAvatar(
                               backgroundImage: manager.profile!.avatarId == null
-                              ? Image.asset('assets/images/logo.png').image
-                              :CachedNetworkImageProvider(
-                                getImageUrl(manager.profile!.avatarId!),
-                              ),
+                                  ? Image.asset('assets/images/logo.png').image
+                                  : CachedNetworkImageProvider(
+                                      getImageUrl(manager.profile!.avatarId!),
+                                    ),
                             ),
                             trailing: IconButton(
                               icon: const Icon(Icons.delete_outline),

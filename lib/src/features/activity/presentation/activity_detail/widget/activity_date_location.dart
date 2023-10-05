@@ -63,7 +63,7 @@ class ActivityDateLocation extends StatelessWidget {
           ),
           title: const Text('Location'),
           subtitle: Text(
-            getAddress(activity.location),
+            getAddress(activity.location, componentCount: 2),
             style: TextStyle(color: context.theme.colorScheme.secondary),
           ),
         ),
