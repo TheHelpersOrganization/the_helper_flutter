@@ -54,7 +54,7 @@ class OrganizationRegistrationStepOne extends StatelessWidget {
           PhoneNumberField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'e.g 0 123 456 7890',
+              hintText: 'e.g 01234567890',
               label: RequiredText('Phone Number'),
             ),
             validator: FormBuilderValidators.required(),
@@ -87,7 +87,7 @@ class OrganizationRegistrationStepOne extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          if (AppConfig.isDevelopment)
+          if (AppConfig.isDevelopment && false)
             Column(
               children: [
                 FilledButton.icon(

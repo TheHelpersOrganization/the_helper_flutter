@@ -103,9 +103,14 @@ class VolunteerView extends ConsumerWidget {
                       flex: 2,
                       child: volunteerData.when(
                         data: (vd) {
-                          var totalSkillHours = Random().nextDouble() * 3;
+                          var totalSkillHours = 0.0;
                           for (var skill in data.skills) {
                             totalSkillHours += skill.hours ?? 0;
+                          }
+                          if (totalSkillHours != 0) {
+                            totalSkillHours +=
+                                Random(totalSkillHours.toInt()).nextDouble() *
+                                    3;
                           }
                           List<Skill> sortedList = List.from(data.skills);
                           sortedList.sort((b, a) =>

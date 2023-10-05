@@ -8,7 +8,6 @@ import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/config/config.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
-import 'package:the_helper/src/features/authentication/presentation/register/register_screen.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
@@ -161,13 +160,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     0, context.mediaQuery.size.height * 0.06),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const RegisterScreen(),
-                                  ),
-                                );
+                                context.goNamed(AppRoute.register.name);
                               },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 8),

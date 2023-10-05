@@ -96,6 +96,12 @@ class OrganizationRegistrationScreen extends ConsumerWidget {
               currentStep: currentStep,
               type: StepperType.horizontal,
               onStepContinue: () {
+                String? phoneNumber =
+                    _formKeys[0].currentState?.value['phoneNumber'];
+                if (phoneNumber?.startsWith('+') != true) {
+                  phoneNumber = '+84$phoneNumber';
+                }
+                print(phoneNumber);
                 final isLastPage = currentStep == steps.length - 1;
                 if (!isLastPage) {
                   if (!_formKeys[currentStep].currentState!.saveAndValidate()) {
@@ -120,13 +126,16 @@ class OrganizationRegistrationScreen extends ConsumerWidget {
                     }),
                   ];
                   final files = _formKeys[3].currentState!.value['files'];
-
+                  String phoneNumber = basicInfo['phoneNumber'];
+                  if (!phoneNumber.startsWith('+')) {
+                    phoneNumber = '+84$phoneNumber';
+                  }
                   ref
                       .read(createOrganizationControllerProvider.notifier)
                       .createOrganization(
                           name: basicInfo['name'],
                           email: basicInfo['email'],
-                          phoneNumber: basicInfo['phoneNumber'],
+                          phoneNumber: phoneNumber,
                           description: basicInfo['description'],
                           website: basicInfo['website'],
                           logo: logo,

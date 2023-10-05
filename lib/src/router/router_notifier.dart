@@ -38,6 +38,11 @@ class RouterNotifier extends Notifier<bool> implements Listenable {
       return null;
     }
 
+    if (routerState.fullPath == AppRoute.register.path ||
+        routerState.fullPath == AppRoute.registerSuccess.path) {
+      return null;
+    }
+
     // Navigate to home if user has logged in
     final isLoggingIn = routerState.fullPath == AppRoute.login.path;
     if (isLoggingIn) return _isAuth ? AppRoute.home.path : null;

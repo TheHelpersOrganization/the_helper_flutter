@@ -21,6 +21,8 @@ import 'package:the_helper/src/features/authentication/presentation/account_veri
 import 'package:the_helper/src/features/authentication/presentation/account_verification_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/login_screen.dart';
 import 'package:the_helper/src/features/authentication/presentation/logout_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/register/register_screen.dart';
+import 'package:the_helper/src/features/authentication/presentation/register/register_successfully_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/change_role_screen.dart';
 import 'package:the_helper/src/features/change_role/presentation/screens/home_screen.dart';
 import 'package:the_helper/src/features/organization/presentation/admin_manage/screens/organization_request_manage_screen.dart';
@@ -87,6 +89,16 @@ final routes = [
         path: AppRoute.logout.path,
         name: AppRoute.logout.name,
         builder: (context, state) => const LogoutScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.register.path,
+        name: AppRoute.register.name,
+        builder: (_, __) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.registerSuccess.path,
+        name: AppRoute.registerSuccess.name,
+        builder: (_, __) => const RegisterSuccessfullyScreen(),
       ),
       GoRoute(
         path: AppRoute.changeRole.path,
@@ -584,6 +596,14 @@ enum AppRoute {
   login(
     path: '/login',
     name: 'login',
+  ),
+  register(
+    path: '/register',
+    name: 'register',
+  ),
+  registerSuccess(
+    path: '/register/success',
+    name: 'register-success',
   ),
   logout(
     path: '/logout',

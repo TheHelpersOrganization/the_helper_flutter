@@ -30,6 +30,7 @@ class PhoneNumberField extends StatelessWidget {
           ),
       keyboardType: TextInputType.phone,
       defaultSelectedCountryIsoCode: 'VN',
+      countryFilterByIsoCode: const ['VN', 'US'],
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
       ],
@@ -42,6 +43,12 @@ class PhoneNumberField extends StatelessWidget {
           ),
         ],
       ),
+      valueTransformer: (value) {
+        print(value);
+      },
+      onFieldSubmitted: (v) {
+        print(v);
+      },
     );
   }
 }

@@ -8,8 +8,8 @@ import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/features/account/domain/account_request_query.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/controllers/account_request_detail_screen_controller.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/attached_files_list.dart';
-import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/features/account/presentation/account_request_manage/widgets/note_dialog.dart';
+import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 
 import '../../../../../common/extension/image.dart';
@@ -152,6 +152,8 @@ class AccountRequestDetailScreen extends ConsumerWidget {
                               height: 10,
                             ),
                             DetailListTile(
+                                label: 'Email', value: data.email ?? 'Unknown'),
+                            DetailListTile(
                                 label: 'Phone Number',
                                 value: data.phoneNumber ?? 'Unknown'),
                             DetailListTile(
@@ -276,59 +278,66 @@ class AccountRequestDetailScreen extends ConsumerWidget {
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: requestData.status == AccountRequestStatus.blocked
-                                    ? PrimaryButton(
-                                      // isLoading: state.isLoading,
-                                      loadingText: "Processing...",
-                                      onPressed: () async {
-                                        await ref
-                                            .watch(
-                                                verifiedAccountControllerProvider
-                                                    .notifier)
-                                            .blockRequest(
-                                                requestId:
-                                                    requestData.id!);
-                                        if (context.mounted) {
-                                          context.pop();
-                                        }
-                                      },
-                                      style: ButtonStyle(
-                                          padding: MaterialStateProperty.all(
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 25)),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface)),
-                                      child: const Text('Unblock'),
-                                    )
-                                    : PrimaryButton(
-                                      // isLoading: state.isLoading,
-                                      loadingText: "Processing...",
-                                      onPressed: () async {
-                                        await ref
-                                            .watch(
-                                                verifiedAccountControllerProvider
-                                                    .notifier)
-                                            .unblockRequest(
-                                                requestId:
-                                                    requestData.id!);
-                                        if (context.mounted) {
-                                          context.pop();
-                                        }
-                                      },
-                                      style: ButtonStyle(
-                                          padding: MaterialStateProperty.all(
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 25)),
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Theme.of(context)
-                                                      .colorScheme
-                                                      .onSurface)),
-                                      child: const Text('Block'),
-                                    ),
+                                    child: requestData.status ==
+                                            AccountRequestStatus.blocked
+                                        ? PrimaryButton(
+                                            // isLoading: state.isLoading,
+                                            loadingText: "Processing...",
+                                            onPressed: () async {
+                                              await ref
+                                                  .watch(
+                                                      verifiedAccountControllerProvider
+                                                          .notifier)
+                                                  .blockRequest(
+                                                      requestId:
+                                                          requestData.id!);
+                                              if (context.mounted) {
+                                                context.pop();
+                                              }
+                                            },
+                                            style: ButtonStyle(
+                                                padding:
+                                                    MaterialStateProperty.all(
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 25)),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                            Color>(
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface)),
+                                            child: const Text('Unblock'),
+                                          )
+                                        : PrimaryButton(
+                                            // isLoading: state.isLoading,
+                                            loadingText: "Processing...",
+                                            onPressed: () async {
+                                              await ref
+                                                  .watch(
+                                                      verifiedAccountControllerProvider
+                                                          .notifier)
+                                                  .unblockRequest(
+                                                      requestId:
+                                                          requestData.id!);
+                                              if (context.mounted) {
+                                                context.pop();
+                                              }
+                                            },
+                                            style: ButtonStyle(
+                                                padding:
+                                                    MaterialStateProperty.all(
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 25)),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                            Color>(
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface)),
+                                            child: const Text('Block'),
+                                          ),
                                   ),
                                   SizedBox(
                                     width: context.mediaQuery.size.width * 0.06,
