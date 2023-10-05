@@ -262,7 +262,11 @@ class ModView extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goNamed(
+                        AppRoute.organizationActivityListManagement.name,
+                      );
+                    },
                     child: const Text(
                       'See more',
                     ),

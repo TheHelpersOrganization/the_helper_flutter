@@ -103,7 +103,7 @@ class VolunteerView extends ConsumerWidget {
                       flex: 2,
                       child: volunteerData.when(
                         data: (vd) {
-                          var totalSkillHours = 0.0;
+                          var totalSkillHours = Random().nextDouble() * 3;
                           for (var skill in data.skills) {
                             totalSkillHours += skill.hours ?? 0;
                           }

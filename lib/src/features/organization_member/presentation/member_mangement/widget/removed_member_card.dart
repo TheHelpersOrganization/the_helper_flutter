@@ -8,6 +8,7 @@ import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/dialog/loading_dialog_content.dart';
 import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/organization_member/domain/organization_member.dart';
+import 'package:the_helper/src/features/organization_member/presentation/member_mangement/controller/organization_member_management_controller.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
@@ -34,8 +35,8 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
         titleText: 'Remove Member',
-        content: RichText(
-          text: TextSpan(
+        content: Text.rich(
+          TextSpan(
             text: 'Do you want to remove member ',
             children: [
               TextSpan(
@@ -116,7 +117,29 @@ class _MemberCardState extends ConsumerState<RemovedMemberCard> {
                 ListTile(
                   leading: const Icon(Icons.person_add_outlined),
                   title: const Text('Add member back'),
-                  onTap: () => context.goNamed(AppRoute.profile.name),
+                  onTap: () {
+                    context.pop();
+                    showDialog(
+                      context: context,
+                      builder: (context) => ConfirmationDialog(
+                        titleText: 'Add Member Back',
+                        content: Text(
+                          'Do you want to add ${member.profile?.username} back?',
+                        ),
+                        onConfirm: () {
+                          context.pop();
+                          showLoadingDialog();
+                          ref
+                              .read(
+                                  approveMemberBackControllerProvider.notifier)
+                              .approveBack(member.organization!.id, member.id);
+                          if (context.mounted) {
+                            context.pop();
+                          }
+                        },
+                      ),
+                    );
+                  },
                 ),
               if (myMember.hasRole(
                       OrganizationMemberRoleType.organizationMemberManager) &&

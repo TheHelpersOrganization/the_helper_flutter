@@ -117,6 +117,23 @@ class ApproveMemberController extends AutoDisposeAsyncNotifier<void> {
   }
 }
 
+class ApproveMemberBackController extends AutoDisposeAsyncNotifier<void> {
+  @override
+  void build() {}
+
+  Future<OrganizationMember?> approveBack(
+    int organizationId,
+    int memberId,
+  ) async {
+    state = const AsyncLoading();
+    final res = await guardAsyncValue(() async => await ref
+        .watch(modOrganizationMemberRepositoryProvider)
+        .approveBack(organizationId: organizationId, memberId: memberId));
+    state = const AsyncData(null);
+    return res.valueOrNull;
+  }
+}
+
 class RejectMemberController extends AutoDisposeAsyncNotifier<void> {
   @override
   void build() {}
@@ -165,6 +182,11 @@ class LeaveController extends AutoDisposeAsyncNotifier<void> {
 final approveMemberControllerProvider =
     AutoDisposeAsyncNotifierProvider<ApproveMemberController, void>(
   () => ApproveMemberController(),
+);
+
+final approveMemberBackControllerProvider =
+    AutoDisposeAsyncNotifierProvider<ApproveMemberBackController, void>(
+  () => ApproveMemberBackController(),
 );
 
 final rejectMemberControllerProvider =

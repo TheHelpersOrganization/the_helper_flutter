@@ -37,8 +37,8 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
         titleText: 'Approve Member',
-        content: RichText(
-          text: TextSpan(
+        content: Text.rich(
+          TextSpan(
             text: 'Do you want to approve member ',
             children: [
               TextSpan(
@@ -73,16 +73,19 @@ class _PendingMemberCardState extends ConsumerState<PendingMemberCard> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
         titleText: 'Reject Member',
-        content: Column(children: [
-          TextField(
-            controller: reasonTextController,
-            decoration: const InputDecoration(
-              labelText: 'Reason',
-              border: OutlineInputBorder(),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: reasonTextController,
+              decoration: const InputDecoration(
+                labelText: 'Reason',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
             ),
-            maxLines: 3,
-          ),
-        ]),
+          ],
+        ),
         onConfirm: () async {
           context.pop();
           showLoadingDialog(isApproving: false);

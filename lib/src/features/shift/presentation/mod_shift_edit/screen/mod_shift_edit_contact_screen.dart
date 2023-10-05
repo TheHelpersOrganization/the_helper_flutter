@@ -27,7 +27,7 @@ class ModShiftEditContactScreen extends ConsumerWidget {
     final extendedActivityState =
         ref.watch(getActivityAndShiftProvider(shiftId));
     final updateShiftState = ref.watch(updateShiftControllerProvider);
-    final selectedContacts = ref.watch(selectedContactsProvider);
+    final selectedContacts = ref.watch(selectedContactIdsProvider);
 
     ref.listen<AsyncValue>(
       updateShiftControllerProvider,
@@ -71,7 +71,8 @@ class ModShiftEditContactScreen extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: ShiftCreationContactView(
-                    initialContacts: data.shift.contacts,
+                    initialContacts:
+                        data.shift.contacts?.map((e) => e.id!).toList(),
                   ),
                 ),
               );

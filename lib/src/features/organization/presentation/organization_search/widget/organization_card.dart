@@ -129,8 +129,8 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                   width: 8,
                 ),
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
+                  child: Text.rich(
+                    TextSpan(
                       text: 'Your request to join ',
                       children: [
                         TextSpan(
@@ -194,8 +194,8 @@ class _OrganizationCardState extends ConsumerState<OrganizationCard> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                    text: TextSpan(
+                  Text.rich(
+                    TextSpan(
                       text: 'Joining ',
                       children: [
                         TextSpan(

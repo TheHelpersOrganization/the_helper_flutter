@@ -21,8 +21,8 @@ class RemoveMemberDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ConfirmationDialog(
       titleText: 'Remove Member',
-      content: RichText(
-        text: TextSpan(
+      content: Text.rich(
+        TextSpan(
           text: 'Do you want to remove member ',
           children: [
             TextSpan(

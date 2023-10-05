@@ -17,7 +17,7 @@ class UpdateShift with _$UpdateShift {
     DateTime? endTime,
     int? numberOfParticipants,
     List<Location>? locations,
-    List<Contact>? contacts,
+    List<int>? contacts,
     List<CreateShiftSkill>? shiftSkills,
     List<CreateShiftManager>? shiftManagers,
   }) = _UpdateShift;
