@@ -107,6 +107,15 @@ class _MyOrganizationScreenState
       },
     );
     ref.listen<AsyncValue>(
+      approveMemberBackControllerProvider,
+      (_, state) {
+        state.showSnackbarOnError(context);
+        if (state.hasValue && !state.isLoading && !state.hasError) {
+          ref.invalidate(organizationMemberListPagedNotifierProvider);
+        }
+      },
+    );
+    ref.listen<AsyncValue>(
       rejectMemberControllerProvider,
       (_, state) {
         state.showSnackbarOnError(context);

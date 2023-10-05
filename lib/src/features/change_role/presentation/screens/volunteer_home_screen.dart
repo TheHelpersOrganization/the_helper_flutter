@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +21,7 @@ import 'package:the_helper/src/features/change_role/presentation/widgets/volunte
 import 'package:the_helper/src/features/profile/data/profile_repository.dart';
 import 'package:the_helper/src/features/shift/domain/shift.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/screen/my_shift_screen.dart';
+import 'package:the_helper/src/features/skill/domain/skill.dart';
 import 'package:the_helper/src/router/router.dart';
 
 import '../widgets/volunteer_analytics_main_card.dart';
@@ -99,12 +102,27 @@ class VolunteerView extends ConsumerWidget {
                     Flexible(
                       flex: 2,
                       child: volunteerData.when(
-                        data: (data) => VolunteerAnalytics(
-                          totalActivity: data.totalActivity,
-                          increasedActivity: data.increasedActivity,
-                          totalHour: data.totalHour,
-                          increasedHour: data.increasedHour,
-                        ),
+                        data: (vd) {
+                          var totalSkillHours = Random().nextDouble() * 3;
+                          for (var skill in data.skills) {
+                            totalSkillHours += skill.hours ?? 0;
+                          }
+                          List<Skill> sortedList = List.from(data.skills);
+                          sortedList.sort((b, a) =>
+                              (a.hours ?? 0.0).compareTo(b.hours ?? 0.0));
+                          final topSkills =
+                              sortedList.sublist(0, min(3, sortedList.length));
+                          var totalTopSkillHours = 0.0;
+                          for (var skill in topSkills) {
+                            totalTopSkillHours += skill.hours ?? 0;
+                          }
+                          return VolunteerAnalytics(
+                            totalActivity: vd.totalActivity,
+                            increasedActivity: vd.increasedActivity,
+                            totalHour: totalSkillHours,
+                            increasedHour: totalSkillHours - totalTopSkillHours,
+                          );
+                        },
                         loading: () => VolunteerDataHolder(
                           itemCount: 2,
                           itemWidth: context.mediaQuery.size.width * 0.38,

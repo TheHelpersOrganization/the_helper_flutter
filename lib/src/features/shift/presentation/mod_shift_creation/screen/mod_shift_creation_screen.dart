@@ -94,9 +94,10 @@ class ModShiftCreationScreen extends ConsumerWidget {
     final currentStep = ref.watch(currentStepProvider);
     final selectedSkill = ref.watch(selectedSkillsProvider);
     final selectedManagers = ref.watch(selectedManagersProvider);
-    final selectedContacts = ref.watch(selectedContactsProvider);
+    final selectedContacts = ref.watch(selectedContactIdsProvider);
     final PlaceDetails? place = ref.watch(placeProvider);
-    final activityState = ref.watch(activityProvider(activityId));
+    final activityAndMembersState =
+        ref.watch(activityAndMembersProvider(activityId));
 
     // Preload skills for skills step
     ref.watch(getSkillsProvider);
@@ -122,7 +123,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
               titleText: 'Create Shift',
             )
           ],
-          body: activityState.when(
+          body: activityAndMembersState.when(
             loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
@@ -130,7 +131,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
               child: Text(error.toString()),
             ),
             data: (data) {
-              final steps = getSteps(currentStep, activity: data);
+              final steps = getSteps(currentStep, activity: data.activity);
               return Stepper(
                 margin: EdgeInsets.zero,
                 type: StepperType.horizontal,
@@ -141,7 +142,7 @@ class ModShiftCreationScreen extends ConsumerWidget {
             },
           ),
         ),
-        bottomNavigationBar: activityState.maybeWhen(
+        bottomNavigationBar: activityAndMembersState.maybeWhen(
           data: (data) => Column(
             mainAxisSize: MainAxisSize.min,
             children: [

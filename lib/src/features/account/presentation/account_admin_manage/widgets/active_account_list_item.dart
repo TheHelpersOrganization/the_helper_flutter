@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
+import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
 import 'package:the_helper/src/common/widget/error_widget.dart';
 import 'package:the_helper/src/features/account/domain/account.dart';
 import 'package:the_helper/src/features/account/presentation/account_admin_manage/controllers/account_manage_screen_controller.dart';
@@ -9,10 +11,9 @@ import 'package:the_helper/src/features/account/presentation/account_admin_manag
 import 'package:the_helper/src/features/profile/application/profile_service.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
+
 import '../../../../../common/widget/bottom_sheet/custom_modal_botton_sheet.dart';
 import '../../../../../common/widget/dialog/loading_dialog_content.dart';
-import 'package:the_helper/src/common/widget/dialog/confirmation_dialog.dart';
-import 'package:the_helper/src/common/extension/build_context.dart';
 
 class ActiveAccountListItem extends ConsumerStatefulWidget {
   final AccountModel data;
@@ -39,8 +40,8 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
           titleText: 'Ban Account',
-          content: RichText(
-            text: TextSpan(
+          content: Text.rich(
+            TextSpan(
               text: 'Do you want to ban this account',
               style: const TextStyle(
                 color: Colors.black
@@ -76,36 +77,36 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
 
   void showErrorDialog() {
     showDialog(
-      context: context,
-      barrierDismissible: true,
-      useRootNavigator: false,
-      builder: (dialogContext) => SimpleDialog(
-        alignment: Alignment.center,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 24,
-        ),
-        children: [
-          Center(
-            child: Text(
-              'Something went wrong',
-              style: TextStyle(
-                color: dialogContext.theme.primaryColor,
-                fontWeight: FontWeight.bold,
+        context: context,
+        barrierDismissible: true,
+        useRootNavigator: false,
+        builder: (dialogContext) => SimpleDialog(
+              alignment: Alignment.center,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 24,
               ),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          FilledButton(
-            onPressed: () {
-              dialogContext.pop();
-            },
-            child: const Text('Ok'),
-          ),
-        ],
-      ));
+              children: [
+                Center(
+                  child: Text(
+                    'Something went wrong',
+                    style: TextStyle(
+                      color: dialogContext.theme.primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                FilledButton(
+                  onPressed: () {
+                    dialogContext.pop();
+                  },
+                  child: const Text('Ok'),
+                ),
+              ],
+            ));
   }
 
   // show delete dialog
@@ -117,8 +118,8 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
           titleText: 'Delete Account',
-          content: RichText(
-            text: TextSpan(
+          content: Text.rich(
+            TextSpan(
               text: 'Do you want to delete account',
               style: const TextStyle(
                 color: Colors.black
@@ -210,7 +211,8 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
 
   @override
   Widget build(BuildContext context) {
-    final profile = ref.watch(accountProfileServiceProvider(id: widget.data.id!));
+    final profile =
+        ref.watch(accountProfileServiceProvider(id: widget.data.id!));
     return Container(
       decoration: BoxDecoration(
           border:
@@ -233,12 +235,12 @@ class _ActiveAccountListItemState extends ConsumerState<ActiveAccountListItem> {
                     ),
                     error: (_, __) => const CustomErrorWidget(),
                     data: (data) => CircleAvatar(
-                      backgroundImage: 
-                      data.avatarId == null
+                      backgroundImage: data.avatarId == null
                           ? Image.asset('assets/images/logo.png').image
-                          : CachedNetworkImageProvider(getImageUrl(data.avatarId!)),
+                          : CachedNetworkImageProvider(
+                              getImageUrl(data.avatarId!)),
                     ),
-                  ),                
+                  ),
                 ),
                 Expanded(
                   child: Column(

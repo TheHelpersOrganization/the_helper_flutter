@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/organization/domain/organization.dart';
 import 'package:the_helper/src/features/organization/domain/organization_member_role.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
@@ -19,6 +20,7 @@ class OrganizationMember with _$OrganizationMember {
     Profile? profile,
     Organization? organization,
     List<OrganizationMemberRole>? roles,
+    List<Contact>? contacts,
   }) = _OrganizationMember;
 
   factory OrganizationMember.fromJson(Map<String, dynamic> json) =>

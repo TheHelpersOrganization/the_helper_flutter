@@ -6,7 +6,6 @@ import 'package:the_helper/src/features/activity/domain/activity.dart';
 import 'package:the_helper/src/features/activity/presentation/mod_activity_management/controller/mod_activity_management_controller.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
-import 'package:the_helper/src/features/contact/domain/contact.dart';
 import 'package:the_helper/src/features/location/domain/place_details.dart';
 import 'package:the_helper/src/features/organization/data/current_organization_repository.dart';
 import 'package:the_helper/src/features/organization_member/data/mod_organization_member_repository.dart';
@@ -19,10 +18,26 @@ import 'package:the_helper/src/features/skill/domain/skill.dart';
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value.dart';
 
-final activityProvider = FutureProvider.autoDispose.family<Activity, int>(
+class ActivityAndMember {
+  final Activity activity;
+  final ActivityManagerData members;
+
+  ActivityAndMember({
+    required this.activity,
+    required this.members,
+  });
+}
+
+final activityAndMembersProvider =
+    FutureProvider.autoDispose.family<ActivityAndMember, int>(
   (ref, activityId) async {
     final activityRepo = ref.watch(activityRepositoryProvider);
-    return activityRepo.getActivityById(id: activityId);
+    final activity = await activityRepo.getActivityById(id: activityId);
+    final members = await ref.watch(memberDataProvider.future);
+    return ActivityAndMember(
+      activity: activity,
+      members: members,
+    );
   },
 );
 
@@ -46,8 +61,8 @@ final locationTextEditingControllerProvider =
 final placeProvider = StateProvider<PlaceDetails?>((ref) => null);
 
 // Contact
-final selectedContactsProvider =
-    StateProvider.autoDispose<List<Contact>?>((ref) => null);
+final selectedContactIdsProvider =
+    StateProvider.autoDispose<List<int>?>((ref) => null);
 final selectedContactNameProvider =
     StateProvider.autoDispose<String?>((ref) => null);
 

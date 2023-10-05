@@ -57,8 +57,8 @@ class _PendingOrgCardState extends ConsumerState<PendingOrgCard> {
       context: context,
       useRootNavigator: false,
       builder: (context) => SuccessDialog(
-        content: RichText(
-          text: TextSpan(
+        content: Text.rich(
+          TextSpan(
             text: 'Your request to join ',
             style: const TextStyle(
                 color: Colors.black

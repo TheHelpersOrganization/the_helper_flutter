@@ -186,6 +186,7 @@ class ShiftCreationBasicView extends ConsumerWidget {
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
+            keyboardType: TextInputType.number,
             validator: FormBuilderValidators.compose([
               if (isParticipantLimited == true)
                 FormBuilderValidators.required(),
@@ -236,10 +237,17 @@ class ShiftCreationBasicView extends ConsumerWidget {
             ),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(),
-              (value) => value!
-                      .isAfter(formKey.currentState!.fields['startTime']!.value)
-                  ? null
-                  : 'End time must be after start time',
+              (value) {
+                final startTime = formKey
+                    .currentState!.fields['startTime']!.value as DateTime;
+                if (!value!.isAfter(startTime)) {
+                  return 'End time must be after start time';
+                }
+                if (!DateUtils.isSameDay(startTime, value)) {
+                  return 'End time must be on the same day as start time';
+                }
+                return null;
+              },
             ]),
           ),
         ],

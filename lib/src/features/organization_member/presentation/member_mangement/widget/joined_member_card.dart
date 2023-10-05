@@ -35,8 +35,8 @@ class _MemberCardState extends ConsumerState<JoinedMemberCard> {
       useRootNavigator: false,
       builder: (dialogContext) => ConfirmationDialog(
         titleText: 'Remove Member',
-        content: RichText(
-          text: TextSpan(
+        content: Text.rich(
+          TextSpan(
             text: 'Do you want to remove member ',
             style: const TextStyle(
                 color: Colors.black

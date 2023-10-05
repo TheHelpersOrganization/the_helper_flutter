@@ -81,8 +81,8 @@ class ShiftVolunteerTab extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                           text: 'Search result for ',
                           style: const TextStyle(fontStyle: FontStyle.italic),
                           children: [

@@ -37,8 +37,8 @@ class CancelJoinRequestDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RichText(
-            text: TextSpan(
+          Text.rich(
+            TextSpan(
               text: 'Do you want cancel request to join ',
               children: [
                 TextSpan(

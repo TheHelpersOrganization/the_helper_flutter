@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/dialog/dialog_with_header.dart';
 import 'package:the_helper/src/features/shift/domain/shift_volunteer.dart';
 import 'package:the_helper/src/features/shift/presentation/my_shift/controller/my_shift_controller.dart';
@@ -44,9 +45,13 @@ class RateShiftDialog extends ConsumerWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: starButtons,
+          SizedBox(
+            height: 60,
+            width: context.mediaQuery.size.width,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: starButtons,
+            ),
           ),
           const SizedBox(height: 24),
           TextFormField(

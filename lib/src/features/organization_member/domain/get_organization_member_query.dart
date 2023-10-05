@@ -10,6 +10,7 @@ part 'get_organization_member_query.g.dart';
 
 class GetOrganizationMemberQueryInclude {
   static const String profile = 'profile';
+  static const String contact = 'contact';
   static const String role = 'role';
   static const String roleGranter = 'roleGranter';
 }

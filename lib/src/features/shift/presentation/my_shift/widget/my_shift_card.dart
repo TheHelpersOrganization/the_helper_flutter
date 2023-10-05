@@ -54,7 +54,7 @@ class MyShiftCard extends ConsumerWidget {
             trailing: checkInLabelTrailing,
           )
         : Label(
-            labelText: 'Checked-in',
+            labelText: 'Check-in',
             color: Colors.red,
             trailing: checkInLabelTrailing,
           );
@@ -78,7 +78,7 @@ class MyShiftCard extends ConsumerWidget {
             trailing: checkOutLabelTrailing,
           )
         : Label(
-            labelText: 'Checked-out',
+            labelText: 'Check-out',
             color: Colors.red,
             trailing: checkOutLabelTrailing,
           );

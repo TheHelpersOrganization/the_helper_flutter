@@ -59,8 +59,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
           vertical: 24,
         ),
         children: [
-          RichText(
-            text: TextSpan(
+          Text.rich(
+            TextSpan(
               text: 'Do you want to join ',
               children: [
                 TextSpan(
@@ -144,8 +144,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
           vertical: 24,
         ),
         children: [
-          RichText(
-            text: TextSpan(
+          Text.rich(
+            TextSpan(
               text: 'Do you want to leave ',
               children: [
                 TextSpan(
@@ -225,8 +225,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                   width: 8,
                 ),
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
+                  child: Text.rich(
+                    TextSpan(
                       text: 'Your request to join ',
                       children: [
                         TextSpan(
@@ -294,8 +294,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                   width: 8,
                 ),
                 Expanded(
-                  child: RichText(
-                    text: TextSpan(
+                  child: Text.rich(
+                    TextSpan(
                       text: 'Leave ',
                       children: [
                         TextSpan(
@@ -355,8 +355,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                    text: TextSpan(
+                  Text.rich(
+                    TextSpan(
                       text: 'Joining ',
                       children: [
                         TextSpan(
@@ -401,8 +401,8 @@ class _OrganizationHeaderState extends ConsumerState<OrganizationHeaderWidget> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RichText(
-                    text: TextSpan(
+                  Text.rich(
+                    TextSpan(
                       text: 'Leaving ',
                       children: [
                         TextSpan(

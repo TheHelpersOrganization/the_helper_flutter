@@ -28,12 +28,14 @@ class ModOrganizationMemberRepository {
         ? query.copyWith(
             include: [
               GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.contact,
               GetOrganizationMemberQueryInclude.role,
             ],
           )
         : GetOrganizationMemberQuery(
             include: [
               GetOrganizationMemberQueryInclude.profile,
+              GetOrganizationMemberQueryInclude.contact,
               GetOrganizationMemberQueryInclude.role,
             ],
           );
@@ -69,6 +71,16 @@ class ModOrganizationMemberRepository {
   }) async {
     final res = await client.post(
       '/mod/organizations/$organizationId/members/$memberId/approve',
+    );
+    return OrganizationMember.fromJson(res.data['data']);
+  }
+
+  Future<OrganizationMember> approveBack({
+    required int organizationId,
+    required int memberId,
+  }) async {
+    final res = await client.post(
+      '/mod/organizations/$organizationId/members/$memberId/approve-back',
     );
     return OrganizationMember.fromJson(res.data['data']);
   }
