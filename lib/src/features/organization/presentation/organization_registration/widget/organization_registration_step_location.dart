@@ -123,7 +123,7 @@ class OrganizationRegistrationStepLocation extends ConsumerWidget {
           const SizedBox(
             height: 32,
           ),
-          if (AppConfig.isDevelopment)
+          if (AppConfig.isDevelopment && false)
             Column(
               children: [
                 FilledButton.icon(

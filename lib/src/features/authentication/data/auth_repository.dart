@@ -43,7 +43,7 @@ class AuthRepository {
     }
   }
 
-  Future<AccountToken?> register(String email, String password) async {
+  Future<Account?> register(String email, String password) async {
     try {
       final response = await client.post(
         '$url/auth/register',
@@ -52,8 +52,8 @@ class AuthRepository {
           "password": password,
         },
       );
-      final accountToken = AccountToken.fromJson(response.data['data']);
-      await _saveCredentialsToLocalStorage(accountToken.token);
+      final accountToken = Account.fromJson(response.data['data']);
+      //await _saveCredentialsToLocalStorage(accountToken.token);
       return accountToken;
     } on DioException catch (ex) {
       return Future.error(BackendException.fromMap(ex.response?.data));

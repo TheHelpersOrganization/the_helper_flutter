@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:the_helper/src/common/extension/build_context.dart';
 import 'package:the_helper/src/common/widget/button/primary_button.dart';
 import 'package:the_helper/src/common/widget/loading_overlay.dart';
 import 'package:the_helper/src/features/authentication/presentation/register/register_controller.dart';
+import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/async_value_ui.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:the_helper/src/features/authentication/presentation/login_controller.dart';
@@ -25,7 +27,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     ref.listen<AsyncValue>(
       registerControllerProvider,
-      (_, state) => state.showSnackbarOnError(context),
+      (_, state) {
+        print(state.stackTrace);
+        print(state.error);
+        state.showSnackbarOnError(context);
+      },
     );
     final state = ref.watch(registerControllerProvider);
     final passwordVisible = ref.watch(passwordVisibilityProvider);
@@ -182,7 +188,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   0, context.mediaQuery.size.height * 0.06),
                             ),
                             onPressed: () {
-                              Navigator.pop(context);
+                              context.goNamed(AppRoute.login.name);
                               // Navigator.push(
                               //   context,
                               //   MaterialPageRoute(
