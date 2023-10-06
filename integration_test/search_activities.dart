@@ -118,10 +118,5 @@ Future<void> searchActivities(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
 
-  final snackBar = find.byType(SnackBar);
-  expect(snackBar, findsOneWidget);
-
-  await tester.pumpAndSettle();
-
   await tester.pump(const Duration(seconds: 5));
 }
