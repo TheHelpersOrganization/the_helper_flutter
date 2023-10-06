@@ -8,11 +8,10 @@ import 'package:the_helper/src/common/widget/drawer/app_drawer.dart';
 import 'package:the_helper/src/features/authentication/application/auth_service.dart';
 import 'package:the_helper/src/features/authentication/domain/account.dart';
 import 'package:the_helper/src/features/profile/domain/profile.dart';
-
-import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_activity_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_contacts_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_organization_tab.dart';
+import 'package:the_helper/src/features/profile/presentation/profile/profile_overview_tab.dart';
 import 'package:the_helper/src/features/profile/presentation/profile/profile_verified_status.dart';
 import 'package:the_helper/src/features/profile/presentation/profile_controller.dart';
 import 'package:the_helper/src/router/router.dart';
@@ -143,7 +142,7 @@ class ProfileScreen extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(top: 24),
           child: Text(
-            profile.username!,
+            profile.username ?? '',
             style: Theme.of(context).textTheme.displaySmall,
           ),
         ),
@@ -162,7 +161,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
             child: ExpandableText(
-              profile.bio!,
+              profile.bio ?? '',
               maxLines: 4,
               textAlign: TextAlign.center,
               style: TextStyle(
