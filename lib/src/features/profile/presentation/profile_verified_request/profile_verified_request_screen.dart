@@ -25,7 +25,7 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
 
     ref.listen<AsyncValue>(
       profileVerifiedRequestControllerProvider,
-      (_, state) {
+      (ee, state) {
         state.showSnackbarOnError(context);
         state.showSnackbarOnSuccess(
           context,
@@ -99,7 +99,6 @@ class ProfileVerifiedRequestScreen extends ConsumerWidget {
                               .read(profileVerifiedRequestControllerProvider
                                   .notifier)
                               .sendVerifiedRequest(files: files);
-
                           if (context.mounted) {
                             context.pop();
                           }

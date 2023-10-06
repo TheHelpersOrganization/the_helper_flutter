@@ -9,7 +9,6 @@ import 'package:the_helper/src/features/profile/application/profile_service.dart
 import 'package:the_helper/src/router/router.dart';
 import 'package:the_helper/src/utils/domain_provider.dart';
 
-
 class AccountRequestListItem extends ConsumerWidget {
   final AccountRequestModel data;
 
@@ -85,6 +84,18 @@ class AccountRequestListItem extends ConsumerWidget {
                           const SizedBox(
                             height: 5,
                           ),
+                          Row(
+                            children: [
+                              const Text('Account Id:'),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(data.accountId.toString()),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
                           data.isVerified
                               ? Text(
                                   'Verified account',
@@ -103,20 +114,24 @@ class AccountRequestListItem extends ConsumerWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            data.note ?? '',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          data.note != null
+                              ? Text(
+                                  data.note ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : const SizedBox(),
                           // RichText(
                           //   text: TextSpan(
                           //     text: data.note,
                           //   ),
                           //   softWrap: false,
                           // ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          fileNum != 0
+                              ? const SizedBox(
+                                  height: 10,
+                                )
+                              : const SizedBox(),
                           fileNum != 0
                               ? Text("Attached file(s): $fileNum")
                               : const SizedBox(),
