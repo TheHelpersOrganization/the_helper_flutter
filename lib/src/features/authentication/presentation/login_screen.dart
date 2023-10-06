@@ -168,7 +168,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ),
                             ),
                           ),
-                          if (AppConfig.isDevelopment) ...[
+                          if (AppConfig.isDevelopment && false) ...[
                             const SizedBox(
                               height: 24,
                             ),
