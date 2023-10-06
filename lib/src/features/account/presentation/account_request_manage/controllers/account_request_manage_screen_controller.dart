@@ -39,6 +39,7 @@ class ScrollPagingControlNotifier
                 limit: limit,
                 offset: page * limit,
                 status: tabStatus,
+                accountId: int.tryParse(searchPattern ?? '') == null ? null : int.parse(searchPattern ?? ''),
                 include: [AccountRequestInclude.file]
               ),
             );

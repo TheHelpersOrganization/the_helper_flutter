@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:the_helper/src/features/profile/domain/verified_request.dart';
+import 'package:the_helper/src/utils/async_value.dart';
 
 import '../../../file/data/file_repository.dart';
 import '../../data/profile_repository.dart';
@@ -34,12 +35,11 @@ class ProfileVerifiedRequestController
         [];
     final fileModels = await Future.wait(fileFutures);
 
-    final res = await AsyncValue.guard(() => ref
+    state = await guardAsyncValue(() => ref
         .watch(profileRepositoryProvider)
         .requestVerifiedProfile(VerifiedRequestBody(
           content: "Profile verified request",
           files: fileModels.map((e) => e.id).toList(),
         )));
-    state = res;
   }
 }

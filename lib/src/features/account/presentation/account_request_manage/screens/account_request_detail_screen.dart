@@ -152,6 +152,8 @@ class AccountRequestDetailScreen extends ConsumerWidget {
                               height: 10,
                             ),
                             DetailListTile(
+                                label: 'Account Id', value: requestData.accountId!.toString()),
+                            DetailListTile(
                                 label: 'Email', value: data.email ?? 'Unknown'),
                             DetailListTile(
                                 label: 'Phone Number',
